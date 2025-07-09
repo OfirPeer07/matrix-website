@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+.matrix-video-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  background-color: #000;
+}
+
+.matrix-frame {
+  width: 100%;
+  max-width: 800px;
+  aspect-ratio: 16 / 9;
+  border: 2px solid #00ff41;
+  background-color: #000;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 25px #00ff41aa;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.matrix-screen {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(180deg, #000 0%, #011 100%);
+  padding: 20px;
+}
+
+.matrix-text {
+  font-family: 'Share Tech Mono', monospace;
+  color: #00ff41;
+  text-align: center;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  direction: ltr;
+}
+
+.matrix-text a {
+  color: #00e676;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.matrix-text a:hover {
+  color: #1aff66;
+  text-shadow: 0 0 5px #1aff66;
+}
+
+.matrix-controls {
+  background-color: #001a00;
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  gap: 15px;
+  font-family: 'Share Tech Mono', monospace;
+  border-top: 1px solid #00ff41;
+}
+
+.matrix-button {
+  font-size: 1.5rem;
+  color: #00ff41;
+  cursor: default;
+}
+
+.matrix-bar {
+  flex: 1;
+  height: 6px;
+  background-color: #003300;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.matrix-fill {
+  width: 30%;
+  height: 100%;
+  background-color: #00ff41;
+  animation: flicker 2s infinite alternate;
+}
+
+.matrix-status {
+  color: #00ff41;
+  font-size: 0.9rem;
+  text-shadow: 0 0 5px #00ff41;
+}
+
+@keyframes flicker {
+  from { opacity: 0.6; }
+  to { opacity: 1; }
+}

@@ -1,0 +1,30 @@
+{
+    "computers": [
+      {
+        "id": 1,
+        "mainImage": "/images/pc/PC1.svg",
+        "hoverImage": "/images/pc/PC1-inside.svg",
+        "specs": {
+          "cpu": "Intel Core i9-14900K",
+          "gpu": "NVIDIA RTX 4070",
+          "ram": "32GB DDR5 5600MHz",
+          "motherboard": "MSI PRO Z790-A MAX WIFI",
+          "storage": "4TB NVMe PCIe 4.0 990 PRO",
+          "case": "AN1-C8"
+        }
+      },
+      {
+        "id": 2,
+        "mainImage": "/images/pc/PC2.svg",
+        "hoverImage": "/images/pc/PC2-inside.svg",
+        "specs": {
+          "cpu": "AMD Ryzen 7 9800XD",
+          "gpu": "NVIDIA RTX 4080",
+          "ram": "64GB DDR5 6000MHz",
+          "motherboard": "MSI MEG X870 TOMAHAWK WIFI",
+          "storage": "4TB NVMe PCIe 5.0 SSD",
+          "case": "AN1-C8"
+        }
+      }
+    ]
+  }

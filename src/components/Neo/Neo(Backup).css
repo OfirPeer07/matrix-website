@@ -1,0 +1,12 @@
+/*Neo.css*/
+.main-page {
+  display: flex;
+  flex-direction: column;
+  margin: 0; /* Removed negative margin */
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.bottom-block {
+  color: transparent;
+}

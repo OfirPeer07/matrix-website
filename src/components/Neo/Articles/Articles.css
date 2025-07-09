@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+.memory-scroll-container {
+  background-color: #000;
+  color: #00ff41;
+  padding: 60px 20px;
+  font-family: 'Share Tech Mono', monospace;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.memory-block {
+  background-color: #001100;
+  border: 1px solid #00ff41;
+  padding: 20px;
+  border-radius: 6px;
+  box-shadow: 0 0 10px #00ff4166;
+  overflow: auto;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.memory-title {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #00ff41;
+  padding-bottom: 5px;
+  text-transform: uppercase;
+  color: #00e676;
+  text-shadow: 0 0 5px #00ff41aa;
+}
+
+.memory-content {
+  white-space: pre-wrap;
+  font-size: 1rem;
+  line-height: 1.6;
+  animation: glow 1s infinite alternate;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 5px #00ff41; }
+  to { text-shadow: 0 0 20px #00ff41; }
+}
+
+.bottom-block {
+  color: transparent;
+}

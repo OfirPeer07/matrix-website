@@ -1,0 +1,8 @@
+.red-or-blue-pill-container {
+  composes: neon-container;
+  margin-left: 10%;
+}
+
+.red-or-blue-pill-container .text-box:hover {
+  transform: scale(1.04);
+}

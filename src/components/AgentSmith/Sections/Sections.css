@@ -1,0 +1,288 @@
+/* ========================
+   VARIABLES
+======================== */
+:root {
+  --neon-green: #00ff00;
+  --dark-bg: #000;
+  --box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+  --border-glow: 2px solid rgba(0, 255, 0, 0.7);
+  --text-font: 'Courier New', monospace;
+}
+
+/* ========================
+   GENERAL CONTAINERS
+======================== */
+.neon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  margin-bottom: 2.5rem;
+  background-color: var(--dark-bg);
+  color: var(--neon-green);
+}
+
+.experience,
+.whatCanBeDone {
+  composes: neon-container;
+}
+
+.experience {
+  margin-left: 1%;
+}
+
+/* אם יש צורך באפקט ייחודי עבור קלאס נוסף */
+.whatCanBeDone {
+  margin-left: 10%;
+}
+
+/* ========================
+   TEXT BOX
+======================== */
+.text-box {
+  flex: 1;
+  max-width: 100%;
+  padding: 25px;
+  background-color: rgb(10, 10, 10);
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgb(0, 255, 26);
+  border: var(--border-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  object-fit: cover;
+}
+
+.photoCarousel-box {
+  flex: 1;
+  max-width: 100%;
+  margin-top: 0;
+  background-color: rgb(10, 10, 10);
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgb(0, 255, 26);
+  border: var(--border-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  object-fit: cover;
+}
+
+.redORbluePhil:hover .text-box,
+.experience:hover .text-box {
+  transform: scale(1.02);
+}
+
+.text-box.active {
+  transform: scale(1.04);
+}
+
+.text-box::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  --wave-scale: 1.31;
+  width: min(250%, calc(115vw / var(--wave-scale)));
+  height: min(250%, calc(115vh / var(--wave-scale)));
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(0, 255, 0, 0.5) 0%,
+    rgba(0, 255, 0, 0.3) 40%,
+    transparent 85%
+  );
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  z-index: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.text-box.active::before {
+  opacity: 1;
+  animation: circularGlow 15s infinite linear;
+}
+
+.text-box:focus {
+  outline: 2px solid var(--neon-green);
+}
+
+/* ========================
+   CIRCULAR GLOW ANIMATION
+======================== */
+@keyframes circularGlow {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg) scale(var(--scale, 1.2));
+    background: radial-gradient(circle,
+      rgba(0, 255, 0, 0.6) 0%,
+      rgba(0, 255, 0, 0.4) 45%,
+      transparent 85%
+    );
+  }
+  50% {
+    background: radial-gradient(circle,
+      rgba(0, 255, 0, 0.7) 0%,
+      rgba(0, 255, 0, 0.5) 50%,
+      transparent 85%
+    );
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg) scale(var(--scale, 1.2));
+    background: radial-gradient(circle,
+      rgba(0, 255, 0, 0.6) 0%,
+      rgba(0, 255, 0, 0.4) 45%,
+      transparent 85%
+    );
+  }
+}
+
+/* ========================
+   INNER BOX
+======================== */
+.inner-box {
+  background-color: var(--dark-bg);
+  border-radius: 5px;
+  padding: 20px;
+  border: 2px solid rgba(0, 255, 0, 0.5);
+  box-shadow: var(--box-shadow);
+  animation: fadeIn 1s ease-in-out forwards;
+  max-width: 800px;
+  text-align: right;
+  direction: rtl;
+  position: relative;
+  z-index: 2;
+}
+
+.innerPhotoCarousel-box {
+  background: rgba(0, 0, 0, 0.7);
+  color: #0f0;
+  margin-bottom: 100px;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 0 15px #0f0;
+  text-align: right;
+  direction: rtl;
+  max-width: 600px;
+  width: 100%;
+}
+
+.inner-box h2 {
+  color: var(--neon-green);
+  font-size: 2.5vw;
+  margin-bottom: -55px;
+  margin-top: -20px;
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+  font-family: var(--text-font);
+  padding: 40px;
+}
+
+.inner-box p {
+  font-size: 1.3vw;
+  line-height: 1.5;
+  color: #ffffff;
+  font-family: var(--text-font);
+  padding: 5px;
+}
+
+/* ========================
+   FADE IN ANIMATION
+======================== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ========================
+   TEXT-IMAGE LAYOUT
+======================== */
+.main-page {
+  display: flex;
+  flex-direction: column;
+  margin-right: -1.5rem;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.section {
+  margin-right: 5rem;
+}
+
+.text-image-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 105px;
+  margin-top: 2rem;
+  flex-wrap: nowrap;
+}
+
+.text-content,
+.image-content {
+  flex: 1 1 50%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+  min-height: 400px;
+  box-sizing: border-box;
+}
+
+/* ========================
+   SCROLLBAR STYLING
+======================== */
+.content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.content::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 255, 0, 0.7);
+  border-radius: 10px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.content {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 255, 0, 0.7) rgba(0, 0, 0, 0.1);
+}
+
+/* ========================
+   MEDIA QUERIES
+======================== */
+@media screen and (min-aspect-ratio: 21/9) {
+  .text-box::before {
+    width: min(250%, 115vw);
+    height: min(250%, 115vh);
+  }
+
+  .experience-image, .whatCanBeDone-image {
+    width: 32%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .text-image-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .text-content,
+  .image-content {
+    padding: 1rem;
+    min-height: auto;
+  }
+
+  .experience-image,
+  .whatCanBeDone-image,
+  .side-image {
+    max-width: 100%;
+    border-radius: 5px;
+  }
+}
