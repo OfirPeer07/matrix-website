@@ -20,57 +20,64 @@ export default function AboutMeEditor({ value = [], onChange }) {
   return (
     <section className="editor-section">
       <h2>About Me</h2>
+
       {value.map((text, index) => (
         <div key={index} style={{ marginBottom: 16 }}>
           <textarea
-            dir="rtl"
+            name={`about-me-${index}`}
+            autoComplete="off"
             style={{
               width: '100%',
-              minHeight: 80,
-              padding: 10,
-              borderRadius: 4,
+              minHeight: 100,
+              padding: 12,
+              borderRadius: 6,
               border: '1px solid #ccc',
               fontSize: 16,
               fontFamily: 'Arial, sans-serif',
               resize: 'vertical',
               backgroundColor: '#fff',
               whiteSpace: 'pre-wrap',
+              lineHeight: 1.5,
             }}
+            placeholder="Write something about yourself..."
             value={text}
             onChange={e => updateParagraph(index, e.target.value)}
           />
           <button
+            type="button"
             onClick={() => removeParagraph(index)}
             style={{
-              marginTop: 6,
-              background: '#dc3545',
+              marginTop: 8,
+              backgroundColor: '#dc3545',
               color: '#fff',
               border: 'none',
-              padding: '5px 10px',
+              padding: '6px 12px',
               borderRadius: 4,
               cursor: 'pointer',
             }}
-            aria-label={`מחק פסקה מספר ${index + 1}`}
+            aria-label={`Delete paragraph ${index + 1}`}
           >
-            מחק פסקה
+            Delete Paragraph
           </button>
         </div>
       ))}
 
       <button
+        type="button"
         onClick={addParagraph}
         style={{
-          marginTop: 10,
-          background: '#0d6efd',
+          marginTop: 12,
+          backgroundColor: '#0d6efd',
           color: '#fff',
           border: 'none',
-          padding: '8px 12px',
+          padding: '10px 14px',
           borderRadius: 4,
           cursor: 'pointer',
+          fontWeight: 'bold',
         }}
-        aria-label="הוסף פסקה חדשה"
+        aria-label="Add new paragraph"
       >
-        הוסף פסקה
+        ➕ Add Paragraph
       </button>
     </section>
   );

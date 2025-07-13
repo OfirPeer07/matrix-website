@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 
 export default function LanguagesEditor({ languages, setLanguages }) {
@@ -26,6 +27,8 @@ export default function LanguagesEditor({ languages, setLanguages }) {
       <div className="skill-input">
         <input
           type="text"
+          name="language"
+          autoComplete="off"
           placeholder="Language name"
           value={languageName}
           onChange={e => setLanguageName(e.target.value)}

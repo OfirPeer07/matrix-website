@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 
 export default function SkillsEditor({ skills, setSkills }) {
@@ -7,7 +8,6 @@ export default function SkillsEditor({ skills, setSkills }) {
   function addSkill() {
     if (!skillName.trim()) return;
     const updatedSkills = [...skills, { name: skillName.trim(), level: skillLevel }];
-    // ממיינים מהגבוה לנמוך
     updatedSkills.sort((a, b) => b.level - a.level);
     setSkills(updatedSkills);
     setSkillName('');
@@ -27,6 +27,8 @@ export default function SkillsEditor({ skills, setSkills }) {
       <div className="skill-input">
         <input
           type="text"
+          name="skill"
+          autoComplete="off"
           placeholder="Skill name"
           value={skillName}
           onChange={e => setSkillName(e.target.value)}
@@ -50,7 +52,7 @@ export default function SkillsEditor({ skills, setSkills }) {
 
       <ul className="skill-list">
         {skills
-          .slice() // לוודא שלא משנים את המערך המקורי בטעות
+          .slice()
           .sort((a, b) => b.level - a.level)
           .map((skill, i) => (
             <li key={i}>

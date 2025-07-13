@@ -23,7 +23,7 @@ const Neo = () => {
 
   const [activeSection, setActiveSection] = useState('Escape');
   const [selectedPill, setSelectedPill] = useState(null);
-  const [videoOpen, setVideoOpen] = useState(false); // מצב מודאל וידאו
+  const [videoOpen, setVideoOpen] = useState(false);
 
   const scrollToSection = (ref, section) => {
     if (ref?.current) {
@@ -67,83 +67,81 @@ const Neo = () => {
   }, [activeSection]);
 
   return (
-    <div className="main-page">
-      <IndicatorDots
-        activeSection={activeSection}
-        scrollToSection={scrollToSection}
-        RedOrBluePill={redOrBluePillRef}
-        Escape={escapeRef}
-        ChooseYourPill={chooseYourPillRef}
-      />
+    <div className="neo-wrapper">
+      {/* Foreground content */}
+      <div className="main-page">
+        <IndicatorDots
+          activeSection={activeSection}
+          scrollToSection={scrollToSection}
+          RedOrBluePill={redOrBluePillRef}
+          Escape={escapeRef}
+          ChooseYourPill={chooseYourPillRef}
+        />
 
-      {/* קטע Escape */}
-      <div ref={escapeRef} className="section">
-        <div className="text-image-container">
-          <div className="image-content">
-
-            {/* כפתור ESC */}
-            {!videoOpen && (
-              <button
-                className="esc-button"
-                onClick={() => setVideoOpen(true)}
-                aria-label="Open Neo video"
-              >
-                ESC
-              </button>
-            )}
-
-            {/* מודאל וידאו */}
-            {videoOpen && (
-              <div className="video-modal">
-                <video
-                  src={neoVideo}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="neo-video-fullscreen"
-                  onClick={() => setVideoOpen(false)}
-                />
+        {/* Escape Section */}
+        <div ref={escapeRef} className="section">
+          <div className="text-image-container">
+            <div className="image-content">
+              {!videoOpen && (
                 <button
-                  className="close-video-btn"
-                  onClick={() => setVideoOpen(false)}
-                  aria-label="Close video"
+                  className="esc-button"
+                  onClick={() => setVideoOpen(true)}
+                  aria-label="Open Neo video"
                 >
-                  ✕
+                  ESC
                 </button>
-                <BottomBlock />
-              </div>
-            )}
-
-          </div>
-          <div className="text-content">
-            <Escape />
-          </div>
-        </div>
-      </div>
-
-      {/* קטע RedOrBluePill */}
-      <div ref={redOrBluePillRef} className="section">
-        <div className="text-image-container">
-          <div className="image-content">
-            <div className="text-box">
-              <div className="inner-box">
-                <ChooseYourPill onSelect={setSelectedPill} />
-              </div>
+              )}
+              {videoOpen && (
+                <div className="video-modal">
+                  <video
+                    src={neoVideo}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="neo-video-fullscreen"
+                    onClick={() => setVideoOpen(false)}
+                  />
+                  <button
+                    className="close-video-btn"
+                    onClick={() => setVideoOpen(false)}
+                    aria-label="Close video"
+                  >
+                    ✕
+                  </button>
+                  <BottomBlock />
+                </div>
+              )}
+            </div>
+            <div className="text-content">
+              <Escape />
             </div>
           </div>
-          <div className="text-content">
-            <RedOrBluePill />
+        </div>
+
+        {/* RedOrBluePill Section */}
+        <div ref={redOrBluePillRef} className="section">
+          <div className="text-image-container">
+            <div className="image-content">
+              <div className="text-box">
+                <div className="inner-box">
+                  <ChooseYourPill onSelect={setSelectedPill} />
+                </div>
+              </div>
+            </div>
+            <div className="text-content">
+              <RedOrBluePill />
+            </div>
+          </div>
+
+          <div className="pill-message-wrapper">
+            <PillMessage selected={selectedPill} />
           </div>
         </div>
 
-        <div className="pill-message-wrapper">
-          <PillMessage selected={selectedPill} />
-        </div>
+        <div ref={chooseYourPillRef}></div>
+        <BottomBlock />
       </div>
-
-      <div ref={chooseYourPillRef}></div>
-      <BottomBlock />
     </div>
   );
 };

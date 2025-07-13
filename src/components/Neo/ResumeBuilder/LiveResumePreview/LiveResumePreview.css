@@ -1,20 +1,13 @@
-/* ===========================
-   תצוגת קורות חיים - שני צדדים
-=========================== */
 .live-resume.two-columns {
   display: flex;
   width: 1150px;
   max-width: 1340px;
-  min-height: auto;
   box-sizing: border-box;
   color: #222;
   font-family: 'Segoe UI', sans-serif;
   border: 2px solid #000;
   background: #fff;
-  overflow: visible;
   margin: 0 auto;
-  position: static;
-  transform: none;
 }
 
 .resume-right {
@@ -22,7 +15,15 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  background-color: #e8ebee;
+  padding: 15px;
+  box-sizing: border-box;
+}
+
+.resume-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   padding: 15px;
   box-sizing: border-box;
 }
@@ -33,19 +34,6 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
-.resume-left {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  background-color: #f0f4f8;
-  padding: 15px;
-  box-sizing: border-box;
-}
-
-/* ===========================
-   פרטי פרופיל וחלק ימני
-=========================== */
 .profile-header {
   display: flex;
   flex-direction: column;
@@ -56,8 +44,8 @@
 
 .name-photo-stacked {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   gap: 20px;
 }
 
@@ -70,7 +58,6 @@
 .first-name, .last-name {
   font-size: 2.2rem;
   font-weight: 800;
-  color: #1a1a1a;
   margin: 0;
 }
 
@@ -82,9 +69,8 @@
   border: 2px solid #647282;
 }
 
-.role-position {
-  text-align: center;
-  margin-top: 10px;
+.role-position h2 {
+  margin: 10px 0 0;
 }
 
 .contact-item {
@@ -92,31 +78,19 @@
   border: 2px solid #000;
   border-radius: 6px;
   padding: 8px 12px;
+  display: flex;
+  align-items: center;
   margin-bottom: 8px;
-  display: flex;
-  align-items: center;
 }
 
-.contact-links p {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  font-size: 1rem;
-  color: #333;
-  word-break: break-word;
-}
-
-.contact-links .icon {
+.icon {
   width: 20px;
   height: 20px;
+  margin-inline-end: 8px;
 }
 
-/* ===========================
-   חלק שמאלי - תוכן עיקרי
-=========================== */
-.skills p, .languages p {
-  margin: 4px 0;
+.entry-section {
+  margin-bottom: 20px;
 }
 
 .entry {
@@ -124,48 +98,31 @@
   padding: 10px 14px;
   border: 1px solid #ddd;
   border-radius: 6px;
-  break-inside: avoid;
   font-size: 0.95rem;
-}
-
-.about-me p {
-  margin-bottom: 10px;
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
-.resume-left h2, .resume-right h2 {
-  margin-top: -2.5px;
-  margin-bottom: 10px;
-  color: #000407;
-  text-decoration: underline;
-  font-size: 1.2rem;
 }
 
 .exp-title, .edu-title, .army-title {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  font-weight: bold;
 }
 
 .exp-dates, .edu-dates, .army-dates {
-  font-weight: bold;
-  color: #000;
+  font-weight: normal;
   font-size: 0.9rem;
+  color: #555;
 }
 
-/* ===========================
-   הדפסה
-=========================== */
+.resume-left h2, .resume-right h2 {
+  font-size: 1.2rem;
+  text-decoration: underline;
+  margin-bottom: 10px;
+}
+
 @media print {
   .live-resume.two-columns {
-    position: static;
-    transform: none;
-    top: auto;
-    left: auto;
-    width: 100%;
-    min-height: auto;
     border: none;
     box-shadow: none;
+    width: 100%;
   }
 }

@@ -39,6 +39,8 @@ export default function EducationEditor({ education, setEducation }) {
         <strong>Institution:</strong>
         <input
           type="text"
+          name="school"
+          autoComplete="organization"
           value={school}
           onChange={e => setSchool(e.target.value)}
           placeholder="Enter institution name"
@@ -49,6 +51,8 @@ export default function EducationEditor({ education, setEducation }) {
         <strong>City:</strong>
         <input
           type="text"
+          name="address-level2"
+          autoComplete="address-level2"
           value={city}
           onChange={e => setCity(e.target.value)}
           placeholder="Enter city"
@@ -59,6 +63,8 @@ export default function EducationEditor({ education, setEducation }) {
         <strong>Degree / Certification:</strong>
         <input
           type="text"
+          name="degree"
+          autoComplete="off"
           value={degree}
           onChange={e => setDegree(e.target.value)}
           placeholder="e.g., B.Sc. in Computer Science"
@@ -67,7 +73,7 @@ export default function EducationEditor({ education, setEducation }) {
 
       <label>
         <strong>From year:</strong>
-        <select value={start} onChange={e => setStart(e.target.value)}>
+        <select name="edu-start-year" value={start} onChange={e => setStart(e.target.value)}>
           {yearsFrom.map(year => (
             <option key={year} value={year}>
               {year}
@@ -78,7 +84,7 @@ export default function EducationEditor({ education, setEducation }) {
 
       <label>
         <strong>To year:</strong>
-        <select value={end} onChange={e => setEnd(e.target.value)}>
+        <select name="edu-end-year" value={end} onChange={e => setEnd(e.target.value)}>
           {yearsTo.map(year => (
             <option key={year} value={year}>
               {year}
@@ -90,6 +96,8 @@ export default function EducationEditor({ education, setEducation }) {
       <label>
         <strong>Description:</strong>
         <textarea
+          name="edu-description"
+          autoComplete="off"
           value={description}
           onChange={e => setDescription(e.target.value)}
           placeholder="Details about your education"

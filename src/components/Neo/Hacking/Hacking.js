@@ -80,7 +80,7 @@ function Hacking() {
       <div
         className="ofair"
         style={{ backgroundImage: `url(${ofairImage})` }}
-        onClick={() => handleNavigation('hacking/ofair')}
+        onClick={() => handleNavigation('hacking/ofair/build-your-resume')}
       />
 
       <HackingBar />

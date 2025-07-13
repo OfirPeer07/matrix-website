@@ -32,42 +32,50 @@ export default function ProjectsEditor({ projects, setProjects }) {
       <h2>GitHub Projects:</h2>
 
       <label>
-        <strong>Project Name:
+        <strong>Project Name:</strong>
         <input
           type="text"
+          name="project-name"
+          autoComplete="off"
           value={name}
           onChange={e => setName(e.target.value)}
           placeholder="e.g. Portfolio Website"
-        /></strong>
+        />
       </label>
 
       <label>
-        <strong>Mini Title (optional):
+        <strong>Mini Title (optional):</strong>
         <input
           type="text"
+          name="project-mini-title"
+          autoComplete="off"
           value={miniTitle}
           onChange={e => setMiniTitle(e.target.value)}
           placeholder="e.g. React + Firebase"
-        /></strong>
+        />
       </label>
 
       <label>
-        <strong>Description:
+        <strong>Description:</strong>
         <textarea
+          name="project-description"
+          autoComplete="off"
           value={description}
           onChange={e => setDescription(e.target.value)}
           placeholder="Brief summary or bullet points"
-        /></strong>
+        />
       </label>
 
       <label>
-        <strong>Project Link:
+        <strong>Project Link:</strong>
         <input
-          type="text"
+          type="url"
+          name="project-link"
+          autoComplete="url"
           value={link}
           onChange={e => setLink(e.target.value)}
           placeholder="e.g. https://github.com/yourusername/project"
-        /></strong>
+        />
       </label>
 
       <button type="button" onClick={addProject}>Add Project</button>

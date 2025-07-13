@@ -1,3 +1,4 @@
+
 export default function ContactLinks({ contactLinks, setContactLinks }) {
   return (
     <section className="editor-section">
@@ -5,7 +6,9 @@ export default function ContactLinks({ contactLinks, setContactLinks }) {
       <label>
         <strong>GitHub:
         <input
-          type="text"
+          type="url"
+          name="github"
+          autoComplete="url"
           value={contactLinks.github}
           onChange={e => setContactLinks(prev => ({ ...prev, github: e.target.value }))}
           placeholder="GitHub URL"
@@ -14,7 +17,9 @@ export default function ContactLinks({ contactLinks, setContactLinks }) {
       <label>
         <strong>LinkedIn:
         <input
-          type="text"
+          type="url"
+          name="linkedin"
+          autoComplete="url"
           value={contactLinks.linkedin}
           onChange={e => setContactLinks(prev => ({ ...prev, linkedin: e.target.value }))}
           placeholder="LinkedIn URL"
@@ -24,6 +29,8 @@ export default function ContactLinks({ contactLinks, setContactLinks }) {
         <strong>Email:
         <input
           type="email"
+          name="email"
+          autoComplete="email"
           value={contactLinks.email}
           onChange={e => setContactLinks(prev => ({ ...prev, email: e.target.value }))}
           placeholder="example@mail.com"
@@ -33,6 +40,8 @@ export default function ContactLinks({ contactLinks, setContactLinks }) {
         <strong>Phone:
         <input
           type="tel"
+          name="phone"
+          autoComplete="tel"
           value={contactLinks.phone}
           onChange={e => setContactLinks(prev => ({ ...prev, phone: e.target.value }))}
           placeholder="Phone number"

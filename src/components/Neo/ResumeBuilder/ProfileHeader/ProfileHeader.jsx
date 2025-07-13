@@ -1,3 +1,6 @@
+
+import React from 'react';
+
 export default function ProfileHeader({ profile, setProfile }) {
   function handleImageUpload(e) {
     const file = e.target.files[0];
@@ -17,6 +20,8 @@ export default function ProfileHeader({ profile, setProfile }) {
         <strong>First Name:</strong>
         <input
           type="text"
+          name="given-name"
+          autoComplete="given-name"
           value={profile.firstName || ''}
           onChange={e => setProfile(prev => ({ ...prev, firstName: e.target.value }))}
           placeholder="Enter your first name"
@@ -26,6 +31,8 @@ export default function ProfileHeader({ profile, setProfile }) {
         <strong>Last Name:</strong>
         <input
           type="text"
+          name="family-name"
+          autoComplete="family-name"
           value={profile.lastName || ''}
           onChange={e => setProfile(prev => ({ ...prev, lastName: e.target.value }))}
           placeholder="Enter your last name"
@@ -35,6 +42,8 @@ export default function ProfileHeader({ profile, setProfile }) {
         <strong>Role / Position:</strong>
         <input
           type="text"
+          name="job-title"
+          autoComplete="organization-title"
           value={profile.role || ''}
           onChange={e => setProfile(prev => ({ ...prev, role: e.target.value }))}
           placeholder="e.g. React Developer"

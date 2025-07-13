@@ -43,6 +43,8 @@ export default function ExperienceEditor({ experience, setExperience }) {
         <strong>Company:</strong>
         <input
           type="text"
+          name="organization"
+          autoComplete="organization"
           value={company}
           onChange={e => setCompany(e.target.value)}
           placeholder="Enter company name"
@@ -53,6 +55,8 @@ export default function ExperienceEditor({ experience, setExperience }) {
         <strong>Role:</strong>
         <input
           type="text"
+          name="job-title"
+          autoComplete="organization-title"
           value={role}
           onChange={e => setRole(e.target.value)}
           placeholder="Your role"
@@ -61,7 +65,7 @@ export default function ExperienceEditor({ experience, setExperience }) {
 
       <label>
         <strong>From year:</strong>
-        <select value={start} onChange={e => setStart(e.target.value)}>
+        <select name="start-year" value={start} onChange={e => setStart(e.target.value)}>
           {yearsFrom.map(year => (
             <option key={year} value={year}>
               {year}
@@ -72,7 +76,7 @@ export default function ExperienceEditor({ experience, setExperience }) {
 
       <label>
         <strong>To year:</strong>
-        <select value={end} onChange={e => setEnd(e.target.value)}>
+        <select name="end-year" value={end} onChange={e => setEnd(e.target.value)}>
           {yearsTo.map(year => (
             <option key={year} value={year}>
               {year}
@@ -84,6 +88,8 @@ export default function ExperienceEditor({ experience, setExperience }) {
       <label>
         <strong>Description:</strong>
         <textarea
+          name="experience-description"
+          autoComplete="off"
           value={description}
           onChange={e => setDescription(e.target.value)}
           placeholder="Describe your experience..."
