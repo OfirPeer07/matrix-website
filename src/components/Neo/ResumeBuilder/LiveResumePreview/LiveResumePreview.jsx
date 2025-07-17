@@ -166,7 +166,7 @@ const LiveResumePreview = forwardRef(({
                   <span className="edu-dates">{edu.start} - {edu.end}</span>
                 </div>
                 {edu.degree && <div>{edu.degree}</div>}
-                {edu.details && <div dangerouslySetInnerHTML={{ __html: renderSafeHTML(edu.details) }} />}
+                {edu.description && <div dangerouslySetInnerHTML={{ __html: renderSafeHTML(edu.description) }} />}
               </div>
             ))}
           </>
