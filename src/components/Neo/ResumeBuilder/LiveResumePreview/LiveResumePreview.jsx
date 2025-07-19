@@ -19,7 +19,7 @@ const LiveResumePreview = forwardRef(({
   rightColor = '#e8ebee',
   isPDF = false
 }, ref) => {
-
+  // פונקציות עזר
   const formatText = (text) =>
     text ? text.replace(/\n/g, '<br />') : '';
 
@@ -40,11 +40,19 @@ const LiveResumePreview = forwardRef(({
     });
   };
 
-  const renderList = (items, renderFn) => items.length > 0 && (
-    <section className="entry-section">
-      {renderFn(items)}
-    </section>
-  );
+  const renderList = (items, renderFn) =>
+    items?.length > 0 && (
+      <section className="entry-section">
+        {renderFn(items)}
+      </section>
+    );
+
+  const isProfileFilled = profile?.firstName || profile?.lastName || profile?.role || (profile?.roles?.length > 0);
+  const isContactFilled = Object.values(contactLinks).some(val => val);
+  const isArmyFilled = army?.role || army?.city || army?.start || army?.end || army?.description;
+  const shouldRenderPreview = isProfileFilled || isContactFilled || aboutMe.length || skills.length || languages.length || experience.length || projects.length || education.length || isArmyFilled;
+
+  if (!shouldRenderPreview) return null;
 
   return (
     <div
@@ -172,7 +180,7 @@ const LiveResumePreview = forwardRef(({
           </>
         ))}
 
-        {(army.role || army.city || army.start || army.end || army.description) && (
+        {isArmyFilled && (
           <section className="entry-section">
             <h2>Military Service</h2>
             <div className="entry">

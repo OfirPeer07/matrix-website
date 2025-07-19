@@ -16,6 +16,7 @@ import OFAiR from "../OFAiR/OFAiR";
 
 export default function ResumeBuilder() {
   const printRef = useRef();
+  const didInit = useRef(false);
   const [isReady, setIsReady] = useState(false);
   const [saveFeedback, setSaveFeedback] = useState(false);
 
@@ -31,8 +32,9 @@ export default function ResumeBuilder() {
   const [leftColor, setLeftColor] = useState("#f0f4f8");
   const [rightColor, setRightColor] = useState("#e8ebee");
 
-  // Load from localStorage
+  // Load from localStorage once
   useEffect(() => {
+    if (didInit.current) return;
     const savedData = localStorage.getItem("resumeData");
     if (savedData) {
       try {
@@ -50,10 +52,11 @@ export default function ResumeBuilder() {
         console.error("Error loading resumeData:", e);
       }
     }
+    didInit.current = true;
     setIsReady(true);
   }, []);
 
-  // Auto-save with feedback
+  // Auto-save on change
   useEffect(() => {
     if (!isReady) return;
     const data = {
@@ -73,7 +76,7 @@ export default function ResumeBuilder() {
     return () => clearTimeout(timer);
   }, [isReady, profile, contactLinks, skills, languages, aboutMe, experience, projects, education, army]);
 
-  // Warn before unload
+  // Warn before leaving if unsaved
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       const current = JSON.stringify({ profile, contactLinks, skills, languages, aboutMe, experience, projects, education, army });
@@ -88,7 +91,7 @@ export default function ResumeBuilder() {
   }, [profile, contactLinks, skills, languages, aboutMe, experience, projects, education, army]);
 
   const handleSave = () => {
-    if (document.activeElement && typeof document.activeElement.blur === "function") {
+    if (document.activeElement?.blur) {
       document.activeElement.blur();
     }
     setTimeout(() => {
@@ -162,10 +165,28 @@ export default function ResumeBuilder() {
     }
   };
 
+  const hasResumeContent = () => {
+    const isNonEmptyArray = (arr) => Array.isArray(arr) && arr.length > 0;
+    const isNonEmptyObj = (obj) => Object.values(obj).some(val => val && val !== "");
+    const isNonEmptyProfile = profile.firstName || profile.lastName || profile.role || (profile.roles?.length > 0);
+
+    return (
+      isNonEmptyProfile ||
+      isNonEmptyObj(contactLinks) ||
+      isNonEmptyArray(skills) ||
+      isNonEmptyArray(languages) ||
+      isNonEmptyArray(aboutMe) ||
+      isNonEmptyArray(experience) ||
+      isNonEmptyArray(projects) ||
+      isNonEmptyArray(education) ||
+      isNonEmptyObj(army)
+    );
+  };
+
   return (
-    <div className="resume-builder">
-      <div className="header-with-ofair">
-        <h1>Resume Builder</h1>
+    <div className="resume-title-wrapper">
+      <div>
+        <h1 className="resume-title">Build Your Resume</h1>
         <OFAiR onAction={handleOfairAction} />
       </div>
 
@@ -193,27 +214,29 @@ export default function ResumeBuilder() {
       </div>
 
       {saveFeedback && (
-        <div className="save-feedback">
-          ✅ Saved!
-        </div>
+        <div className="save-feedback">✅ Saved!</div>
       )}
 
-      <div className="resume-preview">
-        <LiveResumePreview
-          ref={printRef}
-          profile={profile}
-          contactLinks={contactLinks}
-          aboutMe={aboutMe}
-          skills={skills}
-          languages={languages}
-          experience={experience}
-          projects={projects}
-          education={education}
-          army={army}
-          leftColor={leftColor}
-          rightColor={rightColor}
-        />
-      </div>
+      {hasResumeContent() && (
+        <div className="resume-preview" style={{ display: 'flex', justifyContent: 'center' }}>
+          <div className="a4-page">
+            <LiveResumePreview
+              ref={printRef}
+              profile={profile}
+              contactLinks={contactLinks}
+              aboutMe={aboutMe}
+              skills={skills}
+              languages={languages}
+              experience={experience}
+              projects={projects}
+              education={education}
+              army={army}
+              leftColor={leftColor}
+              rightColor={rightColor}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,35 +1,37 @@
 .ofair-wrapper {
   background-color: #000;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  height: 50vh;
-  padding: 40px;
+  justify-content: flex-end; /* או center */
+  align-items: flex-start;
+  padding: 0;
+  margin: 0;
+  height: auto;
+  min-height: auto;
 }
 
 .computer-container {
   position: relative;
-  top: -5rem;
-  right: 35rem;
   width: 960px;
   max-width: 100%;
+  transform: scale(0.75);
+  transform-origin: bottom left;
+  margin-top: -60px; /* טריק חכם שמצמיד את הדמות למעלה */
 }
 
 /* מיקום מותאם לתוך המסך בתמונה החדשה */
 .terminal-overlay {
   position: absolute;
-  top: 18.2%;
-  left: 18.7%;
-  width: 28%;
+  top: 19%;
+  left: 31.5%;
+  width: 40.5%;
   height: 35%;
-  transform: perspective(800px) rotateX(0.7deg) rotateY(15deg) skewX(0.3deg) skewY(1.8deg);
-  transform-origin: top left;
+  transform: perspective(1100px) rotateX(0.5deg) rotateY(15deg) skewX(0.3deg) skewY(2.8deg);
+  transform-origin: top right;
 
   background: rgba(0, 0, 0, 0.94);
   border: 1px solid #2adef2;
-  border-radius: 10px;
-  padding: 10px;
+  border-radius: 45px;
+  padding: 7.5px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -40,22 +42,25 @@
 }
 
 .terminal-header {
+  height: 2vh;
   font-size: 1rem;
-  border-bottom: 1px dotted #2adef2;
+  border-style:solid;
+  border-radius: 100%;
   padding-bottom: 4px;
+  padding-left: 7rem;
   margin-bottom: 8px;
-  color: #66ffcc;
+  color: #2adef2;
   font-weight: bold;
-  letter-spacing: 1px;
+  letter-spacing: 2.5px;
 }
 
 .terminal-display {
   flex-grow: 1;
   overflow-y: auto;
   font-size: 0.80rem;
-  padding: 6px;
+  padding: 3px;
   color: #2adef2;
-  line-height: 1.3;
+  line-height: 1.1;
   text-shadow: 0 0 3px #2adef2;
 }
 
@@ -66,19 +71,20 @@
 
 .line.user {
   color: #2adef2;
-  font-weight: bold;
 }
 
 .line.ofair {
-  color: #aaffee;
+  color: #17ca07;
 }
 
 .terminal-input {
+  width: 21rem;
   background: #000;
-  border: 1px solid #2adef2;
-  border-radius: 6px;
+  border: 2px solid #2adef2;
+  border-radius: 18px;
   color: #2adef2;
-  padding: 6px 10px;
+  padding: 6px 5px;
+  padding-left: 2.5rem;
   font-size: 0.80rem;
   font-family: "Courier New", monospace;
   box-shadow: inset 0 0 6px #2adef2;
