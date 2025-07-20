@@ -11,7 +11,8 @@
 
 .computer-container {
   position: relative;
-  width: 960px;
+  left: 35rem;
+  width: 950px;
   max-width: 100%;
   transform: scale(0.75);
   transform-origin: bottom left;
@@ -21,11 +22,11 @@
 /* מיקום מותאם לתוך המסך בתמונה החדשה */
 .terminal-overlay {
   position: absolute;
-  top: 19%;
-  left: 31.5%;
-  width: 40.5%;
-  height: 35%;
-  transform: perspective(1100px) rotateX(0.5deg) rotateY(15deg) skewX(0.3deg) skewY(2.8deg);
+  top: 19.3%;
+  left: 32%;
+  width: 40.3%;
+  height: 34.2%;
+  transform: perspective(1010px) rotateX(0.3deg) rotateY(14deg) skewX(0.3deg) skewY(2.8deg);
   transform-origin: top right;
 
   background: rgba(0, 0, 0, 0.94);
@@ -44,7 +45,6 @@
 .terminal-header {
   height: 2vh;
   font-size: 1rem;
-  border-style:solid;
   border-radius: 100%;
   padding-bottom: 4px;
   padding-left: 7rem;
@@ -73,8 +73,23 @@
   color: #2adef2;
 }
 
+.line.user::before {
+  content: "•";
+  color: #2adef2;
+  animation: blinkDot 1.2s infinite;
+  margin-right: 4px;
+}
+
 .line.ofair {
   color: #17ca07;
+  position: relative;
+}
+
+.line.ofair::before {
+  content: "•";
+  color: #17ca07;
+  animation: blinkDot 1.2s infinite;
+  margin-right: 4px;
 }
 
 .terminal-input {

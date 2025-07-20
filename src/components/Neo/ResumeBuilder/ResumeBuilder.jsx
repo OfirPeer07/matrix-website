@@ -1,4 +1,6 @@
+// ResumeBuilder.jsx
 import React, { useState, useRef, useEffect } from "react";
+import ReactDOM from "react-dom/client";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import "./ResumeBuilder.css";
@@ -12,6 +14,8 @@ import ProjectsEditor from "./ProjectsEditor/ProjectsEditor";
 import EducationEditor from "./EducationEditor/EducationEditor";
 import ArmySection from "./ArmySection/ArmySection";
 import LiveResumePreview from "./LiveResumePreview/LiveResumePreview";
+import TerminalWindow from "./TerminalWindow/TerminalWindow";
+import terminalPopupCSS from "./TerminalWindow/TerminalPopupStyle";
 import OFAiR from "../OFAiR/OFAiR";
 
 export default function ResumeBuilder() {
@@ -29,10 +33,41 @@ export default function ResumeBuilder() {
   const [projects, setProjects] = useState([]);
   const [education, setEducation] = useState([]);
   const [army, setArmy] = useState({ role: "", city: "", start: "", end: "", description: "" });
-  const [leftColor, setLeftColor] = useState("#f0f4f8");
-  const [rightColor, setRightColor] = useState("#e8ebee");
 
-  // Load from localStorage once
+  const [terminalMessages, setTerminalMessages] = useState([{ sender: "ofair", text: "👾 Ready to assist." }]);
+
+  const openTerminalWindow = () => {
+    const popup = window.open("", "OFAiR Terminal", "width=800,height=600,left=100,top=100");
+    if (!popup) return;
+
+    popup.document.title = "OFAiR Terminal";
+
+    const style = popup.document.createElement("style");
+    style.textContent = terminalPopupCSS;
+    popup.document.head.appendChild(style);
+
+    const container = popup.document.createElement("div");
+    popup.document.body.appendChild(container);
+
+    const channel = new BroadcastChannel("ofair-terminal-sync");
+    setTimeout(() => {
+      channel.postMessage({ type: "init-history", messages: terminalMessages });
+    }, 300);
+
+    const root = ReactDOM.createRoot(container);
+    root.render(<TerminalWindow isPopup={true} />);
+  };
+
+  useEffect(() => {
+    const channel = new BroadcastChannel("ofair-terminal-sync");
+    channel.onmessage = (event) => {
+      if (event.data?.type === "new-message") {
+        setTerminalMessages((prev) => [...prev, event.data.message]);
+      }
+    };
+    return () => channel.close();
+  }, []);
+
   useEffect(() => {
     if (didInit.current) return;
     const savedData = localStorage.getItem("resumeData");
@@ -56,7 +91,6 @@ export default function ResumeBuilder() {
     setIsReady(true);
   }, []);
 
-  // Auto-save on change
   useEffect(() => {
     if (!isReady) return;
     const data = {
@@ -76,7 +110,6 @@ export default function ResumeBuilder() {
     return () => clearTimeout(timer);
   }, [isReady, profile, contactLinks, skills, languages, aboutMe, experience, projects, education, army]);
 
-  // Warn before leaving if unsaved
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       const current = JSON.stringify({ profile, contactLinks, skills, languages, aboutMe, experience, projects, education, army });
@@ -185,9 +218,26 @@ export default function ResumeBuilder() {
 
   return (
     <div className="resume-title-wrapper">
-      <div>
-        <h1 className="resume-title">Build Your Resume</h1>
-        <OFAiR onAction={handleOfairAction} />
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <h1 className="resume-title">
+            Build<br />
+            Your<br />
+            Resume
+          </h1>
+          <h1 className="resume-title-two">
+            Build<br />
+            Your<br />
+            Resume
+          </h1>
+          <OFAiR onAction={handleOfairAction} />
+        </div>
+
+        <div className="terminal-launch">
+          <button className="open-terminal-button" onClick={openTerminalWindow}>
+            Open Terminal
+          </button>
+        </div>
       </div>
 
       <div className="resume-form">
@@ -231,8 +281,6 @@ export default function ResumeBuilder() {
               projects={projects}
               education={education}
               army={army}
-              leftColor={leftColor}
-              rightColor={rightColor}
             />
           </div>
         </div>

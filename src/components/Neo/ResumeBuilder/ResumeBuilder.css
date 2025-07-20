@@ -11,7 +11,7 @@ html, body {
 /* עטיפה כללית */
 .resume-title-wrapper {
   position: relative;
-  top: -15rem;
+  top: -16.5rem;
   display: flex;
   flex-direction: column;
   max-width: 1500px;
@@ -23,13 +23,32 @@ html, body {
 
 .resume-title {
   position: absolute;
-  top: 55rem;
-  font-size: 3.2rem;
+  top: 16rem;
+  left: 4.5rem;
+  font-size: 8.5rem;
   color: #2adef2;
-  line-height: 1.2;
+  line-height: 1.7;
+  letter-spacing: 4.5px;
   margin-top: 0;
   z-index: 1;
   text-shadow: 0 0 10px #2adef2;
+  transform: perspective(1100px) rotateX(0.5deg) rotateY(15deg) skewX(0.3deg) skewY(2.8deg);
+  transform-origin: top right;
+}
+
+.resume-title-two {
+  position: absolute;
+  top: 15.80rem;
+  left: 4.60rem;
+  font-size: 8.53rem;
+  color: #2adef2;
+  line-height: 1.7;
+  letter-spacing: 4.5px;
+  margin-top: 0;
+  z-index: 1;
+  text-shadow: 0 0 10px #2adef2;
+  transform: perspective(1100px) rotateX(0.5deg) rotateY(15deg) skewX(0.3deg) skewY(2.8deg);
+  transform-origin: top right;
 }
 
 @media (max-width: 768px) {
@@ -281,3 +300,35 @@ button:hover {
 .live-resume a:hover {
   text-decoration: underline;
 }
+
+.terminal-launch {
+  position: absolute;
+  top: 22.1%;     /* תכוונן עד שייראה טוב */
+  left: 57%;    /* תכוונן עד שייראה טוב */
+  transform: perspective(950px) rotateX(13.5deg) rotateY(-10deg) skewX(5.5deg);
+  z-index: 10;}
+
+.open-terminal-button {
+  padding: 6px 18px;
+  background: #00ffff;
+  border: none;
+  color: #000;
+  font-weight: bold;
+  font-size: 17.5px;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 0 10px #00ffff80;
+  transition: all 0.3s ease-in-out;
+  white-space: nowrap; /* כדי לא לשבור שורה */
+  height: 18px;          /* גובה מותאם */
+  line-height: 1.2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.open-terminal-button:hover {
+  background: #00cccc;
+  box-shadow: 0 0 20px #00ffff;
+}
+

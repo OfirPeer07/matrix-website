@@ -1,16 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import "./OFAiR.css";
-import ofairImage from "./OFAiR.png";
 
-export default function OFAiR() {
+export default function TerminalWindow({ isPopup = false }) {
   const [messages, setMessages] = useState([{ sender: "ofair", text: "👾 Ready to assist." }]);
   const [input, setInput] = useState("");
   const terminalRef = useRef(null);
   const channel = useRef(null);
-
-  useEffect(() => {
-    terminalRef.current?.scrollTo(0, terminalRef.current.scrollHeight);
-  }, [messages]);
 
   useEffect(() => {
     channel.current = new BroadcastChannel("ofair-terminal-sync");
@@ -18,6 +12,10 @@ export default function OFAiR() {
     channel.current.onmessage = (event) => {
       if (event.data?.type === "new-message") {
         setMessages((prev) => [...prev, event.data.message]);
+      }
+
+      if (event.data?.type === "init-history") {
+        setMessages(event.data.messages);
       }
     };
 
@@ -42,28 +40,21 @@ export default function OFAiR() {
   };
 
   return (
-    <div className="ofair-wrapper">
-      <div className="computer-container">
-        <img src={ofairImage} alt="OFAiR Computer" className="computer-image" />
-
-        <div className="terminal-overlay">
-          <div className="terminal-header">OFAiR SYSTEM</div>
-          <div className="terminal-display" ref={terminalRef}>
-            {messages.map((msg, i) => (
-              <div key={i} className={`line ${msg.sender}`}>
-                {msg.text}
-              </div>
-            ))}
+    <div id="terminal-window">
+      <div id="terminal-display" ref={terminalRef}>
+        {messages.map((msg, i) => (
+          <div key={i} className={`line ${msg.sender}`}>
+            {msg.text}
           </div>
-          <input
-            className="terminal-input"
-            placeholder="> Run command..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-          />
-        </div>
+        ))}
       </div>
+      <input
+        id="terminal-input"
+        placeholder="> Run command..."
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={handleKeyDown}
+      />
     </div>
   );
 }
