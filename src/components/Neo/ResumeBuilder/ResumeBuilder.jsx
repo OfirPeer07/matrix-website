@@ -212,12 +212,21 @@ export default function ResumeBuilder() {
     }
   };
 
-  const isNonEmptyTextArray = (arr) => Array.isArray(arr) && arr.some(text => text.trim() !== "");
+  const isNonEmptyTextArray = (arr) =>
+    Array.isArray(arr) && arr.some((text) => text.trim().length > 1);
 
   const hasResumeContent = () => {
     const isNonEmptyArray = (arr) => Array.isArray(arr) && arr.length > 0;
-    const isNonEmptyObj = (obj) => Object.values(obj).some(val => val && val !== "");
-    const isNonEmptyProfile = profile.firstName || profile.lastName || profile.role || (profile.roles?.length > 0);
+    const isNonEmptyObj = (obj) =>
+      obj && typeof obj === "object" && Object.values(obj).some((val) => val && val !== "");
+    const isNonEmptyProfile =
+      profile.firstName || profile.lastName || profile.role || (profile.roles?.length > 0);
+
+    const isArmyFilled =
+      army &&
+      Object.values(army).some((val) =>
+        typeof val === "string" ? val.trim().length > 1 : false
+      );
 
     return (
       isNonEmptyProfile ||
@@ -228,9 +237,9 @@ export default function ResumeBuilder() {
       isNonEmptyArray(experience) ||
       isNonEmptyArray(projects) ||
       isNonEmptyArray(education) ||
-      isNonEmptyObj(army)
+      isArmyFilled
     );
-  };
+};
 
   return (
     <div className="resume-title-wrapper">
