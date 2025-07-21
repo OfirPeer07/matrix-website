@@ -59,8 +59,7 @@ function App() {
               <Route path="/neo/works-with" element={<NeoWorksWith />} />
               <Route path="/agent-smith/works-with" element={<AgentSmithWorksWith />} />
               <Route path="/neo/hacking" element={<Hacking />} />
-              <Route path="/neo/hacking/ofair" element={<OFAiR />} />
-              <Route path="/neo/hacking/ofair/build-your-resume" element={<ResumeBuilder />} />              
+              <Route path="/neo/hacking/build-your-resume" element={<ResumeBuilder />} />              
               <Route path="/neo/hacking/guides" element={<Guides />} />
               <Route path="/neo/hacking/articles" element={<Articles />} />
               <Route path="/neo/hacking/videos" element={<Videos />} />

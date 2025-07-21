@@ -26,7 +26,7 @@ const CacheClearOnRouteChange = () => {
 
   useEffect(() => {
     const exemptedPaths = [
-      "/neo/hacking/ofair/build-your-resume"     // your ResumeBuilder route
+      "/neo/hacking/ofair/build-your-resume"
     ];
 
     const isExempted = exemptedPaths.includes(location.pathname);

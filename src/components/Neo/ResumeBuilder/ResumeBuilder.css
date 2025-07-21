@@ -302,11 +302,12 @@ button:hover {
 }
 
 .terminal-launch {
-  position: absolute;
-  top: 22.1%;     /* תכוונן עד שייראה טוב */
-  left: 57%;    /* תכוונן עד שייראה טוב */
+  position: relative;
+  left: -30rem;
+  bottom: -11.5rem;
   transform: perspective(950px) rotateX(13.5deg) rotateY(-10deg) skewX(5.5deg);
-  z-index: 10;}
+  z-index: 9999; 
+}
 
 .open-terminal-button {
   padding: 6px 18px;

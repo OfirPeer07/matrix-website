@@ -212,6 +212,8 @@ export default function ResumeBuilder() {
     }
   };
 
+  const isNonEmptyTextArray = (arr) => Array.isArray(arr) && arr.some(text => text.trim() !== "");
+
   const hasResumeContent = () => {
     const isNonEmptyArray = (arr) => Array.isArray(arr) && arr.length > 0;
     const isNonEmptyObj = (obj) => Object.values(obj).some(val => val && val !== "");
@@ -222,7 +224,7 @@ export default function ResumeBuilder() {
       isNonEmptyObj(contactLinks) ||
       isNonEmptyArray(skills) ||
       isNonEmptyArray(languages) ||
-      isNonEmptyArray(aboutMe) ||
+      isNonEmptyTextArray(aboutMe) ||
       isNonEmptyArray(experience) ||
       isNonEmptyArray(projects) ||
       isNonEmptyArray(education) ||
