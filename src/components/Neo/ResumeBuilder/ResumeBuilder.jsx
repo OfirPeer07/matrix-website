@@ -70,7 +70,11 @@ export default function ResumeBuilder() {
 
   useEffect(() => {
     if (didInit.current) return;
-    const savedData = localStorage.getItem("resumeData");
+
+    const local = localStorage.getItem("resumeData");
+    const session = sessionStorage.getItem("resumeDataBackup");
+    const savedData = local || session;
+
     if (savedData) {
       try {
         const parsed = JSON.parse(savedData);
@@ -105,19 +109,27 @@ export default function ResumeBuilder() {
       army,
     };
     localStorage.setItem("resumeData", JSON.stringify(data));
+    sessionStorage.setItem("resumeDataBackup", JSON.stringify(data));
     setSaveFeedback(true);
     const timer = setTimeout(() => setSaveFeedback(false), 2000);
     return () => clearTimeout(timer);
   }, [isReady, profile, contactLinks, skills, languages, aboutMe, experience, projects, education, army]);
 
   useEffect(() => {
-    const handleBeforeUnload = (e) => {
-      const current = JSON.stringify({ profile, contactLinks, skills, languages, aboutMe, experience, projects, education, army });
-      const saved = localStorage.getItem("resumeData");
-      if (current !== saved) {
-        e.preventDefault();
-        e.returnValue = "";
-      }
+    const handleBeforeUnload = () => {
+      const data = {
+        profile,
+        contactLinks,
+        skills,
+        languages,
+        aboutMe,
+        experience,
+        projects,
+        education,
+        army,
+      };
+      localStorage.setItem("resumeData", JSON.stringify(data));
+      sessionStorage.setItem("resumeDataBackup", JSON.stringify(data));
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
@@ -140,6 +152,7 @@ export default function ResumeBuilder() {
         army,
       };
       localStorage.setItem("resumeData", JSON.stringify(data));
+      sessionStorage.setItem("resumeDataBackup", JSON.stringify(data));
       setSaveFeedback(true);
       setTimeout(() => setSaveFeedback(false), 2000);
     }, 50);
@@ -170,6 +183,7 @@ export default function ResumeBuilder() {
       setEducation([]);
       setArmy({ role: "", city: "", start: "", end: "", description: "" });
       localStorage.removeItem("resumeData");
+      sessionStorage.removeItem("resumeDataBackup");
     }
   };
 

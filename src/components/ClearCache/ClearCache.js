@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 const clearClientCache = () => {
   localStorage.clear();
@@ -17,14 +17,26 @@ const clearClientCache = () => {
     });
   }
 
-  console.log('Client cache cleared on route change');
+  console.log('🧹 Client cache cleared on route change');
 };
 
 const CacheClearOnRouteChange = () => {
   const location = useLocation();
+  const prevPath = useRef(location.pathname);
 
   useEffect(() => {
-    clearClientCache();
+    const exemptedPaths = [
+      "/neo/hacking/ofair/build-your-resume"     // your ResumeBuilder route
+    ];
+
+    const isExempted = exemptedPaths.includes(location.pathname);
+    const navigatedToDifferentPage = location.pathname !== prevPath.current;
+
+    if (!isExempted && navigatedToDifferentPage) {
+      clearClientCache();
+    }
+
+    prevPath.current = location.pathname;
   }, [location.pathname]);
 
   return null;
