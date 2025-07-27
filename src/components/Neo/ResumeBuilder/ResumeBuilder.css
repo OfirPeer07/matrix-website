@@ -26,8 +26,8 @@ html, body {
   position: absolute;
   top: 16rem;
   left: 4.5rem;
-  font-size: 8.5rem;
-  color: #2adef2;
+  font-size: 7.5rem;
+  color: #000;
   line-height: 1.7;
   letter-spacing: 4.5px;
   margin-top: 0;
@@ -39,9 +39,9 @@ html, body {
 
 .resume-title-two {
   position: absolute;
-  top: 15.80rem;
-  left: 4.60rem;
-  font-size: 8.53rem;
+  top: 15.5rem;
+  left: 4.90rem;
+  font-size: 7.5rem;
   color: #2adef2;
   line-height: 1.7;
   letter-spacing: 4.5px;

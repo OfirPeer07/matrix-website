@@ -52,8 +52,17 @@
     cursor: pointer;
     transition: transform 0.3s ease, opacity 0.3s ease;
     animation-delay: 5.55s;
+    animation: neonGlow 3.5s ease-in-out infinite;
   }
 
+  @keyframes neonGlow {
+    0%, 100% {
+      filter: drop-shadow(0 0 6px #2adef2);
+    }
+    50% {
+      filter: drop-shadow 0 0 24px #2adef2, 0 0 48px #2adef2;
+    }
+  }
 
   @keyframes clickEffect {
     0% {

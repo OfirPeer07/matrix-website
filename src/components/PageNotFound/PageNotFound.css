@@ -32,8 +32,6 @@ html, body {
   height: 65vmax;
   opacity: 1;
   z-index: 9999;
-
-  /* אפקט זוהר */
   animation: neonGlow 3.5s ease-in-out infinite;
 }
 
