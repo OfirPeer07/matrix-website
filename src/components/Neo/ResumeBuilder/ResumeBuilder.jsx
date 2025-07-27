@@ -251,9 +251,27 @@ export default function ResumeBuilder() {
             Resume
           </h1>
           <h1 className="resume-title-two">
-            Build<br />
-            Your<br />
-            Resume
+            <div className="word-line">
+              <span className="letter">B</span>
+              <span className="letter">u</span>
+              <span className="letter">i</span>
+              <span className="letter">l</span>
+              <span className="letter">d</span>
+            </div>
+            <div className="word-line">
+              <span className="letter">Y</span>
+              <span className="letter">o</span>
+              <span className="letter">u</span>
+              <span className="letter">r</span>
+            </div>
+            <div className="word-line">
+              <span className="letter">R</span>
+              <span className="letter">e</span>
+              <span className="letter">s</span>
+              <span className="letter">u</span>
+              <span className="letter">m</span>
+              <span className="letter">e</span>
+            </div>
           </h1>
           <OFAiR onAction={handleOfairAction} />
         </div>

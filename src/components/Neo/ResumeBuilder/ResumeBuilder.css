@@ -9,7 +9,6 @@ html, body {
   font-family: 'Segoe UI', sans-serif;
 }
 
-/* עטיפה כללית */
 .resume-title-wrapper {
   position: relative;
   top: -16.5rem;
@@ -27,6 +26,22 @@ html, body {
   top: 16rem;
   left: 4.5rem;
   font-size: 7.5rem;
+  color: #2adef2;
+  line-height: 1.7;
+  letter-spacing: 4.5px;
+  margin-top: 0;
+  z-index: 1;
+  text-shadow: 0 0 8px #2adef2;
+  transform: perspective(1100px) rotateX(0.5deg) rotateY(15deg) skewX(0.3deg) skewY(2.8deg);
+  transform-origin: top right;
+  cursor: pointer;  
+}
+
+.resume-title-two {
+  position: absolute;
+  top: 15.5rem;
+  left: 4.90rem;
+  font-size: 7.5rem;
   color: #000;
   line-height: 1.7;
   letter-spacing: 4.5px;
@@ -35,21 +50,73 @@ html, body {
   text-shadow: 0 0 10px #2adef2;
   transform: perspective(1100px) rotateX(0.5deg) rotateY(15deg) skewX(0.3deg) skewY(2.8deg);
   transform-origin: top right;
+  cursor: pointer;  
 }
 
-.resume-title-two {
-  position: absolute;
-  top: 15.5rem;
-  left: 4.90rem;
-  font-size: 7.5rem;
-  color: #2adef2;
-  line-height: 1.7;
-  letter-spacing: 4.5px;
-  margin-top: 0;
-  z-index: 1;
-  text-shadow: 0 0 10px #2adef2;
-  transform: perspective(1100px) rotateX(0.5deg) rotateY(15deg) skewX(0.3deg) skewY(2.8deg);
-  transform-origin: top right;
+.word-line {
+  gap: 0.4rem;
+}
+
+.resume-title-two:hover .letter {
+  animation: cyber-glitch 2s infinite;
+  transition: all 0.3s ease-in-out;
+}
+
+.resume-title-two .letter:nth-child(1) { animation-delay: 0s; }
+.resume-title-two .letter:nth-child(2) { animation-delay: 0.05s; }
+.resume-title-two .letter:nth-child(3) { animation-delay: 0.1s; }
+.resume-title-two .letter:nth-child(4) { animation-delay: 0.15s; }
+.resume-title-two .letter:nth-child(5) { animation-delay: 0.2s; }
+/* תוכל להמשיך עד ה־n בהתאם לאורך המילים */
+
+@keyframes cyber-glitch {
+  0% {
+    text-shadow: 
+      1px 1px #2adef2, 
+      -1px -1px #000, 
+      0 0 2px #2adef2;
+    transform: none;
+    opacity: 1;
+  }
+  20% {
+    text-shadow: 
+      -2px 0 #000, 
+      2px 2px #2adef2, 
+      0 0 5px #000;
+    transform: translateX(1px) skewX(5deg);
+    opacity: 0.9;
+  }
+  40% {
+    text-shadow: 
+      2px -2px #2adef2, 
+      -2px 2px #000, 
+      0 0 10px #2adef2;
+    transform: translateX(-2px) skewY(-3deg);
+    opacity: 0.8;
+  }
+  60% {
+    text-shadow: 
+      0 0 10px #2adef2, 
+      2px -2px #2adef2;
+    transform: translateX(1px);
+    opacity: 0.95;
+  }
+  80% {
+    text-shadow: 
+      -1px 2px #2adef2, 
+      1px -2px #000,
+      0 0 4px #2adef2;
+    transform: translateX(-1px) skewX(2deg);
+    opacity: 0.9;
+  }
+  100% {
+    text-shadow: 
+      1px 1px #000, 
+      -1px -1px #000, 
+      0 0 2px #000;
+    transform: none;
+    opacity: 1;
+  }
 }
 
 @media (max-width: 768px) {
