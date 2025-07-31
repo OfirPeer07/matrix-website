@@ -1,5 +1,5 @@
 // ResumeBuilder.jsx
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import ReactDOM from "react-dom/client";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
@@ -18,11 +18,20 @@ import TerminalWindow from "./TerminalWindow/TerminalWindow";
 import terminalPopupCSS from "./TerminalWindow/TerminalPopupStyle";
 import OFAiR from "../OFAiR/OFAiR";
 
+// Normalize message: ensure unique id and timestamp
+const makeMessage = (msg) => ({
+  id: msg.id || (crypto?.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`),
+  timestamp: msg.timestamp || Date.now(),
+  ...msg,
+});
+
 export default function ResumeBuilder() {
   const printRef = useRef();
   const didInit = useRef(false);
   const [isReady, setIsReady] = useState(false);
   const [saveFeedback, setSaveFeedback] = useState(false);
+  const saveFeedbackTimerRef = useRef(null);
+  const lastRepliedUserMessageIdRef = useRef(null);
 
   const [profile, setProfile] = useState({ firstName: "", lastName: "", role: "", photo: "", language: "en", roles: [] });
   const [contactLinks, setContactLinks] = useState({ github: "", linkedin: "", email: "", phone: "" });
@@ -34,14 +43,94 @@ export default function ResumeBuilder() {
   const [education, setEducation] = useState([]);
   const [army, setArmy] = useState({ role: "", city: "", start: "", end: "", description: "" });
 
-  const [terminalMessages, setTerminalMessages] = useState([{ sender: "ofair", text: "👾 Ready to assist." }]);
+  // Terminal messages source of truth
+  const [terminalMessages, setTerminalMessages] = useState([
+    makeMessage({ sender: "ofair", text: "👾 Ready to assist." })
+  ]);
+  const terminalMessagesRef = useRef(terminalMessages);
+  useEffect(() => {
+    terminalMessagesRef.current = terminalMessages;
+  }, [terminalMessages]);
 
-  const openTerminalWindow = () => {
+  const channelRef = useRef(null);
+  useEffect(() => {
+    const channel = new BroadcastChannel("ofair-terminal-sync");
+    channelRef.current = channel;
+
+    channel.onmessage = ({ data }) => {
+      if (data.type === "new-message" && data.message) {
+        setTerminalMessages(prev => {
+          if (prev.some(m => m.id === data.message.id)) return prev;
+          return [...prev, data.message];
+        });
+      } else if (data.type === "request-sync") {
+        channel.postMessage({ type: "sync-history", history: terminalMessagesRef.current });
+      } else if (data.type === "sync-history" && Array.isArray(data.history)) {
+        setTerminalMessages(prev => {
+          const existingIds = new Set(prev.map(m => m.id));
+          const merged = [...prev];
+          data.history.forEach(m => {
+            if (!existingIds.has(m.id)) merged.push(m);
+          });
+          return merged;
+        });
+      }
+    };
+
+    return () => channel.close();
+  }, []);
+
+  const safeSetItem = (storage, key, value) => {
+    try {
+      storage.setItem(key, value);
+    } catch (e) {
+      console.warn(`Failed to write ${key} to storage:`, e);
+    }
+  };
+
+  // send message (normalize + dedupe + broadcast)
+  const handleSend = useCallback((message) => {
+    const normalized = makeMessage(message);
+    setTerminalMessages(prev => {
+      if (prev.some(m => m.id === normalized.id)) return prev;
+      return [...prev, normalized];
+    });
+    if (channelRef.current) {
+      channelRef.current.postMessage({ type: "new-message", message: normalized });
+    }
+  }, []);
+
+  // single centralized fake reply per user message
+  useEffect(() => {
+    if (!terminalMessages.length) return;
+    const last = terminalMessages[terminalMessages.length - 1];
+    if (last.sender === "user" && last.id !== lastRepliedUserMessageIdRef.current) {
+      lastRepliedUserMessageIdRef.current = last.id;
+      const reply = makeMessage({
+        sender: "ofair",
+        text: "⚠️ Matrix connection failed.",
+      });
+
+      const timer = setTimeout(() => {
+        setTerminalMessages(prev => {
+          if (prev.some(m => m.id === reply.id)) return prev;
+          if (channelRef.current) {
+            channelRef.current.postMessage({ type: "new-message", message: reply });
+          }
+          return [...prev, reply];
+        });
+      }, 600);
+
+      return () => clearTimeout(timer);
+    }
+  }, [terminalMessages]);
+
+  // popup opener
+  const openTerminalWindow = useCallback(() => {
     const popup = window.open("", "OFAiR Terminal", "width=800,height=600,left=100,top=100");
     if (!popup) return;
 
     popup.document.title = "OFAiR Terminal";
-
     const style = popup.document.createElement("style");
     style.textContent = terminalPopupCSS;
     popup.document.head.appendChild(style);
@@ -49,32 +138,72 @@ export default function ResumeBuilder() {
     const container = popup.document.createElement("div");
     popup.document.body.appendChild(container);
 
-    const channel = new BroadcastChannel("ofair-terminal-sync");
-    setTimeout(() => {
-      channel.postMessage({ type: "init-history", messages: terminalMessages });
-    }, 300);
+    ReactDOM.createRoot(container).render(
+      <TerminalWindow
+        isPopup={true}
+        messages={terminalMessagesRef.current}
+        onSend={handleSend}
+      />
+    );
 
-    const root = ReactDOM.createRoot(container);
-    root.render(<TerminalWindow isPopup={true} />);
-  };
+    // fallback sync
+    setTimeout(() => {
+      if (channelRef.current) {
+        channelRef.current.postMessage({ type: "sync-history", history: terminalMessagesRef.current });
+      }
+    }, 100);
+  }, [handleSend]);
+
+  // persistence logic (debounced)
+  const latestDataRef = useRef(null);
+  useEffect(() => {
+    latestDataRef.current = { profile, contactLinks, skills, languages, aboutMe, experience, projects, education, army };
+  }, [profile, contactLinks, skills, languages, aboutMe, experience, projects, education, army]);
+
+  const saveTimerRef = useRef(null);
+  useEffect(() => {
+    if (!isReady) return;
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = setTimeout(() => {
+      const data = latestDataRef.current;
+      safeSetItem(localStorage, "resumeData", JSON.stringify(data));
+      safeSetItem(sessionStorage, "resumeDataBackup", JSON.stringify(data));
+      setSaveFeedback(true);
+      if (saveFeedbackTimerRef.current) clearTimeout(saveFeedbackTimerRef.current);
+      saveFeedbackTimerRef.current = setTimeout(() => {
+        setSaveFeedback(false);
+        saveFeedbackTimerRef.current = null;
+      }, 2000);
+    }, 500);
+    return () => {
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    };
+  }, [isReady, profile, contactLinks, skills, languages, aboutMe, experience, projects, education, army]);
 
   useEffect(() => {
-    const channel = new BroadcastChannel("ofair-terminal-sync");
-    channel.onmessage = (event) => {
-      if (event.data?.type === "new-message") {
-        setTerminalMessages((prev) => [...prev, event.data.message]);
+    const handleBeforeUnload = () => {
+      const data = latestDataRef.current;
+      try {
+        localStorage.setItem("resumeData", JSON.stringify(data));
+      } catch (e) {
+        console.warn("Failed to persist on unload to localStorage:", e);
+      }
+      try {
+        sessionStorage.setItem("resumeDataBackup", JSON.stringify(data));
+      } catch (e) {
+        console.warn("Failed to persist on unload to sessionStorage:", e);
       }
     };
-    return () => channel.close();
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, []);
 
+  // load saved once
   useEffect(() => {
     if (didInit.current) return;
-
     const local = localStorage.getItem("resumeData");
     const session = sessionStorage.getItem("resumeDataBackup");
     const savedData = local || session;
-
     if (savedData) {
       try {
         const parsed = JSON.parse(savedData);
@@ -95,70 +224,22 @@ export default function ResumeBuilder() {
     setIsReady(true);
   }, []);
 
-  useEffect(() => {
-    if (!isReady) return;
-    const data = {
-      profile,
-      contactLinks,
-      skills,
-      languages,
-      aboutMe,
-      experience,
-      projects,
-      education,
-      army,
-    };
-    localStorage.setItem("resumeData", JSON.stringify(data));
-    sessionStorage.setItem("resumeDataBackup", JSON.stringify(data));
-    setSaveFeedback(true);
-    const timer = setTimeout(() => setSaveFeedback(false), 2000);
-    return () => clearTimeout(timer);
-  }, [isReady, profile, contactLinks, skills, languages, aboutMe, experience, projects, education, army]);
-
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      const data = {
-        profile,
-        contactLinks,
-        skills,
-        languages,
-        aboutMe,
-        experience,
-        projects,
-        education,
-        army,
-      };
-      localStorage.setItem("resumeData", JSON.stringify(data));
-      sessionStorage.setItem("resumeDataBackup", JSON.stringify(data));
-    };
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  const handleSave = useCallback(() => {
+    if (document.activeElement?.blur) document.activeElement.blur();
+    setTimeout(() => {
+      const data = { profile, contactLinks, skills, languages, aboutMe, experience, projects, education, army };
+      safeSetItem(localStorage, "resumeData", JSON.stringify(data));
+      safeSetItem(sessionStorage, "resumeDataBackup", JSON.stringify(data));
+      setSaveFeedback(true);
+      if (saveFeedbackTimerRef.current) clearTimeout(saveFeedbackTimerRef.current);
+      saveFeedbackTimerRef.current = setTimeout(() => {
+        setSaveFeedback(false);
+        saveFeedbackTimerRef.current = null;
+      }, 2000);
+    }, 50);
   }, [profile, contactLinks, skills, languages, aboutMe, experience, projects, education, army]);
 
-  const handleSave = () => {
-    if (document.activeElement?.blur) {
-      document.activeElement.blur();
-    }
-    setTimeout(() => {
-      const data = {
-        profile,
-        contactLinks,
-        skills,
-        languages,
-        aboutMe,
-        experience,
-        projects,
-        education,
-        army,
-      };
-      localStorage.setItem("resumeData", JSON.stringify(data));
-      sessionStorage.setItem("resumeDataBackup", JSON.stringify(data));
-      setSaveFeedback(true);
-      setTimeout(() => setSaveFeedback(false), 2000);
-    }, 50);
-  };
-
-  const handleExportPDF = () => {
+  const handleExportPDF = useCallback(() => {
     const input = printRef.current;
     if (!input) return;
     html2canvas(input, { scale: 2, useCORS: true }).then((canvas) => {
@@ -169,9 +250,9 @@ export default function ResumeBuilder() {
       pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
       pdf.save("resume.pdf");
     });
-  };
+  }, []);
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     if (window.confirm("Are you sure you want to clear all resume data?")) {
       setProfile({ firstName: "", lastName: "", role: "", photo: "", language: "en", roles: [] });
       setContactLinks({ github: "", linkedin: "", email: "", phone: "" });
@@ -185,51 +266,46 @@ export default function ResumeBuilder() {
       localStorage.removeItem("resumeData");
       sessionStorage.removeItem("resumeDataBackup");
     }
-  };
+  }, []);
 
-  const handleOfairAction = (action, payload) => {
+  const handleOfairAction = useCallback((action, payload) => {
     switch (action) {
       case "add_skill":
-        setSkills((prev) => [...prev, payload]);
+        setSkills(prev => [...prev, payload]);
         break;
       case "add_language":
-        setLanguages((prev) => [...prev, payload]);
+        setLanguages(prev => [...prev, payload]);
         break;
       case "add_experience":
-        setExperience((prev) => [...prev, payload]);
+        setExperience(prev => [...prev, payload]);
         break;
       case "update_profile":
-        setProfile((prev) => ({ ...prev, ...payload }));
+        setProfile(prev => ({ ...prev, ...payload }));
         break;
       case "update_aboutMe":
-        setAboutMe((prev) => [...prev, payload]);
+        setAboutMe(prev => [...prev, payload]);
         break;
       case "update_army":
-        setArmy((prev) => ({ ...prev, ...payload }));
+        setArmy(prev => ({ ...prev, ...payload }));
         break;
       default:
         console.log("Unknown OFAiR action:", action);
     }
-  };
+  }, []);
 
-  const isNonEmptyTextArray = (arr) =>
-    Array.isArray(arr) && arr.some((text) => text.trim().length > 1);
-
-  const hasResumeContent = () => {
-    const isNonEmptyArray = (arr) => Array.isArray(arr) && arr.length > 0;
-    const isNonEmptyObj = (obj) =>
-      obj && typeof obj === "object" && Object.values(obj).some((val) => val && val !== "");
-    const isNonEmptyProfile =
-      profile.firstName || profile.lastName || profile.role || (profile.roles?.length > 0);
-
+  const hasResumeContent = useMemo(() => {
+    const isNonEmptyArray = arr => Array.isArray(arr) && arr.length > 0;
+    const isNonEmptyObj = obj =>
+      obj && typeof obj === "object" && Object.values(obj).some(val => val);
+    const isProfileFilled =
+      profile.firstName || profile.lastName || profile.role || (profile.roles && profile.roles.length > 0);
     const isArmyFilled =
-      army &&
-      Object.values(army).some((val) =>
-        typeof val === "string" ? val.trim().length > 1 : false
-      );
+      army && Object.values(army).some(val => (typeof val === "string" ? val.trim().length > 1 : false));
+    const isNonEmptyTextArray = arr =>
+      Array.isArray(arr) && arr.some(text => text.trim().length > 1);
 
     return (
-      isNonEmptyProfile ||
+      isProfileFilled ||
       isNonEmptyObj(contactLinks) ||
       isNonEmptyArray(skills) ||
       isNonEmptyArray(languages) ||
@@ -239,7 +315,7 @@ export default function ResumeBuilder() {
       isNonEmptyArray(education) ||
       isArmyFilled
     );
-};
+  }, [profile, contactLinks, skills, languages, aboutMe, experience, projects, education, army]);
 
   return (
     <div className="resume-title-wrapper">
@@ -252,30 +328,20 @@ export default function ResumeBuilder() {
           </h1>
           <h1 className="resume-title-two">
             <div className="word-line">
-              <span className="letter">B</span>
-              <span className="letter">u</span>
-              <span className="letter">i</span>
-              <span className="letter">l</span>
-              <span className="letter">d</span>
+              <span className="letter">B</span><span className="letter">u</span><span className="letter">i</span><span className="letter">l</span><span className="letter">d</span>
             </div>
             <div className="word-line">
-              <span className="letter">Y</span>
-              <span className="letter">o</span>
-              <span className="letter">u</span>
-              <span className="letter">r</span>
+              <span className="letter">Y</span><span className="letter">o</span><span className="letter">u</span><span className="letter">r</span>
             </div>
             <div className="word-line">
-              <span className="letter">R</span>
-              <span className="letter">e</span>
-              <span className="letter">s</span>
-              <span className="letter">u</span>
-              <span className="letter">m</span>
-              <span className="letter">e</span>
+              <span className="letter">R</span><span className="letter">e</span><span className="letter">s</span><span className="letter">u</span><span className="letter">m</span><span className="letter">e</span>
             </div>
           </h1>
-          <OFAiR onAction={handleOfairAction} />
+          <OFAiR
+            messages={terminalMessages}
+            onSend={handleSend}
+          />
         </div>
-
         <div className="terminal-launch">
           <button className="open-terminal-button" onClick={openTerminalWindow}>
             Open Terminal
@@ -291,7 +357,6 @@ export default function ResumeBuilder() {
           <SkillsEditor skills={skills} setSkills={setSkills} />
           <LanguagesEditor languages={languages} setLanguages={setLanguages} />
         </div>
-
         <div className="form-right">
           <AboutMeEditor value={aboutMe} onChange={setAboutMe} />
           <ExperienceEditor experience={experience} setExperience={setExperience} />
@@ -306,25 +371,24 @@ export default function ResumeBuilder() {
         <button className="clear-button" onClick={handleClear}>Clear</button>
       </div>
 
-      {saveFeedback && (
-        <div className="save-feedback">✅ Saved!</div>
-      )}
+      {saveFeedback && <div className="save-feedback">✅ Saved!</div>}
 
-      {hasResumeContent() && (
+      {hasResumeContent && (
         <div className="resume-preview" style={{ display: 'flex', justifyContent: 'center' }}>
           <div className="a4-page">
-            <LiveResumePreview
-              ref={printRef}
-              profile={profile}
-              contactLinks={contactLinks}
-              aboutMe={aboutMe}
-              skills={skills}
-              languages={languages}
-              experience={experience}
-              projects={projects}
-              education={education}
-              army={army}
-            />
+            <div ref={printRef}>
+              <LiveResumePreview
+                profile={profile}
+                contactLinks={contactLinks}
+                aboutMe={aboutMe}
+                skills={skills}
+                languages={languages}
+                experience={experience}
+                projects={projects}
+                education={education}
+                army={army}
+              />
+            </div>
           </div>
         </div>
       )}
