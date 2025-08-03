@@ -4,9 +4,9 @@ const cyberChatTerminalCSS = `
   --bg-dark: #0a0b1f;
   --overlay-gradient: radial-gradient(circle at 30% 30%, rgba(22,25,60,0.6), rgba(10,11,31,0.9) 80%);
   --neon-cyan: #00ffe0;
-  --neon-purple: #9d00ff;
-  --neon-magenta: #ff3cff;
-  --accent-user: #ff9efb;
+  --neon-purple: #2adef2;
+  --neon-magenta: #2adef2;
+  --accent-user: #2adef2;
   --text-primary: #d3dbff;
   --text-muted: rgba(211, 219, 255, 0.6);
   --radius: 14px;
@@ -51,9 +51,9 @@ body {
 /* בסיס הטרמינל (popup) */
 #terminal-window {
   position: relative;
-  width: 94vw;
-  max-width: 1100px;
-  height: 88vh;
+  width: 100vw;
+  max-width: 1300px;
+  height: 100vh;
   max-height: 820px;
   padding: 28px 32px;
   border-radius: var(--radius);

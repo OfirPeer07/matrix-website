@@ -379,7 +379,6 @@ button:hover {
 }
 
 .open-terminal-button {
-  padding: 6px 18px;
   background: #00ffff;
   border: none;
   color: #000;
@@ -389,7 +388,6 @@ button:hover {
   cursor: pointer;
   box-shadow: 0 0 10px #00ffff80;
   transition: all 0.3s ease-in-out;
-  white-space: nowrap; /* כדי לא לשבור שורה */
   height: 18px;          /* גובה מותאם */
   line-height: 1.2;
   display: inline-flex;

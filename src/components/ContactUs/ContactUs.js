@@ -3,13 +3,10 @@ import { Phone, Mail, MessageCircle, Send, Clock, BellRing, Linkedin } from 'luc
 import './ContactUs.css';
 
 const ContactUs = () => {
-  const phoneNumber = "+972508829793";
-  const email = "IEZ@cyberservices.com";
-  const whatsappNumber = "+972547758567";
-  const telegramUsername = "hoodexe";
-  const telegramChannel1 = "+4AEO8NTydHYxMDQ0";
-  const telegramChannel2 = "+K7S8HGNgPRQ3Nzg8";
-  const linkedinProfile = "idan-emanuel-zohar";
+  const phoneNumber = "+972504082153";
+  const email = "ofirpeer07@gmail.com";
+  const whatsappNumber = "+972504082153";
+  const linkedinProfile = "ofir-peer-658506210";
 
   const containerStyle = {
     maxWidth: '600px',
@@ -140,51 +137,6 @@ const ContactUs = () => {
           <span style={descriptionStyle}>שלח לי הודעת וואטסאפ לתמיכה מהירה</span>
         </a>
         <a 
-          href={`https://t.me/${telegramUsername}`} 
-          style={contactMethodStyle} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          aria-label="פנה אלינו בטלגרם"
-        >
-          <div style={contactMethodHeaderStyle}>
-            <Send size={24} style={iconStyle} aria-hidden="true" />
-            <span style={textStyle}>Telegram - צ'אט פרטי</span>
-          </div>
-          <span style={descriptionStyle}>צור איתי קשר פרטי דרך טלגרם לשאלות אישיות</span>
-        </a>
-        <a 
-          href={`https://t.me/${telegramChannel1}`} 
-          style={contactMethodStyle} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          aria-label="הצטרף לערוץ הטלגרם הראשי שלנו"
-        >
-          <div style={contactMethodHeaderStyle}>
-            <BellRing size={24} style={iconStyle} aria-hidden="true" />
-            <span style={textStyle}>Telegram - ערוץ ראשי</span>
-          </div>
-          <span style={descriptionStyle}>הצטרף לערוץ הראשי שלנו לקבלת עדכונים כלליים ומידע חשוב</span>
-        </a>
-        <a 
-          href={`https://t.me/${telegramChannel2}`} 
-          style={contactMethodStyle} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-          aria-label="הצטרף לערוץ הטלגרם המקצועי שלנו"
-        >
-          <div style={contactMethodHeaderStyle}>
-            <BellRing size={24} style={iconStyle} aria-hidden="true" />
-            <span style={textStyle}>Telegram - ערוץ הברדס הירוק</span>
-          </div>
-          <span style={descriptionStyle}>הצטרף לערוץ של הברדס הירוק על מנת להקבל עכונים בנושא</span>
-        </a>
-        <a 
           href={`https://www.linkedin.com/in/${linkedinProfile}`} 
           style={contactMethodStyle} 
           target="_blank" 
@@ -202,7 +154,7 @@ const ContactUs = () => {
       </div>
       <div style={workingHoursStyle}>
         <Clock size={18} style={{...iconStyle, marginRight: '0.5rem'}} aria-hidden="true" />
-        <span>שעות פעילות: ימים ב'-ה', 10:00-19:00</span>
+        <span>שעות פעילות: ימים א'-ה', 09:00-19:00</span>
       </div>
     </div>
   );

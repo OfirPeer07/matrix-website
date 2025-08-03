@@ -348,7 +348,6 @@ export default function ResumeBuilder() {
           </button>
         </div>
       </div>
-
       <div className="resume-form">
         <div className="form-left">
           <ProfileHeader profile={profile} setProfile={setProfile} />

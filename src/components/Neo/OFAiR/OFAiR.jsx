@@ -124,11 +124,12 @@ export default function OFAiR({ messages = [], onSend = () => {} }) {
             onCompositionStart={() => setIsComposing(true)}
             onCompositionEnd={() => setIsComposing(false)}
             style={{
-              width: "100%",
+              width: "85%",
               marginTop: 4,
+              marginLeft: "5%",
               background: "#0f101d",
               border: "1px solid #00ffe0",
-              padding: "8px 12px",
+              padding: "8px 8px",
               borderRadius: 6,
               color: "#fff",
               fontFamily: "monospace",

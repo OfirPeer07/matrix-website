@@ -38,7 +38,7 @@ const Thanks = () => {
       name: "אורי דביר",
       role: "מנטור",
       contribution: "אורי, החכמה, הניסיון והנדיבות שלך שינו את חיי המקצועיים. הסבלנות, האמונה והתמיכה הבלתי מתפשרת שלך הפכו רעיון לפרויקט אמיתי. ההכוונה הברורה והעצות החכמות שלך תמיד הגיעו ברגע הנכון ופתחו בפני דרכים חדשות. תודה על שהאמנת בי גם כשאני התקשיתי.",
-      type: "content",
+      type: "Content",
       socialLinks: {
         linkedin: "https://linkedin.com/in/ori-dvir-7aaa1a122"
       }
@@ -51,7 +51,7 @@ const Thanks = () => {
         return <Code size={16} />;
       case 'security':
         return <Bug size={16} />;
-      case 'content':
+      case 'Content':
         return <Award size={16} />;
       default:
         return <Heart size={16} />;
