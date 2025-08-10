@@ -4,22 +4,18 @@ import './App.css';
 
 // Import all Agent Smith components  
 import AgentSmith from '../AgentSmith/AgentSmith';
-import AgentSmithWorksWith from '../AgentSmith/AgentSmithWorksWith/AgentSmithWorksWith';
-import BuildingComputers from '../AgentSmith/BuildingComputers/BuildingComputers';
 import AgentSmithDepartment from '../AgentSmith/AgentSmithDepartment/AgentSmithDepartment';
 
 // Import all Neo components  
 import Neo from '../Neo/Neo';
 import OFAiR from '../Neo/OFAiR/OFAiR';
-import NeoWorksWith from '../Neo/NeoWorksWith/NeoWorksWith';
 import Articles from '../Neo/Articles/Articles';
 import Guides from '../Neo/Guides/Guides';
 import Videos from '../Neo/Videos/Videos';
 
 // Import all General components  
+import MatrixBar from '../Sidebar/MatrixBar';
 import PageNotFound from '../PageNotFound/PageNotFound';
-import NeoBar from '../Neo/Sidebars/NeoBar';
-import AgentSmithBar from '../AgentSmith/AgentSmithBar/AgentSmithBar';
 import ContactUs from '../ContactUs/ContactUs';
 import Thanks from '../Thanks/Thanks';
 import CacheClearOnRouteChange from '../ClearCache/ClearCache';
@@ -56,15 +52,12 @@ function App() {
               <Route path="/agent-smith" element={<AgentSmith />} />
               <Route path="/contact-us" element={<ContactUs />} />
               <Route path="/thanks" element={<Thanks />} />
-              <Route path="/neo/works-with" element={<NeoWorksWith />} />
-              <Route path="/agent-smith/works-with" element={<AgentSmithWorksWith />} />
               <Route path="/neo/hacking" element={<Hacking />} />
               <Route path="/neo/hacking/build-your-resume" element={<ResumeBuilder />} />              
               <Route path="/neo/hacking/guides" element={<Guides />} />
               <Route path="/neo/hacking/articles" element={<Articles />} />
               <Route path="/neo/hacking/videos" element={<Videos />} />
-              <Route path="/agent-smith//agent-smith-department/" element={<AgentSmithDepartment />} />
-              <Route path="/agent-smith/building-computers" element={<BuildingComputers />} />
+              <Route path="/agent-smith/agent-smith-department/" element={<AgentSmithDepartment />} />
               <Route path="*" element={<PageNotFound />} />
             </Routes>
           </Suspense>
@@ -77,18 +70,16 @@ function App() {
   );
 }
 
-// Component to conditionally render the sidebar
+// Component to conditionally render the MatrixBar with a specific mode
 function ConditionalSidebar() {
   const location = useLocation();
 
   if (location.pathname.startsWith('/neo')) {
-    return <NeoBar />;
+    return <MatrixBar mode="neo" showLogo={true} />;
   }
-
   if (location.pathname.startsWith('/agent-smith')) {
-    return <AgentSmithBar />;
+    return <MatrixBar mode="agent-smith" showLogo={true} />;
   }
-
   return null;
 }
 

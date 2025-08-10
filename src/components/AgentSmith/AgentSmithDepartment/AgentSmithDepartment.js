@@ -1,26 +1,55 @@
 import React from 'react';
-import './AgentSmithDepartment.css'; 
-import TechnologyNews from './TechnologyNews.jpg';  
-import TroubleshootingGuides from './TroubleshootingGuides.jpg';
-import BuildingComputers from './BuildingComputers.jpg';
+import { useNavigate } from 'react-router-dom';
+import './AgentSmithDepartment.css';
+
+import TechnologyNews from './TechnologyNews.png';
+import TroubleshootingGuides from './TroubleshootingGuides.png';
+import BuildingComputers from './BuildingComputers.png';
 
 const AgentSmithDepartment = () => {
+  const navigate = useNavigate();
 
-    const handleNavigation = (path) => {
-        window.location.href = path;
-      };
+  const items = [
+    {
+      src: TroubleshootingGuides,
+      alt: 'מדריכי פתרון תקלות',
+      path: '/agent-smith/troubleshooting-guides',
+      label: 'מדריכי פתרון תקלות',
+    },
+    {
+      src: TechnologyNews,
+      alt: 'חדשות טכנולוגיה',
+      path: '/agent-smith/technology-news',
+      label: 'חדשות טכנולוגיה',
+    },
+    {
+      src: BuildingComputers,
+      alt: 'בניית מחשבים',
+      path: '/agent-smith/building-computers',
+      label: 'בניית מחשבים',
+    },
+  ];
 
   return (
-    <div className="agent-smith-department-container">
-      <div className="agent-smith-department-rectangle img1">
-        <img src={TroubleshootingGuides} alt="Troubleshooting Guides" onClick={() => handleNavigation('/agent-smith/troubleshooting-guides')} />
-      </div>
-      <div className="agent-smith-tdepartment-rectangle img2">
-        <img src={TechnologyNews} alt="Technology News" onClick={() => handleNavigation('/agent-smith/technology-news')} />
-      </div>
-      <div className="agent-smith-department-rectangle img3">
-        <img src={BuildingComputers} alt="Building Computers" onClick={() => handleNavigation('/agent-smith/building-computers')} />
-      </div>
+    <div className="agent-smith-department-container" role="region" aria-label="מחלקת אג'נט סמית'">
+      {items.map((item, index) => (
+        <div
+          key={index}
+          className="department-card"
+          role="button"
+          tabIndex={0}
+          aria-label={item.label}
+          onClick={() => navigate(item.path)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') navigate(item.path);
+          }}
+        >
+          <img src={item.src} alt={item.alt} />
+          <div className="overlay">
+            <span>{item.label}</span>
+          </div>
+        </div>
+      ))}
     </div>
   );
 };

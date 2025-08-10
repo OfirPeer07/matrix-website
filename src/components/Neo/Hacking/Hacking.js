@@ -4,7 +4,6 @@ import ofairImage from './OFAiR.png';
 import fight from './Fight.mp4';
 import agentSmith from './Agent-smith-dodges-bullets.mp4';
 import neo from './Neo-dodges-bullets.mp4';
-import HackingBar from '../Sidebars/NeoBar';
 
 function Hacking() {
   const [rectanglesVisible] = useState(true); // Rectangle visibility
@@ -82,8 +81,6 @@ function Hacking() {
         style={{ backgroundImage: `url(${ofairImage})` }}
         onClick={() => handleNavigation('/neo/hacking/build-your-resume')}
       />
-
-      <HackingBar />
 
       {rectanglesVisible && (
         <>
