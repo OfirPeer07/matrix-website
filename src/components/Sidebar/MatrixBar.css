@@ -11,6 +11,13 @@
   --shift-out-dur:1.5s;
   --shift-in-ease:cubic-bezier(.22,.61,.36,1);
   --shift-out-ease:cubic-bezier(.16,.84,.44,1);
+
+  /* אפקטים (חדשים) */
+  --glitch-shift: 1.5px;             /* עוצמת פיצול צבעים */
+  --glitch-slices: 6;                /* מספר פרוסות */
+  --glitch-dur: 950ms;               /* משך מחזור גליץ' */
+  --scan-dur: 1600ms;                /* משך סריקה אנכית */
+  --ripple-dur: 900ms;               /* משך ריפל */
 }
 
 html,body{margin:0; background:var(--bg); color:var(--neon); height:100vh; width:100vw; overflow:hidden;}
@@ -39,7 +46,9 @@ html,body{margin:0; background:var(--bg); color:var(--neon); height:100vh; width
 .sidebar a.menu-icon::after{
   content:""; position:absolute; inset:0; border-radius:70%; pointer-events:none;
 }
-
+.sidebar a.menu-icon::before{
+  mix-blend-mode:screen;
+}
 .sidebar a.menu-icon::after{
   background: radial-gradient(70% 70% at 50% 50%, rgba(23,202,7,.55), transparent 60%);
   filter: blur(10px); opacity:.9; z-index:-1;
@@ -153,4 +162,98 @@ html,body{margin:0; background:var(--bg); color:var(--neon); height:100vh; width
 @media (prefers-reduced-motion:reduce){
   *{transition:none !important; animation:none !important;}
   .sidebar a.menu-icon:hover img{ transform:none !important; filter:none !important; }
+}
+
+/* === Matrix glitch + ripple (רק ל־Neo/Smith) ========================= */
+/* מכין מעטפת יחסית לאפקטים */
+.sidebar li.neoIcon .menu-icon,
+.sidebar li.agentSmithIcon .menu-icon{
+  overflow: visible;
+  isolation: isolate;
+}
+
+/* שכבות אפקט מעל התמונה */
+.sidebar .menu-icon .fx-glitch,
+.sidebar .menu-icon .fx-ripple,
+.sidebar .menu-icon .fx-scan {
+  position:absolute; inset:-2px; border-radius:50%;
+  pointer-events:none; z-index: 3;
+}
+
+/* --- glitch: 2 שכבות “RGB split” זעירות שזזות בפרוסות --- */
+.sidebar .menu-icon .fx-glitch{ mix-blend-mode: screen; opacity:0; }
+.sidebar a.menu-icon:hover .fx-glitch{ opacity:.9; }
+
+.sidebar .menu-icon .fx-glitch::before,
+.sidebar .menu-icon .fx-glitch::after{
+  content:""; position:absolute; inset:0; border-radius:50%;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 92%, transparent 100%);
+          mask-image: radial-gradient(circle at 50% 50%, #000 92%, transparent 100%);
+  filter: blur(.3px) saturate(1.15);
+  animation: glitchSlices var(--glitch-dur) steps(var(--glitch-slices)) infinite;
+}
+
+/* גוון ירקרק וכחול ל־RGB split עדין */
+.sidebar .menu-icon .fx-glitch::before{
+  background: radial-gradient(120% 110% at 50% 45%, rgba(23,202,7,.55), transparent 60%);
+  transform: translate(var(--glitch-shift), 0);
+}
+.sidebar .menu-icon .fx-glitch::after{
+  background: radial-gradient(120% 110% at 50% 55%, rgba(90,200,255,.35), transparent 60%);
+  transform: translate(calc(var(--glitch-shift) * -1), 0);
+}
+
+/* --- scan: סריגי סריקה אנכיים שמטיילים באלכסון --- */
+.sidebar .menu-icon .fx-scan{
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(23,202,7,.0) 0 7px,
+      rgba(23,202,7,.08) 7px 9px
+    );
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 90%, transparent 100%);
+          mask-image: radial-gradient(circle at 50% 50%, #000 90%, transparent 100%);
+  opacity:0;
+}
+.sidebar a.menu-icon:hover .fx-scan{
+  opacity:.45;
+  animation: scanSweep var(--scan-dur) linear infinite;
+}
+
+/* --- ripple: טבעת מתרחבת קצרה על ההובר --- */
+.sidebar .menu-icon .fx-ripple{
+  border: 2px solid rgba(23,202,7,.55);
+  box-shadow: 0 0 18px rgba(23,202,7,.35), inset 0 0 12px rgba(23,202,7,.25);
+  opacity:0; transform: scale(.8);
+}
+.sidebar a.menu-icon:hover .fx-ripple{
+  animation: ripplePulse var(--ripple-dur) var(--shift-in-ease) forwards;
+}
+
+/* כדי שהאפקט יהיה רק על Neo/Smith */
+.sidebar li.neoIcon a.menu-icon:hover img,
+.sidebar li.agentSmithIcon a.menu-icon:hover img{
+  filter: grayscale(0) contrast(1.08) saturate(1.1);
+  transform: translateY(-1px) scale(1.02);
+}
+
+/* Keyframes */
+@keyframes glitchSlices{
+  0%{ clip-path: polygon(0 0, 100% 0, 100% 12%, 0 12%); }
+  20%{ clip-path: polygon(0 16%, 100% 16%, 100% 28%, 0 28%); }
+  40%{ clip-path: polygon(0 34%, 100% 34%, 100% 46%, 0 46%); }
+  60%{ clip-path: polygon(0 52%, 100% 52%, 100% 64%, 0 64%); }
+  80%{ clip-path: polygon(0 70%, 100% 70%, 100% 82%, 0 82%); }
+  100%{ clip-path: polygon(0 88%, 100% 88%, 100% 100%, 0 100%); }
+}
+
+@keyframes scanSweep{
+  0%{ transform: translate(-8%, -6%) rotate(12deg); }
+  100%{ transform: translate(8%, 6%) rotate(12deg); }
+}
+
+@keyframes ripplePulse{
+  0%  { opacity:.55; transform: scale(.86); }
+  60% { opacity:.35; transform: scale(1.08); }
+  100%{ opacity:0;    transform: scale(1.18); }
 }

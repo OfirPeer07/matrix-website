@@ -200,6 +200,10 @@ const MatrixBar = forwardRef(function MatrixBar({ mode = 'both' }, ref) {
       >
         <img src="/images/neoIcon.png" alt="Neo" />
         <span className="sweep" />
+        {/* אפקטים */}
+        <span className="fx-glitch" aria-hidden="true" />
+        <span className="fx-scan" aria-hidden="true" />
+        <span className="fx-ripple" aria-hidden="true" />
       </Link>
       {activeMenu === 'neoIcon' && !isMobile && (
         <div className="dropdown-menu" onMouseEnter={onDropdownEnter} onMouseLeave={onDropdownLeave}>
@@ -252,6 +256,10 @@ const MatrixBar = forwardRef(function MatrixBar({ mode = 'both' }, ref) {
       >
         <img src="/images/agentSmithIcon.png" alt="Agent Smith" />
         <span className="sweep" />
+        {/* אפקטים */}
+        <span className="fx-glitch" aria-hidden="true" />
+        <span className="fx-scan" aria-hidden="true" />
+        <span className="fx-ripple" aria-hidden="true" />
       </Link>
       {activeMenu === 'agentSmithIcon' && !isMobile && (
         <div className="dropdown-menu" onMouseEnter={onDropdownEnter} onMouseLeave={onDropdownLeave}>
