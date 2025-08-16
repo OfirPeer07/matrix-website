@@ -2,8 +2,8 @@
 html, body {
   margin: 0;
   padding: 0;
-  font-family: 'Arial', sans-serif;
-  color: white;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #fff;
   background: linear-gradient(135deg, #090909, #020000);
   overflow: hidden;
   font-size: 16px;
@@ -14,20 +14,18 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem;
-  transition: all 0.3s ease;
+  padding: .5rem;
+  transition: transform .3s ease, opacity .3s ease;
 }
 
 /* Background video */
 .background-video {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   z-index: -1;
-}
-@media (max-width: 768px) {
-  .background-video { height: 100vh; object-position: center; }
 }
 
 /* Layout */
@@ -47,7 +45,7 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: all 0.3s ease;
+  transition: opacity .3s ease, transform .3s ease;
   opacity: 1;
 }
 .image-container-wrapper-neo.selected,
@@ -60,26 +58,37 @@ html, body {
 .image-clickable {
   position: relative;
   cursor: pointer;
-  transition: opacity 1s ease, transform 1s ease, box-shadow 0.3s ease;
+  transition: opacity 1s ease, transform 1s ease, box-shadow .3s ease;
   z-index: 1;
   display: flex;
   border-radius: 1rem;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 255, 0, 0.7);
+  box-shadow: 0 6px 16px rgba(0, 255, 0, 0.6);
 }
 
-/* Container: SAME width rules as before; height comes from aspect-ratio set via --ar */
+.image-clickable:focus-visible {
+  outline: 3px solid #4cff4c;
+  outline-offset: 4px;
+}
+
+/* Container: שמירת יחס ממדים יציב */
 .image-container {
   position: relative;
   width: min(25vw, 50rem);
   max-width: 50rem;
-  height: auto;
+  height: min(25vw, 50rem);
+  max-height: 50rem;
   border-radius: 1rem;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 255, 0, 0.7);
+  box-shadow: 0 6px 16px rgba(0, 255, 0, 0.6);
   z-index: 1;
-  display: block;          /* block avoids tiny inline baseline jumps */
-  aspect-ratio: var(--ar); /* set from JS to real video ratio */
+  display: block;
+  aspect-ratio: var(--ar, 16/9); /* מודרני */
+}
+
+.image-container .sizer { /* fallback למנועי רנדר ישנים */
+  width: 100%;
+  padding-top: var(--pt, 56.25%); /* 16:9 */
 }
 
 /* Two stacked videos with a cross-fade */
@@ -88,16 +97,15 @@ html, body {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;       /* change to 'contain' if you prefer letterboxing */
-  display: block;
-  transition: opacity 0.35s ease;
+  object-fit: cover;
+  transition: opacity .35s ease;
   will-change: opacity;
 }
 .navigation-video.show { opacity: 1; }
 .navigation-video.hide { opacity: 0; pointer-events: none; }
 
 /* Dim the other card when one is selected */
-.image-clickable.blackout { opacity: 0.4; }
+.image-clickable.blackout { opacity: .4; }
 
 /* Titles */
 .title-box {
@@ -106,7 +114,7 @@ html, body {
   align-items: center;
   margin-top: 1rem;
   opacity: 0;
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: opacity .5s ease, transform .5s ease;
 }
 .image-clickable:hover + .title-box { opacity: 1; transform: translateY(0); }
 
@@ -116,15 +124,15 @@ html, body {
 
 .photo-title {
   font-size: 1.8rem;
-  font-weight: bold;
-  color: white;
+  font-weight: 800;
+  color: #fff;
   margin: 5px 0;
   text-align: center;
   text-shadow: 0 0 5px rgba(0, 255, 0, 0.8), 0 0 15px rgba(0, 255, 0, 0.5);
-  transition: text-shadow 0.3s ease;
+  transition: text-shadow .3s ease;
 }
 .photo-title:hover {
-  text-shadow: 0 0 10px rgba(0, 255, 0, 1), 0 0 20px rgba(0, 255, 0, 0.8), 0 0 30px rgba(0, 255, 0, 0.6);
+  text-shadow: 0 0 10px rgba(0, 255, 0, 1), 0 0 20px rgba(0, 255, 0, .8), 0 0 30px rgba(0, 255, 0, .6);
 }
 .photo-subtitle { font-size: 1rem; color: #ddd; text-align: center; }
 
@@ -143,10 +151,9 @@ html, body {
   }
   .image-container {
     width: 90vw;
-    aspect-ratio: 1 / 1;  /* square cards on small phones, as before */
   }
   .title-box {
-    margin-top: 0.8rem;
+    margin-top: .8rem;
     margin-bottom: 1rem;
     opacity: 1;
   }
@@ -167,18 +174,10 @@ html, body {
     padding: 2rem;
     gap: 3rem;
   }
-  .image-container {
-    width: 80vw;
-    aspect-ratio: 1 / 1;
-  }
+  .image-container { width: 80vw; }
   .title-box { margin-top: 1rem; opacity: 1; }
   .photo-title { font-size: 1.8rem; }
-  .photo-subtitle {
-    font-size: 1.1rem;
-    padding: 0 20px;
-    width: 100%;
-    box-sizing: border-box;
-  }
+  .photo-subtitle { font-size: 1.1rem; padding: 0 20px; width: 100%; box-sizing: border-box; }
 }
 
 /* Ultrawide (21:9) */
@@ -198,13 +197,13 @@ html, body {
 @media screen and (max-width: 900px) and (orientation: landscape) and (max-height: 500px) {
   .agentSmith-neo-navigation { flex-direction: row; padding: 1rem; gap: 1.5rem; }
   .image-container { width: 45vw; height: 70vh; aspect-ratio: unset; }
-  .title-box { margin-top: 0.5rem; }
+  .title-box { margin-top: .5rem; }
   .photo-title { font-size: 1.2rem; }
-  .photo-subtitle { font-size: 0.9rem; }
+  .photo-subtitle { font-size: .9rem; }
 }
 
 /* Tablets */
-@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (-webkit-min-device-pixel-ratio: 1) {
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
   .agentSmith-neo-navigation { padding: 3rem; gap: 2.5rem; }
   .image-container { width: 40vw; }
   .photo-title { font-size: 1.6rem; }
@@ -214,6 +213,30 @@ html, body {
 @media only screen and (min-width: 1025px) {
   .agentSmith-neo-navigation { gap: 4rem; padding: 6rem; }
   .image-container { width: min(25vw, 50rem); }
+}
+
+/* Tap to play + error */
+.tap-to-play {
+  position: absolute;
+  inset: auto auto 1rem 1rem;
+  padding: .5rem .75rem;
+  border-radius: .5rem;
+  border: 1px solid rgba(0,255,0,.6);
+  background: rgba(0,0,0,.6);
+  color: #bfffbf;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(2px);
+}
+.video-error {
+  position: absolute;
+  inset: auto auto 1rem 1rem;
+  padding: .5rem .75rem;
+  border-radius: .5rem;
+  background: rgba(255,0,0,.2);
+  border: 1px solid rgba(255,0,0,.5);
+  color: #ffdada;
+  font-weight: 600;
 }
 
 /* Reduced motion */
