@@ -247,11 +247,6 @@ html,body{margin:0; background:var(--bg); color:var(--neon); height:100vh; width
   100%{ clip-path: polygon(0 88%, 100% 88%, 100% 100%, 0 100%); }
 }
 
-@keyframes scanSweep{
-  0%{ transform: translate(-8%, -6%) rotate(12deg); }
-  100%{ transform: translate(8%, 6%) rotate(12deg); }
-}
-
 @keyframes ripplePulse{
   0%  { opacity:.55; transform: scale(.86); }
   60% { opacity:.35; transform: scale(1.08); }

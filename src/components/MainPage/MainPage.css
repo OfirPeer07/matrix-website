@@ -71,7 +71,7 @@ html, body {
   outline-offset: 4px;
 }
 
-/* Container: שמירת יחס ממדים יציב */
+/* Container */
 .image-container {
   position: relative;
   width: min(25vw, 50rem);
@@ -83,28 +83,25 @@ html, body {
   box-shadow: 0 6px 16px rgba(0, 255, 0, 0.6);
   z-index: 1;
   display: block;
-  aspect-ratio: var(--ar, 16/9); /* מודרני */
+  aspect-ratio: var(--ar, 16/9);
 }
 
-.image-container .sizer { /* fallback למנועי רנדר ישנים */
+.image-container .sizer {
   width: 100%;
-  padding-top: var(--pt, 56.25%); /* 16:9 */
+  padding-top: var(--pt, 56.25%);
 }
 
-/* Two stacked videos with a cross-fade */
+/* Video */
 .navigation-video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity .35s ease;
   will-change: opacity;
 }
-.navigation-video.show { opacity: 1; }
-.navigation-video.hide { opacity: 0; pointer-events: none; }
 
-/* Dim the other card when one is selected */
+/* Dim the other card */
 .image-clickable.blackout { opacity: .4; }
 
 /* Titles */
@@ -141,7 +138,7 @@ html, body {
 .title-box.move-left  { transform: translateX(-40px); opacity: 1; }
 .title-box.reset      { transform: translateX(0); opacity: 0; }
 
-/* Small mobile */
+/* Responsive stuff */
 @media (max-width: 480px) {
   .agentSmith-neo-navigation {
     flex-direction: column;
@@ -149,51 +146,31 @@ html, body {
     padding: 1rem;
     gap: 2.5rem;
   }
-  .image-container {
-    width: 90vw;
-  }
-  .title-box {
-    margin-top: .8rem;
-    margin-bottom: 1rem;
-    opacity: 1;
-  }
+  .image-container { width: 90vw; }
+  .title-box { margin-top: .8rem; margin-bottom: 1rem; opacity: 1; }
   .photo-title { font-size: 1.5rem; }
-  .photo-subtitle {
-    font-size: 1rem;
-    width: 100%;
-    padding: 0 15px;
-    box-sizing: border-box;
-  }
+  .photo-subtitle { font-size: 1rem; width: 100%; padding: 0 15px; box-sizing: border-box; }
 }
 
-/* Medium mobile + tablets */
 @media (min-width: 481px) and (max-width: 768px) {
-  .agentSmith-neo-navigation {
-    flex-direction: column;
-    align-items: center;
-    padding: 2rem;
-    gap: 3rem;
-  }
+  .agentSmith-neo-navigation { flex-direction: column; align-items: center; padding: 2rem; gap: 3rem; }
   .image-container { width: 80vw; }
   .title-box { margin-top: 1rem; opacity: 1; }
   .photo-title { font-size: 1.8rem; }
   .photo-subtitle { font-size: 1.1rem; padding: 0 20px; width: 100%; box-sizing: border-box; }
 }
 
-/* Ultrawide (21:9) */
 @media screen and (min-aspect-ratio: 21/9) {
   .agentSmith-neo-navigation { gap: 4rem; padding: 8rem; max-width: 90%; margin: 0 auto; }
   .image-container { width: min(20vw, 50rem); }
   .title-box { margin-top: 2rem; transform: scale(1.2); }
 }
 
-/* Super ultrawide (32:9) */
 @media screen and (min-aspect-ratio: 32/9) {
   .agentSmith-neo-navigation { max-width: 80%; }
   .image-container { width: min(15vw, 50rem); }
 }
 
-/* Landscape low-height mobiles */
 @media screen and (max-width: 900px) and (orientation: landscape) and (max-height: 500px) {
   .agentSmith-neo-navigation { flex-direction: row; padding: 1rem; gap: 1.5rem; }
   .image-container { width: 45vw; height: 70vh; aspect-ratio: unset; }
@@ -202,44 +179,42 @@ html, body {
   .photo-subtitle { font-size: .9rem; }
 }
 
-/* Tablets */
 @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
   .agentSmith-neo-navigation { padding: 3rem; gap: 2.5rem; }
   .image-container { width: 40vw; }
   .photo-title { font-size: 1.6rem; }
 }
 
-/* Desktops */
 @media only screen and (min-width: 1025px) {
   .agentSmith-neo-navigation { gap: 4rem; padding: 6rem; }
   .image-container { width: min(25vw, 50rem); }
 }
 
-/* Tap to play + error */
-.tap-to-play {
+/* ================= Overlay with glitch ================= */
+.overlay-image {
   position: absolute;
-  inset: auto auto 1rem 1rem;
-  padding: .5rem .75rem;
-  border-radius: .5rem;
-  border: 1px solid rgba(0,255,0,.6);
-  background: rgba(0,0,0,.6);
-  color: #bfffbf;
-  font-weight: 600;
-  cursor: pointer;
-  backdrop-filter: blur(2px);
-}
-.video-error {
-  position: absolute;
-  inset: auto auto 1rem 1rem;
-  padding: .5rem .75rem;
-  border-radius: .5rem;
-  background: rgba(255,0,0,.2);
-  border: 1px solid rgba(255,0,0,.5);
-  color: #ffdada;
-  font-weight: 600;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity .6s ease, transform .6s ease, filter .6s ease;
+  pointer-events: none;
+  z-index: 2;
 }
 
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; animation: none !important; }
+.overlay-image.active-effect {
+  opacity: 1;
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 15px #17ca07) saturate(1.2) contrast(1.1);
+  animation: glitch 0.7s steps(2, end);
+}
+
+@keyframes glitch {
+  0% { transform: translate(0) scale(1.05); clip-path: inset(0 0 0 0); }
+  20% { transform: translate(-5px, -2px) scale(1.05); clip-path: inset(10% 0 85% 0); }
+  40% { transform: translate(5px, 2px) scale(1.05); clip-path: inset(80% 0 5% 0); }
+  60% { transform: translate(-3px, 2px) scale(1.05); clip-path: inset(40% 0 40% 0); }
+  80% { transform: translate(3px, -1px) scale(1.05); clip-path: inset(60% 0 20% 0); }
+  100% { transform: translate(0) scale(1.05); clip-path: inset(0 0 0 0); }
 }

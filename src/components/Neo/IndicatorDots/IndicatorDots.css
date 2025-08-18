@@ -4,7 +4,7 @@
   position: fixed;
   top: 50vh;
   margin-left: calc(100vw - 5rem); /* Moved slightly more to the left */
-  margin-right: 10.2rem;
+  margin-right: 3rem;
   transform: translateY(-50%);
   z-index: 1000; /* הגדלת ה-z-index כדי להבטיח שהאינדיקטורים יהיו מעל אלמנטים אחרים */
   padding: 10px 8px; /* הקטנת הפדינג */

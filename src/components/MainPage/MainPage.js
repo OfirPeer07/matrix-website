@@ -4,9 +4,9 @@ import "./MainPage.css";
 
 /* Videos */
 import neo from "./neoFlicker.mp4";
-import neoClick from "./neoClick.mp4";
+import neoClick from "./neo.png";
 import agentSmith from "./agentSmithFlicker.mp4";
-import agentSmithClick from "./agentSmithClick.mp4";
+import agentSmithClick from "./agentSmith.png";
 import backgroundVideo from "./backgroundMatrix.mov";
 
 /* UI */
