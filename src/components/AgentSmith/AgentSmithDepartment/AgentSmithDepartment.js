@@ -13,19 +13,19 @@ const AgentSmithDepartment = () => {
     {
       src: TroubleshootingGuides,
       alt: 'מדריכי פתרון תקלות',
-      path: '/agent-smith/troubleshooting-guides',
+      path: '/agent-smith/agent-smith-department/troubleshooting-guides',
       label: 'מדריכי פתרון תקלות',
     },
     {
       src: TechnologyNews,
       alt: 'חדשות טכנולוגיה',
-      path: '/agent-smith/technology-news',
+      path: '/agent-smith/agent-smith-department/technology-news',
       label: 'חדשות טכנולוגיה',
     },
     {
       src: BuildingComputers,
       alt: 'בניית מחשבים',
-      path: '/agent-smith/building-computers',
+      path: '/agent-smith/agent-smith-department/building-computers',
       label: 'בניית מחשבים',
     },
   ];

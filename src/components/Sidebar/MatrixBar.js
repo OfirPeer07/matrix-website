@@ -177,8 +177,8 @@ const MatrixBar = forwardRef(function MatrixBar({ mode = 'both' }, ref) {
 
         {activeMenu === 'agentSmithIcon' && showSmith && (
           <>
-            <Link to="/agent-smith/troubleshooting-guides" onClick={closeMenuWithAnimation}>מדריכי פתרון תקלות</Link>
-            <Link to="/agent-smith/technology-news" onClick={closeMenuWithAnimation}>חדשות טכנולוגיה</Link>
+            <Link to="/agent-smith/agent-smith-department/roubleshooting-guides" onClick={closeMenuWithAnimation}>מדריכי פתרון תקלות</Link>
+            <Link to="/agent-smith/agent-smith-department/technology-news" onClick={closeMenuWithAnimation}>חדשות טכנולוגיה</Link>
           </>
         )}
       </div>
@@ -263,8 +263,8 @@ const MatrixBar = forwardRef(function MatrixBar({ mode = 'both' }, ref) {
       </Link>
       {activeMenu === 'agentSmithIcon' && !isMobile && (
         <div className="dropdown-menu" onMouseEnter={onDropdownEnter} onMouseLeave={onDropdownLeave}>
-          <Link to="/agent-smith/troubleshooting-guides">מדריכי פתרון תקלות</Link>
-          <Link to="/agent-smith/technology-news">חדשות טכנולוגיה</Link>
+          <Link to="/agent-smith/agent-smith-department/troubleshooting-guides">מדריכי פתרון תקלות</Link>
+          <Link to="/agent-smith/agent-smith-department/technology-news">חדשות טכנולוגיה</Link>
         </div>
       )}
     </li>

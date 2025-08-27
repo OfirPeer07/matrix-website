@@ -1,10 +1,13 @@
 import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
+import StarBG from '../StarBG.js';
 
 // Import all Agent Smith components  
 import AgentSmith from '../AgentSmith/AgentSmith';
 import AgentSmithDepartment from '../AgentSmith/AgentSmithDepartment/AgentSmithDepartment';
+import TroubleshootingGuides from '../AgentSmith/TroubleshootingGuides/TroubleshootingGuides';
+import TechnologyNews from '../AgentSmith/TechnologyNews/TechnologyNews';
 
 // Import all Neo components  
 import Neo from '../Neo/Neo';
@@ -42,6 +45,7 @@ function App() {
   return (
     <Router>
       <CacheClearOnRouteChange />
+      <StarBG />
       <div className="App">
         <ConditionalSidebar />
         <div className="content">
@@ -58,6 +62,8 @@ function App() {
               <Route path="/neo/hacking/articles" element={<Articles />} />
               <Route path="/neo/hacking/videos" element={<Videos />} />
               <Route path="/agent-smith/agent-smith-department/" element={<AgentSmithDepartment />} />
+              <Route path="/agent-smith/agent-smith-department/technology-news" element={<TechnologyNews />} />
+              <Route path="/agent-smith/agent-smith-department/troubleshooting-guides" element={<TroubleshootingGuides />} />
               <Route path="*" element={<PageNotFound />} />
             </Routes>
           </Suspense>

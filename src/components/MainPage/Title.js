@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import "./Title.css";
 
 const Title = () => {
-  const texts = ["Welcome", "Welcome to", "Welcome to Matrix", "Welcome to the Matrix World"];
+  const texts = ["Welcome", "Welcome to","Welcome to the Matrix World"];
   const [currentText, setCurrentText] = useState("");
   const [textIndex, setTextIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
