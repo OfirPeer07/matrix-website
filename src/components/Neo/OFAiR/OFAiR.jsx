@@ -6,10 +6,7 @@ import ofairImage from "./OFAiR.png";
 
 function Message({ msg }) {
   return (
-    <div
-      className={`line ${msg.sender}`}
-      data-message-id={msg.id || ""}
-    >
+    <div className={`line ${msg.sender}`} data-message-id={msg.id || ""}>
       {msg.text}
       <span className="timestamp">
         {msg.timestamp
@@ -38,7 +35,7 @@ export default function OFAiR({ messages = [], onSend = () => {} }) {
   const [inputValue, setInputValue] = useState("");
   const [isComposing, setIsComposing] = useState(false);
 
-  // גלילה חכמה להודעה האחרונה
+  // Scroll to last line
   useEffect(() => {
     const container = terminalRef.current;
     if (!container) return;
@@ -52,10 +49,9 @@ export default function OFAiR({ messages = [], onSend = () => {} }) {
       sender: "user",
       text: inputValue.trim(),
       timestamp: Date.now(),
-      id:
-        crypto?.randomUUID
-          ? crypto.randomUUID()
-          : `${Date.now()}-${Math.random()}`,
+      id: crypto?.randomUUID
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random()}`,
     };
     onSend(msg);
     setInputValue("");
@@ -81,6 +77,7 @@ export default function OFAiR({ messages = [], onSend = () => {} }) {
         <img src={ofairImage} alt="OFAiR Computer" className="computer-image" />
         <div className="terminal-overlay">
           <div className="terminal-header">OFAiR SYSTEM</div>
+
           <div
             className="terminal-display terminal-display-frame"
             ref={terminalRef}
@@ -91,11 +88,14 @@ export default function OFAiR({ messages = [], onSend = () => {} }) {
             {Array.isArray(messages) &&
               messages.map((msg) => (
                 <Message
-                  key={msg.id || `${msg.sender}-${msg.timestamp || Math.random()}`}
+                  key={
+                    msg.id || `${msg.sender}-${msg.timestamp || Math.random()}`
+                  }
                   msg={msg}
                 />
               ))}
           </div>
+
           <input
             ref={inputRef}
             className="terminal-input"
