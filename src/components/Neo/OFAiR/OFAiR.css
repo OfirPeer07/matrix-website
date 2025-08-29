@@ -9,24 +9,29 @@
   min-height: auto;
 }
 
+/* הוספה במקום inline style={{ position:'relative' }} */
+.ofair-relative {
+  position: relative;
+}
+
 .computer-container {
   position: relative;
-  left: 35rem;
-  width: 950px;
+  left: 45rem;
+  width: 1150px;
   max-width: 100%;
   transform: scale(0.75);
   transform-origin: bottom left;
-  margin-top: -60px; /* טריק חכם שמצמיד את הדמות למעלה */
+  margin-top: 150px; /* טריק חכם שמצמיד את הדמות למעלה */
 }
 
 /* מיקום מותאם לתוך המסך בתמונה החדשה */
 .terminal-overlay {
   position: absolute;
-  top: 19.3%;
-  left: 32%;
-  width: 40.3%;
-  height: 34.2%;
-  transform: perspective(1010px) rotateX(0.3deg) rotateY(14deg) skewX(0.3deg) skewY(2.8deg);
+  top: 20.4%;
+  left: 20%;
+  width: 25.6%;
+  height: 34.5%;
+  transform: perspective(900px) rotateX(0.2deg) rotateY(18deg) skewX(0.2deg) skewY(2.8deg);
   transform-origin: top right;
 
   background: rgba(0, 0, 0, 0.94);
@@ -64,16 +69,56 @@
   text-shadow: 0 0 3px #2adef2;
 }
 
+/* הסטיילים שהיו inline על ה-display */
+.terminal-display-frame {
+  position: relative;
+  padding: 8px;      /* מחזק את הריווח הפנימי */
+  max-height: 100%;  /* תואם ל-inline הקודם */
+  overflow-y: auto;
+}
+
+/* הודעות */
 .line {
   margin: 4px 0;
   transition: all 0.2s ease;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-bottom: 4px;
+  display: block;
 }
 
+/* צבעי השולח (כמו שהיה) */
 .line.user {
-  color: #2adef2;
+  color: #2adef2; /* ב-js היה #7befff כ-fallback; אפשר להחליף אם תרצה */
 }
 
 .line.ofair {
-  color: #17ca07;
+  color: #17ca07; /* ב-js היה #8cff7b כ-fallback; אפשר להחליף אם תרצה */
 }
 
+/* החותמת זמן שהייתה ב-span inline */
+.timestamp {
+  margin-left: 6px;
+  font-size: 10px;
+  opacity: 0.6;
+  color: #ccc;
+}
+
+/* קלט הטרמינל – היה כולו inline */
+.terminal-input {
+  width: 85%;
+  margin-top: 3px;
+  margin-left: 5%;
+  background: #000000;
+  border: 1px solid #001234;
+  padding: 2px 2px;
+  border-radius: 6px;
+  color: #fff;
+  font-family: monospace;
+  font-size: 14px;
+  outline: none;
+}

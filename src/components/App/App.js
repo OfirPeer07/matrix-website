@@ -1,7 +1,6 @@
 import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import './App.css';
-import StarBG from '../StarBG.js';
 
 // Import all Agent Smith components  
 import AgentSmith from '../AgentSmith/AgentSmith';
@@ -45,7 +44,6 @@ function App() {
   return (
     <Router>
       <CacheClearOnRouteChange />
-      <StarBG />
       <div className="App">
         <ConditionalSidebar />
         <div className="content">

@@ -1,0 +1,144 @@
+/* ====== Header Layout ====== */
+.resume-header {
+  position: relative;
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 24px 16px 8px;
+  box-sizing: border-box;
+  /* ריווח מתחת להדר כדי שהטפסים לא יעלו עליו */
+  margin-bottom: 32px;
+}
+
+.resume-header__top {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.resume-header__left {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ====== Open Terminal – מיקום ועיצוב כמו במקור ====== */
+/* ה־ResumeHeader.js עוטף את הכפתור בתוך .resume-header__right */
+.resume-header__right {
+  position: absolute;
+  /* ממקם את הכפתור בפינה הימנית העליונה של ההדר */
+  top: 22px;
+  right: 32px;
+
+  /* אפקט הפרספקטיבה/סקיו המקורי של הכפתור (כמו .terminal-launch) */
+  transform: perspective(950px) rotateX(13.5deg) rotateY(-10deg) skewX(5.5deg);
+  z-index: 9999;
+}
+
+/* הכפתור עצמו – זהה לעיצוב המקורי שלך */
+.resume-header__open-terminal-btn {
+  background: #00ffff;
+  border: none;
+  color: #000;
+  font-weight: bold;
+  font-size: 17.5px;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 0 10px #00ffff80;
+  transition: all 0.3s ease-in-out;
+
+  /* אלו היו הערכים המקוריים שלך */
+  height: 18px;          /* שומר על הגובה הנמוך המיוחד */
+  line-height: 1.2;
+  padding: 0 10px;       /* קטן כדי להתאים לגובה */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resume-header__open-terminal-btn:hover {
+  background: #00cccc;
+  box-shadow: 0 0 20px #00ffff;
+}
+
+/* ====== Inline Terminal (“screen” בתוך ההדר) ====== */
+.resume-header__inline-terminal {
+  margin-top: 18px; /* רווח אחרי הכותרת/OFAiR */
+}
+
+.inline-terminal__frame {
+  border-radius: 10px;
+  background: #0d1117;
+  color: #c9d1d9;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(255,255,255,0.04);
+  overflow: hidden;
+}
+
+.inline-terminal__topbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 10px;
+  background: #161b22;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 2px rgba(0,0,0,0.6);
+}
+.dot--red { background: #ff5f57; }
+.dot--yellow { background: #febc2e; }
+.dot--green { background: #28c840; }
+
+.inline-terminal__title {
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 12.5px;
+  color: #8b949e;
+  letter-spacing: 0.3px;
+}
+
+.inline-terminal__body {
+  padding: 8px;
+  min-height: 180px;
+  display: block;
+}
+
+/* ====== Title (ללא absolute וללא חפיפות) ====== */
+/* אלו הסגנונות שמגיעים מ-ResumeTitle.css המעודכן – לא צריך overrides כאן.
+   רק דואגים שלא תהיה חפיפה: */
+.resume-header .resume-title-container {
+  margin-top: 4px;
+}
+
+/* ====== רספונסיביות ====== */
+@media (max-width: 1024px) {
+  /* מצמידים את הכפתור לימין למעלה אבל בלי הפרספקטיבה כדי שלא "יברח" */
+  .resume-header__right {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    transform: none;
+  }
+
+  .resume-header__open-terminal-btn {
+    height: 24px;       /* מעט גבוה יותר במובייל כדי שיהיה לחיץ */
+    padding: 0 12px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .resume-header {
+    padding: 16px 12px 6px;
+    margin-bottom: 24px;
+  }
+  .inline-terminal__body {
+    min-height: 160px;
+  }
+}

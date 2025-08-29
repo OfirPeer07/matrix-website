@@ -9,29 +9,15 @@ function Message({ msg }) {
     <div
       className={`line ${msg.sender}`}
       data-message-id={msg.id || ""}
-      style={{
-        // fallback חזק לזיהוי בזמן דיבאג: תוכל להסיר/להחליף אחרי
-        color: msg.sender === "user" ? "#7befff" : "#8cff7b",
-        background: "rgba(0,0,0,0.1)",
-        padding: "2px 6px",
-        borderRadius: 4,
-        fontSize: 12,
-        whiteSpace: "pre-wrap",
-        wordBreak: "break-word",
-        marginBottom: 4,
-        display: "block",
-      }}
     >
       {msg.text}
-      <span
-        style={{
-          marginLeft: 6,
-          fontSize: 10,
-          opacity: 0.6,
-          color: "#ccc",
-        }}
-      >
-        {msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : ""}
+      <span className="timestamp">
+        {msg.timestamp
+          ? new Date(msg.timestamp).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })
+          : ""}
       </span>
     </div>
   );
@@ -60,19 +46,16 @@ export default function OFAiR({ messages = [], onSend = () => {} }) {
     if (last) last.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }, [messages]);
 
-  // debug: להראות מה מגיע ב־props
-  useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log("OFAiR got messages prop:", messages);
-  }, [messages]);
-
   const submit = useCallback(() => {
     if (!inputValue.trim() || isComposing) return;
     const msg = {
       sender: "user",
       text: inputValue.trim(),
       timestamp: Date.now(),
-      id: crypto?.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`,
+      id:
+        crypto?.randomUUID
+          ? crypto.randomUUID()
+          : `${Date.now()}-${Math.random()}`,
     };
     onSend(msg);
     setInputValue("");
@@ -93,74 +76,38 @@ export default function OFAiR({ messages = [], onSend = () => {} }) {
   }, []);
 
   return (
-    <div className="ofair-wrapper" style={{ position: "relative" }}>
+    <div className="ofair-wrapper ofair-relative">
       <div className="computer-container">
         <img src={ofairImage} alt="OFAiR Computer" className="computer-image" />
         <div className="terminal-overlay">
           <div className="terminal-header">OFAiR SYSTEM</div>
           <div
-            className="terminal-display"
+            className="terminal-display terminal-display-frame"
             ref={terminalRef}
             role="log"
             aria-live="polite"
             aria-label="Terminal output"
-            style={{ position: "relative", padding: 8, maxHeight: "100%", overflowY: "auto" }}
           >
-            {Array.isArray(messages) && messages.map((msg) => (
-              <Message
-                key={msg.id || `${msg.sender}-${msg.timestamp || Math.random()}`}
-                msg={msg}
-              />
-            ))}
+            {Array.isArray(messages) &&
+              messages.map((msg) => (
+                <Message
+                  key={msg.id || `${msg.sender}-${msg.timestamp || Math.random()}`}
+                  msg={msg}
+                />
+              ))}
           </div>
           <input
             ref={inputRef}
             className="terminal-input"
-            placeholder="> Run command..."
+            placeholder="> Ask something..."
             aria-label="Terminal command input"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}
             onCompositionStart={() => setIsComposing(true)}
             onCompositionEnd={() => setIsComposing(false)}
-            style={{
-              width: "85%",
-              marginTop: 4,
-              marginLeft: "5%",
-              background: "#0f101d",
-              border: "1px solid #00ffe0",
-              padding: "8px 8px",
-              borderRadius: 6,
-              color: "#fff",
-              fontFamily: "monospace",
-              fontSize: 14,
-              outline: "none",
-            }}
           />
         </div>
-      </div>
-      {/* debug overlay: תוכל להסיר אחרי שתתקן */}
-      <div
-        style={{
-          position: "absolute",
-          top: 4,
-          right: 4,
-          background: "rgba(0,0,0,0.85)",
-          color: "#fff",
-          padding: 6,
-          borderRadius: 6,
-          fontSize: 10,
-          maxWidth: 220,
-          zIndex: 10,
-          overflow: "auto",
-          maxHeight: 140,
-          boxShadow: "0 0 10px rgba(0,255,224,0.6)",
-        }}
-      >
-        <div style={{ marginBottom: 4, fontWeight: "bold" }}>Debug messages:</div>
-        <pre style={{ margin: 0, whiteSpace: "pre-wrap" }}>
-          {JSON.stringify(messages, null, 2)}
-        </pre>
       </div>
     </div>
   );

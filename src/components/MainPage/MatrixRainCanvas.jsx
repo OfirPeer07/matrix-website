@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 export default function MatrixRainCanvas({
-  color = "#00ff66",
+  color = "#000000ff",
   glow = 0.35,
   fontSize = 16,
   speed = 18,

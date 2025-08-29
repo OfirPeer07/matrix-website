@@ -372,8 +372,8 @@ button:hover {
 
 .terminal-launch {
   position: relative;
-  left: -30rem;
-  bottom: -11.5rem;
+  left: -21.5rem;
+  bottom: -15.2rem;
   transform: perspective(950px) rotateX(13.5deg) rotateY(-10deg) skewX(5.5deg);
   z-index: 9999; 
 }
@@ -388,7 +388,7 @@ button:hover {
   cursor: pointer;
   box-shadow: 0 0 10px #00ffff80;
   transition: all 0.3s ease-in-out;
-  height: 18px;          /* גובה מותאם */
+  height: 1.2rem;          /* גובה מותאם */
   line-height: 1.2;
   display: inline-flex;
   align-items: center;
