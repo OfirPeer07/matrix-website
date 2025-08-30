@@ -321,11 +321,13 @@ export default function ResumeBuilder() {
     <div className="resume-title-wrapper">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
+          {/* --- הכותרת בסגנון החדש --- */}
           <h1 className="resume-title">
             Build<br />
             Your<br />
             Resume
           </h1>
+
           <h1 className="resume-title-two">
             <div className="word-line">
               <span className="letter">B</span><span className="letter">u</span><span className="letter">i</span><span className="letter">l</span><span className="letter">d</span>
@@ -337,6 +339,7 @@ export default function ResumeBuilder() {
               <span className="letter">R</span><span className="letter">e</span><span className="letter">s</span><span className="letter">u</span><span className="letter">m</span><span className="letter">e</span>
             </div>
           </h1>
+
           <OFAiR
             messages={terminalMessages}
             onSend={handleSend}
