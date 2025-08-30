@@ -8,7 +8,7 @@ html, body {
   overflow-x: hidden;        /* הסתר גלילה לרוחב */
   background-color: #000;
   color: #212529;
-  font-family: 'Monoton', cursive;
+  font-family: 'Monoton', cursive;  
 }
 
 .resume-title-wrapper {
@@ -374,23 +374,33 @@ button:hover {
 
 .terminal-launch {
   position: relative;
-  left: -21.5rem;
-  bottom: -15.2rem;
+  top: 7.6rem;
+  right: 26.5rem;
+  margin-left: -13.6rem;           /* דחיפה שמאלה */
   transform: perspective(950px) rotateX(13.5deg) rotateY(-10deg) skewX(5.5deg);
-  z-index: 9999; 
+  z-index: 9999;
+  /* right/width/padding-right מיותרים */
 }
+
+@media (max-width: 1200px) {
+  .terminal-launch { transform: translateX(-32rem) perspective(950px) rotateX(13.5deg) rotateY(-10deg) skewX(5.5deg); }
+}
+@media (max-width: 900px) {
+  .terminal-launch { transform: translateX(-18rem) perspective(950px) rotateX(13.5deg) rotateY(-10deg) skewX(5.5deg); }
+}
+
 
 .open-terminal-button {
   background: #00ffff;
   border: none;
   color: #000;
   font-weight: bold;
-  font-size: 17.5px;
+  font-size: 14px;
   border-radius: 4px;
   cursor: pointer;
   box-shadow: 0 0 10px #00ffff80;
   transition: all 0.3s ease-in-out;
-  height: 1.2rem;          /* גובה מותאם */
+  height: 1.1rem;          /* גובה מותאם */
   line-height: 1.2;
   display: inline-flex;
   align-items: center;
