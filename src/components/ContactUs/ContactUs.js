@@ -1,5 +1,5 @@
 import React from 'react';
-import { Phone, Mail, MessageCircle, Send, Clock, BellRing, Linkedin } from 'lucide-react';
+import { Phone, Mail, MessageCircle, Clock, Linkedin, Github } from 'lucide-react';
 import './ContactUs.css';
 
 const ContactUs = () => {
@@ -7,16 +7,17 @@ const ContactUs = () => {
   const email = "ofirpeer07@gmail.com";
   const whatsappNumber = "+972504082153";
   const linkedinProfile = "ofir-peer-658506210";
+  const githubProfile = "https://github.com/ofirpeer"; // עדכן ל-GitHub שלך
 
   const containerStyle = {
-    maxWidth: '600px',
+    maxWidth: '650px',
     margin: '0 auto',
     padding: '2rem',
     backgroundColor: '#1e1e1e',
     borderRadius: '8px',
     boxShadow: '0 0 15px rgba(0, 255, 0, 0.1)',
     color: '#e0e0e0',
-    direction: 'rtl',
+    direction: 'ltr',
   };
 
   const titleStyle = {
@@ -93,33 +94,33 @@ const ContactUs = () => {
 
   return (
     <div style={containerStyle}>
-      <h1 style={titleStyle}>צור קשר</h1>
+      <h1 style={titleStyle}>Let’s&nbsp;&nbsp;&nbsp;Connect</h1>
       <div style={contactMethodsStyle}>
         <a 
           href={`tel:${phoneNumber}`} 
           style={contactMethodStyle}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          aria-label="התקשר אלינו"
+          aria-label="Call me"
         >
           <div style={contactMethodHeaderStyle}>
             <Phone size={24} style={iconStyle} aria-hidden="true" />
-            <span style={textStyle}>{phoneNumber}</span>
+            <span style={textStyle}>&nbsp;&nbsp;&nbsp;&nbsp;{phoneNumber}</span>
           </div>
-          <span style={descriptionStyle}>חייג אלי לשיחה מיידית</span>
+          <span style={descriptionStyle}>Call&nbsp;&nbsp;me&nbsp;&nbsp;directly&nbsp;&nbsp;for&nbsp;&nbsp;professional&nbsp;&nbsp;inquiries</span>
         </a>
         <a 
           href={`mailto:${email}`} 
           style={contactMethodStyle}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          aria-label="שלח לנו אימייל"
+          aria-label="Send me an email"
         >
           <div style={contactMethodHeaderStyle}>
             <Mail size={24} style={iconStyle} aria-hidden="true" />
-            <span style={textStyle}>{email}</span>
+            <span style={textStyle}>&nbsp;&nbsp;&nbsp;&nbsp;{email}</span>
           </div>
-          <span style={descriptionStyle}>שלח לי הודעת אימייל ואחזור אליך בהקדם</span>
+          <span style={descriptionStyle}>Send&nbsp;&nbsp;me&nbsp;&nbsp;an&nbsp;&nbsp;email&nbsp;&nbsp;for&nbsp;&nbsp;collaborations&nbsp;&nbsp;or&nbsp;&nbsp;project&nbsp;&nbsp;discussions</span>
         </a>
         <a 
           href={`https://wa.me/${whatsappNumber}`} 
@@ -128,13 +129,13 @@ const ContactUs = () => {
           rel="noopener noreferrer"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          aria-label="פנה אלינו בוואטסאפ"
+          aria-label="Contact me on WhatsApp"
         >
           <div style={contactMethodHeaderStyle}>
             <MessageCircle size={24} style={iconStyle} aria-hidden="true" />
-            <span style={textStyle}>WhatsApp</span>
+            <span style={textStyle}>&nbsp;&nbsp;&nbsp;&nbsp;WhatsApp</span>
           </div>
-          <span style={descriptionStyle}>שלח לי הודעת וואטסאפ לתמיכה מהירה</span>
+          <span style={descriptionStyle}>Message&nbsp;&nbsp;me&nbsp;&nbsp;on&nbsp;&nbsp;WhatsApp&nbsp;&nbsp;for&nbsp;&nbsp;quick&nbsp;&nbsp;communication</span>
         </a>
         <a 
           href={`https://www.linkedin.com/in/${linkedinProfile}`} 
@@ -143,18 +144,33 @@ const ContactUs = () => {
           rel="noopener noreferrer"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          aria-label="עקוב אחרינו בלינקדאין"
+          aria-label="Connect with me on LinkedIn"
         >
           <div style={contactMethodHeaderStyle}>
             <Linkedin size={24} style={iconStyle} aria-hidden="true" />
-            <span style={textStyle}>LinkedIn</span>
+            <span style={textStyle}>&nbsp;&nbsp;&nbsp;&nbsp;LinkedIn</span>
           </div>
-          <span style={descriptionStyle}>התחברו אליי בלינקדאין</span>
+          <span style={descriptionStyle}>Connect&nbsp;&nbsp;with&nbsp;&nbsp;me&nbsp;&nbsp;on&nbsp;&nbsp;LinkedIn&nbsp;&nbsp;for&nbsp;&nbsp;professional&nbsp;&nbsp;networking</span>
+        </a>
+        <a 
+          href={githubProfile} 
+          style={contactMethodStyle} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          aria-label="View my GitHub projects"
+        >
+          <div style={contactMethodHeaderStyle}>
+            <Github size={24} style={iconStyle} aria-hidden="true" />
+            <span style={textStyle}>&nbsp;&nbsp;&nbsp;&nbsp;GitHub</span>
+          </div>
+          <span style={descriptionStyle}>Explore&nbsp;&nbsp;my&nbsp;&nbsp;projects&nbsp;&nbsp;and&nbsp;&nbsp;open-source&nbsp;&nbsp;contributions</span>
         </a>
       </div>
       <div style={workingHoursStyle}>
         <Clock size={18} style={{...iconStyle, marginRight: '0.5rem'}} aria-hidden="true" />
-        <span>שעות פעילות: ימים א'-ה', 09:00-19:00</span>
+        <span style={textStyle}>Available:&nbsp;&nbsp;&nbsp;<span style={descriptionStyle}>Sun–Thu,&nbsp;&nbsp;09:00&nbsp;&nbsp;–&nbsp;&nbsp;19:00</span></span>
       </div>
     </div>
   );
