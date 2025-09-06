@@ -52,7 +52,7 @@ function seededRandom(seed) {
   return x - Math.floor(x);
 }
 
-// 🌌 Background Particles (ShaderMaterial + noise + unproject + performance)
+// 🌌 Background Particles (ShaderMaterial + noise + robust unproject + perf)
 const BackgroundParticles = () => {
   const mountRef = useRef(null);
   const animationRef = useRef(null);
@@ -63,10 +63,10 @@ const BackgroundParticles = () => {
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
-      70,
+      700,
       mount.clientWidth / mount.clientHeight,
       0.1,
-      100
+      150
     );
     camera.position.z = 30;
 
@@ -77,9 +77,9 @@ const BackgroundParticles = () => {
     mount.appendChild(renderer.domElement);
 
     // ==== Params (performance) ====
-    const PARTICLE_COUNT = 25000; // 20–25K נראה טוב ומהיר
-    const RADIUS = 2;
-    const STRENGTH = 70.0;
+    const PARTICLE_COUNT = 50000; // 20–25K נראה טוב ומהיר
+    const RADIUS = 1.0;           // ⬅️ הוגדל כדי להרגיש עקבי בקצוות
+    const STRENGTH = 1.0;
 
     // === Geometry ===
     const geometry = new THREE.BufferGeometry();
@@ -177,19 +177,23 @@ const BackgroundParticles = () => {
 
     const clock = new THREE.Clock();
 
-    // unproject mouse -> world z=0
+    // unproject mouse -> fixed distance in front of camera (robust at edges)
     const mouseWorld = new THREE.Vector3();
     function updateMouse(e) {
       const rect = mount.getBoundingClientRect();
-      const mouseNDC = new THREE.Vector3(
-        ((e.clientX - rect.left) / rect.width) * 2 - 1,
-        -((e.clientY - rect.top) / rect.height) * 2 + 1,
-        0
-      );
-      mouseNDC.unproject(camera);
-      const dir = mouseNDC.sub(camera.position).normalize();
-      const distance = -camera.position.z / dir.z; // חיתוך עם z=0
-      mouseWorld.copy(camera.position).add(dir.multiplyScalar(distance));
+      // NDC
+      const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      const y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+      // קרן מהמצלמה דרך נקודת המסך
+      const ndc = new THREE.Vector3(x, y, 0.5);
+      ndc.unproject(camera);
+      const dir = ndc.sub(camera.position).normalize();
+
+      // מרחק קבוע קדימה מהמצלמה — מונע בעיות בקצוות (dir.z~0)
+      const FIXED_DISTANCE = 30; // קרוב ל-z של המצלמה
+      mouseWorld.copy(camera.position).add(dir.multiplyScalar(FIXED_DISTANCE));
+
       uniforms.uMouse.value.copy(mouseWorld);
     }
 
@@ -259,17 +263,16 @@ const BackgroundParticles = () => {
 };
 
 // ===== Card =====
-const TechnologyCard = ({ title, subtitle, content, icon, color, index }) => {
+const TechnologyCard = ({ title, subtitle, content, icon, color }) => {
   const cardRef = useRef(null);
-  // מתחילים להופיע מעט מוקדם יותר כדי למנוע "חיתוך" ותחושה איטית
-  const isInView = useInView(cardRef, { once: true, margin: "0px 0px -10% 0px" });
+  useInView(cardRef, { once: true, margin: "0px 0px -10% 0px" });
 
   return (
     <motion.div
       ref={cardRef}
       className="modern-card"
-      initial={false}        // ⬅️ בלי מצב התחלתי
-      animate={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }} // ⬅️ קבוע
+      initial={false} // בלי מצב התחלתי
+      animate={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }} // קבוע
       style={{ "--card-color": color }}
     >
       <div className="card-background" />

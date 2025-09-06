@@ -8,7 +8,6 @@ html, body {
   overflow-x: hidden;        /* הסתר גלילה לרוחב */
   background-color: #000;
   color: #212529;
-  font-family: 'Monoton', cursive;  
 }
 
 .resume-title-wrapper {
@@ -36,6 +35,7 @@ html, body {
   text-shadow: 0 0 8px #2adef2;
   transform: perspective(1100px) rotateX(0.5deg) rotateY(15deg) skewX(0.3deg) skewY(2.8deg);
   transform-origin: top right;
+  font-family: 'Monoton', cursive;  
   cursor: pointer;  
 }
 
@@ -52,6 +52,7 @@ html, body {
   text-shadow: 0 0 10px #2adef2;
   transform: perspective(1100px) rotateX(0.5deg) rotateY(15deg) skewX(0.3deg) skewY(2.8deg);
   transform-origin: top right;
+  font-family: 'Monoton', cursive;  
   cursor: pointer;  
 }
 

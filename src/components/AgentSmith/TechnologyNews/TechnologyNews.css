@@ -3,6 +3,7 @@
   min-height: 100vh;
   background: radial-gradient(circle at 50% 50%, #050505 0%, #000 85%);
   animation: bgFlow 25s ease-in-out infinite;
+  scrollbar-width: none;
   padding: 5rem 5rem 9rem; /* מרווח נוסף בתחתית כדי שלא ייחתך הכרטיס האחרון */
   position: relative;
   overflow-x: hidden;   /* לא לחתוך לרוחב */
@@ -105,10 +106,10 @@
 
 .card-icon {
   position: absolute;
-  top: 1.2rem;
+  top: 1rem;
   right: 1.5rem;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 16px;
   display: flex;
   align-items: center;
@@ -125,7 +126,8 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  height: 100%;
+  height: 25rem;
+  top: 2rem;
   padding: 2rem;
   background: linear-gradient(to top, rgba(0,0,0,0.85), transparent 40%);
   border-radius: 24px;
