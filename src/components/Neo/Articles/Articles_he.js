@@ -25,7 +25,7 @@ export const locales = {
       readCta: "Read full article",
       closeCta: "Close",
       readTimeSuffix: "min read",
-      toggleLabel: "עברית",
+      toggleLabel: "HE ",
     },
     articles: [
       {
@@ -168,7 +168,7 @@ for common coding tasks.
       readCta: "קרא את המאמר המלא",
       closeCta: "סגור",
       readTimeSuffix: "דקות קריאה",
-      toggleLabel: "English",
+      toggleLabel: "EN",
     },
     articles: [
       {
