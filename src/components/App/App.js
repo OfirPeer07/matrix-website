@@ -55,7 +55,7 @@ function App() {
               <Route path="/contact-us" element={<ContactUs />} />
               <Route path="/thanks" element={<Thanks />} />
               <Route path="/neo/hacking" element={<Hacking />} />
-              <Route path="/neo/hacking/build-your-resume" element={<ResumeBuilder />} />              
+              <Route path="/neo/hacking/build-your-resume" element={<ResumeBuilder />} />
               <Route path="/neo/hacking/guides" element={<Guides />} />
               <Route path="/neo/hacking/articles" element={<Articles />} />
               <Route path="/neo/hacking/videos" element={<Videos />} />
@@ -79,10 +79,18 @@ function ConditionalSidebar() {
   const location = useLocation();
 
   if (location.pathname.startsWith('/neo')) {
-    return <MatrixBar mode="neo" showLogo={true} />;
+    return (
+      <div dir="ltr">
+        <MatrixBar mode="neo" showLogo={true} />
+      </div>
+    );
   }
   if (location.pathname.startsWith('/agent-smith')) {
-    return <MatrixBar mode="agent-smith" showLogo={true} />;
+    return (
+      <div dir="ltr">
+        <MatrixBar mode="agent-smith" showLogo={true} />
+      </div>
+    );
   }
   return null;
 }
