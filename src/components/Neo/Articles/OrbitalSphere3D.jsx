@@ -1,4 +1,5 @@
-import React, { useMemo, useRef } from "react";
+// src/components/Neo/Articles/OrbitalSphere3D.jsx
+import React, { useMemo, useRef, useEffect } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 
@@ -39,9 +40,9 @@ export default function OrbitalSphere3D({
   velDamping = 0.88,
   maxVel = 0.22,
 
-  // NEW: sensitivity / return modifiers
-  sensitivity = 1.0,       // 1 = כמו היום, >1 = יותר פיזור
-  returnBoost = 1.4,       // >1 = חזרה מהירה יותר כשאין ריחוף
+  // sensitivity / return modifiers
+  sensitivity = 1.0,
+  returnBoost = 1.4,
 
   // base body (behind beads)
   baseColor = "#000000ff",
@@ -78,7 +79,7 @@ export default function OrbitalSphere3D({
         }}
         style={{ width: "100%", height: "100%", display: "block" }}
       >
-        {/* simple lights (no drei needed) */}
+        {/* simple lights */}
         <hemisphereLight args={["#00d0ffff", "#00ffffff", 0.35]} />
         <directionalLight position={[3, 2, 4]} intensity={0.6} />
         <directionalLight position={[-2, -1, -3]} intensity={0.25} />
@@ -186,9 +187,22 @@ function BeadLayer({
   const instRef = useRef();
   const rimRef  = useRef();
   const colliderRef = useRef();
-  const { camera, raycaster, mouse } = useThree();
+  const { camera, raycaster, mouse, gl } = useThree();
 
-  // sensitivity משפיע גם על רדיוס ההשפעה וגם על עוצמת ה"בעטה"
+  // Only enable interaction after pointer *actually* enters canvas
+  const pointerActive = useRef(false);
+  useEffect(() => {
+    const el = gl.domElement;
+    const onEnter = () => { pointerActive.current = true; };
+    const onLeave = () => { pointerActive.current = false; };
+    el.addEventListener("pointerenter", onEnter);
+    el.addEventListener("pointerleave", onLeave);
+    return () => {
+      el.removeEventListener("pointerenter", onEnter);
+      el.removeEventListener("pointerleave", onLeave);
+    };
+  }, [gl]);
+
   const effKickRadius = Math.max(0.01, Math.min(0.49, kickRadius * (0.85 + 0.30 * sensitivity)));
   const effKickStrength = kickStrength * (0.90 + 0.40 * sensitivity);
   const cosKick = useMemo(() => Math.cos(Math.PI * effKickRadius), [effKickRadius]);
@@ -252,17 +266,46 @@ function BeadLayer({
   const mouseDir = useRef(new THREE.Vector3(0, 0, 1));
   const inside = useRef(false);
 
+  // -------- Initial draw: perfect sphere before first frame --------
+  useEffect(() => {
+    if (!instRef.current) return;
+    for (let i = 0; i < count; i++) {
+      const ib = i * 3;
+      const x = base[ib + 0], y = base[ib + 1], z = base[ib + 2];
+      const s = baseBeadSize * dotScale * sizeMul[i];
+
+      dummy.position.set(x * R, y * R, z * R);
+      dummy.scale.setScalar(s);
+      dummy.rotation.set(0, 0, 0);
+      dummy.updateMatrix();
+      instRef.current.setMatrixAt(i, dummy.matrix);
+
+      if (rimEnabled && rimRef.current) {
+        dummy.scale.setScalar(s * rimScale);
+        dummy.updateMatrix();
+        rimRef.current.setMatrixAt(i, dummy.matrix);
+      }
+    }
+    instRef.current.instanceMatrix.needsUpdate = true;
+    if (rimEnabled && rimRef.current) rimRef.current.instanceMatrix.needsUpdate = true;
+  }, [count, R, base, baseBeadSize, dotScale, sizeMul, rimEnabled, rimScale]);
+
+  // -------- Frame loop --------
   const frameInterval = 1 / Math.max(1, Math.min(120, fpsCap));
   const accRef = useRef(0);
 
   useFrame((_, rawDt) => {
-    const dt = Math.min(rawDt, 0.05); // מניעת קפיצות גדולות כשחוזרים לטאב
+    const dt = Math.min(rawDt, 0.05);
 
-    // raycast pointer → surface normal
-    raycaster.setFromCamera(mouse, camera);
-    const hit = colliderRef.current ? raycaster.intersectObject(colliderRef.current, false) : [];
-    inside.current = hit.length > 0;
-    if (inside.current) mouseDir.current.copy(hit[0].point).normalize();
+    // Only raycast when pointer is actually over the canvas
+    if (pointerActive.current) {
+      raycaster.setFromCamera(mouse, camera);
+      const hit = colliderRef.current ? raycaster.intersectObject(colliderRef.current, false) : [];
+      inside.current = hit.length > 0;
+      if (inside.current) mouseDir.current.copy(hit[0].point).normalize();
+    } else {
+      inside.current = false;
+    }
 
     // FPS cap
     accRef.current += dt;
@@ -281,7 +324,7 @@ function BeadLayer({
         const dot = x*md.x + y*md.y + z*md.z;
         if (dot >= cosKick) {
           const infl = smoothstep(cosKick, 1.0, dot);
-          let tx = x - md.x*dot, ty = y - md.y*dot, tz = z - md.z*dot; // משיק לנורמל
+          let tx = x - md.x*dot, ty = y - md.y*dot, tz = z - md.z*dot;
           const inv = 1 / Math.max(1e-6, Math.hypot(tx,ty,tz));
           tx*=inv; ty*=inv; tz*=inv;
           const k = effKickStrength * infl;
@@ -289,14 +332,14 @@ function BeadLayer({
         }
       }
 
-      // דינמיקה בסיסית
+      // dynamics
       vx *= velDamping; vy *= velDamping; vz *= velDamping;
       const vmag = Math.hypot(vx,vy,vz);
       if (vmag > maxVel) { const s = maxVel/vmag; vx*=s; vy*=s; vz*=s; }
 
       x += vx*step; y += vy*step; z += vz*step;
 
-      // קפיץ חזרה לבייסליין (+boost כשאין ריחוף)
+      // spring back to base (+boost when pointer not inside)
       const bx = base[ib+0], by = base[ib+1], bz = base[ib+2];
       x = x + (bx - x)*springNow;
       y = y + (by - y)*springNow;
@@ -304,7 +347,7 @@ function BeadLayer({
       const inv = 1 / Math.max(1e-6, Math.hypot(x,y,z));
       x*=inv; y*=inv; z*=inv;
 
-      // אל תאפשר לירות מהירות לאורך הנורמל (להדבקה יפה לפני השטח)
+      // remove velocity along normal for nicer sticking to surface
       const vdotn = vx*x + vy*y + vz*z;
       vx -= vdotn*x; vy -= vdotn*y; vz -= vdotn*z;
 

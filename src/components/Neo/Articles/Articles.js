@@ -112,6 +112,14 @@ export default function Articles() {
   const { t, localeKey, setLocaleKey } = useLocale();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // NEW: toggle class on <html> to hide .sidebar while modal is open
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isModalOpen) root.classList.add("hide-sidebar");
+    else root.classList.remove("hide-sidebar");
+    return () => root.classList.remove("hide-sidebar");
+  }, [isModalOpen]);
+
   const [page, setPage] = useState(1);
   const pageSize = 8;
   const displayedArticles = t.articles.slice(0, page * pageSize);
