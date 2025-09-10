@@ -1,104 +1,29 @@
-// Guides.js
-import React, { useState, useEffect } from "react";
+// === File: Guides.jsx ===
+import React from "react";
 import "./Guides.css";
+import GuidesCube from "./GuidesCube";
 
-const guidesData = [
-  {
-    id: "GCD-001",
-    name: "Neural Sync Optimization",
-    code: `
-> inject --module neural-sync --target=Neo
-
-// Initiating BCI synchronization...
-const brainLink = createLink("Neo");
-brainLink.optimizeFrequencies();
-brainLink.stabilize("Theta");
-
-// Result: latency reduced by 42ms
-    `,
-  },
-  {
-    id: "GCD-002",
-    name: "Environment Override Patch",
-    code: `
-> inject --env-patch matrix.env
-
-if (Matrix.environment === "hostile") {
-  Matrix.override("simulation", "sandbox");
-}
-
-// Result: Agent detection bypassed
-    `,
-  },
-  {
-    id: "GCD-003",
-    name: "Combat Reflex Amplifier",
-    code: `
-> inject --skill boost.reflex.pkg
-
-loadModule("kungfu_v2.3");
-system.overclock("motor cortex");
-
-// Reflexes enhanced to 1.2x baseline
-    `,
-  },
-];
-
-const Guides = () => {
-  const [typedGuides, setTypedGuides] = useState([]);
-
-  const BottomBlock = () => {
+export default function Guides() {
   return (
-    <div className="bottom-block hidden">
-      <h2>...</h2>
-      <p>...</p>
-    </div>
-  );
-};  
+    <div className="guides-page">
+      <header className="guides-header">
+        <h1 className="guides-title">Interactive Rubik’s Cube</h1>
+        <p className="guides-subtitle">
+          Drag background to orbit • Click a cubie then drag to rotate its layer • Three buttons below.
+        </p>
+      </header>
 
-  useEffect(() => {
-    let index = 0;
+      <main className="guides-stage" role="main" aria-label="Rubik's cube stage">
+        <GuidesCube width={1180} height={620} scramble />
+      </main>
 
-    const typeNextGuide = () => {
-      if (index < guidesData.length) {
-        const guide = guidesData[index];
-        let i = 0;
-        let typed = "";
-        const interval = setInterval(() => {
-          if (i < guide.code.length) {
-            typed += guide.code[i];
-            setTypedGuides(prev => {
-              const updated = [...prev];
-              updated[index] = typed;
-              return updated;
-            });
-            i++;
-          } else {
-            clearInterval(interval);
-            index++;
-            setTimeout(typeNextGuide, 700);
-          }
-        }, 10);
-      }
-    };
-
-    typeNextGuide();
-  }, []);
-
-  return (
-    <div className="genetic-guides-container">
-      {guidesData.map((guide, i) => (
-        <div key={i} className="code-drop-block">
-          <div className="header">
-            <span className="drop-id">{guide.id}</span>
-            <span className="drop-name">{guide.name}</span>
-          </div>
-          <pre className="drop-code">{typedGuides[i] || ""}</pre>
+      <footer className="guides-footer">
+        <div className="legend">
+          <span className="legend-text">
+            Tip: Wheel to zoom • Keyboard U D L R F B (+Shift for prime, Alt/⌘ for double) • Right click or hold Space = orbit.
+          </span>
         </div>
-      ))}
-      <BottomBlock />
+      </footer>
     </div>
   );
-};
-
-export default Guides;
+}
