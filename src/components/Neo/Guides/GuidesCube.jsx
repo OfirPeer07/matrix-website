@@ -15,6 +15,10 @@ const LOCK_PX = 6;             // pixels before locking a layer
 const SNAP_FRACTION = 0.32;    // if under 1/4 turn but beyond this fraction, snap
 const MAX_PREVIEW = Math.PI;   // preview clamp
 
+// Softer shadows (prevents acne/banding)
+const SHADOW_BIAS = -0.0002;
+const SHADOW_NORMAL_BIAS = 0.6;
+
 const COLORS = {
   U: 0xffffff, D: 0xffeb3b,
   L: 0x1976d2, R: 0x43a047,
@@ -30,10 +34,11 @@ const FACE_NORMALS = {
   B: new THREE.Vector3(0, 0,-1),
 };
 
+/* ✅ Correct cycles for +90° turns (match rotatePosInt). */
 const ORIENT_CYCLES = {
-  X: ["U","B","D","F"],
-  Y: ["F","R","B","L"],
-  Z: ["U","R","D","L"],
+  X: ["U","F","D","B"],  // U → F → D → B
+  Y: ["F","R","B","L"],  // F → R → B → L
+  Z: ["U","L","D","R"],  // U → L → D → R
 };
 
 const AXIS_UNIT = {
@@ -48,11 +53,28 @@ const roundToLayer = (v)=>clamp(Math.round(v),-1,1);
 /* ========================= Scene Helpers ========================= */
 function SceneLights(){
   return <>
-    <ambientLight intensity={0.48}/>
+    <ambientLight intensity={0.5}/>
     <hemisphereLight args={["#a0d8ff","#142026",0.45]}/>
-    <directionalLight position={[6,10,8]} intensity={1.05} castShadow
-      shadow-mapSize-width={1024} shadow-mapSize-height={1024}/>
-    <directionalLight position={[-6,6,-8]} intensity={0.35}/>
+    {/* key */}
+    <directionalLight
+      position={[6,10,8]}
+      intensity={1.05}
+      castShadow
+      shadow-mapSize-width={1024}
+      shadow-mapSize-height={1024}
+      shadow-bias={SHADOW_BIAS}
+      shadow-normalBias={SHADOW_NORMAL_BIAS}
+    />
+    {/* rim */}
+    <directionalLight
+      position={[-6,6,-8]}
+      intensity={0.36}
+      castShadow
+      shadow-mapSize-width={1024}
+      shadow-mapSize-height={1024}
+      shadow-bias={SHADOW_BIAS}
+      shadow-normalBias={SHADOW_NORMAL_BIAS}
+    />
   </>;
 }
 
@@ -127,7 +149,8 @@ function animateQuaternionTo(group, targetQ, ms=TURN_MS){
       const u=easeOutCubic(raw);
       const step=new THREE.Quaternion().slerpQuaternions(base,targetQ,u);
       group.quaternion.copy(step);
-      if(raw<1) requestAnimationFrame(tick); else res();
+      if(raw<1){ requestAnimationFrame(tick); }
+      else { res(); }
     }
     requestAnimationFrame(tick);
   });
@@ -163,34 +186,48 @@ function makeStickerTexture(hex){
 function Sticker({ face, colorHex }){
   const tex=useMemo(()=>makeStickerTexture(colorHex),[colorHex]);
   const n = FACE_NORMALS[face];
-  const offset = (SIZE/2)+0.02;
-  const pos=[n.x*offset,n.y*offset,n.z*offset];
-  const rot=new THREE.Euler();
-  if(face==="U") rot.set(-Math.PI/2,0,0);
-  if(face==="D") rot.set( Math.PI/2,0,0);
-  if(face==="L") rot.set(0, Math.PI/2,0);
-  if(face==="R") rot.set(0,-Math.PI/2,0);
-  if(face==="B") rot.set(0, Math.PI,0);
 
+  // tiny separation from body; planes (not boxes) avoid back-face conflicts
+  const offset = (SIZE/2) + 0.024;
+  const pos=[n.x*offset,n.y*offset,n.z*offset];
+
+  // Correct outward-facing normals for planes
+  const rot=new THREE.Euler();
+  if(face==="U") rot.set(-Math.PI/2, 0, 0);
+  if(face==="D") rot.set( Math.PI/2, 0, 0);
+  if(face==="L") rot.set(0, -Math.PI/2, 0);  // ← fixed (outward = -X)
+  if(face==="R") rot.set(0,  Math.PI/2, 0);  // ← fixed (outward = +X)
+  if(face==="B") rot.set(0,  Math.PI,   0);
+
+  // Anti Z-fighting: keep depthTest, disable depthWrite, negative polygonOffset
   const mat = useMemo(()=>new THREE.MeshStandardMaterial({
     map: tex,
     color: 0xffffff,
-    metalness: 0.08,
-    roughness: 0.22,
-    emissive: 0x0a0a0a,
-    emissiveIntensity: 0.03,
-    toneMapped: true
+    metalness: 0.06,
+    roughness: 0.28,
+    emissive: 0x0b0b0b,
+    emissiveIntensity: 0.035,
+    toneMapped: true,
+    side: THREE.FrontSide,
+    shadowSide: THREE.FrontSide,
+    polygonOffset: true,
+    polygonOffsetFactor: -3,
+    polygonOffsetUnits:  -3,
+    depthTest: true,
+    depthWrite: false
   }),[tex]);
 
   return (
     <group position={pos} rotation={rot}>
       <mesh
-        castShadow
-        receiveShadow
+        castShadow={false}
+        receiveShadow={false}
+        renderOrder={2}
         userData={{ isSticker: true, face }}
         name={`sticker-${face}`}
       >
-        <boxGeometry args={[SIZE-0.08,SIZE-0.08,0.06]}/>
+        {/* plane vs. thin box avoids back volume conflicts */}
+        <planeGeometry args={[SIZE-0.08,SIZE-0.08]} />
         <primitive object={mat} attach="material"/>
       </mesh>
     </group>
@@ -202,7 +239,7 @@ function Cubie({ data, onBind }){
   useEffect(()=>{ if(group.current) onBind(group.current); },[onBind]);
 
   const bodyMat = useMemo(()=>new THREE.MeshStandardMaterial({
-    color: 0x141619, metalness: 0.26, roughness: 0.44
+    color: 0x141619, metalness: 0.18, roughness: 0.48
   }),[]);
 
   return (
@@ -212,7 +249,7 @@ function Cubie({ data, onBind }){
       userData={{ isCubie: true }}
       position={[data.pos.x*STEP, data.pos.y*STEP, data.pos.z*STEP]}
     >
-      <mesh castShadow receiveShadow userData={{ isBody:true }}>
+      <mesh castShadow receiveShadow userData={{ isBody:true }} renderOrder={0}>
         <boxGeometry args={[SIZE,SIZE,SIZE]}/>
         <primitive object={bodyMat} attach="material"/>
       </mesh>
@@ -273,10 +310,10 @@ const CubeRoot = React.forwardRef(function CubeRoot({
   const drag = useRef({
     isDown:false, orbit:false, picking:false, locked:false,
     startX:0, startY:0, lastX:0, lastY:0, button:0,
-    faceNormalWorld: new THREE.Vector3(),     // normal of face in world
-    faceNormalLocal: new THREE.Vector3(),     // same in cube-local
-    t1: new THREE.Vector3(), t2: new THREE.Vector3(), // tangents (cube-local)
-    t1World: new THREE.Vector3(), t2World: new THREE.Vector3(), // tangents (world)
+    faceNormalWorld: new THREE.Vector3(),
+    faceNormalLocal: new THREE.Vector3(),
+    t1: new THREE.Vector3(), t2: new THREE.Vector3(),
+    t1World: new THREE.Vector3(), t2World: new THREE.Vector3(),
     axisKey:null, layerIndex:0, accum:0,
     layerG: new THREE.Group(), affectedIdx: [],
     pickedGroup:null
@@ -309,28 +346,25 @@ const CubeRoot = React.forwardRef(function CubeRoot({
 
     function hitCube(e){
       setPointer(e);
-      // רק סטיקרים/קוביות — פחות רעש
       const hits = raycaster.intersectObjects(groupRef.current.children, true)
         .filter(h => h.object?.userData?.isSticker || h.object?.parent?.userData?.isCubie);
       if(!hits.length) return null;
 
-      // ascend לגְרוּפ של הקיובּי
+      // ascend to cubie group
       let obj = hits[0].object;
       while(obj && obj.parent && obj.parent !== groupRef.current && obj.name !== "cubie"){
         obj = obj.parent;
       }
 
-      // normal של הפאה — world → cube-local
+      // world normal -> local (cube space)
       const invWorld = new THREE.Matrix4().copy(groupRef.current.matrixWorld).invert();
       const worldN = hits[0].face?.normal?.clone() ?? new THREE.Vector3(0,0,1);
-      worldN.transformDirection(hits[0].object.matrixWorld); // face normal in world
+      worldN.transformDirection(hits[0].object.matrixWorld);
       const localN = worldN.clone()
         .applyMatrix3(new THREE.Matrix3().setFromMatrix4(invWorld))
         .normalize();
 
-      // נשתמש גם בנקודת הפגיעה במרחב עולם להגדרת מישור הגרירה
       const worldPoint = hits[0].point.clone();
-
       return { group: obj, localNormal: localN, worldNormal: worldN, worldPoint };
     }
 
@@ -374,20 +408,16 @@ const CubeRoot = React.forwardRef(function CubeRoot({
       drag.current.orbit = false;
       drag.current.pickedGroup = hit.group;
 
-      // שמירת נורמל ונקודת התחלה — גם בעולם וגם בלוקאלי
       drag.current.faceNormalLocal.copy(hit.localNormal).normalize();
       drag.current.faceNormalWorld.copy(hit.worldNormal).normalize();
 
-      // בסיס טנגנטים (בלוקאלי), וגם וריאציה לעולם
       const { t1, t2 } = orthoBasisFromNormal(drag.current.faceNormalLocal);
       drag.current.t1.copy(t1); drag.current.t2.copy(t2);
 
-      // המרת הטנגנטים לעולם (כדי למדוד תנועה במרחב)
       const worldM3 = new THREE.Matrix3().setFromMatrix4(groupRef.current.matrixWorld);
       drag.current.t1World.copy(t1).applyMatrix3(worldM3).normalize();
       drag.current.t2World.copy(t2).applyMatrix3(worldM3).normalize();
 
-      // מישור גרירה: דרך נקודת הפגיעה, נורמל = נורמל הפאה (בעולם)
       dragPlane.current.setFromNormalAndCoplanarPoint(
         drag.current.faceNormalWorld, hit.worldPoint
       );
@@ -411,7 +441,7 @@ const CubeRoot = React.forwardRef(function CubeRoot({
       }
       if(!drag.current.picking) return;
 
-      // הקרנה לריי חדש + חיתוך עם מישור הגרירה
+      // project to drag plane
       setPointer(e);
       const ray = raycaster.ray;
       const hitNow = ray.intersectPlane(dragPlane.current, planeHitCurr.current);
@@ -421,9 +451,7 @@ const CubeRoot = React.forwardRef(function CubeRoot({
         planeHitCurr.current, planeHitStart.current
       );
 
-      // אם עוד לא נעול — החלטת ציר/שכבה לפי הטנגנט הדומיננטי
       if(!drag.current.locked){
-        // סף פיקסלים (מסך) כדי למנוע רעידות
         const screenDist = Math.hypot(
           e.clientX - drag.current.startX,
           e.clientY - drag.current.startY
@@ -435,18 +463,15 @@ const CubeRoot = React.forwardRef(function CubeRoot({
         const chosenTWorld = (proj1 >= proj2) ? drag.current.t1World : drag.current.t2World;
         const chosenTLocal = (proj1 >= proj2) ? drag.current.t1     : drag.current.t2;
 
-        // ציר סיבוב = n × t
         const rotAxisLocal = new THREE.Vector3()
           .crossVectors(drag.current.faceNormalLocal, chosenTLocal).normalize();
 
         drag.current.axisKey = toAxisKey(rotAxisLocal);
 
-        // קביעת השכבה (x/y/z) של הקוביה שנלחצה
         const gpos = gridCoordFromGroup(drag.current.pickedGroup);
         drag.current.layerIndex = (drag.current.axisKey==="X") ? gpos.x :
                                   (drag.current.axisKey==="Y") ? gpos.y : gpos.z;
 
-        // הכנה לקבוצת שכבה מסתובבת
         drag.current.layerG.quaternion.identity();
         drag.current.layerG.clear();
         groupRef.current.add(drag.current.layerG);
@@ -465,28 +490,20 @@ const CubeRoot = React.forwardRef(function CubeRoot({
         drag.current.locked = true;
       }
 
-      // כבר נעול — מעדכנים תצוגה מקדימה של הזווית
       if(drag.current.locked){
-        // מקרינים את worldDelta על הטנגנט הדומיננטי שנקבע בתחילת הנעילה
         const projOnT1 = worldDelta.dot(drag.current.t1World);
         const projOnT2 = worldDelta.dot(drag.current.t2World);
         const useT1 = Math.abs(projOnT1) >= Math.abs(projOnT2);
         const deltaAlong = useT1 ? projOnT1 : projOnT2;
 
-        // יחס המרה: כמה רדיאנים ליחידת אורך על המשטח
-        // כיול: 90° יתקבל בערך בגרירה של ~0.8*STEP לאורך הטנגנט.
         const radPerUnit = (Math.PI/2) / (STEP*0.8);
         let dAngle = deltaAlong * radPerUnit;
 
-        // כיוון סיבוב לפי יד ימין: n × t = axis, שינוי סימן בהתאם לפאה/מצלמה
-        // שימור תחושה עקבית:
         if(drag.current.axisKey==="Y"){
-          // סיבוב שכבת Y מרגיש “ימינה שמאלה”
-          // שינוי הסימן לפי אוריינטציה של הטנגנט
           dAngle *= (drag.current.faceNormalLocal.y >= 0 ? 1 : -1);
         } else if(drag.current.axisKey==="X"){
           dAngle *= (drag.current.faceNormalLocal.x >= 0 ? -1 : 1);
-        } else { // Z
+        } else {
           dAngle *= (drag.current.faceNormalLocal.z >= 0 ? 1 : -1);
         }
 
@@ -495,7 +512,9 @@ const CubeRoot = React.forwardRef(function CubeRoot({
         const q = new THREE.Quaternion().setFromAxisAngle(axis, drag.current.accum);
         drag.current.layerG.quaternion.copy(q);
 
-        // עדכון נקודת התחלה חדשה, כדי שהמשך הגרירה יהיה יחסי
+        // keep matrices fresh
+        groupRef.current.updateMatrixWorld(true);
+
         planeHitStart.current.copy(planeHitCurr.current);
       }
     }
@@ -508,9 +527,7 @@ const CubeRoot = React.forwardRef(function CubeRoot({
         cleanupDrag();
         return;
       }
-
       if(!drag.current.locked){
-        // click without turn
         cleanupDrag();
         return;
       }
@@ -540,6 +557,10 @@ const CubeRoot = React.forwardRef(function CubeRoot({
         c.group.rotation.set(0,0,0);
         c.group.quaternion.identity();
       }
+
+      // final refresh after detach
+      groupRef.current.updateMatrixWorld(true);
+
       drag.current.layerG.quaternion.identity();
       drag.current.layerG.clear();
       groupRef.current.remove(drag.current.layerG);
@@ -553,6 +574,7 @@ const CubeRoot = React.forwardRef(function CubeRoot({
         drag.current.layerG.quaternion.identity();
         drag.current.layerG.clear();
         groupRef.current.remove(drag.current.layerG);
+        groupRef.current.updateMatrixWorld(true);
       }
       drag.current.isDown=false;
       drag.current.picking=false;
@@ -589,6 +611,7 @@ const CubeRoot = React.forwardRef(function CubeRoot({
   },[camera, gl, groupRef, setCubies, cubiesRef]);
 
   return (
+    // 🔧 important: apply the computed groupRef here
     <group ref={groupRef}>
       {/* core */}
       <mesh castShadow>
@@ -660,6 +683,10 @@ export default function GuidesCube({ width=1180, height=620, scramble=true }){
       next[i].group.position.set(next[i].pos.x*STEP, next[i].pos.y*STEP, next[i].pos.z*STEP);
       next[i].group.rotation.set(0,0,0); next[i].group.quaternion.identity();
     });
+
+    // refresh matrices after reparenting
+    root.updateMatrixWorld(true);
+
     setCubies(next);
     layerG.quaternion.identity();
     layerG.clear();
@@ -750,8 +777,8 @@ export default function GuidesCube({ width=1180, height=620, scramble=true }){
     <div className="gc-wrapper" style={{ width:"100%", maxWidth: width, margin:"0 auto" }}>
       <Canvas
         dpr={[1,1.7]}
-        gl={{ antialias:true, alpha:true }}
-        camera={{ position:[0,0.8,8.2], fov:48, near:0.1, far:80 }}
+        gl={{ antialias:true, alpha:true, logarithmicDepthBuffer: true }}
+        camera={{ position:[0,0.8,8.2], fov:48, near:0.5, far:80 }}
         onCreated={({ gl })=>{
           gl.toneMapping = THREE.ACESFilmicToneMapping;
           gl.outputColorSpace = THREE.SRGBColorSpace;
@@ -777,7 +804,7 @@ export default function GuidesCube({ width=1180, height=620, scramble=true }){
       </div>
 
       <div className="gc-hint">
-        <strong>{detectStep(cubies).title}</strong> — {detectStep(cubies).tip}
+        <strong>{hint.title}</strong> — {hint.tip}
       </div>
     </div>
   );
