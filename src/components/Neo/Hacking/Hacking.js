@@ -84,19 +84,19 @@ function Hacking() {
 
       {rectanglesVisible && (
         <>
-          <div className="rectangle first" onClick={() => handleNavigation('hacking/articles')}>
+          <div className="rectangle first" onClick={() => handleNavigation('/neo/hacking/articles')}>
             <video className="background-video" autoPlay loop muted playsInline>
               <source src={agentSmith} type="video/mp4" />
             </video>
             <div className="hackingTitle">Articles</div>
           </div>
-          <div className="rectangle second" onClick={() => handleNavigation('hacking/guides')}>
+          <div className="rectangle second" onClick={() => handleNavigation('/neo/hacking/guides')}>
             <video className="background-video" autoPlay loop muted playsInline>
               <source src={neo} type="video/mp4" />
             </video>
             <div className="hackingTitle">Guides</div>
           </div>
-          <div className="rectangle third" onClick={() => handleNavigation('hacking/videos')}>
+          <div className="rectangle third" onClick={() => handleNavigation('/neo/hacking/videos')}>
             <video className="background-video" autoPlay loop muted playsInline>
               <source src={fight} type="video/mp4" />
             </video>
