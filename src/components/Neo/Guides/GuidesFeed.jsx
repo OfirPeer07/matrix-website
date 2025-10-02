@@ -1,7 +1,16 @@
+// src/components/Neo/Guides/GuidesFeed.jsx
 import React, { useMemo, useState, useRef, useEffect } from "react";
 import "./GuidesFeed.css";
+import GuidesReels from "./GuidesReels"; // ← שימוש בקיים שלך (GuidesReels.jsx)
 
-/** ───────────────── Demo data ───────────────── */
+/**
+ * Instagram-like Guides feed inside the iPhone mockup.
+ * Views: feed | post | profile | reels
+ * Bottom bar: Home / Search / Add / Reels / Profile
+ * Search opens only when tapping the bar's Search.
+ */
+
+// ---------- FEED DEMO DATA ----------
 const demoPosts = [
   {
     id: "p1",
@@ -23,10 +32,10 @@ Quick start:
 2) useEffect for side-effects
 3) useMemo/useCallback to optimize re-renders
 
-Pro tip: co-locate hooks close to where state is used. Keep effects focused.
+Pro tip: co-locate hooks close to where state is used.
 Open the full guide for code snippets.`,
       he: `Hooks מאפשרים שימוש בסטייט ותכונות נוספות של React ללא מחלקות.
-זה אופציונלי, אבל אחרי שמנסים—קשה לחזור אחורה.
+זה אופציונלי, אבל אחרי שמנסים — קשה לחזור אחורה.
 
 התחלה מהירה:
 1) useState לסטייט מקומי
@@ -45,14 +54,12 @@ Open the full guide for code snippets.`,
     minutes: 5,
     image:
       "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=1200&auto=format&fit=crop",
-    title: { en: "CSS Animations you’ll actually ship", he: "אנימציות CSS שבאמת שולחים לפרוד׳" },
+    title: { en: "CSS animations you'll ship", he: "אנימציות CSS שבאמת שולחים" },
     tags: ["CSS", "UI"],
     likes: 96,
     body: {
-      en: `Motion adds meaning. Use it to hint relationships, not to impress.
-Prefer transform + opacity for silky, GPU-friendly animations.`,
-      he: `תנועה מוסיפה משמעות. השתמשו בה לרמוז על יחסים, לא כדי להרשים.
-העדיפו transform + opacity לאנימציות חלקות המואצות ב-GPU.`,
+      en: `Motion adds meaning. Prefer transform + opacity for silky, GPU-friendly animations.`,
+      he: `תנועה מוסיפה משמעות. העדיפו transform + opacity לאנימציות חלקות על ה-GPU.`,
     },
   },
   {
@@ -63,18 +70,17 @@ Prefer transform + opacity for silky, GPU-friendly animations.`,
     minutes: 9,
     image:
       "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1200&auto=format&fit=crop",
-    title: { en: "JS Debugging Patterns", he: "דפוסי דיבאגינג ב-JS" },
+    title: { en: "JS debugging patterns", he: "דפוסי דיבוג ב-JS" },
     tags: ["JS"],
     likes: 203,
     body: {
-      en: `Console with purpose, use breakpoints liberally, and learn the Sources tab.
-Small logs > huge dumps.`,
-      he: `קונסול עם מטרה, ברייקפוינטים בנדיבות, ולהכיר את לשונית Sources.
-לוגים קטנים > הצפות.`,
+      en: `Console with purpose, use breakpoints liberally, and learn the Sources tab.`,
+      he: `קונסול עם מטרה, ברייקפוינטים בנדיבות, ולהכיר את לשונית Sources.`,
     },
   },
 ];
 
+// ---------- STRINGS ----------
 const dict = {
   en: {
     guides: "Guides",
@@ -83,12 +89,12 @@ const dict = {
     likes: "likes",
     readMore: "Read more",
     readLess: "Read less",
-    caughtUp: "You're all caught up",
-    viewOlder: "View older posts",
     minutes: "min",
-    searchTitle: "Recent searches",
+    search: "Search",
+    recent: "Recent searches",
     clearAll: "Clear all",
-    searchPlaceholder: "Search guides",
+    caughtUp: "You're all caught up",
+    older: "View older posts",
   },
   he: {
     guides: "מדריכים",
@@ -97,16 +103,15 @@ const dict = {
     likes: "לייקים",
     readMore: "קרא עוד",
     readLess: "קרא פחות",
-    caughtUp: "קיבלת הכל",
-    viewOlder: "צפה בפוסטים קודמים",
     minutes: "דק׳",
-    searchTitle: "חיפושים אחרונים",
+    search: "חיפוש",
+    recent: "חיפושים אחרונים",
     clearAll: "נקה הכל",
-    searchPlaceholder: "חיפוש מדריכים",
+    caughtUp: "קיבלת הכל",
+    older: "צפה בפוסטים קודמים",
   },
 };
 
-/** ───────────────── Utilities ───────────────── */
 function useRTL(lang) {
   useEffect(() => {
     const root = document.querySelector(".screen-ui");
@@ -115,74 +120,90 @@ function useRTL(lang) {
   }, [lang]);
 }
 
-/** ───────────────── Icons (minimal, crisp) ───────────────── */
+/** Simple icon set (SVG, no library) */
 const Icon = {
-  Home: ({ active }) => (
-    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden>
+  Home: (p) => (
+    <svg viewBox="0 0 24 24" width="22" height="22" {...p}>
       <path
-        d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-5H10v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-10.5Z"
+        d="M3 10.5 12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-10.5Z"
         fill="none"
         stroke="currentColor"
-        strokeWidth={active ? 2.2 : 1.8}
+        strokeWidth="1.8"
+        strokeLinecap="round"
         strokeLinejoin="round"
       />
     </svg>
   ),
-  Search: () => (
-    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden>
-      <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="1.8" />
-      <path d="M20 20l-3.5-3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+  Search: (p) => (
+    <svg viewBox="0 0 24 24" width="22" height="22" {...p}>
+      <circle cx="11" cy="11" r="7.2" fill="none" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M16.8 16.8 21 21" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
   ),
-  PlusSquare: () => (
-    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden>
-      <rect x="3.5" y="3.5" width="17" height="17" rx="4" fill="none" stroke="currentColor" strokeWidth="1.8" />
+  Plus: (p) => (
+    <svg viewBox="0 0 24 24" width="22" height="22" {...p}>
+      <rect x="3.5" y="3.5" width="17" height="17" rx="5" fill="none" stroke="currentColor" strokeWidth="1.8" />
       <path d="M12 8v8M8 12h8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
     </svg>
   ),
-  Reels: () => (
-    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden>
-      <rect x="3.5" y="4" width="17" height="16.5" rx="4" fill="none" stroke="currentColor" strokeWidth="1.8" />
-      <path d="M3.5 8.5h17M8 4l3 4M13 4l3 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-      <path d="M10 11.5l6 3.5-6 3.5v-7z" fill="currentColor" />
+  Reels: (p) => (
+    <svg viewBox="0 0 24 24" width="22" height="22" {...p}>
+      <rect x="3" y="4" width="18" height="16" rx="4" fill="none" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M3 9h18M9 4l3 5M15 4l3 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      <path d="M12 11.5v5l4-2.5-4-2.5Z" fill="currentColor" />
     </svg>
   ),
-  User: ({ active }) => (
-    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden>
-      <circle cx="12" cy="9" r="4" fill="none" stroke="currentColor" strokeWidth={active ? 2.2 : 1.8} />
-      <path d="M5 20c1.5-3.5 5-5 7-5s5.5 1.5 7 5" fill="none" stroke="currentColor" strokeWidth={active ? 2.2 : 1.8} strokeLinecap="round" />
+  User: (p) => (
+    <svg viewBox="0 0 24 24" width="22" height="22" {...p}>
+      <circle cx="12" cy="9" r="4" fill="none" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M5 20a7 7 0 0 1 14 0" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  ),
+  Dots: (p) => (
+    <svg viewBox="0 0 24 24" width="18" height="18" {...p}>
+      <circle cx="5" cy="12" r="1.6" fill="currentColor" />
+      <circle cx="12" cy="12" r="1.6" fill="currentColor" />
+      <circle cx="19" cy="12" r="1.6" fill="currentColor" />
+    </svg>
+  ),
+  Heart: (p) => (
+    <svg viewBox="0 0 24 24" width="18" height="18" {...p}>
+      <path d="M12 20s-7-4.7-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.3-7 10-7 10Z" fill="none" stroke="currentColor" strokeWidth="1.6" />
+    </svg>
+  ),
+  Save: (p) => (
+    <svg viewBox="0 0 24 24" width="18" height="18" {...p}>
+      <path d="M5 4h14v16l-7-4-7 4V4Z" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+    </svg>
+  ),
+  Back: (p) => (
+    <svg viewBox="0 0 24 24" width="22" height="22" {...p}>
+      <path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   ),
 };
 
-/** ───────────────── Main component ───────────────── */
-export default function GuidesFeed() {
-  const [theme, setTheme] = useState("dark");   // 'dark' | 'light'
-  const [lang, setLang] = useState("he");       // 'en' | 'he'
-  const [tab, setTab] = useState("feed");       // feed | search | compose | reels | profile
-  const [view, setView] = useState("feed");     // feed | post | profile  (inner pages)
+export default function GuidesFeed({ reelsItems }) {
+  const [theme, setTheme] = useState("dark");
+  const [lang, setLang] = useState("he");
+  const [view, setView] = useState("feed"); // feed | post | profile | reels
   const [selected, setSelected] = useState(null);
   const [banner, setBanner] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
 
   useRTL(lang);
   const t = dict[lang];
-
-  // colors per theme
-  const colors = {
-    bg: theme === "dark" ? "#0b0c0e" : "#f7f8fa",
-    card: theme === "dark" ? "#15171b" : "#ffffff",
-    text: theme === "dark" ? "#e8eaed" : "#0a0b0e",
-    pill: theme === "dark" ? "#1c1f25" : "#eef1f5",
-  };
-
-  /** pull-to-refresh feel on feed only */
   const listRef = useRef(null);
+
+  const posts = useMemo(() => demoPosts, []);
+
+  // pull-to-refresh banner
   useEffect(() => {
-    if (tab !== "feed") return;
     const el = listRef.current;
     if (!el) return;
-    let pulling = false;
-    let startY = 0;
+    let pulling = false,
+      startY = 0;
+
     const onTouchStart = (e) => {
       if (el.scrollTop <= 0) {
         pulling = true;
@@ -193,26 +214,41 @@ export default function GuidesFeed() {
       if (!pulling) return;
       const dy = e.touches[0].clientY - startY;
       if (dy > 65 && el.scrollTop <= 0) {
-        showBanner();
+        showPullBanner();
         pulling = false;
       }
     };
+    const onTouchEnd = () => (pulling = false);
     const onWheel = (e) => {
-      if (el.scrollTop <= 0 && e.deltaY < -40) showBanner();
+      if (el.scrollTop <= 0 && e.deltaY < -40) showPullBanner();
     };
+
     el.addEventListener("touchstart", onTouchStart, { passive: true });
     el.addEventListener("touchmove", onTouchMove, { passive: true });
+    el.addEventListener("touchend", onTouchEnd);
     el.addEventListener("wheel", onWheel, { passive: true });
+
     return () => {
       el.removeEventListener("touchstart", onTouchStart);
       el.removeEventListener("touchmove", onTouchMove);
+      el.removeEventListener("touchend", onTouchEnd);
       el.removeEventListener("wheel", onWheel);
     };
-  }, [tab]);
+  }, []);
 
-  const showBanner = () => {
+  const showPullBanner = () => {
     setBanner(true);
     setTimeout(() => setBanner(false), 1400);
+  };
+
+  const colors = {
+    bg: theme === "dark" ? "#0b0c0e" : "#f7f8fa",
+    card: theme === "dark" ? "#17181c" : "#ffffff",
+    cardRaised: theme === "dark" ? "#1b1d22" : "#ffffff",
+    text: theme === "dark" ? "#e8eaed" : "#0b0c0e",
+    sub: theme === "dark" ? "#a4a8b3" : "#4b5563",
+    pill: theme === "dark" ? "#20232a" : "#eef1f5",
+    divider: theme === "dark" ? "rgba(255,255,255,.06)" : "rgba(0,0,0,.08)",
   };
 
   const openPost = (p) => {
@@ -220,119 +256,125 @@ export default function GuidesFeed() {
     setView("post");
   };
 
-  // list once; feed doesn’t have text search anymore
-  const posts = demoPosts;
+  // Default reels demo (used only if you לא מעביר reelsItems בפרופס)
+  const demoReels = [
+    {
+      id: "r1",
+      src: "/assets/reels/clip1.mp4",
+      poster: "/assets/reels/clip1.jpg",
+      caption: "State & Effects — quick tip",
+      username: "neoacademy",
+      timestamp: "2025-08-20T12:00:00Z",
+    },
+    {
+      id: "r2",
+      src: "/assets/reels/clip2.mp4",
+      poster: "/assets/reels/clip2.jpg",
+      caption: "CSS grid layout in 60s",
+      username: "uiclub",
+    },
+  ];
 
   return (
     <div className={`gf-root ${theme}`} style={{ background: colors.bg }}>
-      {/* Top bar */}
+      {/* Header */}
       <div className="gf-top">
-        <div className="left"><strong>{t.guides}</strong></div>
+        <div className="left">
+          <strong>{t.guides}</strong>
+        </div>
         <div className="right">
-          {/* show icon of the **other** mode to indicate what will happen */}
-          <button
-            className="icon-btn"
-            title="Toggle theme"
-            onClick={() => setTheme((s) => (s === "dark" ? "light" : "dark"))}
-          >
+          {/* מציג את האייקון של המצב הבא */}
+          <button className="icon-btn" title="Toggle theme" onClick={() => setTheme((s) => (s === "dark" ? "light" : "dark"))}>
             {theme === "dark" ? "☀️" : "🌙"}
           </button>
-          <button
-            className="icon-btn"
-            title="Language"
-            onClick={() => setLang((s) => (s === "en" ? "he" : "en"))}
-          >
-            {lang === "en" ? "EN" : "HE"}
+          <button className="icon-btn lang" title="Language" onClick={() => setLang((s) => (s === "en" ? "he" : "en"))}>
+            {lang === "en" ? "HE" : "EN"}
           </button>
         </div>
       </div>
 
       {/* Scrollable content area */}
       <div className="gf-scroll" ref={listRef}>
-        {tab === "feed" && view === "feed" && (
-          <>
-            {banner && (
-              <div className="gf-banner">
-                <div className="ring" />
-                <div className="txt">
-                  <div className="title">{t.caughtUp}</div>
-                  <div className="sub">{t.viewOlder}</div>
-                </div>
-              </div>
-            )}
-
-            <div className="gf-feed">
-              {posts.map((p) => (
-                <article
-                  key={p.id}
-                  className="gf-card"
-                  style={{ background: colors.card, color: colors.text }}
-                >
-                  <header className="gf-card-head">
-                    <img src={p.avatar} alt="" className="avatar" />
-                    <div className="meta">
-                      <div className="author">{p.author}</div>
-                      <div className="time">
-                        {p.minutes} {t.minutes} · guide
-                      </div>
-                    </div>
-                    <button className="dots" aria-label="more">•••</button>
-                  </header>
-
-                  <div className="gf-image-wrap" onClick={() => openPost(p)}>
-                    <img className="gf-image" src={p.image} alt="" />
-                  </div>
-
-                  <div className="gf-card-body">
-                    <div className="title">{p.title[lang]}</div>
-                    <div className="tags">
-                      {p.tags.map((tg) => (
-                        <span
-                          key={tg}
-                          className="pill"
-                          style={{ background: colors.pill, color: colors.text }}
-                        >
-                          {tg}
-                        </span>
-                      ))}
-                    </div>
-
-                    <div className="actions">
-                      <button className="like">♥</button>
-                      <button className="save">🔖</button>
-                      <div className="spacer" />
-                      <div className="likes">
-                        {p.likes.toLocaleString()} {t.likes}
-                      </div>
-                    </div>
-                  </div>
-                </article>
-              ))}
+        {banner && (
+          <div className="gf-banner" role="status" aria-live="polite">
+            <div className="ring" />
+            <div className="txt">
+              <div className="title">{t.caughtUp}</div>
+              <div className="sub">{t.older}</div>
             </div>
-          </>
+          </div>
+        )}
+
+        {view === "feed" && (
+          <div className="gf-feed">
+            {posts.map((p) => (
+              <article
+                key={p.id}
+                className="gf-card"
+                style={{ background: colors.card, color: colors.text, borderColor: colors.divider }}
+              >
+                <header className="gf-card-head">
+                  <img src={p.avatar} alt="" className="avatar" />
+                  <div className="meta">
+                    <div className="author">{p.author}</div>
+                    <div className="time">
+                      {p.minutes} {t.minutes} · guide
+                    </div>
+                  </div>
+                  <button className="dots" aria-label="More">
+                    <Icon.Dots />
+                  </button>
+                </header>
+
+                <button className="gf-image-wrap" onClick={() => openPost(p)} aria-label="Open guide">
+                  <img className="gf-image" src={p.image} alt="" />
+                </button>
+
+                <div className="gf-card-body">
+                  <div className="title">{p.title[lang]}</div>
+                  <div className="tags">
+                    {p.tags.map((tg) => (
+                      <span key={tg} className="pill" style={{ background: colors.pill }}>
+                        {tg}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="actions">
+                    <button className="like" aria-label="Like">
+                      <Icon.Heart />
+                    </button>
+                    <button className="save" aria-label="Save">
+                      <Icon.Save />
+                    </button>
+                    <div className="spacer" />
+                    <div className="likes">
+                      {p.likes.toLocaleString()} {t.likes}
+                    </div>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
         )}
 
         {view === "post" && selected && (
           <PostView
             p={selected}
+            colors={colors}
             lang={lang}
             t={t}
             onBack={() => setView("feed")}
-            onOpenProfile={() => {
-              setView("profile");
-              setTab("profile");
-            }}
+            onOpenProfile={() => setView("profile")}
           />
         )}
 
-        {tab === "profile" && view !== "post" && (
+        {view === "profile" && (
           <ProfileView
             posts={demoPosts}
             t={t}
-            onBack={() => {
-              setTab("feed");
-              setView("feed");
-            }}
+            colors={colors}
+            onBack={() => setView("feed")}
             onOpen={(p) => {
               setSelected(p);
               setView("post");
@@ -340,54 +382,41 @@ export default function GuidesFeed() {
           />
         )}
 
-        {tab === "search" && <SearchView lang={lang} t={t} />}
-        {tab === "reels" && <EmptyCentered label="Reels" />}
-        {tab === "compose" && <EmptyCentered label="Upload" />}
+        {view === "reels" && (
+          <GuidesReels
+            title="Guides Reels"
+            items={Array.isArray(reelsItems) && reelsItems.length ? reelsItems : demoReels}
+            onExit={() => setView("feed")} // אופציונלי: אם יש לך כפתור Back בתוך הרילס
+          />
+        )}
       </div>
 
-      {/* Bottom bar – Instagram-like icons */}
-      <nav className="gf-nav" style={{ background: colors.card, color: colors.text }}>
-        <button
-          className={`nav-btn ${tab === "feed" ? "active" : ""}`}
-          onClick={() => { setTab("feed"); setView("feed"); }}
-          aria-label="Feed"
-        >
-          <Icon.Home active={tab === "feed"} />
+      {/* Search sheet (full screen inside the phone) */}
+      {showSearch && <SearchSheet t={t} theme={theme} onClose={() => setShowSearch(false)} />}
+
+      {/* Bottom nav (no visual changes) */}
+      <nav className="gf-nav" style={{ background: colors.cardRaised, borderTopColor: colors.divider, color: colors.text }}>
+        <button className={`nav-btn ${view === "feed" ? "active" : ""}`} onClick={() => setView("feed")}>
+          <Icon.Home />
           <span>{t.feed}</span>
         </button>
 
-        <button
-          className={`nav-btn ${tab === "search" ? "active" : ""}`}
-          onClick={() => setTab("search")}
-          aria-label="Search"
-        >
+        <button className="nav-btn" onClick={() => setShowSearch(true)}>
           <Icon.Search />
-          <span>Search</span>
+          <span>{t.search}</span>
         </button>
 
-        <button
-          className={`nav-btn ${tab === "compose" ? "active" : ""}`}
-          onClick={() => setTab("compose")}
-          aria-label="Upload"
-        >
-          <Icon.PlusSquare />
+        <button className="nav-btn big" aria-label="Add">
+          <Icon.Plus />
         </button>
 
-        <button
-          className={`nav-btn ${tab === "reels" ? "active" : ""}`}
-          onClick={() => setTab("reels")}
-          aria-label="Reels"
-        >
+        <button className={`nav-btn ${view === "reels" ? "active" : ""}`} onClick={() => setView("reels")} aria-label="Reels">
           <Icon.Reels />
           <span>Reels</span>
         </button>
 
-        <button
-          className={`nav-btn ${tab === "profile" ? "active" : ""}`}
-          onClick={() => setTab("profile")}
-          aria-label="Profile"
-        >
-          <Icon.User active={tab === "profile"} />
+        <button className={`nav-btn ${view === "profile" ? "active" : ""}`} onClick={() => setView("profile")}>
+          <Icon.User />
           <span>{t.profile}</span>
         </button>
       </nav>
@@ -395,24 +424,30 @@ export default function GuidesFeed() {
   );
 }
 
-/** ───────────────── Post view ───────────────── */
-function PostView({ p, lang, t, onBack, onOpenProfile }) {
+/** Post detail */
+function PostView({ p, colors, lang, t, onBack, onOpenProfile }) {
   const [expanded, setExpanded] = useState(false);
   const text = p.body[lang];
-  const short = text.split("\n").slice(0, 2).join("\n");
+  const cut = text.split("\n").slice(0, 2).join("\n");
 
   return (
     <div className="gf-post">
       <div className="gf-post-top">
-        <button className="back" onClick={onBack} aria-label="Back">←</button>
-        <div className="who" onClick={onOpenProfile}>
+        <button className="back" onClick={onBack} aria-label="Back">
+          <Icon.Back />
+        </button>
+        <button className="who" onClick={onOpenProfile}>
           <img src={p.avatar} alt="" />
           <div className="meta">
             <div className="author">{p.author}</div>
-            <div className="time">{p.minutes} {t.minutes} · guide</div>
+            <div className="time">
+              {p.minutes} {t.minutes} · guide
+            </div>
           </div>
-        </div>
-        <button className="dots" aria-label="more">•••</button>
+        </button>
+        <button className="dots" aria-label="More">
+          <Icon.Dots />
+        </button>
       </div>
 
       <div className="gf-image-wrap">
@@ -421,11 +456,9 @@ function PostView({ p, lang, t, onBack, onOpenProfile }) {
 
       <div className="gf-post-body">
         <h3>{p.title[lang]}</h3>
-        <div className="tags">
-          {p.tags.map((tg) => <span key={tg} className="pill">{tg}</span>)}
-        </div>
+        <div className="tags">{p.tags.map((tg) => <span key={tg} className="pill">{tg}</span>)}</div>
 
-        <p className={`copy ${expanded ? "expanded" : ""}`}>{expanded ? text : short}</p>
+        <p className={`copy ${expanded ? "expanded" : ""}`}>{expanded ? text : cut}</p>
         <button className="link" onClick={() => setExpanded((s) => !s)}>
           {expanded ? t.readLess : t.readMore}
         </button>
@@ -434,12 +467,14 @@ function PostView({ p, lang, t, onBack, onOpenProfile }) {
   );
 }
 
-/** ───────────────── Profile (grid) ───────────────── */
-function ProfileView({ posts, t, onBack, onOpen }) {
+/** Profile grid */
+function ProfileView({ posts, t, colors, onBack, onOpen }) {
   return (
     <div className="gf-profile">
       <div className="gf-post-top">
-        <button className="back" onClick={onBack} aria-label="Back">←</button>
+        <button className="back" onClick={onBack} aria-label="Back">
+          <Icon.Back />
+        </button>
         <div className="title-strong">{t.profile}</div>
         <span />
       </div>
@@ -451,9 +486,18 @@ function ProfileView({ posts, t, onBack, onOpen }) {
           alt=""
         />
         <div className="stats">
-          <div><strong>24</strong><span>guides</span></div>
-          <div><strong>11k</strong><span>followers</span></div>
-          <div><strong>302</strong><span>following</span></div>
+          <div>
+            <strong>24</strong>
+            <span>guides</span>
+          </div>
+          <div>
+            <strong>11k</strong>
+            <span>followers</span>
+          </div>
+          <div>
+            <strong>302</strong>
+            <span>following</span>
+          </div>
         </div>
       </div>
 
@@ -468,60 +512,66 @@ function ProfileView({ posts, t, onBack, onOpen }) {
   );
 }
 
-/** ───────────────── Search view (opens only from bar) ───────────────── */
-function SearchView({ lang, t }) {
-  const [recent, setRecent] = useState(
-    demoPosts.map((p) => ({
-      id: p.id,
-      title: p.title[lang],
-      subtitle: `${p.author} · guide`,
-      avatar: p.avatar,
-    }))
-  );
-
+/** Full-screen search sheet */
+function SearchSheet({ t, theme, onClose }) {
+  const [recent, setRecent] = useState([
+    {
+      id: "r1",
+      title: "React",
+      avatar:
+        "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=60&h=60&fit=crop&auto=format",
+    },
+    {
+      id: "r2",
+      title: "CSS grid",
+      avatar:
+        "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=60&h=60&fit=crop&auto=format",
+    },
+    {
+      id: "r3",
+      title: "JavaScript",
+      avatar:
+        "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=60&h=60&fit=crop&auto=format",
+    },
+  ]);
   const clearAll = () => setRecent([]);
 
   return (
-    <div className="gf-search-view">
-      <div className="sv-head">
-        <div className="title">{t.searchTitle}</div>
-        {recent.length ? (
-          <button className="clear" onClick={clearAll}>{t.clearAll}</button>
-        ) : (
-          <span />
-        )}
+    <div className={`gf-search-sheet ${theme}`} role="dialog" aria-modal="true">
+      <div className="sheet-head">
+        <button className="close" onClick={onClose} aria-label="Close">
+          ✕
+        </button>
+        <div className="title">{t.search}</div>
+        <span />
       </div>
 
-      <div className="sv-input-wrap">
-        <input
-          className="sv-input"
-          placeholder={t.searchPlaceholder}
-          // (hook up to real search later)
-        />
+      <div className="sheet-body">
+        <div className="section-head">
+          <span>{t.recent}</span>
+          {!!recent.length && (
+            <button className="link" onClick={clearAll}>
+              {t.clearAll}
+            </button>
+          )}
+        </div>
+
+        <div className="recent-list">
+          {recent.length === 0 ? (
+            <div className="empty">—</div>
+          ) : (
+            recent.map((r) => (
+              <div key={r.id} className="row">
+                <img src={r.avatar} alt="" />
+                <span>{r.title}</span>
+                <button className="x" aria-label="Remove">
+                  ×
+                </button>
+              </div>
+            ))
+          )}
+        </div>
       </div>
-
-      <ul className="sv-list">
-        {recent.map((r) => (
-          <li key={r.id} className="sv-item">
-            <img src={r.avatar} alt="" className="sv-avatar" />
-            <div className="sv-meta">
-              <div className="sv-title">{r.title}</div>
-              <div className="sv-sub">{r.subtitle}</div>
-            </div>
-            <button className="sv-remove" aria-label="remove">×</button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-/** ───────────────── Placeholder screens ───────────────── */
-function EmptyCentered({ label }) {
-  return (
-    <div className="empty-center">
-      <div className="empty-icon">◎</div>
-      <div className="empty-txt">{label}</div>
     </div>
   );
 }
