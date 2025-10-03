@@ -1,183 +1,181 @@
-/* Global futuristic font */
-body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: #0a0f1c;
-  color: #e0e0e0;
-  margin: 0;
-  overflow-x: hidden;
+/* ===================== Force Page Scrolling (fix) ===================== */
+html, body {
+  height: auto;
+  min-height: 100%;
+  overflow-y: auto !important; /* override any global scroll lock */
+}
+#root, #app, .App, .page, .layout {
+  height: auto !important;
+  min-height: 100% !important;
+  overflow: visible !important;
 }
 
-/* Container */
-.troubleshooting-container {
-  text-align: center;
-  padding: 2rem;
+/* ===================== Theme (high-tech minimal) ===================== */
+:root{
+  --tg-bg:#0b1220;
+  --tg-surface:#141b2b;
+  --tg-surface-2:#0f1728;
+  --tg-border:#263149;
+  --tg-text:#e6ebf3;
+  --tg-muted:#9aa4b2;
+  --tg-accent:#58b2ff;
+  --tg-accent2:#34d0a9;
+  --tg-shadow:rgba(0,0,0,.35);
+  --tg-focus:#8dd3ff;
+}
+body{ background:var(--tg-bg); color:var(--tg-text); }
+
+/* ===================== Page ===================== */
+.tg-page{ padding:2rem; text-align:center; min-height:100vh; overflow:visible; }
+.tg-hero h1{ margin:0; font-size:2.2rem; letter-spacing:.2px; }
+.tg-hero p{ margin:.5rem 0 0; color:var(--tg-muted); }
+
+/* ===================== Cards ===================== */
+.tg-cards{
+  display:flex; flex-wrap:wrap; justify-content:center;
+  gap:1rem; margin:2rem auto;
+}
+.tg-card{
+  appearance:none; cursor:pointer;
+  background:var(--tg-surface-2); color:var(--tg-text);
+  border:1px solid var(--tg-border); border-radius:12px;
+  padding:1rem 1.2rem; min-width:160px; font-size:1.05rem;
+  transition:.2s transform, .2s box-shadow, .2s border-color, .2s background;
+}
+.tg-card:hover, .tg-card:focus-visible{
+  transform:translateY(-4px);
+  border-color:var(--tg-accent);
+  box-shadow:0 10px 28px var(--tg-shadow);
+  outline:2px solid var(--tg-focus); outline-offset:2px;
+}
+.tg-card.is-active{
+  background:linear-gradient(90deg, rgba(88,178,255,.08), rgba(52,208,169,.08));
+  border-color:var(--tg-accent);
 }
 
-/* Header */
-.troubleshooting-header h1 {
-  font-size: 2.5rem;
-  color: #00e0ff;
-  text-shadow: 0 0 10px #00e0ff, 0 0 20px #00e0ff;
+/* ===================== Runner Dock ===================== */
+.tg-dock{
+  position:relative;
+  margin:0 auto 1rem;
+  width:min(860px, 96vw);
+  background:var(--tg-surface); border:1px solid var(--tg-border);
+  border-radius:14px; box-shadow:0 16px 36px var(--tg-shadow);
+  padding:12px; text-align:left;
 }
-.troubleshooting-header p {
-  font-size: 1.2rem;
-  color: #a0a0a0;
+.tg-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.tg-title{ display:flex; flex-direction:column; }
+.tg-title strong{ font-size:1rem; }
+.tg-sub{ font-size:.9rem; color:var(--tg-muted); }
+.tg-actions{ display:flex; gap:.6rem; }
+.tg-btn{
+  appearance:none; cursor:pointer; color:var(--tg-text);
+  background:var(--tg-surface-2); border:1px solid var(--tg-border); border-radius:10px;
+  padding:.5rem .9rem; transition:.2s border-color, .2s box-shadow, .2s background;
 }
-
-/* Cards */
-.cards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: 2rem auto;
-  gap: 1.5rem;
+.tg-btn:hover, .tg-btn:focus-visible{
+  border-color:var(--tg-accent); box-shadow:0 6px 20px var(--tg-shadow);
+  outline:2px solid var(--tg-focus); outline-offset:2px;
 }
-.card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(0, 224, 255, 0.3);
-  border-radius: 12px;
-  padding: 2rem;
-  min-width: 180px;
-  cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
-  color: #fff;
-  font-size: 1.2rem;
-}
-.card:hover {
-  transform: translateY(-10px) scale(1.05);
-  box-shadow: 0 0 20px #00e0ff, 0 0 40px #00e0ff;
-  border-color: #00e0ff;
+.tg-btn.tg-primary{
+  background:linear-gradient(90deg, var(--tg-accent), var(--tg-accent2));
+  color:#0b1220; border-color:transparent;
 }
 
-/* Overlay for automation */
-.automation-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(10, 15, 28, 0.9);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+/* progress */
+.tg-progress{
+  position:relative; height:10px; border-radius:999px; overflow:hidden;
+  margin:10px 2px 12px; background:#0f1424; border:1px solid var(--tg-border);
+}
+.tg-progress-bar{
+  height:100%; width:0%;
+  background:linear-gradient(90deg, var(--tg-accent), var(--tg-accent2));
+  transition:width .1s linear;
+}
+.tg-progress-label{
+  position:absolute; right:8px; top:-18px; font-size:.8rem; color:var(--tg-muted);
 }
 
-/* Automation Box */
-.automation-box {
-  background: rgba(20, 30, 50, 0.95);
-  border: 1px solid #00e0ff;
-  border-radius: 16px;
-  padding: 2rem;
-  color: #fff;
-  width: 400px;
-  box-shadow: 0 0 20px #00e0ff;
-  text-align: center;
-  animation: fadeIn 0.6s ease;
+/* steps */
+.tg-steps{ list-style:none; margin:0; padding:0; display:grid; gap:.5rem; }
+.tg-step{
+  display:grid; grid-template-columns:18px 22px 1fr;
+  align-items:center; gap:.5rem; padding:.35rem .4rem; border-radius:8px;
+  color:var(--tg-muted);
 }
-.automation-box h2 {
-  margin-bottom: 1rem;
-  color: #00e0ff;
-  text-shadow: 0 0 10px #00e0ff;
+.tg-step.is-running{ background:#10182a; color:var(--tg-text); border:1px solid #1c2843; }
+.tg-step.is-done{ color:#b8ffc9; }
+.tg-bullet{ text-align:center; width:18px; }
+.tg-icon{ font-size:1.1rem; width:22px; text-align:center; }
+.tg-text{ font-size:.96rem; }
+
+/* ===================== Panels (charts) ===================== */
+.tg-panels{
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:12px; width:min(860px, 96vw); margin:0 auto 1rem;
+}
+.tg-card-panel{
+  background:var(--tg-surface); border:1px solid var(--tg-border);
+  border-radius:14px; box-shadow:0 10px 28px var(--tg-shadow);
+  padding:12px; text-align:left;
+}
+.tg-card-title{ font-size:.95rem; color:var(--tg-muted); margin-bottom:.5rem; }
+.tg-spark{ display:block; width:100%; }
+.tg-meta{ display:flex; justify-content:flex-end; align-items:center; gap:.5rem; margin-top:.25rem; }
+.tg-meta span{ color:var(--tg-muted); font-size:.88rem; }
+.tg-meta strong{ font-size:.98rem; }
+
+/* ===================== Summary Sheet ===================== */
+.tg-summary{
+  margin:0 auto; width:min(860px, 96vw);
+  background:#0e1526; border:1px solid var(--tg-border);
+  border-radius:14px; box-shadow:0 18px 40px var(--tg-shadow);
+  overflow:hidden; text-align:left;
+}
+.tg-summary-head{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 12px; border-bottom:1px solid var(--tg-border);
+}
+.tg-summary-head h3{ margin:0; font-size:1rem; color:var(--tg-accent); }
+.tg-summary-head .tg-icon{
+  background:transparent; border:none; color:var(--tg-text);
+  cursor:pointer; font-size:1rem;
+}
+.tg-summary-meta{
+  display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;
+  padding:10px 12px; border-bottom:1px solid var(--tg-border);
+}
+.tg-summary-meta div{ display:flex; flex-direction:column; gap:2px; }
+.tg-summary-meta span{ color:var(--tg-muted); font-size:.85rem; }
+.tg-summary-meta strong{ font-size:.95rem; }
+
+.tg-summary-list{
+  list-style:none; margin:0; padding:10px 12px; display:grid; gap:.5rem;
+  max-height:220px; overflow:auto;
+}
+.tg-summary-item{ display:flex; align-items:center; gap:.5rem; }
+.tg-summary-status{ width:22px; text-align:center; }
+.tg-summary-text em{ color:var(--tg-muted); font-style:italic; }
+
+.tg-summary-ctas{
+  display:flex; gap:.6rem; justify-content:flex-end;
+  padding:10px 12px; border-top:1px solid var(--tg-border);
 }
 
-/* Steps */
-.automation-steps {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.2rem;
+/* ===================== Toast (demo) ===================== */
+.tg-toast{
+  position:fixed; left:50%; bottom:28px; transform:translateX(-50%) translateY(24px);
+  background:#111a2f; color:var(--tg-text);
+  border:1px solid var(--tg-border); border-radius:10px;
+  padding:.6rem .9rem; opacity:0; pointer-events:none;
+  transition:transform .25s ease, opacity .25s ease;
+  box-shadow:0 14px 36px var(--tg-shadow); z-index:2000;
 }
-.automation-step {
-  opacity: 0.3;
-  transform: scale(0.95);
-  transition: all 0.4s ease;
-}
-.automation-step.active {
-  opacity: 1;
-  transform: scale(1.1);
-  color: #00e0ff;
-}
-.automation-step .icon {
-  font-size: 2rem;
-  display: block;
-  margin-bottom: 0.3rem;
-}
-.arrow {
-  width: 40px;
-  height: 2px;
-  background: #555;
-  margin: 0.5rem auto;
-  transition: all 0.4s;
-}
-.arrow.active {
-  background: #00e0ff;
-  box-shadow: 0 0 10px #00e0ff;
-}
+.tg-toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
 
-/* Close Button */
-.close-btn {
-  margin-top: 1.5rem;
-  padding: 0.5rem 1.2rem;
-  background: transparent;
-  border: 1px solid #00e0ff;
-  border-radius: 8px;
-  color: #00e0ff;
-  cursor: pointer;
-  transition: 0.3s;
-}
-.close-btn:hover {
-  background: #00e0ff;
-  color: #000;
-  box-shadow: 0 0 15px #00e0ff;
-}
+/* ===================== Footer ===================== */
+.tg-foot{ margin-top:2rem; color:var(--tg-muted); font-size:.95rem; }
 
-/* Footer */
-.troubleshooting-footer {
-  margin-top: 3rem;
-  color: #888;
-  font-size: 0.9rem;
-}
-
-/* Animation */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Progress Bar */
-.progress-container {
-  position: relative;
-  width: 100%;
-  height: 20px; /* גבוה יותר כדי שיכיל טקסט */
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
-  margin-bottom: 1.2rem;
-  overflow: hidden;
-}
-
-.progress-bar {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #00e0ff, #00ffa3);
-  box-shadow: 0 0 15px #00e0ff;
-  transition: width 0.1s linear;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #000;
-  font-weight: bold;
-  font-size: 0.85rem;
-  border-radius: 6px;
-}
-
-.progress-text {
-  position: relative;
-  z-index: 2;
+/* ===================== Reduced Motion ===================== */
+@media (prefers-reduced-motion: reduce){
+  .tg-card, .tg-btn, .tg-progress-bar, .tg-toast{ transition:none !important; }
 }
