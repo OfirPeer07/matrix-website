@@ -1,0 +1,181 @@
+/* ===================== Force Page Scrolling (fix) ===================== */
+html, body {
+  height: auto;
+  min-height: 100%;
+  overflow-y: auto !important; /* override any global scroll lock */
+}
+#root, #app, .App, .page, .layout {
+  height: auto !important;
+  min-height: 100% !important;
+  overflow: visible !important;
+}
+
+/* ===================== Theme (high-tech minimal) ===================== */
+:root{
+  --tg-bg:#0b1220;
+  --tg-surface:#141b2b;
+  --tg-surface-2:#0f1728;
+  --tg-border:#263149;
+  --tg-text:#e6ebf3;
+  --tg-muted:#9aa4b2;
+  --tg-accent:#58b2ff;
+  --tg-accent2:#34d0a9;
+  --tg-shadow:rgba(0,0,0,.35);
+  --tg-focus:#8dd3ff;
+}
+body{ background:var(--tg-bg); color:var(--tg-text); }
+
+/* ===================== Page ===================== */
+.tg-page{ padding:2rem; text-align:center; min-height:100vh; overflow:visible; }
+.tg-hero h1{ margin:0; font-size:2.2rem; letter-spacing:.2px; }
+.tg-hero p{ margin:.5rem 0 0; color:var(--tg-muted); }
+
+/* ===================== Cards ===================== */
+.tg-cards{
+  display:flex; flex-wrap:wrap; justify-content:center;
+  gap:1rem; margin:2rem auto;
+}
+.tg-card{
+  appearance:none; cursor:pointer;
+  background:var(--tg-surface-2); color:var(--tg-text);
+  border:1px solid var(--tg-border); border-radius:12px;
+  padding:1rem 1.2rem; min-width:160px; font-size:1.05rem;
+  transition:.2s transform, .2s box-shadow, .2s border-color, .2s background;
+}
+.tg-card:hover, .tg-card:focus-visible{
+  transform:translateY(-4px);
+  border-color:var(--tg-accent);
+  box-shadow:0 10px 28px var(--tg-shadow);
+  outline:2px solid var(--tg-focus); outline-offset:2px;
+}
+.tg-card.is-active{
+  background:linear-gradient(90deg, rgba(88,178,255,.08), rgba(52,208,169,.08));
+  border-color:var(--tg-accent);
+}
+
+/* ===================== Runner Dock ===================== */
+.tg-dock{
+  position:relative;
+  margin:0 auto 1rem;
+  width:min(860px, 96vw);
+  background:var(--tg-surface); border:1px solid var(--tg-border);
+  border-radius:14px; box-shadow:0 16px 36px var(--tg-shadow);
+  padding:12px; text-align:left;
+}
+.tg-head{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.tg-title{ display:flex; flex-direction:column; }
+.tg-title strong{ font-size:1rem; }
+.tg-sub{ font-size:.9rem; color:var(--tg-muted); }
+.tg-actions{ display:flex; gap:.6rem; }
+.tg-btn{
+  appearance:none; cursor:pointer; color:var(--tg-text);
+  background:var(--tg-surface-2); border:1px solid var(--tg-border); border-radius:10px;
+  padding:.5rem .9rem; transition:.2s border-color, .2s box-shadow, .2s background;
+}
+.tg-btn:hover, .tg-btn:focus-visible{
+  border-color:var(--tg-accent); box-shadow:0 6px 20px var(--tg-shadow);
+  outline:2px solid var(--tg-focus); outline-offset:2px;
+}
+.tg-btn.tg-primary{
+  background:linear-gradient(90deg, var(--tg-accent), var(--tg-accent2));
+  color:#0b1220; border-color:transparent;
+}
+
+/* progress */
+.tg-progress{
+  position:relative; height:10px; border-radius:999px; overflow:hidden;
+  margin:10px 2px 12px; background:#0f1424; border:1px solid var(--tg-border);
+}
+.tg-progress-bar{
+  height:100%; width:0%;
+  background:linear-gradient(90deg, var(--tg-accent), var(--tg-accent2));
+  transition:width .1s linear;
+}
+.tg-progress-label{
+  position:absolute; right:8px; top:-18px; font-size:.8rem; color:var(--tg-muted);
+}
+
+/* steps */
+.tg-steps{ list-style:none; margin:0; padding:0; display:grid; gap:.5rem; }
+.tg-step{
+  display:grid; grid-template-columns:18px 22px 1fr;
+  align-items:center; gap:.5rem; padding:.35rem .4rem; border-radius:8px;
+  color:var(--tg-muted);
+}
+.tg-step.is-running{ background:#10182a; color:var(--tg-text); border:1px solid #1c2843; }
+.tg-step.is-done{ color:#b8ffc9; }
+.tg-bullet{ text-align:center; width:18px; }
+.tg-icon{ font-size:1.1rem; width:22px; text-align:center; }
+.tg-text{ font-size:.96rem; }
+
+/* ===================== Panels (charts) ===================== */
+.tg-panels{
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:12px; width:min(860px, 96vw); margin:0 auto 1rem;
+}
+.tg-card-panel{
+  background:var(--tg-surface); border:1px solid var(--tg-border);
+  border-radius:14px; box-shadow:0 10px 28px var(--tg-shadow);
+  padding:12px; text-align:left;
+}
+.tg-card-title{ font-size:.95rem; color:var(--tg-muted); margin-bottom:.5rem; }
+.tg-spark{ display:block; width:100%; }
+.tg-meta{ display:flex; justify-content:flex-end; align-items:center; gap:.5rem; margin-top:.25rem; }
+.tg-meta span{ color:var(--tg-muted); font-size:.88rem; }
+.tg-meta strong{ font-size:.98rem; }
+
+/* ===================== Summary Sheet ===================== */
+.tg-summary{
+  margin:0 auto; width:min(860px, 96vw);
+  background:#0e1526; border:1px solid var(--tg-border);
+  border-radius:14px; box-shadow:0 18px 40px var(--tg-shadow);
+  overflow:hidden; text-align:left;
+}
+.tg-summary-head{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 12px; border-bottom:1px solid var(--tg-border);
+}
+.tg-summary-head h3{ margin:0; font-size:1rem; color:var(--tg-accent); }
+.tg-summary-head .tg-icon{
+  background:transparent; border:none; color:var(--tg-text);
+  cursor:pointer; font-size:1rem;
+}
+.tg-summary-meta{
+  display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;
+  padding:10px 12px; border-bottom:1px solid var(--tg-border);
+}
+.tg-summary-meta div{ display:flex; flex-direction:column; gap:2px; }
+.tg-summary-meta span{ color:var(--tg-muted); font-size:.85rem; }
+.tg-summary-meta strong{ font-size:.95rem; }
+
+.tg-summary-list{
+  list-style:none; margin:0; padding:10px 12px; display:grid; gap:.5rem;
+  max-height:220px; overflow:auto;
+}
+.tg-summary-item{ display:flex; align-items:center; gap:.5rem; }
+.tg-summary-status{ width:22px; text-align:center; }
+.tg-summary-text em{ color:var(--tg-muted); font-style:italic; }
+
+.tg-summary-ctas{
+  display:flex; gap:.6rem; justify-content:flex-end;
+  padding:10px 12px; border-top:1px solid var(--tg-border);
+}
+
+/* ===================== Toast (demo) ===================== */
+.tg-toast{
+  position:fixed; left:50%; bottom:28px; transform:translateX(-50%) translateY(24px);
+  background:#111a2f; color:var(--tg-text);
+  border:1px solid var(--tg-border); border-radius:10px;
+  padding:.6rem .9rem; opacity:0; pointer-events:none;
+  transition:transform .25s ease, opacity .25s ease;
+  box-shadow:0 14px 36px var(--tg-shadow); z-index:2000;
+}
+.tg-toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* ===================== Footer ===================== */
+.tg-foot{ margin-top:2rem; color:var(--tg-muted); font-size:.95rem; }
+
+/* ===================== Reduced Motion ===================== */
+@media (prefers-reduced-motion: reduce){
+  .tg-card, .tg-btn, .tg-progress-bar, .tg-toast{ transition:none !important; }
+}

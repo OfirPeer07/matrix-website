@@ -1,0 +1,2 @@
+src/components/MainPage/*.gif filter=lfs diff=lfs merge=lfs -text
+backgroundMatrix.mov filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,18 @@
+.whatCanBeDone-container {
+  composes: neon-container;
+  margin-left: 5%;
+}
+
+.whatCanBeDone-container .text-box:hover {
+  transform: scale(1.02);
+}
+
+.whatCanBeDone-container .text-box.active {
+  transform: scale(1.04);
+}
+
+.whatCanBeDone-image {
+  max-width: 150%;
+  margin-top: -60px;
+  object-fit: cover;
+}

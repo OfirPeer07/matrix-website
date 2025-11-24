@@ -1,0 +1,157 @@
+/* ===== Section wrapper (lets the PAGE scroll normally) ===== */
+.iphone17-section{
+  /* just spacing around the scene so היד לא נחתכת */
+  padding: 24px 0 220px;
+}
+
+/* ===== Scene / ambient ===== */
+.iphone17-scene{
+  position:relative;
+  width:100%;
+  /* not locking to 100vh so שהדף יוכל לגלול */
+  min-height: 60vh;
+  display:grid;
+  place-items:center;
+  overflow:visible;
+  isolation:isolate;
+}
+.bg-grid{ position:absolute; inset:0; z-index:-2;
+  background:
+    radial-gradient(120% 85% at 50% -8%, rgba(120,120,120,calc(var(--ambient,.9)*.22)), transparent 55%),
+    radial-gradient(120% 80% at 50% 120%, rgba(0,0,0,.85), #000 80%);
+}
+.bg-grid::after{ content:""; position:absolute; inset:0; opacity:.16;
+  background-image: radial-gradient(#6b7280 1px, transparent 1px), radial-gradient(#6b7280 1px, transparent 1px);
+  background-size:48px 48px, 48px 48px; background-position:0 0, 24px 24px;
+}
+.persp{ perspective:1200px; position:relative; }
+
+/* ===== Hand layers ===== */
+.hand-layer{
+  position:absolute; left:50%; top:50%;
+  transform-origin:center;
+  pointer-events:none;
+  z-index:1;
+}
+.hand-front{ z-index:7; }
+.hand-img{ display:block; max-width:none; height:auto; filter: drop-shadow(0 16px 36px rgba(0,0,0,.55)); }
+.hand-fallback{ position:absolute; inset:0; }
+.hand-svg{ width:820px; height:auto; filter: drop-shadow(0 18px 44px rgba(0,0,0,.65)); }
+
+/* ===== Device ===== */
+.iphone17{
+  --r-frame: 46px;
+  --r-panel: 40px;
+  --bezel: 6px;
+  --lip:   2px;
+  --island-w: calc(146px * var(--island-scale,1));
+  --island-h: calc(36px  * var(--island-scale,1));
+  /* shorter device by ratio (default 9/19) */
+  aspect-ratio: calc(var(--device-ratio, 0.47368421));
+  position:relative;
+  transform-style:preserve-3d;
+}
+.iphone17 .frame{ position:absolute; inset:0; border-radius:var(--r-frame);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.1), transparent 22%),
+    linear-gradient(180deg, #2e2f31 0%, #0c0c0d 100%);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.05), 0 22px 38px rgba(0,0,0,.45);
+}
+.iphone17.titanium-black  .frame{ background:
+  linear-gradient(180deg, rgba(255,255,255,.1), transparent 22%),
+  linear-gradient(180deg, #2c2d2f, #0a0a0b); }
+.iphone17.titanium-natural .frame{ background:
+  linear-gradient(180deg, rgba(255,255,255,.12), transparent 22%),
+  linear-gradient(180deg, #656766, #1f2123); }
+.iphone17.titanium-blue .frame{ background:
+  linear-gradient(180deg, rgba(255,255,255,.1), transparent 22%),
+  linear-gradient(180deg, #2e3644, #0f1217); }
+.iphone17.silver .frame{ background:
+  linear-gradient(180deg, rgba(255,255,255,.12), transparent 22%),
+  linear-gradient(180deg, #cfd2d6, #6c7379); }
+
+.iphone17 .frame::after{ content:""; position:absolute; inset:0; border-radius:var(--r-frame);
+  background: linear-gradient(180deg, rgba(255,255,255,.15), rgba(255,255,255,0) 22%);
+  mix-blend-mode: screen; opacity:.25; pointer-events:none;
+}
+
+/* antenna lines */
+.ant{ position:absolute; background:linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent); pointer-events:none; opacity:.35; filter:blur(.2px); }
+.a-top{ height:1px; left:20%; right:20%; top:1px; }
+.a-bottom{ height:1px; left:28%; right:28%; bottom:1px; }
+.a-left{ width:1px; top:24%; bottom:24%; left:1px; background:linear-gradient(180deg, transparent, rgba(255,255,255,.22), transparent); }
+.a-right{ width:1px; top:28%; bottom:28%; right:1px; background:linear-gradient(180deg, transparent, rgba(255,255,255,.22), transparent); }
+
+/* buttons */
+.btn{ position:absolute; width:48px; height:6px; border-radius:10px; background:rgba(0,0,0,.5);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.08), 0 2px 4px rgba(0,0,0,.4); filter:blur(.1px);
+}
+.power{ right:-2px; top:38%; height:60px; width:6px; }
+.vol-up{ left:-2px; top:32%; height:54px; width:6px; }
+.vol-down{ left:-2px; top:42%; height:54px; width:6px; }
+
+/* panel + bezel */
+.panel{ position:absolute; inset:0; border-radius:var(--r-frame); }
+.bezel{ position:absolute; inset:var(--lip); border-radius:calc(var(--r-panel) + var(--lip)); background:#000;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.05), inset 0 0 0 1px rgba(255,255,255,.06);
+}
+.screen-clip{ position:absolute; inset:calc(var(--lip) + var(--bezel)); border-radius:var(--r-panel); overflow:hidden; background:#000; }
+.screen-img{ width:100%; height:100%; object-fit:cover; }
+.screen-ph{ height:100%; display:grid; place-items:center; color:#eaeaea; text-align:center; }
+.screen-ph .t1{ font-weight:600; }
+.screen-ph .t2{ opacity:.72; font-size:.9rem; margin-top:.25rem; }
+
+.screen-ui{ position:absolute; inset:0; overflow:auto; color:#e9eaec;
+  background: linear-gradient(180deg,#0a0b0c 0%, #121416 100%); padding:58px 16px 22px;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+.screen-ui::-webkit-scrollbar{ width:6px; }
+.screen-ui::-webkit-scrollbar-thumb{ background:rgba(255,255,255,.18); border-radius:999px; }
+
+/* OLED edge falloff */
+.panel-glow{ position:absolute; inset:0; pointer-events:none; mix-blend-mode:screen; opacity:.22;
+  background: radial-gradient(120% 85% at 50% -10%, rgba(255,255,255,.06), transparent 55%),
+              radial-gradient(120% 85% at 50% 120%, rgba(0,0,0,.55), transparent 55%);
+}
+
+/* speaker + island */
+.speaker{ position:absolute; top:6px; left:50%; transform:translateX(-50%); width:68px; height:6px; border-radius:4px;
+  background: linear-gradient(180deg,#0b0b0c,#050506); box-shadow: inset 0 0 0 1px rgba(255,255,255,.05); opacity:.18; }
+.island{ position:absolute; top:10px; left:50%; transform:translateX(-50%); width:var(--island-w); height:var(--island-h);
+  border-radius: calc(var(--island-h)/2 + 6px); background:#0c0c0d;
+  box-shadow: inset 0 -1px 0 rgba(255,255,255,.05), inset 0 0 0 1px rgba(255,255,255,.04), 0 0 0 .5px rgba(255,255,255,.025);
+  display:flex; align-items:center; justify-content:flex-end; padding-right:16px;
+}
+.island .sensor{ width:10px; height:10px; border-radius:50%;
+  background: radial-gradient(circle at 30% 30%, #86b8ff 0%, #1b376e 45%, #0a0a0b 75%); filter: drop-shadow(0 0 2px rgba(56,120,255,.25)); }
+
+/* glass reflections */
+.glass-top{ position:absolute; inset:0; pointer-events:none;
+  background: linear-gradient(170deg, rgba(255,255,255,var(--shine,.9)*.20), rgba(255,255,255,0) 42%); mix-blend-mode:screen; }
+.glass-arc{ position:absolute; inset:0; pointer-events:none; opacity: calc(var(--shine,.9)*.75);
+  background: radial-gradient(160% 95% at 110% -10%, rgba(255,255,255,.14), rgba(255,255,255,0) 45%),
+              radial-gradient(160% 95% at -10% 110%, rgba(255,255,255,.08), rgba(255,255,255,0) 55%); mix-blend-mode:screen; }
+
+/* Bottom I/O hint */
+.iphone17 .io{ position:absolute; bottom:8px; left:50%; transform:translateX(-50%); width:80%; height:10px;
+  pointer-events:none; display:flex; justify-content:space-between; opacity:.35; }
+.iphone17 .io .grid{ display:grid; grid-auto-flow:column; gap:6px; align-items:center; }
+.iphone17 .io .dot{ width:4px; height:4px; border-radius:50%;
+  background: radial-gradient(circle at 40% 40%, #bfc4cc 0%, #70767f 55%, #0a0a0b 90%); box-shadow: 0 0 1px rgba(255,255,255,.14); filter:blur(.05px); }
+.iphone17 .io .usb{ width:36px; height:6px; border-radius:3px; background: linear-gradient(180deg,#141519,#09090b);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.05); }
+
+/* Device shadow */
+.floor-shadow{ position:absolute; bottom:-56px; left:50%; transform:translateX(-50%); width:70%; height:84px; border-radius:999px;
+  background: rgba(0,0,0,.78); filter: blur(14px); opacity:.8; }
+
+/* Motion accessibility */
+@media (prefers-reduced-motion: reduce){
+  .persp{ perspective: none; }
+  .iphone17{ transform: none !important; }
+}
+
+/* Mobile tweak */
+@media (max-width:640px){
+  .iphone17-section{ padding-bottom: 260px; }
+}

@@ -1,0 +1,154 @@
+.live-resume.two-columns {
+  display: flex;
+  width: 1150px;
+  max-width: 1340px;
+  box-sizing: border-box;
+  color: #222;
+  font-family: 'Segoe UI', sans-serif;
+  border: 2px solid #000;
+  background: #fff;
+  margin: 0 auto;
+}
+
+.resume-right {
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 15px;
+  box-sizing: border-box;
+}
+
+.resume-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 15px;
+  box-sizing: border-box;
+} 
+
+.divider-flex {
+  width: 3px;
+  background: linear-gradient(to bottom, #060000, #999, #333);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.name-photo-stacked {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.name-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.first-name {
+  font-size: 2.2rem;
+  font-weight: 750;
+  margin: 0;
+  display: block;
+  line-height: 1;
+}
+
+.last-name {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0;
+  margin-left: 70px; /* הזחה לשם המשפחה */
+  display: block;
+  line-height: 1;
+}
+
+.profile-photo {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #647282;
+}
+
+.role-position h2 {
+  padding-right: 170px;
+  margin: 10px 0 0;
+}
+
+.contact-item {
+  background: #dbe0e6;
+  border: 2px solid #000;
+  border-radius: 6px;
+  padding: 2px 10px; /* פחות פדינג אנכי */
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+  line-height: 0.2;  /* פחות ריווח בין שורות */
+  font-size: 0.9rem; /* אופציונלי - הקטנת טקסט */
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  margin-inline-end: 10px;
+}
+
+.entry-section {
+  margin-bottom: 20px;
+}
+
+.entry {
+  background: #f7f9fc;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.exp-title, .edu-title, .army-title {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
+.exp-dates, .edu-dates, .army-dates {
+  font-weight: normal;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.resume-left h2, .resume-right h2 {
+  font-size: 1.2rem;
+  text-decoration: underline;
+  margin-bottom: 10px;
+}
+
+@media print {
+  .live-resume.two-columns {
+    border: none;
+    box-shadow: none;
+    width: 100%;
+  }
+}
+
+.live-resume a,
+.live-resume a:visited,
+.live-resume a:active {
+  color: #000;
+  text-decoration: none;
+}
+
+.live-resume a:hover {
+  color: #000;
+  text-decoration: underline;
+}
