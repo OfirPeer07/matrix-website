@@ -5,7 +5,7 @@ import '../../../styles/Sections.css';
 
 const RedOrBluePhil = () => {
   return (
-    <div className="redORbluePhil-container">
+    <div className="text-content">
       <div className="text-box">
         <div className="inner-box" dir="rtl">
           <h2>באיזה כדור תבחר?</h2>

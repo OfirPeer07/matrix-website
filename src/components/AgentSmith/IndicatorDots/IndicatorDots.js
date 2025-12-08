@@ -97,7 +97,7 @@ const IndicatorDots = ({ experienceRef, whatCanBeDoneRef, photoCarouselRef }) =>
             <span className="indicator__dot">
               <span className="indicator__dot-inner"></span>
             </span>
-            <span className="indicator__label">הרכבות</span>
+            <span className="indicator__label">קצת צחוקים</span>
           </span>
         </button>
       </div>

@@ -21,7 +21,7 @@ import { buildRoutedPath } from "./utils/cableRoutes";
 const BG = "#0b1320";
 const FLOOR = "#151b2a";
 const TARGET_LONGEST_M = 1.0;
-const SIDE_REGEX = /(side|panel|glass|door)/i;
+const SIDE_REGEX = /(side|panel|glass|door|cover|window|case|chassis)/i;
 
 /* ─────────────────────────────────────────
    Parts under /public/pc_parts/
@@ -85,7 +85,6 @@ function computeMotherboardPose({
   const size = bounds.getSize(new THREE.Vector3());
   const center = bounds.getCenter(new THREE.Vector3());
 
-  // wall opposite the glass
   const dir = (panelSlideDir ? panelSlideDir.clone() : new THREE.Vector3(1, 0, 0))
     .normalize()
     .multiplyScalar(-1);
@@ -116,13 +115,11 @@ function SceneControls({ reframeKey, heroDirRef, controlsRef, enabled }) {
   const { camera } = useThree();
   const localRef = React.useRef();
 
-  // expose controls to parent (optional)
   React.useEffect(() => {
     if (!controlsRef) return;
     controlsRef.current = localRef.current || null;
   }, [controlsRef]);
 
-  // hero frame – always same distance & center (deterministic)
   React.useEffect(() => {
     const center = new THREE.Vector3(0.55, 0.55, 0);
     const dist = 1.5;
@@ -194,18 +191,18 @@ function DomLoader({ show }) {
 
 /* ─────────────────────────────────────────
    Case GLB + panel detection
-   FIX: Clones the scene so navigation doesn't get dirty cache
 ────────────────────────────────────────── */
 function CaseGLB({ url, onReady, onPanel }) {
-  const { scene: masterScene } = useGLTF(url, true, true);
+  const { scene: masterScene } = useGLTF(url, false, true);
 
-  // CLONE the scene. This ensures we have a fresh copy every time we visit.
   const scene = React.useMemo(() => {
     return masterScene ? masterScene.clone() : null;
   }, [masterScene]);
 
   React.useEffect(() => {
     if (!scene) return;
+
+    console.log("🔍 Scanning for Side Panel...");
 
     scene.traverse((n) => {
       if (!n.isMesh) return;
@@ -214,40 +211,68 @@ function CaseGLB({ url, onReady, onPanel }) {
     });
 
     let candidate = null;
+
     scene.traverse((n) => {
       if (!n.isMesh) return;
-      if (SIDE_REGEX.test(n.name || "")) candidate = n;
+      if (SIDE_REGEX.test(n.name || "")) {
+        console.log("Name match found:", n.name);
+        candidate = n;
+      }
     });
 
     if (!candidate) {
-      let best = null,
-        bestScore = -Infinity;
+      let best = null;
+      let bestScore = -Infinity;
+
       const whole = computeVisibleBounds(scene);
+      if (!whole) return;
+
       scene.traverse((n) => {
         if (!n.isMesh || !n.geometry) return;
         if (!n.geometry.boundingBox) n.geometry.computeBoundingBox();
+
         const bb = n.geometry.boundingBox.clone().applyMatrix4(n.matrixWorld);
         const s = bb.getSize(new THREE.Vector3());
-        const slab =
-          Math.min(s.x, s.y, s.z) / Math.max(s.x, s.y, s.z) < 0.06;
-        if (!slab) return;
+
+        const isSlab =
+          Math.min(s.x, s.y, s.z) / Math.max(s.x, s.y, s.z) < 0.2;
+
+        if (!isSlab) return;
+
         const area = s.x * s.y + s.x * s.z + s.y * s.z;
-        const nearSide = Math.min(
-          Math.abs(bb.min.x - whole.min.x),
-          Math.abs(bb.max.x - whole.max.x),
-          Math.abs(bb.min.z - whole.min.z),
-          Math.abs(bb.max.z - whole.max.z)
+
+        const distToMinX = Math.abs(bb.min.x - whole.min.x);
+        const distToMaxX = Math.abs(bb.max.x - whole.max.x);
+        const distToMinZ = Math.abs(bb.min.z - whole.min.z);
+        const distToMaxZ = Math.abs(bb.max.z - whole.max.z);
+
+        const minDistToEdge = Math.min(
+          distToMinX,
+          distToMaxX,
+          distToMinZ,
+          distToMaxZ
         );
-        const score = area - nearSide * 10;
+
+        const score = area * 10 - minDistToEdge * 5;
+
         if (score > bestScore) {
           bestScore = score;
           best = n;
         }
       });
-      candidate = best;
+
+      if (best) {
+        console.log("🎯 Geometric Best Match:", best.name);
+        candidate = best;
+      }
     }
 
-    onPanel?.(candidate || null);
+    if (candidate) {
+      onPanel?.(candidate);
+    } else {
+      console.warn("❌ Side panel not found.");
+    }
+
     onReady?.(scene);
   }, [scene, onReady, onPanel]);
 
@@ -262,24 +287,35 @@ function SceneTicker({ panelRef, panelAnim }) {
     const p = panelRef.current;
     const a = panelAnim.current;
     if (!p || !a.active) return;
+
     a.t += dt / a.dur;
     const k = a.t >= 1 ? 1 : 1 - Math.pow(1 - a.t, 3);
+
     p.position.lerpVectors(a.from, a.to, k);
-    if (p.material)
-      p.material.opacity = THREE.MathUtils.lerp(a.fadeFrom, a.fadeTo, k);
-    if (a.t >= 1) a.active = false;
+
+    const startOp = a.fadeFrom !== undefined ? a.fadeFrom : 0.3;
+    const currentOp = THREE.MathUtils.lerp(startOp, a.fadeTo, k);
+
+    p.traverse((child) => {
+      if (child.isMesh && child.material) {
+        child.material.opacity = currentOp;
+        child.material.transparent = true;
+      }
+    });
+
+    if (a.t >= 1) {
+      a.active = false;
+    }
   });
   return null;
 }
 
 /* ─────────────────────────────────────────
-   GLB Part wrapper
-   FIX: Clones scene so parts don't drift on re-entry
+   Part wrapper
 ────────────────────────────────────────── */
 function Part({ url, refOut, onLoaded, ...rest }) {
   const { scene: masterScene } = useGLTF(url);
-  
-  // Clone to prevent shared state issues between mounts
+
   const scene = React.useMemo(() => {
     return masterScene ? masterScene.clone() : null;
   }, [masterScene]);
@@ -295,7 +331,6 @@ function Part({ url, refOut, onLoaded, ...rest }) {
     if (typeof refOut === "function") refOut(group);
     else if (refOut && "current" in refOut) refOut.current = group;
     return () => {
-      // Clean up: remove from parent if needed, though React handles unmount
       if (group.parent) group.parent.remove(group);
     };
   }, [scene, onLoaded, refOut]);
@@ -306,7 +341,7 @@ function Part({ url, refOut, onLoaded, ...rest }) {
 }
 
 /* ─────────────────────────────────────────
-   Bridge camera + canvas for overlay
+   Bridge camera + canvas
 ────────────────────────────────────────── */
 function Bridge({ setCamera, setDom }) {
   const { camera, gl } = useThree();
@@ -324,9 +359,6 @@ export default function BuildingComputers({
   glbUrl = "/models/pc.glb",
   motherboardForm = "ATX",
 }) {
-  // We no longer need sessionStorage logic because we are CLONING the GLTF.
-  // Every time this component mounts, it gets a fresh scene instance.
-  
   const caseWrapper = React.useRef(new THREE.Group());
   const panelLayer = React.useRef(new THREE.Group());
   const panelRef = React.useRef(null);
@@ -343,13 +375,11 @@ export default function BuildingComputers({
   const [domEl, setDomEl] = React.useState(null);
   const controlsRef = React.useRef(null);
 
-  // Keep your original deterministic hero direction
   const heroDirRef = React.useRef(new THREE.Vector3(-0.6, 0.35, 0.72));
 
   const [caseReady, setCaseReady] = React.useState(false);
   const [panelKnown, setPanelKnown] = React.useState(false);
 
-  // Controls are locked after ready to prevent orbit drift on re-entry
   const [controlsEnabled, setControlsEnabled] = React.useState(false);
   const [visible, setVisible] = React.useState(false);
 
@@ -358,59 +388,57 @@ export default function BuildingComputers({
     from: new THREE.Vector3(),
     to: new THREE.Vector3(),
     t: 0,
-    dur: 0.35,
-    fadeFrom: 1,
-    fadeTo: 0.2,
+    dur: 0.5,
+    fadeFrom: 0.3,
+    fadeTo: 0.15,
   });
 
   const doHeroFrame = React.useCallback(() => {
     setReframeKey((k) => k + 1);
   }, []);
 
-  /* Normalize the case */
   const normalize = React.useCallback((scene) => {
     const before = computeVisibleBounds(scene);
     if (!before) throw new Error("Empty bounds");
 
-    // center around origin
     const c0 = before.getCenter(new THREE.Vector3());
     scene.position.sub(c0);
 
-    // scale to 1m longest side
     const size = before.getSize(new THREE.Vector3());
     const longest = Math.max(size.x, size.y, size.z) || 1e-3;
     caseWrapper.current.scale.setScalar(TARGET_LONGEST_M / longest);
 
-    // drop so that bottom touches y=0
     const after = computeVisibleBounds(caseWrapper.current);
     if (after) caseWrapper.current.position.y -= after.min.y;
 
     setCaseReady(true);
   }, []);
 
-  /* Reparent panel; set hero direction AWAY from glass */
   const adoptPanel = React.useCallback((mesh) => {
     if (!mesh) return;
-    
-    // Ensure the mesh is actually part of the scene before moving it
-    // This prevents errors if re-calculating on an already moved mesh
+
+    console.log("✅ Adopting Side Panel:", mesh.name);
+
     mesh.updateWorldMatrix(true, true);
     const wm = mesh.matrixWorld.clone();
-    
     panelLayer.current.add(mesh);
-    
     const inv = panelLayer.current.matrixWorld.clone().invert();
     mesh.applyMatrix4(inv.multiply(wm));
 
-    // Force glass look
-    if (mesh.material) {
-      mesh.material.transparent = true;
-      mesh.material.depthWrite = false;
-      mesh.material.opacity = 0.25;
-      mesh.material.side = THREE.DoubleSide;
-      mesh.material.color = new THREE.Color(0xffffff); // keep neutral; lit by env
-      mesh.material.visible = false; // enabled once known
-    }
+    mesh.traverse((child) => {
+      if (child.isMesh) {
+        child.material = child.material.clone();
+        child.material.transparent = true;
+        child.material.opacity = 0.3;
+        child.material.depthWrite = false;
+        child.material.side = THREE.DoubleSide;
+        child.material.color.set(0x88ccee);
+        child.material.metalness = 0.1;
+        child.material.roughness = 0.1;
+        child.material.needsUpdate = true;
+      }
+    });
+
     panelRef.current = mesh;
 
     if (!mesh.userData.home) {
@@ -438,9 +466,8 @@ export default function BuildingComputers({
         .normalize();
 
       mesh.userData.slideDir = nLayer;
-      mesh.userData.slideDist = 0.35;
+      mesh.userData.slideDist = 0.45;
 
-      // Keep your original hero dir logic (away from panel)
       const away = nLayer.clone().negate();
       away.y = 0;
       if (away.lengthSq() < 1e-6) away.set(1, 0, 0);
@@ -462,9 +489,10 @@ export default function BuildingComputers({
     [normalize]
   );
 
-  const onPanelFound = React.useCallback((mesh) => mesh && adoptPanel(mesh), [adoptPanel]);
+  const onPanelFound = React.useCallback((mesh) => mesh && adoptPanel(mesh), [
+    adoptPanel,
+  ]);
 
-  /* VISIBILITY + HERO FRAME + CONTROL LOCK */
   React.useEffect(() => {
     if (!caseReady) return;
     doHeroFrame();
@@ -473,43 +501,50 @@ export default function BuildingComputers({
 
   React.useEffect(() => {
     if (!caseReady || !panelKnown) return;
-    // Show panel and set consistent opacity
+
     const p = panelRef.current;
-    if (p?.material) {
-      p.material.visible = true;
-      p.material.opacity = 0.25;
+    if (p) {
+      p.visible = true;
+      p.traverse((child) => {
+        if (child.isMesh && child.material) {
+          child.material.visible = true;
+          child.material.opacity = 0.3;
+        }
+      });
     }
 
-    // Reframe and briefly lock controls to avoid drift/race
     doHeroFrame();
     setControlsEnabled(false);
     const t = setTimeout(() => setControlsEnabled(true), 1200);
     return () => clearTimeout(t);
   }, [caseReady, panelKnown, doHeroFrame]);
 
-  /* Toggle panel */
   const togglePanel = React.useCallback(() => {
     const p = panelRef.current;
     if (!p) return;
+
     const home = p.userData.home?.clone() || p.position.clone();
     const dir = p.userData.slideDir || new THREE.Vector3(0, 0, 1);
-    const dist = p.userData.slideDist ?? 0.35;
+    const dist = p.userData.slideDist ?? 0.45;
     const open = home.clone().add(dir.clone().multiplyScalar(dist));
 
     const toOpen = !panelOpen;
+
+    p.visible = true;
+
     panelAnim.current = {
       active: true,
       from: p.position.clone(),
       to: toOpen ? open : home,
-      fadeFrom: p.material?.opacity ?? 0.25,
-      fadeTo: toOpen ? 0.15 : 0.25,
+      fadeFrom: toOpen ? 0.3 : 0.15,
+      fadeTo: toOpen ? 0.15 : 0.3,
       t: 0,
-      dur: 0.35,
+      dur: 0.5,
     };
+
     setPanelOpen(toOpen);
   }, [panelOpen]);
 
-  /* Steps UI */
   const STEPS = React.useMemo(
     () => ["Motherboard", "CPU", "Cooler", "RAM", "GPU", "Storage", "PSU", "Cables"],
     []
@@ -526,7 +561,6 @@ export default function BuildingComputers({
     setStep((s) => Math.min(s + 1, STEPS.length - 1));
   }, [step, STEPS]);
 
-  /* Quick placements */
   const computeGPUPosition = React.useCallback(() => {
     const b = computeVisibleBounds(caseWrapper.current);
     if (!b) return [0, 0.2, 0.1];
@@ -556,7 +590,6 @@ export default function BuildingComputers({
     return [x, y, z];
   }, []);
 
-  /* Ports from bounds */
   const [ports, setPorts] = React.useState({});
   const refreshPorts = React.useCallback(() => {
     const byPart = {};
@@ -570,7 +603,6 @@ export default function BuildingComputers({
     refreshPorts();
   }, [installed, refreshPorts]);
 
-  /* Cable overlay: PSU → GPU/MB */
   const [cableStart, cableEnd] = React.useMemo(() => {
     if (!psuRef.current || !camera || !domEl) return [null, null];
     const hasGpu = installed.includes("GPU");
@@ -616,44 +648,16 @@ export default function BuildingComputers({
     });
   }, [cableStart, cableEnd]);
 
-  const stepHelp = {
-    Motherboard:
-      "Mount the motherboard on standoffs; don’t overtighten screws.",
-    CPU: "Open the socket lever, align the triangle, place CPU gently, lock.",
-    Cooler: "Apply a pea-sized thermal paste; mount cooler firmly.",
-    RAM: "Use matched slots per the manual; press until latches click.",
-    GPU: "Insert into the top PCIe x16; secure with screws.",
-    Storage:
-      "NVMe: use standoff; SATA: secure into cage and wire to SATA port.",
-    PSU: "Fan intake direction depends on case; mount with 4 screws.",
-    Cables: "24-pin ATX, 8-pin EPS, PCIe 6/8-pin(s), SATA power; route cleanly.",
-  };
-
   return (
     <div className="pcv-root">
+
+      {/* ───────────────────────────────────────────── */}
+      {/*          ONLY Reset View button remains       */}
+      {/* ───────────────────────────────────────────── */}
       <div className="pcv-toolbar">
-        <button className="pcv-btn" onClick={togglePanel}>
-          {panelOpen ? "Attach Side Panel" : "Remove Side Panel"}
-        </button>
-        <button className="pcv-btn pcv-primary" onClick={installCurrent}>
-          Install {STEPS[step]}
-        </button>
-        <button
-          className="pcv-btn"
-          onClick={() => setStep((s) => Math.min(s + 1, STEPS.length - 1))}
-        >
-          Skip
-        </button>
         <button className="pcv-btn" onClick={doHeroFrame}>
           Reset View
         </button>
-        <div style={{ flex: 1 }} />
-        <div className="pcv-step">
-          Step {step + 1}/{STEPS.length}: <strong>{STEPS[step]}</strong> – {stepHelp[STEPS[step]]}
-        </div>
-        <div className="pcv-installed">
-          Installed: {installed.join(", ") || "—"}
-        </div>
       </div>
 
       <div className="pcv-canvas" style={{ position: "relative" }}>
@@ -668,7 +672,6 @@ export default function BuildingComputers({
           }}
         >
           <Canvas
-            // Key is no longer needed for cache busting, but good for react-reset
             key="pc-builder-canvas"
             style={{ background: BG }}
             shadows

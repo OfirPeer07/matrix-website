@@ -3,17 +3,17 @@ import * as THREE from "three";
 
 /**
  * byPart: {
- *   motherboard?: Box3,
- *   gpu?: Box3,
- *   psu?: Box3
+ * motherboard?: Box3,
+ * gpu?: Box3,
+ * psu?: Box3
  * }
  *
  * Returns an object like:
  * {
- *   atx24: Vector3,
- *   psu_atx24: Vector3,
- *   psu_pcie: Vector3,
- *   gpu_pcie8_1: Vector3
+ * atx24: Vector3,
+ * psu_atx24: Vector3,
+ * psu_pcie: Vector3,
+ * gpu_pcie8_1: Vector3
  * }
  */
 export function buildPortsFromBounds(byPart = {}) {

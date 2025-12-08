@@ -1,108 +1,168 @@
-import React, { useEffect, useRef, useState } from 'react';
-import './AgentSmith.css';
-import PhotoCarousel from '../AgentSmith/PhotoCarousel/PhotoCarousel';
-import IndicatorDots from '../AgentSmith/IndicatorDots/IndicatorDots';
-import experienceImage from './Sections/Experience.png';
-import Experience from './Sections/Experience';
-import WhatCanBeDone from './Sections/WhatCanBeDone';
-import WhatCanBeDoneImage from './Sections/WhatCanBeDone.png';
+import React, { useEffect, useRef, useState } from "react";
+import "./AgentSmith.css";
+
+import PhotoCarousel from "../AgentSmith/PhotoCarousel/PhotoCarousel";
+import IndicatorDots from "../AgentSmith/IndicatorDots/IndicatorDots";
+
+import experienceImage from "./Sections/Experience.png";
+import Experience from "./Sections/Experience";
+
+import WhatCanBeDone from "./Sections/WhatCanBeDone";
+import WhatCanBeDoneImage from "./Sections/WhatCanBeDone.png";
 
 const AgentSmith = () => {
-  const photoCarouselRef = useRef(null);
   const experienceRef = useRef(null);
   const whatCanBeDoneRef = useRef(null);
+  const photoCarouselRef = useRef(null);
 
-  const [activeSection, setActiveSection] = useState('carousel');
+  const [activeSection, setActiveSection] = useState("experience");
+  const [ready, setReady] = useState(false);
 
-  const scrollToSection = (ref, section) => {
-    if (ref?.current) {
-      ref.current.scrollIntoView({ behavior: 'smooth' });
-      setActiveSection(section);
-    }
-  };
-
+  // ---------------------------------------------------
+  // FIX #1 — wait until all images are fully loaded
+  // ---------------------------------------------------
   useEffect(() => {
+    const images = document.querySelectorAll("img");
+    let loaded = 0;
+
+    if (images.length === 0) {
+      setReady(true);
+      return;
+    }
+
+    images.forEach((img) => {
+      if (img.complete) {
+        loaded++;
+        if (loaded === images.length) setReady(true);
+      } else {
+        img.onload = () => {
+          loaded++;
+          if (loaded === images.length) setReady(true);
+        };
+      }
+    });
+  }, []);
+
+
+
+  // ---------------------------------------------------
+  // FIX #2 — scroll tracking after layout is stable
+  // ---------------------------------------------------
+  useEffect(() => {
+    if (!ready) return;
+
     const handleScroll = () => {
       const sections = [
-        { ref: photoCarouselRef, name: 'carousel' },
-        { ref: experienceRef, name: 'experience' },
-        { ref: whatCanBeDoneRef, name: 'whatCanBeDone' },
+        { ref: experienceRef, name: "experience" },
+        { ref: whatCanBeDoneRef, name: "whatCanBeDone" },
+        { ref: photoCarouselRef, name: "carousel" }
       ];
 
-      let newActiveSection = activeSection;
+      let newActive = activeSection;
 
       sections.forEach(({ ref, name }) => {
-        if (ref.current) {
-          const rect = ref.current.getBoundingClientRect();
-          const isInViewport = rect.top < window.innerHeight && rect.bottom >= 0;
+        if (!ref.current) return;
 
-          if (isInViewport && rect.top <= window.innerHeight * 0.3) {
-            newActiveSection = name;
-          }
+        const rect = ref.current.getBoundingClientRect();
+        const inView = rect.top < window.innerHeight && rect.bottom >= 0;
+
+        if (inView && rect.top <= window.innerHeight * 0.3) {
+          newActive = name;
         }
       });
 
-      if (newActiveSection !== activeSection) {
-        setActiveSection(newActiveSection);
+      if (newActive !== activeSection) {
+        setActiveSection(newActive);
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
+    // delay ensures consistent layout before tracking
+    const timer = setTimeout(() => {
+      handleScroll();
+      window.addEventListener("scroll", handleScroll);
+    }, 150);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(timer);
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, [activeSection]);
+
+  }, [ready, activeSection]);
+
+
+  // ---------------------------------------------------
+  // SCROLL TO SECTIONS (same as Neo)
+  // ---------------------------------------------------
+  const scrollToSection = (ref, section) => {
+    if (!ref?.current) return;
+    setActiveSection(section);
+
+    setTimeout(() => {
+      ref.current.scrollIntoView({ behavior: "smooth" });
+    }, 20);
+  };
+
 
   return (
     <div className="main-page">
+      
       <IndicatorDots
         activeSection={activeSection}
         scrollToSection={scrollToSection}
-        photoCarouselRef={photoCarouselRef}
         experienceRef={experienceRef}
         whatCanBeDoneRef={whatCanBeDoneRef}
+        photoCarouselRef={photoCarouselRef}
       />
 
-      {/* Experience Section */}
+      {/*EXPERIENCE SECTION*/}
       <div ref={experienceRef} className="section">
         <div className="text-image-container">
+
+          {/* IMAGE SIDE */}
           <div className="image-content">
             <div className="text-box">
-              <div className="inner-box">
-                <img src={experienceImage} alt="Experience" className="experience-image" />
-              </div>
+                <img
+                  src={experienceImage}
+                  alt="Experience"
+                  className="experience-image"
+                />
             </div>
           </div>
-          <div className="text-content">
-            <Experience />
-          </div>
+
+          {/* TEXT SIDE */}
+          <Experience />
         </div>
       </div>
 
-      {/* What Can Be Done Section */}
+      {/* -------------------------------------------------
+        WHAT CAN BE DONE SECTION
+      ------------------------------------------------- */}
       <div ref={whatCanBeDoneRef} className="section">
         <div className="text-image-container">
+
+          {/* IMAGE SIDE */}
           <div className="image-content">
             <div className="text-box">
-              <div className="inner-box">
-                <img src={WhatCanBeDoneImage} alt="WhatCanBeDone" className="whatCanBeDone-image" />
-              </div>
+                <img
+                  src={WhatCanBeDoneImage}
+                  alt="WhatCanBeDone"
+                  className="whatCanBeDone-image"
+                />
             </div>
           </div>
-          <div className="text-content">
-            <WhatCanBeDone />
-          </div>
+
+          {/* TEXT SIDE */}
+          <WhatCanBeDone />
         </div>
       </div>
 
-      
-      {/* Photo Carousel Section */}
-      <div ref={photoCarouselRef} className="carousel-section">
-        <div className="innerPhotoCarousel-box">
-          <div className="photoCarousel-box">
-            <div className="text-content">
+      {/* -------------------------------------------------
+        PHOTO CAROUSEL SECTION
+      ------------------------------------------------- */}
+      <div ref={photoCarouselRef} className="section">
+        <div className="text-content">
+          <div className="text-box">
+            <div className="inner-box">
               <PhotoCarousel />
             </div>
           </div>
@@ -113,4 +173,3 @@ const AgentSmith = () => {
 };
 
 export default AgentSmith;
- 

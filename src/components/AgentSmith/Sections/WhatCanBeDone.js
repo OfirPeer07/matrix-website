@@ -3,7 +3,7 @@ import '../../../styles/Sections.css';
  
 const WhatCanBeDone = () => {
   return (
-    <div className="whatCanBeDone-container">
+    <div className="text-content">
       <div className="text-box">
         <div className="inner-box" dir="rtl">
         <h2>מה בכל זאת אפשר לעשות?</h2>

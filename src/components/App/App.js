@@ -21,7 +21,6 @@ import MatrixBar from '../Sidebar/MatrixBar';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import ContactUs from '../ContactUs/ContactUs';
 import Thanks from '../Thanks/Thanks';
-import CacheClearOnRouteChange from '../ClearCache/ClearCeche';
 import ResumeBuilder from '../Neo/ResumeBuilder/ResumeBuilder';
 
 // Detect Safari on Mobile
@@ -44,7 +43,6 @@ function App() {
 
   return (
     <Router>
-      <CacheClearOnRouteChange />
       <div className="App">
         <ConditionalSidebar />
         <div className="content">

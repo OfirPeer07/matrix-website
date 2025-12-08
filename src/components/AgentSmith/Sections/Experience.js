@@ -4,7 +4,7 @@ import '../../../styles/Sections.css';
 
 const Experience = () => {
   return (
-    <div className="experience-container">
+    <div className="text-content">
       <div className="text-box">
         <div className="inner-box" dir="rtl">
         <h2>למה ניסיון תעסוקתי חשוב</h2>

@@ -44,8 +44,6 @@
   width: 100%;
 }
 
-photoCarousel-box
-
 /* Optional enhancement for images inside inner-box */
 .inner-box img {
   border-radius: 10px;
@@ -56,7 +54,6 @@ photoCarousel-box
 /* Carousel Section styling */
 .carousel-section {
   margin-bottom: 2rem;
-  /* Add styling as needed, e.g.: */
   display: flex;
   justify-content: center;
   padding: 2rem 0;

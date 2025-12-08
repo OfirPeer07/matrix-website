@@ -3,7 +3,7 @@ import '../../../styles/Sections.css';
 
 const Escape = () => {
   return (
-    <div className="escape-container">
+    <div className="text-content">
       <div className="text-box">
         <div className="inner-box" dir="rtl">
           <h2>ESC לא יעזור כאן!</h2>

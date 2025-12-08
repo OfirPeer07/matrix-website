@@ -1,74 +1,105 @@
-import React, { useEffect, useRef, useState } from 'react';
-import './Neo.css';
-import IndicatorDots from '../Neo/IndicatorDots/IndicatorDots';
-import neoVideo from './Sections/neoVideo.mp4';
-import RedOrBluePill from './Sections/RedOrBluePill';
-import Escape from './Sections/Escape';
-import ChooseYourPill, { PillMessage } from './Sections/ChooseYourPill';
+import React, { useEffect, useRef, useState } from "react";
+import "./Neo.css";
+import IndicatorDots from "../Neo/IndicatorDots/IndicatorDots";
+import neoVideo from "./Sections/neoVideo.mp4";
+import RedOrBluePill from "./Sections/RedOrBluePill";
+import Escape from "./Sections/Escape";
+import ChooseYourPill from "./Sections/ChooseYourPill";
 
-const BottomBlock = () => {
-  return (
-    <div className="bottom-block hidden">
-      <h2>...</h2>
-      <p>.<br></br>.</p>
-      <p><br></br></p>
-    </div>
-  );
-};
+const BottomBlock = () => (
+  <div className="bottom-block hidden">
+    <h2>...</h2>
+    <p>.<br /></p>
+    <p><br /></p>
+  </div>
+);
 
 const Neo = () => {
   const escapeRef = useRef(null);
   const redOrBluePillRef = useRef(null);
   const chooseYourPillRef = useRef(null);
 
-  const [activeSection, setActiveSection] = useState('Escape');
+  const [activeSection, setActiveSection] = useState("Escape");
   const [selectedPill, setSelectedPill] = useState(null);
   const [videoOpen, setVideoOpen] = useState(false);
+  const [ready, setReady] = useState(false);
 
-  const scrollToSection = (ref, section) => {
-    if (ref?.current) {
-      setActiveSection(section);
-      ref.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
+  // ⬇⬇ FIX #1 — wait until all images are loaded
   useEffect(() => {
+    const images = document.querySelectorAll("img");
+    let loaded = 0;
+
+    if (images.length === 0) {
+      setReady(true);
+      return;
+    }
+
+    images.forEach((img) => {
+      if (img.complete) {
+        loaded++;
+        if (loaded === images.length) setReady(true);
+      } else {
+        img.onload = () => {
+          loaded++;
+          if (loaded === images.length) setReady(true);
+        };
+      }
+    });
+  }, []);
+
+  // ⬇⬇ FIX #2 — scroll tracking runs ONLY when layout is stable
+  useEffect(() => {
+    if (!ready) return;
+
     const handleScroll = () => {
       const sections = [
-        { ref: redOrBluePillRef, name: 'RedOrBluePill' },
-        { ref: escapeRef, name: 'Escape' },
-        { ref: chooseYourPillRef, name: 'ChooseYourPill' },
+        { ref: redOrBluePillRef, name: "RedOrBluePill" },
+        { ref: escapeRef, name: "Escape" },
+        { ref: chooseYourPillRef, name: "ChooseYourPill" }
       ];
 
-      let newActiveSection = activeSection;
+      let newActive = activeSection;
 
       sections.forEach(({ ref, name }) => {
-        if (ref?.current) {
-          const rect = ref.current.getBoundingClientRect();
-          const isInViewport = rect.top < window.innerHeight && rect.bottom >= 0;
+        if (!ref.current) return;
 
-          if (isInViewport && rect.top <= window.innerHeight * 0.3) {
-            newActiveSection = name;
-          }
+        const rect = ref.current.getBoundingClientRect();
+        const inView = rect.top < window.innerHeight && rect.bottom >= 0;
+
+        if (inView && rect.top <= window.innerHeight * 0.3) {
+          newActive = name;
         }
       });
 
-      if (newActiveSection !== activeSection) {
-        setActiveSection(newActiveSection);
+      if (newActive !== activeSection) {
+        setActiveSection(newActive);
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
+    // Delay ensures DOM layout is final
+    const timer = setTimeout(() => {
+      handleScroll();
+      window.addEventListener("scroll", handleScroll);
+    }, 150);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(timer);
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, [activeSection]);
+  }, [ready, activeSection]);
+
+
+  const scrollToSection = (ref, section) => {
+    if (!ref?.current) return;
+    setActiveSection(section);
+
+    setTimeout(() => {
+      ref.current.scrollIntoView({ behavior: "smooth" });
+    }, 20);
+  };
 
   return (
     <div className="neo-wrapper">
-      {/* Foreground content */}
       <div className="main-page">
         <IndicatorDots
           activeSection={activeSection}
@@ -78,19 +109,16 @@ const Neo = () => {
           ChooseYourPill={chooseYourPillRef}
         />
 
-        {/* Escape Section */}
+        {/* ESCAPE SECTION */}
         <div ref={escapeRef} className="section">
-          <div className="text-image-container">
+          <div className="text-content">
             <div className="image-content">
               {!videoOpen && (
-                <button
-                  className="esc-button"
-                  onClick={() => setVideoOpen(true)}
-                  aria-label="Open Neo video"
-                >
+                <button className="esc-button" onClick={() => setVideoOpen(true)}>
                   ESC
                 </button>
               )}
+
               {videoOpen && (
                 <div className="video-modal">
                   <video
@@ -113,33 +141,32 @@ const Neo = () => {
                 </div>
               )}
             </div>
-            <div className="text-content">
-              <Escape />
-            </div>
-          </div>
-        </div>
 
-        {/* RedOrBluePill Section */}
-        <div ref={redOrBluePillRef} className="section">
-          <div className="text-image-container">
-            <div className="image-content">
-              <div className="text-box">
-                <div className="inner-box">
-                  <ChooseYourPill onSelect={setSelectedPill} />
+            {/* TEXT SIDE */}
+                <div>
+                  <Escape />
                 </div>
               </div>
             </div>
+
+
+        {/* PILL SECTION */}
+        <div ref={redOrBluePillRef} className="section">
+          <div className="text-image-container">
+            <div className="image-content">
+              <div className="inner-box">
+                <ChooseYourPill selected={selectedPill} onSelect={setSelectedPill} />
+              </div>
+            </div>
+
             <div className="text-content">
               <RedOrBluePill />
             </div>
           </div>
-
-          <div className="pill-message-wrapper">
-            <PillMessage selected={selectedPill} />
-          </div>
         </div>
 
         <div ref={chooseYourPillRef}></div>
+
         <BottomBlock />
       </div>
     </div>
