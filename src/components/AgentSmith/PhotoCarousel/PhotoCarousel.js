@@ -9,8 +9,8 @@ import Story2 from './Story2.png';
 
 // Array of images
 const images = [
-    { src: Story1, name: '“משרת Entry-level עם 3 שנות ניסיון.”' },
-    { src: Story2, name: 'תחרות  ג\'וניורים יוצאת לדרך”' },
+    { src: Story1, name: '“משרת Entry-level עם 3 שנות ניסיון”' },
+    { src: Story2, name: '\”תחרות  ג\'וניורים יוצאת לדרך”'},
   ];
   
 const PHOTO_INTERVAL = 5000; // 5 seconds for image transition

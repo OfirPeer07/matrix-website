@@ -160,11 +160,9 @@ const AgentSmith = () => {
         PHOTO CAROUSEL SECTION
       ------------------------------------------------- */}
       <div ref={photoCarouselRef} className="section">
-        <div className="text-content">
-          <div className="text-box">
-            <div className="inner-box">
+        <div className="photoCarousel-box">
+          <div className="photoCarousel-inner-box">
               <PhotoCarousel />
-            </div>
           </div>
         </div>
       </div>
