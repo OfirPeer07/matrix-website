@@ -7,9 +7,9 @@
 }
 
 .control-button {
-  position: absolute;
-  bottom: 0.55rem;
-  right: 52rem;
+  position: relative;
+  top: 1.95rem;
+  right: 19rem;
   background: rgba(255, 255, 255, 0.5);
   border: none;
   cursor: pointer;
@@ -26,25 +26,23 @@
 }
 
 .image-name {
-  position: absolute;
-  bottom: 3rem;
-  right: 52.5%;
-  transform: translateX(50%);
+  position: relative;
+  bottom: 1.25rem;
+  right: 9.5rem;
   font-size: 18px;
   color: rgba(255, 255, 255, 0.5);
-  background: rgba(0, 0, 0, 0.5);
   padding: 2px 5px;
   border-radius: 5px;
   white-space: nowrap;
 }
 
 .progress-bar-container {
-  position: absolute;
+  position: relative;
   bottom: 2.5rem;
   right: 52.5%;
   transform: translateX(50%);
-  width: 14.5rem;
-  height: 0.4rem;
+  width: 25.5rem;
+  height: 0.5rem;
   display: flex;
   gap: 2px;
   direction: ltr;
@@ -61,7 +59,7 @@
 }
 
 .progress-bar-background {
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
   height: 100rem;
@@ -71,5 +69,6 @@
 }
 
 .progress-bar.active .progress-bar-background {
+  position: relative;
   width: 100rem;
 }
