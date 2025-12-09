@@ -1,220 +1,210 @@
-/* ===============================================
-   MATRIX COMMAND CONSOLE — Control Panel UI
-================================================ */
-
-:root {
-  --cp-bg: rgba(0, 0, 0, 0.92);
-  --cp-border: rgba(0, 255, 120, 0.18);
-  --cp-muted: rgba(160, 255, 200, 0.55);
-  --cp-accent: #00ff66;
-  --cp-shadow: 0 0 22px rgba(0, 255, 120, 0.32);
-}
-
-/* WRAPPER */
-.cp-wrapper {
+/* Panel Container */
+.neo-panel {
   position: fixed;
-  right: 0;
   top: 0;
-  width: clamp(260px, 26vw, 340px);
+  right: 0;
+  width: 300px;
   height: 100vh;
-  background: var(--cp-bg);
-  border-left: 1px solid var(--cp-border);
-  transform: translateX(102%);
-  transition: transform 0.28s ease;
-  backdrop-filter: blur(12px);
-  z-index: 9999;
+  background: rgba(0, 12, 8, 0.9);
+  backdrop-filter: blur(16px);
+  border-left: 1px solid rgba(0, 255, 120, 0.16);
+  box-shadow: -6px 0 22px rgba(0, 255, 100, 0.12);
+  transform: translateX(105%);
+  transition: transform 0.28s cubic-bezier(.2,.8,.2,1);
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  z-index: 9999;
+  color: #b8ffda;
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 14px;
 }
 
-.cp-wrapper.open {
+.neo-panel.open {
   transform: translateX(0);
 }
 
-/* ===============================================
-   HEADER (Matrix Console Bar)
-================================================ */
-.cp-header {
-  position: sticky;
-  top: 0;
-  background: rgba(0, 0, 0, 0.85);
-  border-bottom: 1px solid var(--cp-border);
-  padding: 14px;
+/* Header */
+.neo-panel-header {
+  position: relative; /* חשוב! */
+  padding: 16px;
+  border-bottom: 1px solid rgba(0, 255, 120, 0.14);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.neo-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  color: #d7ffe8;
+  text-shadow: 0 0 12px rgba(0, 255, 160, 0.6);
+}
+
+.neo-bolt {
+  margin-right: 6px;
+  filter: drop-shadow(0 0 4px rgba(255,140,0,0.6));
+}
+
+.neo-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0,255,140,0.08);
+  border: 1px solid rgba(0,255,140,0.25);
+
+  border-radius: 10px;
+  cursor: pointer;
+
+  color: #a6ffd3;
+  font-size: 18px;
+  line-height: 0;
+
+  z-index: 999999; /* לוחץ תמיד */
+
+  transition: 0.2s ease;
+}
+
+.neo-close-btn:hover {
+  background: rgba(0,255,140,0.20);
+  box-shadow: 0 0 12px rgba(0,255,140,0.4);
+  transform: scale(1.08);
+}
+
+/* Content */
+.neo-panel-content {
+  padding: 10px 0 40px;
+  overflow-y: auto;
+}
+
+/* Section */
+.neo-section {
+  border-bottom: 1px solid rgba(0,255,120,0.1);
+}
+
+.neo-section-toggle {
+  width: 100%;
+  background: rgba(0, 20, 12, 0.6);
+  padding: 12px 16px;
+  border: none;
+  cursor: pointer;
+  color: #caffea;
+  font-size: 0.9rem;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  z-index: 10;
+  text-align: left;
 }
 
-.cp-header-title {
-  font-size: 1.05rem;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  color: var(--cp-accent);
-  text-shadow: 0 0 8px var(--cp-accent);
-  font-family: "Share Tech Mono", monospace;
+.neo-section-toggle:hover {
+  background: rgba(0, 255, 120, 0.05);
 }
 
-.cp-header-controls {
-  display: flex;
-  gap: 6px;
+.neo-chevron {
+  transition: transform 0.25s ease;
 }
 
-/* BUTTONS */
-.cp-btn {
-  padding: 6px 10px;
-  background: #000;
-  border: 1px solid var(--cp-border);
-  color: var(--cp-accent);
-  font-family: "Share Tech Mono", monospace;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.2s;
+.neo-chevron.open {
+  transform: rotate(90deg);
 }
 
-.cp-btn:hover {
-  background: #003311;
-  box-shadow: var(--cp-shadow);
-}
-
-.cp-btn.ghost {
-  background: transparent;
-}
-
-.cp-btn.close {
-  color: #ff6666;
-  border-color: rgba(255, 60, 60, 0.35);
-}
-
-.cp-btn.close:hover {
-  background: #330000;
-}
-
-/* SELECT INPUT */
-.cp-select {
-  background: #000;
-  color: var(--cp-accent);
-  border: 1px solid var(--cp-border);
-  padding: 6px;
-  border-radius: 6px;
-  font-family: "Share Tech Mono", monospace;
-}
-
-/* ===============================================
-   SECTIONS
-================================================ */
-.cp-section {
-  border-bottom: 1px solid rgba(0, 255, 120, 0.1);
-  padding-bottom: 4px;
-}
-
-.cp-section-head {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  font-family: "Share Tech Mono", monospace;
-  font-size: 1rem;
-  color: var(--cp-accent);
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-  padding: 12px;
-}
-
-.cp-title {
-  flex: 1;
-  text-shadow: 0 0 10px var(--cp-accent);
-}
-
-.cp-bullet {
-  margin-right: 8px;
-}
-
-.cp-chevron {
-  color: var(--cp-muted);
-}
-
-/* BODY */
-.cp-section-body {
-  padding: 10px 12px 16px;
+/* Section Body */
+.neo-section-body {
+  padding: 12px 16px 16px;
   display: grid;
-  gap: 10px;
+  gap: 14px;
+  animation: fadeIn 0.25s ease forwards;
 }
 
-/* ===============================================
-   ROWS
-================================================ */
-.cp-row {
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Rows */
+.neo-row {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1fr 100px auto;
   align-items: center;
   gap: 12px;
 }
 
-.cp-label {
-  font-family: "Share Tech Mono", monospace;
-  font-size: 0.95rem;
-  color: var(--cp-muted);
+.neo-label {
+  color: #9affc8;
 }
 
-.cp-field {
-  min-width: 90px;
+.neo-input input,
+.neo-input select {
+  width: 100%;
 }
 
-.cp-after {
-  color: var(--cp-accent);
-  font-family: "Share Tech Mono", monospace;
+/* Color Input */
+.neo-color {
+  width: 100%;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,255,120,0.2);
+  background: #000;
+}
+
+/* Range */
+.neo-range {
+  width: 100%;
+  accent-color: #00ff99;
+}
+
+/* After-text */
+.neo-after {
+  color: #9affc8;
   font-size: 0.85rem;
 }
 
-/* ===============================================
-   INPUTS
-================================================ */
-.cp-color {
-  width: 40px;
-  height: 28px;
-  border-radius: 6px;
-  background: transparent;
-  border: 2px solid var(--cp-accent);
-  box-shadow: 0 0 8px rgba(0, 255, 120, 0.4);
+/* Presets Buttons */
+.neo-preset-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-top: 4px;
 }
 
-.cp-slider {
-  width: 140px;
-  height: 4px;
-  background: rgba(0, 255, 120, 0.25);
-  border-radius: 6px;
-  outline: none;
-  -webkit-appearance: none;
-}
-
-.cp-slider::-webkit-slider-thumb {
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  background: var(--cp-accent);
-  border-radius: 50%;
-  box-shadow: 0 0 12px var(--cp-accent);
+.neo-preset {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(0,255,160,0.2);
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: #d4ffe6;
+  font-size: 0.85rem;
   cursor: pointer;
+  transition: 0.2s ease;
 }
 
-.cp-number {
-  width: 70px;
-  background: #000;
-  border: 1px solid var(--cp-border);
-  color: var(--cp-accent);
-  padding: 6px;
-  border-radius: 6px;
-  font-family: "Share Tech Mono", monospace;
+.neo-preset:hover {
+  background: rgba(0,255,160,0.15);
+  box-shadow: 0 0 8px rgba(0,255,160,0.3);
 }
 
-/* FOOTER */
-.cp-footer {
-  padding: 14px;
-  font-size: 0.8rem;
-  font-family: "Share Tech Mono", monospace;
-  color: var(--cp-muted);
-  text-align: center;
-  border-top: 1px solid var(--cp-border);
+/* Reset Button */
+.neo-reset-btn {
+  width: calc(100% - 32px);
+  margin: 24px auto 0;
+  padding: 10px;
+  border-radius: 8px;
+  background: rgba(0,255,140,0.12);
+  border: 1px solid rgba(0,255,140,0.25);
+  color: #baffdd;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-size: 0.85rem;
+}
+
+.neo-reset-btn:hover {
+  background: rgba(0,255,140,0.2);
+  box-shadow: 0 0 12px rgba(0,255,140,0.4);
 }
