@@ -1,208 +1,220 @@
-/* ============================
-   ORB BUTTON — OPEN PANEL
-============================ */
-.matrix-orb {
+/* ===============================================
+   MATRIX COMMAND CONSOLE — Control Panel UI
+================================================ */
+
+:root {
+  --cp-bg: rgba(0, 0, 0, 0.92);
+  --cp-border: rgba(0, 255, 120, 0.18);
+  --cp-muted: rgba(160, 255, 200, 0.55);
+  --cp-accent: #00ff66;
+  --cp-shadow: 0 0 22px rgba(0, 255, 120, 0.32);
+}
+
+/* WRAPPER */
+.cp-wrapper {
   position: fixed;
-  top: 18px;
-  right: 18px;
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  background: rgba(0,0,0,0.7);
-  border: 1px solid rgba(0,255,100,0.4);
-  box-shadow: 0 0 12px rgba(0,255,120,0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  backdrop-filter: blur(6px);
-  transition: 0.2s ease;
-  z-index: 9999;
-}
-
-.matrix-orb:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 16px rgba(0,255,140,1);
-}
-
-.orb-gear {
-  font-size: 20px;
-  color: #bfefff;
-  text-shadow: 0 0 8px #00e4ff;
-}
-
-/* ============================
-   SCRIM
-============================ */
-.scrim {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  opacity: 0;
-  pointer-events: none;
-  transition: 0.25s ease;
-  z-index: 999;
-}
-
-.scrim.show {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* ============================
-   CONTROL PANEL PANEL
-============================ */
-.matrix-panel {
-  position: fixed;
-  top: 0;
   right: 0;
-  width: clamp(280px, 30vw, 360px);
+  top: 0;
+  width: clamp(260px, 26vw, 340px);
   height: 100vh;
-  background: rgba(0,0,0,0.85);
-  border-left: 2px solid rgba(0,255,100,0.22);
-  box-shadow: -6px 0 30px rgba(0,255,100,0.25);
+  background: var(--cp-bg);
+  border-left: 1px solid var(--cp-border);
+  transform: translateX(102%);
+  transition: transform 0.28s ease;
   backdrop-filter: blur(12px);
-  transform: translateX(110%);
-  transition: transform 0.35s cubic-bezier(.3,.75,.2,1);
-  overflow-y: auto;
   z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 }
 
-.matrix-panel.open {
+.cp-wrapper.open {
   transform: translateX(0);
 }
 
-/* ============================
-   HEADER
-============================ */
+/* ===============================================
+   HEADER (Matrix Console Bar)
+================================================ */
 .cp-header {
+  position: sticky;
+  top: 0;
+  background: rgba(0, 0, 0, 0.85);
+  border-bottom: 1px solid var(--cp-border);
+  padding: 14px;
   display: flex;
   justify-content: space-between;
-  padding: 16px;
-  border-bottom: 1px solid rgba(0,255,100,0.25);
-  background: rgba(0,0,0,0.4);
+  align-items: center;
+  z-index: 10;
 }
 
-.cp-header h2 {
+.cp-header-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: var(--cp-accent);
+  text-shadow: 0 0 8px var(--cp-accent);
   font-family: "Share Tech Mono", monospace;
-  color: #4dffb3;
-  font-size: 1.25rem;
-  text-shadow: 0 0 10px rgba(0,255,120,0.6);
 }
 
-.cp-header-actions {
+.cp-header-controls {
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
-.cp-close {
-  background: rgba(0,255,100,0.15);
-  border: 1px solid rgba(0,255,100,0.4);
-  color: #ffffff;
+/* BUTTONS */
+.cp-btn {
   padding: 6px 10px;
+  background: #000;
+  border: 1px solid var(--cp-border);
+  color: var(--cp-accent);
+  font-family: "Share Tech Mono", monospace;
   border-radius: 6px;
   cursor: pointer;
-  text-shadow: 0 0 10px #00ff9d;
+  transition: 0.2s;
 }
 
-.cp-close:hover {
-  background: rgba(0,255,120,0.25);
+.cp-btn:hover {
+  background: #003311;
+  box-shadow: var(--cp-shadow);
 }
 
-/* ============================
-   CONTENT
-============================ */
-.cp-content {
-  padding: 14px;
+.cp-btn.ghost {
+  background: transparent;
 }
 
-/* ============================
-   GROUP SECTION
-============================ */
-.cp-group {
-  border-bottom: 1px solid rgba(0,255,100,0.16);
-  padding-bottom: 6px;
-  margin-bottom: 6px;
+.cp-btn.close {
+  color: #ff6666;
+  border-color: rgba(255, 60, 60, 0.35);
 }
 
-.cp-group-head {
+.cp-btn.close:hover {
+  background: #330000;
+}
+
+/* SELECT INPUT */
+.cp-select {
+  background: #000;
+  color: var(--cp-accent);
+  border: 1px solid var(--cp-border);
+  padding: 6px;
+  border-radius: 6px;
+  font-family: "Share Tech Mono", monospace;
+}
+
+/* ===============================================
+   SECTIONS
+================================================ */
+.cp-section {
+  border-bottom: 1px solid rgba(0, 255, 120, 0.1);
+  padding-bottom: 4px;
+}
+
+.cp-section-head {
   width: 100%;
+  display: flex;
+  align-items: center;
+  font-family: "Share Tech Mono", monospace;
+  font-size: 1rem;
+  color: var(--cp-accent);
   background: transparent;
   border: 0;
   cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  color: #d4ffe7;
-  font-family: "Share Tech Mono", monospace;
-  font-size: 1.05rem;
-  padding: 8px 4px;
+  padding: 12px;
+}
+
+.cp-title {
+  flex: 1;
+  text-shadow: 0 0 10px var(--cp-accent);
+}
+
+.cp-bullet {
+  margin-right: 8px;
 }
 
 .cp-chevron {
-  color: #4dffb3;
+  color: var(--cp-muted);
 }
 
-/* ============================
-   ROWS + INPUTS
-============================ */
+/* BODY */
+.cp-section-body {
+  padding: 10px 12px 16px;
+  display: grid;
+  gap: 10px;
+}
+
+/* ===============================================
+   ROWS
+================================================ */
 .cp-row {
   display: grid;
-  grid-template-columns: 1fr 1.2fr auto;
-  gap: 10px;
+  grid-template-columns: 1fr auto auto;
   align-items: center;
-  padding: 6px 0;
+  gap: 12px;
 }
 
 .cp-label {
   font-family: "Share Tech Mono", monospace;
-  color: #aaffdd;
+  font-size: 0.95rem;
+  color: var(--cp-muted);
 }
 
-.cp-input {
-  width: 100%;
+.cp-field {
+  min-width: 90px;
 }
 
 .cp-after {
-  color: #6affc7;
+  color: var(--cp-accent);
   font-family: "Share Tech Mono", monospace;
+  font-size: 0.85rem;
 }
 
-/* ============================
-   INPUT STYLING
-============================ */
-.cp-range {
-  width: 100%;
-  accent-color: #00ff9d;
-}
-
+/* ===============================================
+   INPUTS
+================================================ */
 .cp-color {
-  width: 42px;
+  width: 40px;
   height: 28px;
   border-radius: 6px;
-  border: 1px solid rgba(0,255,120,0.5);
-  background: #000;
-  box-shadow: 0 0 8px rgba(0,255,120,0.4);
+  background: transparent;
+  border: 2px solid var(--cp-accent);
+  box-shadow: 0 0 8px rgba(0, 255, 120, 0.4);
 }
 
-.cp-num {
-  width: 60px;
-  background: rgba(0,0,0,0.5);
-  border: 1px solid rgba(0,255,120,0.4);
-  color: #adffe1;
-  border-radius: 4px;
-  padding: 4px;
+.cp-slider {
+  width: 140px;
+  height: 4px;
+  background: rgba(0, 255, 120, 0.25);
+  border-radius: 6px;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.cp-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--cp-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--cp-accent);
+  cursor: pointer;
+}
+
+.cp-number {
+  width: 70px;
+  background: #000;
+  border: 1px solid var(--cp-border);
+  color: var(--cp-accent);
+  padding: 6px;
+  border-radius: 6px;
   font-family: "Share Tech Mono", monospace;
 }
 
-/* ============================
-   PRESET SELECT
-============================ */
-.cp-preset-select {
-  background: rgba(0,0,0,0.5);
-  border: 1px solid rgba(0,255,120,0.4);
-  color: #adffe1;
-  border-radius: 6px;
-  padding: 6px;
+/* FOOTER */
+.cp-footer {
+  padding: 14px;
+  font-size: 0.8rem;
+  font-family: "Share Tech Mono", monospace;
+  color: var(--cp-muted);
+  text-align: center;
+  border-top: 1px solid var(--cp-border);
 }
-
-/* END */
