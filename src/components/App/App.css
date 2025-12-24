@@ -1,0 +1,81 @@
+/* ================= BASE APP LAYOUT ================= */
+
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar {
+  width: 250px;
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* ================= MAIN CONTENT ================= */
+
+.content {
+  flex: 1;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  min-height: 100%;
+}
+
+/* ================= CUSTOM SCROLLBAR (WEBKIT) ================= */
+
+.content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.content::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 255, 0, 0.7);
+  border-radius: 10px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+/* ================= CUSTOM SCROLLBAR (FIREFOX) ================= */
+
+.content {
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 255, 0, 0.7) rgba(0, 0, 0, 0.1);
+}
+
+/* ================= INTRO OVERLAY ================= */
+
+.intro-wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: black;
+  opacity: 1;
+  transition: opacity 1s ease;
+  pointer-events: all;
+}
+
+.intro-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ================= BODY LOCK (PREVENT SCROLL DURING INTRO) ================= */
+
+body.intro-active {
+  overflow: hidden;
+}

@@ -1,0 +1,48 @@
+/* Page container: allow vertical scroll at 100% zoom */
+.guides-page{
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color: #e7e9ec;
+  background: #000;
+  min-height: 100vh;         /* page can grow past the fold */
+  overflow-x: hidden;
+}
+
+.guides-header{
+  text-align: center;
+  padding: 18px 16px 6px;
+  opacity: .9;
+}
+.guides-header h1{
+  margin: 0 0 6px;
+  font-size: clamp(20px, 2.6vw, 28px);
+  font-weight: 700;
+}
+.guides-header p{
+  margin: 0;
+  color: #c9ced6;
+  font-size: .95rem;
+}
+
+.guides-body{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4px 12px 40px;
+}
+
+/* simple demo UI that renders inside the phone */
+.demo-ui{
+  display: grid;
+  gap: 12px;
+}
+.demo-ui h2{
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+.demo-ui .card{
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+.demo-ui .sub{ opacity:.8; font-size:.9rem; margin-top:4px; }
+.demo-ui .link{ opacity:.85; margin-top:8px; font-size:.9rem; }

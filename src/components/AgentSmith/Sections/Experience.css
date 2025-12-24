@@ -1,0 +1,47 @@
+.experience-container {
+    display: flex;
+    flex-direction: column;
+    margin: 2rem;
+  }
+  
+  .experience-container .text-box {
+    flex: 1;
+    max-width: 100%;
+    padding: 25px;
+    background-color: rgb(10, 10, 10);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgb(0, 255, 26);
+    border: var(--border-glow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    color: white;
+  }
+  
+  .experience-container .text-box:hover {
+    transform: scale(1.02);
+  }
+  
+  .experience-container .text-box.active {
+    transform: scale(1.04);
+  }
+  
+  .experience-image {
+    width: 100%;
+    max-width: 150%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: var(--box-shadow);
+    border: var(--border-glow);
+    transition: transform 0.3s ease;
+    object-fit: cover;
+  }
+  
+  .experience-image:hover {
+    transform: scale(1.05);
+  }
+  

@@ -1,0 +1,9 @@
+.escape-container {
+  composes: neon-container;
+  margin-left: 1%;
+  cursor: pointer;
+}
+
+.escape-container .text-box:hover {
+  transform: scale(1.04);
+}

@@ -1,0 +1,64 @@
+.reels-root{
+  display:grid;
+  grid-template-rows:auto 1fr;
+  gap:10px;
+  height:100%;
+  color:var(--gf-text, #e8eaed);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans Hebrew","Noto Sans","Helvetica Neue", Helvetica, sans-serif;
+}
+
+/* מסתיר ויזואלית את הסקרולבר בתוך הטלפון, ועדיין ניתן לגלול */
+.reels-list{
+  position:relative;
+  overflow:auto;
+  scrollbar-width:none;
+}
+.reels-list::-webkit-scrollbar{ display:none; }
+
+.reels-top{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:8px 10px 0;
+}
+.reels-top .title{ font-weight:800; font-size:1.05rem; }
+
+.empty{
+  display:grid; place-items:center; padding:24px; opacity:.65;
+}
+
+.reel-card{
+  position:relative;
+  margin: 10px auto;
+  width:min(92%, 420px);
+  background: #0b0c0e;
+  border-radius:16px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow: 0 8px 22px rgba(0,0,0,.18);
+}
+
+.video-wrap{ position:relative; aspect-ratio:9/16; background:#000; }
+.reel-video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+
+.grad{
+  position:absolute; inset:0; pointer-events:none;
+  background: linear-gradient(180deg, rgba(0,0,0,.35), transparent 30%, transparent 65%, rgba(0,0,0,.55) 100%);
+}
+.overlay{
+  position:absolute; inset:0; display:flex; flex-direction:column; justify-content:flex-end; gap:6px;
+  padding:12px;
+}
+.username{
+  color:#fff; font-weight:800; background: rgba(0,0,0,.35); padding:6px 10px; border-radius:999px; width:max-content;
+}
+.caption{
+  color:#f5f6f8; margin:0;
+  display:-webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow:hidden;
+}
+
+.bar{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:8px 10px; background: rgba(255,255,255,.04);
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.bar .left{ opacity:.85; }
+.bar .time{ opacity:.75; font-size:.85rem; }

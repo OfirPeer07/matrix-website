@@ -1,0 +1,254 @@
+:root{
+  --bg:#000; --neon:#17ca07; --panel:rgba(27,27,27,.92);
+  --radius:16px; --ring:3px solid var(--neon);
+  --icon-min:60px; --icon-ideal:7.25vw; --icon-max:140px;
+  --gap-min:20px; --gap-ideal:1vw; --gap-max:40px;
+  --dropdown-offset-y:.75rem;
+  --z-sidebar:999; --z-dropdown:1010;
+
+  /* משכי תנועה */
+  --shift-in-dur:1s;
+  --shift-out-dur:1.5s;
+  --shift-in-ease:cubic-bezier(.22,.61,.36,1);
+  --shift-out-ease:cubic-bezier(.16,.84,.44,1);
+
+  /* אפקטים (חדשים) */
+  --glitch-shift: 1.5px;             /* עוצמת פיצול צבעים */
+  --glitch-slices: 6;                /* מספר פרוסות */
+  --glitch-dur: 950ms;               /* משך מחזור גליץ' */
+  --scan-dur: 1600ms;                /* משך סריקה אנכית */
+  --ripple-dur: 900ms;               /* משך ריפל */
+}
+
+html,body{margin:0; background:var(--bg); color:var(--neon); height:100vh; width:100vw; overflow:hidden;}
+.sidebar{position:relative; width:100%; height:clamp(100px,17vh,120px); display:flex; align-items:center; justify-content:center;
+  padding-inline:4.2%; box-sizing:border-box; z-index:var(--z-sidebar);
+  background: radial-gradient(120% 180% at 50% 0%, rgba(23,202,7,.10) 0%, rgba(0,0,0,0) 55%),
+             linear-gradient(135deg,#000,#0f0f0f 55%,#1a1a1a);
+  transition:transform .3s ease, opacity .3s ease;
+}
+.sidebar.hidden{transform:translateY(-100%); opacity:0; pointer-events:none;}
+.sidebar.visible{transform:translateY(0); opacity:1;}
+
+.sidebar ul{list-style:none; margin:0; padding:0; display:flex; align-items:center; justify-content:center;
+  width:100%; max-width:2560px; height:100%; gap:clamp(var(--gap-min),var(--gap-ideal),var(--gap-max));}
+.sidebar li{position:relative; display:flex; align-items:center; justify-content:center; overflow:visible;}
+
+/* === Icon (עיגול, הילה וטבעת) ======================================= */
+.sidebar a.menu-icon{
+  position:relative; display:grid; place-items:center;
+  width:clamp(var(--icon-min), var(--icon-ideal), var(--icon-max));
+  aspect-ratio:1; border-radius:50%; isolation:isolate;
+  background: radial-gradient(120% 120% at 50% 40%, rgba(23,202,7,.12), rgba(23,202,7,.06) 60%, transparent 100%);
+  transition:transform .22s ease, filter .22s ease;
+}
+.sidebar a.menu-icon::before,
+.sidebar a.menu-icon::after{
+  content:""; position:absolute; inset:0; border-radius:70%; pointer-events:none;
+}
+.sidebar a.menu-icon::before{
+  mix-blend-mode:screen;
+}
+.sidebar a.menu-icon::after{
+  background: radial-gradient(70% 70% at 50% 50%, rgba(23,202,7,.55), transparent 60%);
+  filter: blur(10px); opacity:.9; z-index:-1;
+  transition: opacity .22s ease, transform .22s ease;
+}
+.sidebar a.menu-icon img{
+  width:100%; height:100%; border-radius:50%;
+  object-fit:cover; object-position:center 40%;
+  transition:transform .22s ease, filter .22s ease;
+  -webkit-user-drag:none; user-select:none;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 90%, transparent 100%);
+          mask-image: radial-gradient(circle at 50% 50%, #000 90%, transparent 100%);
+}
+.sidebar a.menu-icon:hover{ transform: translateY(-2px) scale(1.025); }
+.sidebar a.menu-icon:hover::after{ opacity:1; transform: scale(1.03); }
+.sidebar a.menu-icon:hover img{ filter: grayscale(8%); }
+
+/* Sweep highlight */
+.sidebar a.menu-icon .sweep{
+  position:absolute; inset:-2px; border-radius:50%; pointer-events:none;
+  background: conic-gradient(from 0turn, transparent 0 80%, rgba(255,255,255,.35) 85%, transparent 95%);
+  -webkit-mask: radial-gradient(circle, #000 60%, transparent 68%);
+          mask: radial-gradient(circle, #000 60%, transparent 68%);
+  opacity:0; transform: rotate(0turn);
+  transition: opacity .25s ease, transform .9s cubic-bezier(.22,.61,.36,1);
+}
+.sidebar a.menu-icon:hover .sweep{ opacity:.55; transform: rotate(1.05turn); }
+
+/* === Dropdown – ברירת מחדל מתחת לאייקון (רוחבי) ===================== */
+.dropdown-menu{
+  position:absolute; top:calc(100% + var(--dropdown-offset-y));
+  left:50%; transform:translateX(-50%) translateY(-6px);
+  min-width:200px; background:var(--panel); border:var(--ring);
+  border-radius:var(--radius); padding:10px 12px;
+  box-shadow:0 12px 28px rgba(23,202,7,.25);
+  opacity:0; visibility:hidden; pointer-events:none;
+  z-index:var(--z-dropdown); backdrop-filter:blur(3px);
+  transition:opacity .22s ease, visibility .22s ease, transform .22s ease;
+
+  display:flex; flex-direction:row; align-items:center; gap:4px; white-space:nowrap;
+}
+.sidebar li:hover .dropdown-menu,
+.sidebar li:focus-within .dropdown-menu{
+  opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%) translateY(0);
+}
+.dropdown-menu.logo-menu{ transition-delay:.6s; }
+.dropdown-menu a{
+  color:var(--neon); text-decoration:none; display:inline-flex;
+  padding:8px 10px; border-radius:10px; text-align:center; direction:rtl;
+}
+.dropdown-menu a:hover, .dropdown-menu a:focus-visible{ background-color:rgba(23,202,7,.12); color:#fff; }
+
+/* === פתיחה לצד (drop-left / drop-right) ============================== */
+.sidebar li.drop-right .dropdown-menu{
+  top:50%; left:calc(100% + 14px); right:auto;
+  transform:translateY(-50%) translateX(6px);
+}
+.sidebar li.drop-left .dropdown-menu{
+  top:50%; right:calc(100% + 14px); left:auto;
+  transform:translateY(-50%) translateX(6px);
+}
+.sidebar li.drop-right:hover .dropdown-menu,
+.sidebar li.drop-right:focus-within .dropdown-menu,
+.sidebar li.drop-left:hover .dropdown-menu,
+.sidebar li.drop-left:focus-within .dropdown-menu{
+  opacity:1; visibility:visible; pointer-events:auto; transform:translateY(-50%) translateX(0);
+}
+
+/* גשר hover שקוף בין האייקון לתפריט (מונע סגירה מוקדמת) */
+.sidebar li.drop-left::before,
+.sidebar li.drop-right::before{
+  content:""; position:absolute; top:50%; transform:translateY(-50%);
+  height:62px; width:16px; background:transparent;
+}
+.sidebar li.drop-left::before{ right:100%; }
+.sidebar li.drop-right::before{ left:100%; }
+
+/* === הזזה שמאלה + חזרה איטית (ל־Neo ול־Smith) ======================= */
+.sidebar ul li.neoIcon,
+.sidebar ul li.agentSmithIcon{
+  transform: translateX(0);
+  transition: transform var(--shift-in-dur) var(--shift-in-ease);
+}
+.sidebar ul li.neoIcon.shift,
+.sidebar ul li.agentSmithIcon.shift{
+  transform: translateX(-330px);
+}
+/* כשחוזרים – משך ועקומה איטיים יותר */
+.sidebar ul li.neoIcon.is-returning,
+.sidebar ul li.agentSmithIcon.is-returning{
+  transition-duration: var(--shift-out-dur);
+  transition-timing-function: var(--shift-out-ease);
+}
+
+/* === Mobile bottom sheet ============================================== */
+.mobile-device .mobile-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:1500; }
+.mobile-device .mobile-dropdown-menu{
+  position:fixed; left:0; right:0; bottom:0; z-index:2000; border-radius:20px 20px 0 0;
+  background:rgba(27,27,27,.95); padding:25px 20px; display:flex; flex-direction:column; align-items:center;
+  border:3px solid var(--neon); border-bottom:none; box-shadow:0 -4px 20px rgba(23,202,7,.4); backdrop-filter:blur(5px);
+  animation:slideUp .3s ease-out;
+}
+.mobile-device .mobile-dropdown-menu.closing{ animation:slideDown .3s ease-out forwards; }
+.mobile-device .mobile-dropdown-menu a{ color:var(--neon); text-decoration:none; display:block; width:100%; text-align:center; padding:18px; margin:8px 0; border-radius:12px; font-weight:bold; }
+.mobile-device .mobile-dropdown-menu .swipe-indicator{ width:60px; height:6px; background:rgba(23,202,7,.5); border-radius:10px; margin:0 auto 20px; }
+.mobile-device .mobile-dropdown-menu .close-menu-btn{ position:absolute; top:20px; right:20px; width:48px; height:48px; border-radius:50%; background:none; border:none; color:var(--neon); font-size:28px; }
+
+@keyframes slideUp{from{transform:translateY(100%)} to{transform:translateY(0)}}
+@keyframes slideDown{from{transform:translateY(0)} to{transform:translateY(100%)}}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none !important; animation:none !important;}
+  .sidebar a.menu-icon:hover img{ transform:none !important; filter:none !important; }
+}
+
+/* === Matrix glitch + ripple (רק ל־Neo/Smith) ========================= */
+/* מכין מעטפת יחסית לאפקטים */
+.sidebar li.neoIcon .menu-icon,
+.sidebar li.agentSmithIcon .menu-icon{
+  overflow: visible;
+  isolation: isolate;
+}
+
+/* שכבות אפקט מעל התמונה */
+.sidebar .menu-icon .fx-glitch,
+.sidebar .menu-icon .fx-ripple,
+.sidebar .menu-icon .fx-scan {
+  position:absolute; inset:-2px; border-radius:50%;
+  pointer-events:none; z-index: 3;
+}
+
+/* --- glitch: 2 שכבות “RGB split” זעירות שזזות בפרוסות --- */
+.sidebar .menu-icon .fx-glitch{ mix-blend-mode: screen; opacity:0; }
+.sidebar a.menu-icon:hover .fx-glitch{ opacity:.9; }
+
+.sidebar .menu-icon .fx-glitch::before,
+.sidebar .menu-icon .fx-glitch::after{
+  content:""; position:absolute; inset:0; border-radius:50%;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 92%, transparent 100%);
+          mask-image: radial-gradient(circle at 50% 50%, #000 92%, transparent 100%);
+  filter: blur(.3px) saturate(1.15);
+  animation: glitchSlices var(--glitch-dur) steps(var(--glitch-slices)) infinite;
+}
+
+/* גוון ירקרק וכחול ל־RGB split עדין */
+.sidebar .menu-icon .fx-glitch::before{
+  background: radial-gradient(120% 110% at 50% 45%, rgba(23,202,7,.55), transparent 60%);
+  transform: translate(var(--glitch-shift), 0);
+}
+.sidebar .menu-icon .fx-glitch::after{
+  background: radial-gradient(120% 110% at 50% 55%, rgba(90,200,255,.35), transparent 60%);
+  transform: translate(calc(var(--glitch-shift) * -1), 0);
+}
+
+/* --- scan: סריגי סריקה אנכיים שמטיילים באלכסון --- */
+.sidebar .menu-icon .fx-scan{
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(23,202,7,.0) 0 7px,
+      rgba(23,202,7,.08) 7px 9px
+    );
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 90%, transparent 100%);
+          mask-image: radial-gradient(circle at 50% 50%, #000 90%, transparent 100%);
+  opacity:0;
+}
+.sidebar a.menu-icon:hover .fx-scan{
+  opacity:.45;
+  animation: scanSweep var(--scan-dur) linear infinite;
+}
+
+/* --- ripple: טבעת מתרחבת קצרה על ההובר --- */
+.sidebar .menu-icon .fx-ripple{
+  border: 2px solid rgba(23,202,7,.55);
+  box-shadow: 0 0 18px rgba(23,202,7,.35), inset 0 0 12px rgba(23,202,7,.25);
+  opacity:0; transform: scale(.8);
+}
+.sidebar a.menu-icon:hover .fx-ripple{
+  animation: ripplePulse var(--ripple-dur) var(--shift-in-ease) forwards;
+}
+
+/* כדי שהאפקט יהיה רק על Neo/Smith */
+.sidebar li.neoIcon a.menu-icon:hover img,
+.sidebar li.agentSmithIcon a.menu-icon:hover img{
+  filter: grayscale(0) contrast(1.08) saturate(1.1);
+  transform: translateY(-1px) scale(1.02);
+}
+
+/* Keyframes */
+@keyframes glitchSlices{
+  0%{ clip-path: polygon(0 0, 100% 0, 100% 12%, 0 12%); }
+  20%{ clip-path: polygon(0 16%, 100% 16%, 100% 28%, 0 28%); }
+  40%{ clip-path: polygon(0 34%, 100% 34%, 100% 46%, 0 46%); }
+  60%{ clip-path: polygon(0 52%, 100% 52%, 100% 64%, 0 64%); }
+  80%{ clip-path: polygon(0 70%, 100% 70%, 100% 82%, 0 82%); }
+  100%{ clip-path: polygon(0 88%, 100% 88%, 100% 100%, 0 100%); }
+}
+
+@keyframes ripplePulse{
+  0%  { opacity:.55; transform: scale(.86); }
+  60% { opacity:.35; transform: scale(1.08); }
+  100%{ opacity:0;    transform: scale(1.18); }
+}

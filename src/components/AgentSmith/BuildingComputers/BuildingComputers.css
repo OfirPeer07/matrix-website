@@ -1,0 +1,209 @@
+/* -------------------------------------------------
+   NZXT CAM THEME – Clean, Modern, Minimal Tech UI
+   + FIXED toolbar text clipping & alignment
+--------------------------------------------------*/
+
+:root {
+  --bg: #0d1117;           /* Matte CAM dark */
+  --panel: #11161c;
+  --panel-light: #151b22;
+  --line: #202b37;
+  --accent: #6f7cff;       /* NZXT purple-blue */
+  --accent-hover: #8490ff;
+  --accent-soft: rgba(123, 138, 255, 0.15);
+  --text: #e4e7eb;
+  --text-dim: #a9b4c0;
+  --danger: #ff496a;
+}
+
+/* -------------------------------------------------
+   ROOT BACKGROUND
+--------------------------------------------------*/
+.pcv-root {
+  background: var(--bg);
+  font-family: "Inter", ui-sans-serif, system-ui, -apple-system;
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* -------------------------------------------------
+   TOP TOOLBAR — NZXT Matte Glass
+   + FIX: true vertical centering
+   + FIX: height forces text not to clip
+--------------------------------------------------*/
+.pcv-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+
+  display: flex;
+  align-items: center !important;   /* FIX */
+  gap: 14px;
+
+  padding: 14px 20px;
+  min-height: 60px;                 /* FIX: ensures step text won't be cut */
+
+  background: rgba(17, 22, 28, 0.88);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(10px);
+
+  box-shadow:
+      0 4px 10px rgba(0,0,0,0.22),
+      inset 0 -1px 0 rgba(255,255,255,0.03);
+}
+
+/* -------------------------------------------------
+   BUTTONS — CAM Style
+--------------------------------------------------*/
+.pcv-btn {
+  appearance: none;
+  border: none;
+  border-radius: 10px;
+
+  height: 40px;                  /* HEIGHT = step height = alignment fix */
+  padding: 0 18px;
+  font-size: 14px;
+
+  background: var(--panel-light);
+  color: var(--text);
+  cursor: pointer;
+
+  display: flex;                 /* FIX: consistent alignment inside button */
+  align-items: center;
+  justify-content: center;
+
+  transition: background .2s ease, transform .12s ease, box-shadow .18s ease;
+}
+
+.pcv-btn:hover {
+  background: #1a212c;
+}
+
+/* Install Button */
+.pcv-primary {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 0 0 0 rgba(111,124,255,0.4);
+}
+
+.pcv-primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(111,124,255,0.35);
+}
+
+.pcv-primary:active {
+  transform: scale(0.97);
+}
+
+/* -------------------------------------------------
+   STEP + INSTALLED TEXT
+   + FIX: line-height, vertical alignment, height
+--------------------------------------------------*/
+.pcv-step {
+  margin-left: auto;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  opacity: 0.9;
+
+  display: flex !important;        /* FIX */
+  align-items: center !important;  /* FIX */
+  height: 40px !important;         /* matches button height */
+  line-height: 1.5 !important;     /* FIX */
+  padding-top: 1px;                /* micro-adjust */
+}
+
+.pcv-installed {
+  white-space: nowrap;
+  color: var(--text-dim);
+  font-size: 13px;
+
+  display: flex;
+  align-items: center;
+  height: 40px;
+  line-height: 1.4;
+}
+
+/* -------------------------------------------------
+   3D CANVAS FRAME — CAM Minimal Card Style
+--------------------------------------------------*/
+.pcv-canvas {
+  position: relative;
+  height: 720px;
+  width: calc(100% - 32px);
+
+  margin: 20px auto;
+  border-radius: 18px;
+
+  background: var(--panel);
+  border: 1px solid var(--line);
+
+  box-shadow:
+      0 12px 32px rgba(0,0,0,0.35),
+      inset 0 0 30px rgba(0,0,0,0.3);
+  overflow: hidden;
+}
+
+.pcv-canvas canvas {
+  background: var(--panel) !important;
+}
+
+/* -------------------------------------------------
+   ERROR BOX — CAM Red Alert
+--------------------------------------------------*/
+.pcv-error {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+
+  max-width: 480px;
+  padding: 12px 16px;
+  border-radius: 12px;
+
+  background: rgba(255, 73, 106, 0.12);
+  color: #ffc4cf;
+  border: 1px solid rgba(255, 73, 106, 0.3);
+
+  font-size: 13px;
+  box-shadow: 0 0 20px rgba(255,73,106,0.2);
+}
+
+/* -------------------------------------------------
+   LOADER — CAM Ring Spinner
+--------------------------------------------------*/
+.pcv-loader-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px 16px;
+  border-radius: 12px;
+
+  background: var(--panel-light);
+  border: 1px solid rgba(255,255,255,0.05);
+
+  color: var(--text);
+  font-size: 13px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+
+.pcv-spinner {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.18);
+  border-top-color: var(--accent);
+  animation: cam-spin 0.8s linear infinite;
+}
+
+@keyframes cam-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .pcv-spinner { animation: none; }
+  .pcv-btn { transition: none; }
+}

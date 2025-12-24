@@ -1,0 +1,149 @@
+/* IndicatorDots.css – STABLE VERSION */
+
+/* Wrapper for the indicators */
+.indicator__list-wrap {
+  position: fixed;
+  top: 50vh;
+  right: 0.75rem; /* ← Replaces margin-left calc() to prevent layout shift */
+  transform: translateY(-50%);
+  z-index: 1000;
+
+  padding: 10px 5.5px;
+  background: rgba(15, 15, 15, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(0, 255, 0, 0.7);
+  border: 1px solid rgba(0, 255, 0, 0.7);
+
+  direction: rtl;
+
+  /* Prevents unwanted layout shifts */
+  contain: layout paint;  
+}
+
+/* Removed mobile/tablet styles for stability */
+
+/* Indicator list */
+.indicator__list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+/* Individual indicator item */
+.indicator__item {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.3s ease;
+
+  opacity: 0.8;
+}
+
+.indicator__item:hover {
+  transform: scale(1.2);
+  opacity: 1;
+}
+
+/* Dot wrapper */
+.indicator__dot-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Main dot */
+.indicator__dot {
+  width: 12px;
+  height: 12px;
+
+  border: 2px solid rgba(0, 255, 0, 0.7);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 8px;
+
+  transition: border-color 0.3s ease,
+              box-shadow 0.3s ease,
+              transform 0.3s ease;
+
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
+}
+
+/* Inner dot */
+.indicator__dot-inner {
+  width: 12px;
+  height: 12px;
+
+  background-color: transparent;
+  border-radius: 50%;
+  transition: background-color 0.3s ease,
+              transform 0.3s ease;
+}
+
+/* Active dot styling */
+.indicator__item--active .indicator__dot {
+  border-color: rgba(0, 255, 0, 0.7);
+  box-shadow: 
+    0 0 15px rgba(0, 255, 0, 0.7),
+    0 0 30px rgba(0, 255, 0, 0.7);
+
+  animation: neonPulse 1.5s infinite;
+}
+
+.indicator__item--active .indicator__dot-inner {
+  background-color: rgba(0, 255, 0, 0.7);
+  transform: scale(1.3);
+}
+
+/* Label styling */
+.indicator__label {
+  font-size: 11px;
+  color: rgba(0, 255, 0, 0.7);
+  font-family: 'Orbitron', sans-serif;
+
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  max-width: 70px;
+  text-align: center;
+
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+
+  transition: color 0.3s ease,
+              transform 0.3s ease;
+}
+
+.indicator__item:hover .indicator__label {
+  transform: translateY(-3px);
+  color: rgba(0, 255, 0, 0.7);
+}
+
+.indicator__item--active .indicator__label {
+  color: rgba(0, 255, 0, 0.7);
+  font-weight: bold;
+}
+
+/* Neon pulse animation */
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 10px rgba(0, 255, 0, 0.7),
+      0 0 20px rgba(0, 255, 0, 0.7);
+  }
+  50% {
+    box-shadow:
+      0 0 15px rgba(0, 255, 0, 0.7),
+      0 0 30px rgba(0, 255, 0, 0.7);
+  }
+}

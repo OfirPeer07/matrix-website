@@ -1,0 +1,90 @@
+{
+  "profile": {
+    "firstName": "OFIR",
+    "lastName": "PEER",
+    "role": "Frontend Developer",
+    "photo": "",
+    "language": "en",
+    "roles": []
+  },
+
+  "contactLinks": {
+    "github": "https://github.com/OfirPeer07/",
+    "linkedin": "https://www.linkedin.com/in/ofir-peer-65850056/",
+    "email": "ofirpeer07@gmail.com",
+    "phone": "+972540082153"
+  },
+
+  "skills": [
+    "CSS",
+    "React",
+    "Jenkins",
+    "Python",
+    "PHP"
+  ],
+
+  "languages": [
+    { "name": "Hebrew", "level": "★★★★★" },
+    { "name": "English", "level": "★★★★★" }
+  ],
+
+  "aboutMe": [
+    "Frontend Developer",
+    "Motivated and detail-oriented developer with expertise in React, JavaScript, and modern UI frameworks.",
+    "Skilled in building responsive, user-friendly web applications.",
+    "Notable projects include:",
+    "• WorldFlags — React app with real-time country data via external APIs.",
+    "• IEZ Website — Cybersecurity-focused platform with guides and IT content.",
+    "",
+    "Continuously expanding my skill set to deliver high-quality, scalable web applications."
+  ],
+
+  "experience": [
+    {
+      "company": "Elad System",
+      "role": "PEGA Developer",
+      "start": "2023",
+      "end": "Present",
+      "description": "• Developing CRM for Mizrahi-Tefahot Bank\n• Developing system procedures using the PEGA CRM platform\n• Collaborating with analysts to define unique requirements\n• Presenting development processes to management\n• Participating in QA and dev alignment meetings\n• Enhancing workflows & improving developer experience"
+    },
+    {
+      "company": "Webs.io",
+      "role": "Python Developer",
+      "start": "2020",
+      "end": "2023",
+      "description": "• Product development & task management\n• Managed client request boards\n• Built site-crawling pipelines using Jenkins\n• Created structured data (JSON, XML)\n• Analyzed cybersecurity data\n• Worked in cross-functional teams\n• Delivered projects on tight schedules\n• Led improvements & documentation"
+    }
+  ],
+
+  "projects": [
+    {
+      "name": "WorldFlags",
+      "description": "React app with real-time country data via external APIs.",
+      "tech": "React, APIs"
+    },
+    {
+      "name": "IEZ Website",
+      "description": "Cybersecurity-focused learning platform with guides and IT content.",
+      "tech": "React, Web Security"
+    }
+  ],
+
+  "education": [
+    {
+      "institution": "HackerU, Ramat Gan",
+      "degree": "Cyber & Information Security",
+      "start": "2018",
+      "end": "2020",
+      "description": 
+        "Cyber & Information Security Certifications:\n• Cyber & Information Security certificate\n• Certified Ethical Hacker (C.E.H International certificate)"
+    }
+  ],
+
+  "army": {
+    "role": "System Operator",
+    "city": "Tel Aviv",
+    "start": "2013",
+    "end": "2016",
+    "description": "Managed communication systems and provided infrastructure support."
+  }
+}

@@ -1,0 +1,185 @@
+.main-page {
+  display: flex;
+  flex-direction: column;
+  margin-right: -1.5rem;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.section,
+.carousel-section {
+  padding: 1rem 0;
+  margin-right: 5rem;
+}
+
+.text-image-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  gap: 105px;
+  margin-top: 2rem;
+}
+
+.text-content,
+.image-content {
+  flex: 1 1 50%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+  box-sizing: border-box;
+  min-height: 400px;
+}
+
+.inner-box {
+  background: rgba(0, 0, 0, 0.7);
+  color: #0f0;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 0 15px #0f0;
+  text-align: right;
+  direction: rtl;
+  max-width: 600px;
+  width: 100%;
+}
+
+/* Optional enhancement for images inside inner-box */
+.inner-box img {
+  border-radius: 10px;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Carousel Section styling */
+.carousel-section {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+/* Image classes using updated section names */
+.experience-image,
+.whatCanBeDone-image {
+  width: 100%;
+  object-fit: cover;
+  margin-top: 0;
+}
+
+.photoCarousel-box {
+  flex: 1 1 50%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+  box-sizing: border-box;
+  min-height: 400px;
+}
+
+.photoCarousel-inner-box {
+  background: rgba(0, 0, 0, 0.7);
+  color: #0f0;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 0 15px #0f0;
+  text-align: right;
+  direction: rtl;
+  max-width: 600px;
+  width: 100%;
+}
+
+/* Wide screen (21:9) adaptation */
+@media (min-aspect-ratio: 21/9) {
+  .experience-image,
+  .whatCanBeDone-image {
+    width: 40%;
+  }
+}
+
+/* Tablet adaptation */
+@media screen and (max-width: 1024px) {
+  .text-image-container {
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+
+  .text-content,
+  .image-content {
+    padding: 1rem;
+  }
+
+  .experience-image,
+  .whatCanBeDone-image {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+/* Mobile & small tablets */
+@media screen and (max-width: 768px) {
+  .main-page {
+    margin-right: 0;
+  }
+
+  .section,
+  .carousel-section {
+    margin-right: 0;
+    padding: 0;
+  }
+
+  .text-image-container {
+    flex-direction: column;
+    gap: 0;
+    margin-top: 0;
+    align-items: center;
+  }
+
+  .text-content,
+  .image-content {
+    flex-basis: 100%;
+    padding: 0;
+    min-height: auto;
+  }
+
+  .experience-image,
+  .whatCanBeDone-image {
+    width: 90%;
+    max-width: 500px;
+    margin: 0 auto;
+    border-radius: 10px;
+  }
+}
+
+/* Small screen adaptation (phones) */
+@media screen and (max-width: 480px) {
+  .main-page {
+    margin-right: 0;
+  }
+
+  .section,
+  .carousel-section {
+    margin-right: 0;
+    padding: 0;
+  }
+
+  .text-image-container {
+    flex-direction: column;
+    gap: 0;
+    margin-top: 0;
+    padding: 0;
+  }
+
+  .text-content,
+  .image-content {
+    padding: 0;
+  }
+
+  .experience-image,
+  .whatCanBeDone-image {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 8px;
+    margin: 0;
+  }
+}

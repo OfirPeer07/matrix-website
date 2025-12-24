@@ -1,0 +1,36 @@
+[
+    {
+      "id": 1,
+      "title": "בסיס מחשבים",
+      "folder": "computer-basics",
+      "videos": [
+        {
+          "id": 1,
+          "title": "הקדמה למחשבים",
+          "filename": "test.mp4",
+          "description": "הקדמה כללית למחשבים ולחלקים השונים במחשב עבור משתמשים חדשים ומנוסים.",
+          "mdContent": "test.md"
+        },
+        {
+          "id": 2,
+          "title": "ממשק המשתמש",
+          "filename": "test3.mp4",
+          "description": "הכרת ממשק המשתמש, שולחן העבודה והתמצאות בסיסית במערכת ההפעלה.",
+          "mdContent": "test2.md"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "רשתות תקשורת",
+      "folder": "networking",
+      "videos": [
+        {
+          "id": 33,
+          "title": "אבטחת רשתות",
+          "filename": "test2.mp4",
+          "description": "הקדמה לעקרונות אבטחת רשתות וכיצד להגן על מידע."
+        }
+      ]
+    }
+  ]

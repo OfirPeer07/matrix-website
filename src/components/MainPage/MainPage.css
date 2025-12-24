@@ -1,0 +1,234 @@
+:root{
+  --bg:#000;
+  --text:#fff;
+  --muted:#ddd;
+  --accent:#22c55e;
+  --accent-rgb:34,197,94;
+}
+
+/* ===== Global ===== */
+html,body{
+  margin:0;
+  padding:0;
+  color:var(--text);
+  background:var(--bg);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow:hidden;
+  font-size:16px;
+}
+
+/* ===== Main page layout ===== */
+.main-page{
+  position:relative;
+  z-index:3;
+  min-height:100dvh;
+  display:grid;
+  grid-template-rows:auto 1fr;
+  align-items:start;
+  justify-items:center;
+  padding:.75rem;
+}
+
+/* ===== Scrim ===== */
+.scrim{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.38);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .18s ease;
+  z-index:5;
+}
+.scrim.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+/* ===========================================================
+   ===== FAB UPGRADE (Matrix Pro Buttons — Gear / Close) =====
+   =========================================================== */
+
+.fab{
+  position:fixed;
+  right:16px;
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:rgba(0,0,0,0.75);
+  backdrop-filter:blur(6px);
+  color:#fff;
+  cursor:pointer;
+  z-index:9999;
+  box-shadow:0 0 18px rgba(0,255,0,0.35);
+  transition:all .22s ease;
+  will-change:transform, opacity;
+}
+
+.fab:hover{
+  background:rgba(0,0,0,0.9);
+  transform:translateY(-2px);
+  box-shadow:0 0 22px rgba(0,255,0,0.55);
+}
+
+/* Open button (⚙️) */
+.open-drawer-btn{
+  top:16px;
+  opacity:1;
+  pointer-events:auto;
+}
+.open-drawer-btn.hidden{
+  opacity:0;
+  pointer-events:none;
+  transform:scale(.6);
+}
+
+.open-drawer-btn svg{
+  width:26px;
+  height:26px;
+  fill:#d0d0d0;
+  filter:drop-shadow(0 0 6px rgba(0,255,0,0.7));
+}
+
+/* Close button (X) */
+.close-drawer-btn{
+  top:16px;
+  opacity:0;
+  pointer-events:none;
+  transform:scale(.6);
+}
+.close-drawer-btn.show{
+  opacity:1;
+  pointer-events:auto;
+  transform:scale(1);
+}
+
+.close-drawer-btn svg{
+  width:28px;
+  height:28px;
+  stroke:#00ff88;
+  stroke-width:4;
+  stroke-linecap:round;
+  filter:drop-shadow(0 0 6px rgba(0,255,150,0.85));
+}
+
+/* ===========================================================
+   END OF: FAB UPGRADE
+   =========================================================== */
+
+
+/* ===== Cards layout ===== */
+.cards{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(220px, 34rem));
+  gap:clamp(1rem,2vw,2rem);
+  padding:clamp(1rem,3vw,2.5rem);
+  place-items:center;
+  z-index:3;
+}
+@media (max-width:820px){
+  .cards{
+    grid-template-columns:1fr;
+  }
+}
+
+.card-wrap{
+  height:50rem;
+  display:grid;
+  justify-items:center;
+  gap:.6rem;
+}
+.card-wrap.selected .image-button{
+  box-shadow:0 6px 18px rgba(var(--accent-rgb), .45);
+}
+
+/* ===== Image buttons ===== */
+.image-button{
+  appearance:none;
+  display:flex;
+  border:0;
+  background:transparent;
+  padding:0;
+  cursor:pointer;
+  border-radius:1rem;
+  overflow:hidden;
+  box-shadow:0 4px 12px rgba(var(--accent-rgb), .28);
+  transition: transform .15s ease, box-shadow .15s ease, opacity .15s linear;
+  will-change: transform;
+}
+.image-button:hover{
+  box-shadow:0 6px 18px rgba(var(--accent-rgb), .36);
+  transform:translateY(-1px);
+}
+.image-button:focus-visible{
+  outline:3px solid var(--accent);
+  outline-offset:4px;
+}
+
+/* ===== Media containers ===== */
+.media-holder{
+  position:relative;
+  width:min(28vw,34rem);
+  max-width:34rem;
+  border-radius:1rem;
+  overflow:hidden;
+  aspect-ratio:16/9;
+}
+@media (max-width:820px){
+  .media-holder{
+    width:90vw;
+  }
+}
+.media{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* ===== Titles ===== */
+.title-box{
+  text-align:center;
+}
+.photo-title{
+  font-size:clamp(1.2rem,2vw,1.5rem);
+  font-weight:800;
+  color:var(--text);
+  margin:4px 0;
+  text-shadow:0 0 6px rgba(var(--accent-rgb), .6),
+               0 0 14px rgba(var(--accent-rgb), .3);
+}
+.photo-subtitle{
+  font-size:.95rem;
+  color:var(--muted);
+  margin:0;
+}
+
+/* ===== Canvas layers ===== */
+.matrix-rain-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.light-grid-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.light-grid-canvas{
+  z-index:1;
+}
+.matrix-rain-canvas{
+  z-index:2;
+}
+
+body::before{
+  content:none !important;
+}

@@ -1,0 +1,74 @@
+.carousel-image {
+  margin-top: 0;
+  width: 95vw;
+  height: auto;
+  max-height: 95vh;
+  object-fit: contain;
+}
+
+.control-button {
+  position: relative;
+  top: 1.95rem;
+  right: 19rem;
+  background: rgba(255, 255, 255, 0.5);
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  padding: 5px;
+  border-radius: 75%;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  transform: translateX(calc(50% - 200px));
+}
+
+.image-name {
+  position: relative;
+  bottom: 1.25rem;
+  right: 9.5rem;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 2px 5px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+.progress-bar-container {
+  position: relative;
+  bottom: 2.5rem;
+  right: 52.5%;
+  transform: translateX(50%);
+  width: 25.5rem;
+  height: 0.5rem;
+  display: flex;
+  gap: 2px;
+  direction: ltr;
+}
+
+.progress-bar {
+  position: relative;
+  flex: 1;
+  top: 1.5rem;
+  height: 10.5px;
+  background: rgba(120, 120, 120, 0.5);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-bar-background {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 100rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 3px;
+  transition: width 0.1s linear;
+}
+
+.progress-bar.active .progress-bar-background {
+  position: relative;
+  width: 100rem;
+}

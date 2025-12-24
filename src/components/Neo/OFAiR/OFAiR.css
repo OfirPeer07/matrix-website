@@ -1,0 +1,172 @@
+/* Layout */
+.ofair-wrapper {
+  background-color: #000;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 0;
+  margin: 0;
+  height: auto;
+  min-height: auto;
+}
+
+.ofair-relative {
+  position: relative;
+}
+
+.computer-container {
+  position: relative;
+  bottom: 10rem;
+  left: 35rem;
+  width: 1450px;
+  max-width: 100%;
+  transform: scale(0.75);
+  transform-origin: bottom left;
+  margin-top: 150px;
+
+  /* === Terminal Screen Position Vars === */
+  --screen-top: 20.2%;
+  --screen-left: 20.4%;
+  --screen-width: 25.5%;
+  --screen-height: 34.5%;
+
+  /* Perspective */
+  --rx: 1deg;
+  --ry: 18deg;
+  --skx: 0.3deg;
+  --sky: 2.9deg;
+
+  /* === Elliptical Border Radius Vars (per corner) === */
+  --tlx: 13%;  --tly: 12%;  /* top-left  */
+  --trx: 11%;  --try: 12%;  /* top-right */
+  --brx: 9.5%; --bry: 12%;  /* bottom-right */
+  --blx: 16%;  --bly: 14%;  /* bottom-left */
+}
+
+.computer-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Terminal overlay (glass) */
+.terminal-overlay {
+  position: absolute;
+  top: var(--screen-top);
+  left: var(--screen-left);
+  width: var(--screen-width);
+  height: var(--screen-height);
+
+  transform: perspective(900px)
+    rotateX(var(--rx)) rotateY(var(--ry))
+    skewX(var(--skx)) skewY(var(--sky));
+  transform-origin: top right;
+
+  background: rgba(0, 0, 0, 0.94);
+  border: 1px solid #2adef2;
+
+  /* Elliptical corners */
+  border-radius: var(--tlx) var(--trx) var(--brx) var(--blx)
+                 / var(--tly) var(--try) var(--bry) var(--bly);
+
+  padding: 7.5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: "Courier New", monospace;
+  color: #2adef2;
+  box-shadow: inset 0 0 18px #2adef2;
+  backdrop-filter: blur(1px);
+}
+
+/* Optional calibration mode */
+.computer-container.calibrate .terminal-overlay {
+  background:
+    repeating-linear-gradient(0deg, rgba(42,222,242,.08) 0 10px, transparent 10px 20px),
+    repeating-linear-gradient(90deg, rgba(42,222,242,.08) 0 10px, transparent 10px 20px);
+  outline: 2px dashed #2adef2;
+  box-shadow: 0 0 0 2px rgba(0,255,255,.25) inset;
+}
+
+.terminal-header {
+  height: 2vh;
+  font-size: 1rem;
+  border-radius: 100%;
+  padding-bottom: 4px;
+  padding-left: 7rem;
+  margin-bottom: 8px;
+  color: #2adef2;
+  font-weight: bold;
+  letter-spacing: 2.5px;
+}
+
+.terminal-display {
+  flex-grow: 1;
+  overflow-y: auto;
+  font-size: 0.80rem;
+  padding: 3px;
+  color: #2adef2;
+  line-height: 1.1;
+  text-shadow: 0 0 3px #2adef2;
+}
+
+.terminal-display-frame {
+  position: relative;
+  padding: 8px;
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+/* Messages */
+.line {
+  margin: 4px 0;
+  transition: all 0.2s ease;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.line.user {
+  color: #2adef2; /* or #7befff if you want the lighter fallback */
+}
+
+.line.ofair {
+  color: #17ca07; /* or #8cff7b if you want the lighter fallback */
+}
+
+.timestamp {
+  margin-left: 6px;
+  font-size: 10px;
+  opacity: 0.6;
+  color: #ccc;
+}
+
+/* Terminal input */
+.terminal-input {
+  width: 85%;
+  margin-top: 3rem;
+  margin-bottom: 0.75rem;
+  margin-left: 1.9rem;
+  background: #000000;
+  border: 1px solid #001234;
+  padding: 2px 2px;
+  border-radius: 6px;
+  color: #fff;
+  font-family: monospace;
+  font-size: 14px;
+  outline: none;
+}
+
+/* Responsive adjustment */
+@media (max-width: 1200px) {
+  .computer-container {
+    --screen-left: 19.4%;
+    --screen-width: 26.2%;
+    --ry: 17.5deg;
+  }
+}

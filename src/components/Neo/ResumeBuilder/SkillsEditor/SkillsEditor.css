@@ -1,0 +1,52 @@
+/*ProfileHeader.css*/
+.skills-editor {
+  margin-bottom: 2rem;
+}
+
+.skills-editor h3 {
+  margin-bottom: 0.5rem;
+  color: #007bff;
+}
+
+.skill-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.skill-row input {
+  flex: 1;
+  padding: 0.4rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.stars {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.star {
+  font-size: 1.2rem;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.star.filled {
+  color: #f0c420;
+}
+
+.add-skill,
+.remove-skill {
+  padding: 0.3rem 0.6rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.remove-skill {
+  background-color: #dc3545;
+}

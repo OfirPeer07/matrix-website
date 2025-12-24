@@ -1,0 +1,179 @@
+/* TerminalWindowChat.css */
+
+:root {
+  --bg: #0f111f;
+  --bubble-other: #1f233e;
+  --bubble-mine-start: #5865f2;
+  --bubble-mine-end: #8c7bff;
+  --text: #e3e9ff;
+  --muted: #7f8ca5;
+  --radius: 16px;
+  --shadow: 0 30px 60px -10px rgba(88, 101, 242, 0.25);
+  --transition: 0.25s cubic-bezier(.3,.1,.25,1);
+  --input-bg: #1f2440;
+  --input-border: rgba(255,255,255,0.08);
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.chat-style-terminal {
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+#terminal-display {
+  flex: 1;
+  padding: 16px 18px;
+  overflow-y: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Date separator */
+.date-separator {
+  display: flex;
+  justify-content: center;
+  margin: 12px 0 6px;
+  font-size: 0.65rem;
+  color: var(--muted);
+}
+.date-separator span {
+  background: #1e213a;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Message bubble */
+.line {
+  display: flex;
+  width: 100%;
+}
+.line.user {
+  justify-content: flex-end;
+}
+.line.ofair {
+  justify-content: flex-start;
+}
+.bubble-content {
+  position: relative;
+  max-width: 75%;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9rem;
+  line-height: 1.3;
+  box-shadow: var(--shadow);
+  color: white;
+}
+.line.ofair .bubble-content {
+  background: var(--bubble-other);
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.04);
+}
+.line.user .bubble-content {
+  background: linear-gradient(135deg, var(--bubble-mine-start), var(--bubble-mine-end));
+}
+
+/* tails */
+.line.ofair .bubble-content::after {
+  content: "";
+  position: absolute;
+  left: -6px;
+  bottom: 8px;
+  width: 12px;
+  height: 12px;
+  background: var(--bubble-other);
+  clip-path: polygon(0 100%, 100% 0, 0 0);
+}
+.line.user .bubble-content::after {
+  content: "";
+  position: absolute;
+  right: -6px;
+  bottom: 8px;
+  width: 12px;
+  height: 12px;
+  background: linear-gradient(135deg, var(--bubble-mine-start), var(--bubble-mine-end));
+  clip-path: polygon(100% 100%, 0 0, 100% 0);
+}
+
+/* meta info: time + status */
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: flex-end;
+  font-size: 0.55rem;
+  margin-top: 4px;
+}
+.time {
+  color: rgba(255,255,255,0.8);
+}
+.status {
+  display: flex;
+  align-items: center;
+}
+.status svg {
+  width: 14px;
+  height: 14px;
+  color: rgba(255,255,255,0.9);
+}
+.pending-dot {
+  width: 8px;
+  height: 8px;
+  background: #ffd966;
+  border-radius: 50%;
+  animation: pulse 1.6s infinite ease-in-out;
+}
+@keyframes pulse {
+  0%,100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.3); opacity: 0.6; }
+}
+
+/* input area */
+.input-wrapper {
+  padding: 10px 16px;
+  background: rgba(15,17,45,0.9);
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+#terminal-input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--text);
+  font-size: 0.9rem;
+  outline: none;
+  font-family: inherit;
+  transition: var(--transition);
+}
+#terminal-input::placeholder {
+  color: rgba(255,255,255,0.5);
+}
+#terminal-input:focus {
+  box-shadow: 0 0 0 3px rgba(88,101,242,0.5);
+  border-color: rgba(88,101,242,0.8);
+}
+
+/* responsive */
+@media (max-width: 900px) {
+  .bubble-content {
+    max-width: 90%;
+  }
+}
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

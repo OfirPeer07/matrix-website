@@ -1,0 +1,112 @@
+.main-page {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.bottom-block {
+  color: transparent;
+}
+
+/* מקש ESC עם אפקט 3D, hover ו־active */
+.esc-button {
+  width: 35rem;
+  height: 35rem;
+  background: linear-gradient(145deg, #dcdcdc, #999);
+  border-radius: 22px;
+  border: 1px solid #555;
+  box-shadow:
+    6px 6px 12px #444,
+    inset -4px -4px 6px #eee;
+  color: #111;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 12.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transform-style: preserve-3d;
+  perspective: 600px;
+  animation: fadeInUp 1s ease-in-out;
+}
+
+.esc-button:hover {
+  transform: rotateX(6deg) rotateY(-6deg);
+  box-shadow:
+    8px 8px 14px #333,
+    inset -3px -3px 5px #f0f0f0;
+}
+
+.esc-button:active {
+  transform: translateY(4px);
+  box-shadow:
+    2px 2px 4px #333,
+    inset 2px 2px 4px #999;
+}
+
+/* אנימציית הופעה עדינה למקש */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* מודאל וידאו במצב פתוח - מסך מלא */
+.video-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* וידאו מלא מסך */
+.neo-video-fullscreen {
+  width: 70%;
+  height: auto;
+  max-height: 70vh;
+  object-fit: contain;
+  border-radius: 20px;
+  border: 2px solid rgba(0,255,0,0.6);
+  box-shadow: 0 0 35px rgba(0,255,0,0.5);
+  display: block;
+  margin: 0 auto; /* מרכז את הסרטון */
+  cursor: pointer;
+}
+
+/* CLOSE BUTTON */
+.close-video-btn {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+
+  font-size: 32px;
+  color: #00ff88;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  text-shadow: 0 0 12px #00ff88;
+  transition: 0.2s;
+}
+
+.close-video-btn:hover {
+  transform: scale(1.2);
+  text-shadow: 0 0 20px #00ff88;
+}

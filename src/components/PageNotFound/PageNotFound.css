@@ -1,0 +1,297 @@
+/*@import url('https://fonts.googleapis.com/css2?family=Wallpoet&display=swap');*/
+@import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
+
+/* מניעת גלילה לחלוטין (נשמר כמו בקוד המקורי) */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden !important;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+}
+
+.page-not-found-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  overflow: hidden;
+}
+
+/* הדמות/האובייקט הימני – לא נוגעים במיקום, כדי לא להזיז אותו */
+.OFAiR {
+  position: relative;
+  margin-top: 12.7cqmax;
+  margin-left: 55.2cqmax;
+  background-size: 36.675cqmax;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 55vmax;
+  height: 55vmax;
+  opacity: 1;
+  cursor: pointer;
+}
+.OFAiR:hover {
+  position: relative;
+  margin-top: 12.7cqmax;
+  margin-left: 55.2cqmax;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 55vmax;
+  height: 55vmax;
+  opacity: 1;
+  cursor: pointer;
+}
+
+.OFAiR .tooltip-homepage {
+  position: absolute;
+  top: -3.5rem;
+  left: 50%;
+  transform: translateX(-50%) scale(0.95);
+  width: max-content;
+  max-width: 100vw;
+  padding: 1rem 1.25rem;
+  color: #fff;
+  font-size: 1.1rem;
+  font-family: 'Share Tech Mono', monospace;
+  text-shadow: 0 0 46px #fff, 0 0 38px #fff;
+  border: 1px solid #868686;
+  border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 15px #868686;
+  z-index: 99999;
+  opacity: 0;
+  pointer-events: none;
+}
+.OFAiR:hover .tooltip-homepage {
+  opacity: 1;
+  pointer-events: auto;
+  animation: neonGlow 3.5s ease-in-out infinite;
+}
+
+@keyframes neonGlow {
+  0%, 100% { filter: drop-shadow(0 0 12px #000); }
+  50% { filter: drop-shadow(0 0 24px #868686) drop-shadow(0 0 48px #000); }
+}
+
+.background-video {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* ------------ טקסט משוכפל לשכבות (Back/Front) – מיושר שמאלה ------------ */
+.text {
+  font-size: 3.3rem;
+  font-family: "Monoton", monospace;
+  color: #000;
+  position: fixed;
+  left: 6vw;
+  top: 56%;
+  transform: translate(0, -50%);
+  z-index: 9999;
+  mix-blend-mode: difference;
+  font-weight: 900;
+  text-align: left;
+  width: 60vw;
+  pointer-events: none;
+}
+
+.text-back {
+  z-index: 99990;
+  filter: drop-shadow(0 0 22px #000);
+  opacity: 0.9;
+}
+
+.text-front {
+  z-index: 99991;
+  color: #000000;
+  mix-blend-mode: difference;
+  opacity: 1;
+}
+
+/* === אפקט שכבה על שכבה (3D) === */
+:root{
+  --depth-x: 0.35rem;
+  --depth-y: 0.35rem;
+}
+.text-back{
+  left: calc(6vw - var(--depth-x));
+  top: calc(56% + var(--depth-y));
+}
+.text-front{
+  left: calc(6vw + var(--depth-x));
+  top: calc(56% - var(--depth-y));
+}
+
+/* הגדלה לקווי הכותרות העליונים */
+.text .line {
+  display: block;
+  font-size: 1.2em;       /* גדול יותר – שלושת הקווים */
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  margin-bottom: -4rem;   /* מותאם לגודל החדש */
+  white-space: nowrap;
+}
+
+.text-front .line {
+  text-shadow: 0 0 18px #fff, 0 0 8px #fff, 0 0 36px #000;
+}
+.text-back .line {
+  filter: drop-shadow(0 0 28px #868686);
+}
+
+/* ספרות ו־Error */
+._4_4 {
+  font-size: 6.75rem;
+  font-weight: bold;
+  color: #a31c1c;
+  text-shadow:
+    2px 2px 1px rgba(0,0,0,0.3),
+    0 0px 15px #000,
+    0 0 15px #fff,
+    0 0 50px #000;
+  animation: flicker 5s infinite alternate;
+}
+._4_4:hover {
+  text-shadow:
+    2px 2px 1px rgba(0,0,0,0.3),
+    0 0px 15px #000,
+    0 0 15px #fff,
+    0 0 50px #fff;
+}
+
+._0 {
+  font-size: 8.5rem;
+  font-weight: bold;
+  color: #a31c1c;
+  text-shadow:
+    2px 2px 1px rgba(0,0,0,0.3),
+    0 0px 15px #000,
+    0 0 15px #fff,
+    0 0 50px #000;
+  animation: flicker 3s infinite alternate;
+}
+._0:hover {
+  color: #000;
+  text-shadow:
+    2px 2px 1px rgba(0,0,0,0.3),
+    0 0px 15px #000,
+    0 0 15px #fff,
+    0 0 50px #fff;
+}
+
+.err_r {
+  white-space: nowrap;
+  font-size: 7.75rem;
+  color: #a31c1c;
+  font-weight: bold;
+  text-shadow:
+    2px 2px 1px rgba(0,0,0,0.3),
+    0 0px 15px #000,
+    0 0 15px #fff,
+    0 0 50px #000;
+}
+.err_r:hover {
+  color: #000000;
+  text-shadow:
+    2px 2px 1px rgba(0,0,0,0.3),
+    0 0px 15px #000,
+    0 0 15px #fff,
+    0 0 50px #fff;
+}
+
+.spacer {
+  display: inline-block;
+  width: 3.5vmax;
+}
+
+.blink { animation: blink 0.3s infinite; }
+
+.flickerJunior {
+  opacity: 1;
+  text-shadow:
+    2px 2px 1px rgba(0,0,0,0.3),
+    0 0px 15px #868686,
+    0 0 15px #868686,
+    0 0 50px #000;
+  animation: flicker 3s infinite alternate;
+}
+.flickerCompany {
+  opacity: 1;
+  text-shadow:
+    2px 2px 1px rgba(0,0,0,0.3),
+    0 0px 15px #868686,
+    0 0 15px #868686,
+    0 0 50px #000;
+  animation: flicker 5s infinite alternate;
+}
+.flickerPage {
+  opacity: 0.8;
+  text-shadow:
+    2px 2px 1px rgba(0,0,0,0.3),
+    0 0px 15px #868686,
+    0 0 15px #868686,
+    0 0 50px #000;
+  animation: flicker 6s infinite alternate;
+}
+
+/* אנימציות */
+@keyframes blink { 70% { opacity: 0.7; } }
+@keyframes flicker {
+  40% { opacity: 0.8; }
+  42% { opacity: 0.1; }
+  43% { opacity: 0.8; }
+  45% { opacity: 0.1; }
+  46% { opacity: 0.8; }
+}
+
+/* ---------- מסכי 21:9 בלבד (נשמר) ---------- */
+@media screen and (min-aspect-ratio: 21/9) {
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden !important;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+  }
+
+  .page-not-found-container {
+    height: 100vh; width: 100vw;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5vw;
+  }
+
+  .OFAiR {
+    width: 50vmax; height: 50vmax;
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translate(0, -50%);
+    margin: 0;
+    background-position: center;
+    background-size: contain;
+  }
+
+  .text-back {
+    left: calc(5vw - var(--depth-x));
+    top:  calc(55% + var(--depth-y));
+    width: 42vw;
+  }
+  .text-front {
+    left: calc(5vw + var(--depth-x));
+    top:  calc(55% - var(--depth-y));
+    width: 42vw;
+  }
+}
