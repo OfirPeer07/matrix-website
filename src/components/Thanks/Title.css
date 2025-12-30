@@ -1,0 +1,55 @@
+.title {
+  position: absolute;
+  top: 40rem;
+  width: 100%;
+  text-align: center;
+
+  font-family: "Poppins", "Montserrat", sans-serif;
+  font-size: 3rem;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+
+  color: #f7f7f7;
+
+  /* 3D depth layers */
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.35),   /* highlight */
+    0 2px 1px rgba(0, 0, 0, 0.55),       /* near shadow */
+    0 4px 3px rgba(0, 0, 0, 0.55),       /* depth */
+    0 8px 8px rgba(0, 0, 0, 0.6),        /* deep shadow */
+    0 0 12px rgba(255, 60, 90, 0.18);    /* subtle glow */
+
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Optional – very subtle breathing */
+.title {
+  animation: depthPulse 5s ease-in-out infinite;
+}
+
+@keyframes depthPulse {
+  0%, 100% {
+    text-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.3),
+      0 2px 1px rgba(0, 0, 0, 0.5),
+      0 4px 3px rgba(0, 0, 0, 0.55),
+      0 8px 8px rgba(0, 0, 0, 0.6),
+      0 0 10px rgba(255, 60, 90, 0.15);
+  }
+  50% {
+    text-shadow:
+      0 1px 1px rgba(255, 255, 255, 0.4),
+      0 3px 2px rgba(0, 0, 0, 0.6),
+      0 6px 5px rgba(0, 0, 0, 0.65),
+      0 12px 12px rgba(0, 0, 0, 0.7),
+      0 0 14px rgba(255, 60, 90, 0.22);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .title {
+    font-size: 2.2rem;
+  }
+}

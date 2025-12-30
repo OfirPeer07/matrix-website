@@ -28,7 +28,6 @@ const PRESET = {
 const COLOR_HEAD = "#e0ffe0";
 const COLOR_BUILD = "#88ffcc";
 const COLOR_LOCKED = "#ffffff";
-const COLOR_LOCKED_MID = "#bbbbbb";
 
 /* -------- STATES -------- */
 const STATE = { RAIN: 0, BUILD: 1, LOOP: 2 };
@@ -75,13 +74,12 @@ export default function Intro({ onFinish }) {
   const randomChar = pool =>
     pool[(Math.random() * pool.length) | 0];
 
-  /* ================= SKIP BUTTON LOGIC ================= */
+  /* ================= SKIP INTRO ================= */
   const skipIntro = () => {
     if (state.current === STATE.LOOP) return;
 
     const d = data.current;
 
-    // Lock all remaining target cells instantly
     for (let i = d.buildIndex; i < d.targets.length; i++) {
       const key = d.targets[i];
       if (!d.locked.has(key)) {
@@ -98,6 +96,18 @@ export default function Intro({ onFinish }) {
       finishTimer.current = setTimeout(() => {
         onFinish?.();
       }, 300);
+    }
+  };
+
+  /* ================= KEYBOARD SKIP ================= */
+  const handleKeyDown = (e) => {
+    if (
+      e.key === "Escape" ||
+      e.key === " " ||
+      e.key === "Enter"
+    ) {
+      e.preventDefault();
+      skipIntro();
     }
   };
 
@@ -197,11 +207,8 @@ export default function Intro({ onFinish }) {
 
     d.locked.forEach((char, key) => {
       const [c, r] = key.split(",").map(Number);
-      const x = c * FONT_SIZE;
-      const y = r * FONT_SIZE;
-
       ctx.fillStyle = COLOR_LOCKED;
-      ctx.fillText(char, x, y);
+      ctx.fillText(char, c * FONT_SIZE, r * FONT_SIZE);
     });
   };
 
@@ -316,12 +323,14 @@ export default function Intro({ onFinish }) {
   useEffect(() => {
     resize();
     window.addEventListener("resize", resize);
+    window.addEventListener("keydown", handleKeyDown);
     rafRef.current = requestAnimationFrame(loop);
 
     return () => {
       mounted.current = false;
       cancelAnimationFrame(rafRef.current);
       window.removeEventListener("resize", resize);
+      window.removeEventListener("keydown", handleKeyDown);
       clearTimeout(finishTimer.current);
     };
   }, []);

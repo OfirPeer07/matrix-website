@@ -1,37 +1,44 @@
-.main-page {
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* =====================================================
+   NEO – CONTENT / VISUAL ONLY
+   (NO LAYOUT, NO GRID, NO SECTIONS)
+===================================================== */
 
+/* Block used only for visual spacing / effect */
 .bottom-block {
   color: transparent;
 }
 
-/* מקש ESC עם אפקט 3D, hover ו־active */
+/* =====================================================
+   ESC KEY – 3D BUTTON (NEO UNIQUE)
+===================================================== */
+
 .esc-button {
   width: 35rem;
   height: 35rem;
   background: linear-gradient(145deg, #dcdcdc, #999);
   border-radius: 22px;
   border: 1px solid #555;
+
   box-shadow:
     6px 6px 12px #444,
     inset -4px -4px 6px #eee;
+
   color: #111;
   font-family: 'Courier New', monospace;
   font-weight: bold;
   font-size: 12.5rem;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   cursor: pointer;
   user-select: none;
+
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   transform-style: preserve-3d;
   perspective: 600px;
+
   animation: fadeInUp 1s ease-in-out;
 }
 
@@ -49,7 +56,10 @@
     inset 2px 2px 4px #999;
 }
 
-/* אנימציית הופעה עדינה למקש */
+/* =====================================================
+   ESC BUTTON ANIMATION
+===================================================== */
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -61,36 +71,41 @@
   }
 }
 
-/* מודאל וידאו במצב פתוח - מסך מלא */
+/* =====================================================
+   VIDEO MODAL – NEO ONLY
+===================================================== */
+
 .video-modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
+
   background: rgba(0,0,0,0.85);
   backdrop-filter: blur(5px);
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   z-index: 9999;
 }
 
-/* וידאו מלא מסך */
+/* Fullscreen video */
 .neo-video-fullscreen {
   width: 70%;
-  height: auto;
   max-height: 70vh;
+
   object-fit: contain;
+  display: block;
+  margin: 0 auto;
+
   border-radius: 20px;
   border: 2px solid rgba(0,255,0,0.6);
   box-shadow: 0 0 35px rgba(0,255,0,0.5);
-  display: block;
-  margin: 0 auto; /* מרכז את הסרטון */
+
   cursor: pointer;
 }
 
-/* CLOSE BUTTON */
+/* Close button */
 .close-video-btn {
   position: absolute;
   top: 30px;
@@ -100,10 +115,10 @@
   color: #00ff88;
   background: transparent;
   border: none;
-  cursor: pointer;
 
+  cursor: pointer;
   text-shadow: 0 0 12px #00ff88;
-  transition: 0.2s;
+  transition: transform 0.2s, text-shadow 0.2s;
 }
 
 .close-video-btn:hover {

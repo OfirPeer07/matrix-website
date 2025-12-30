@@ -1,28 +1,64 @@
 import React from "react";
-import "../../../styles/Sections.css";
+import "./ChooseYourPill.css";
 import pillImage from "./ChooseYourPill.png";
 
 export default function ChooseYourPill({ selected, onSelect }) {
   return (
-    <div>
+    <div className="choose-your-pill-container">
 
-      {/* HOT ZONES OVER IMAGE */}
+      {/* תמונה עם חצאי לחיצה */}
       <div className="pill-image-wrapper">
-        <div className="half left" onClick={() => onSelect("red")} />
-        <div className="half right" onClick={() => onSelect("blue")} />
 
-        <img src={pillImage} className="full-image" alt="Choose your pill" />
+        <div
+          className={`half left ${selected === "red" ? "selected-red" : ""}`}
+          onClick={() => onSelect("red")}
+        />
+
+        <div
+          className={`half right ${selected === "blue" ? "selected-blue" : ""}`}
+          onClick={() => onSelect("blue")}
+        />
+
+        <img
+          src={pillImage}
+          alt="Choose your pill"
+          className="full-image"
+        />
       </div>
 
-      {/* RESULT MESSAGE */}
+      {/* טקסט נפתח מתחת לתמונה */}
       {selected && (
         <div className={`pill-info ${selected}`} dir="rtl">
-          <h2>{selected === "red" ? "הכדור האדום" : "הכדור הכחול"}</h2>
-          <p>
-            {selected === "red"
-              ? "אתה בוחר לדעת את האמת, גם אם היא כואבת. המסע מתחיל עכשיו."
-              : "אתה בוחר להישאר במערכת, במקום בטוח. הכול יישאר כמות שהוא."}
-          </p>
+          {selected === "red" ? (
+            <>
+              <h2>🟥 הכדור האדום – הבחירה הנכונה</h2>
+              <p>
+                זו הבחירה של מי שמוכן להסתכל למציאות בעיניים.
+                להבין שהתואר לבדו לא מספיק, שהמערכת לא בנויה לג׳וניורים,
+                ושאם לא תיצור לעצמך ניסיון – אף אחד לא יעשה את זה בשבילך.
+              </p>
+              <p>
+                הכדור האדום הוא בחירה אקטיבית:
+                לקחת שליטה, לבנות ערך אמיתי,
+                ולהפסיק לחכות שמישהו “יגלה אותך”.
+              </p>
+            </>
+          ) : (
+            <>
+              <h2>🟦 הכדור הכחול – הבחירה הנוחה</h2>
+              <p>
+                זו הבחירה שמרגישה בטוחה,
+                אבל משאירה אותך תלוי במערכת.
+                להמשיך לשלוח קו״ח, להאמין שמספיק זמן ומוטיבציה –
+                ולקוות שמישהו ייתן לך צ׳אנס.
+              </p>
+              <p>
+                הכדור הכחול מרגיע,
+                אבל לא מקדם.
+                הוא שומר אותך באזור הנוחות – גם אם זה עולה בשנים של המתנה.
+              </p>
+            </>
+          )}
         </div>
       )}
     </div>

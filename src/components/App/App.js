@@ -39,66 +39,78 @@ function isMobileSafari() {
   );
 }
 
-function App() {
-  const [showIntro, setShowIntro] = useState(true);
+function AppContent() {
+  const location = useLocation();
+  const [showIntro, setShowIntro] = useState(false);
 
   const Hacking = lazy(() => import("../Neo/Hacking/Hacking"));
   const MainPage = lazy(() => import("../MainPage/MainPage"));
 
   const [isSafariMobile, setIsSafariMobile] = useState(false);
 
+  /* Safari */
   useEffect(() => {
     if (isMobileSafari()) setIsSafariMobile(true);
   }, []);
 
+  /* Intro — ONLY once, ONLY on "/" */
+  useEffect(() => {
+    if (location.pathname !== "/") return;
+
+    const seen = sessionStorage.getItem("introSeen");
+    if (!seen) {
+      setShowIntro(true);
+    }
+  }, [location.pathname]);
+
+  const handleIntroFinish = () => {
+    sessionStorage.setItem("introSeen", "true");
+    setShowIntro(false);
+  };
+
   return (
-    <Router>
-      <div className="App">
-        <ConditionalSidebar />
+    <div className="App">
+      <ConditionalSidebar />
 
-        <div className="content">
-          <Suspense fallback={<div>Loading...</div>}>
-            <Routes>
-              {/* MAIN PAGE תמיד / */}
-              <Route
-                path="/"
-                element={<MainPage introDone={!showIntro} />}
-              />
+      <div className="content">
+        <Suspense fallback={<div>Loading...</div>}>
+          <Routes>
+            {/* MAIN PAGE */}
+            <Route path="/" element={<MainPage />} />
 
-              {/* NEO */}
-              <Route path="/neo" element={<Neo />} />
-              <Route path="/neo/hacking" element={<Hacking />} />
-              <Route path="/neo/hacking/build-your-resume" element={<ResumeBuilder />} />
-              <Route path="/neo/hacking/guides" element={<Guides />} />
-              <Route path="/neo/hacking/articles" element={<Articles />} />
-              <Route path="/neo/hacking/videos" element={<Videos />} />
+            {/* NEO */}
+            <Route path="/neo" element={<Neo />} />
+            <Route path="/neo/hacking" element={<Hacking />} />
+            <Route path="/neo/hacking/build-your-resume" element={<ResumeBuilder />} />
+            <Route path="/neo/hacking/guides" element={<Guides />} />
+            <Route path="/neo/hacking/articles" element={<Articles />} />
+            <Route path="/neo/hacking/videos" element={<Videos />} />
 
-              {/* AGENT SMITH */}
-              <Route path="/agent-smith" element={<AgentSmith />} />
-              <Route path="/agent-smith/agent-smith-department" element={<AgentSmithDepartment />} />
-              <Route path="/agent-smith/agent-smith-department/technology-news" element={<TechnologyNews />} />
-              <Route path="/agent-smith/agent-smith-department/troubleshooting-guides" element={<TroubleshootingGuides />} />
-              <Route path="/agent-smith/agent-smith-department/building-computers" element={<BuildingComputers />} />
+            {/* AGENT SMITH */}
+            <Route path="/agent-smith" element={<AgentSmith />} />
+            <Route path="/agent-smith/agent-smith-department" element={<AgentSmithDepartment />} />
+            <Route path="/agent-smith/agent-smith-department/technology-news" element={<TechnologyNews />} />
+            <Route path="/agent-smith/agent-smith-department/troubleshooting-guides" element={<TroubleshootingGuides />} />
+            <Route path="/agent-smith/agent-smith-department/building-computers" element={<BuildingComputers />} />
 
-              {/* GENERAL */}
-              <Route path="/contact-us" element={<ContactUs />} />
-              <Route path="/thanks" element={<Thanks />} />
+            {/* GENERAL */}
+            <Route path="/contact-us" element={<ContactUs />} />
+            <Route path="/thanks" element={<Thanks />} />
 
-              <Route path="*" element={<PageNotFound />} />
-            </Routes>
-          </Suspense>
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
+        </Suspense>
 
-          {isSafariMobile && <div className="invisible-block" />}
-        </div>
-
-        {/* INTRO OVERLAY */}
-        <div className={`intro-wrapper ${!showIntro ? "intro-hidden" : ""}`}>
-          {showIntro && (
-            <Intro onFinish={() => setShowIntro(false)} />
-          )}
-        </div>
+        {isSafariMobile && <div className="invisible-block" />}
       </div>
-    </Router>
+
+      {/* INTRO OVERLAY — ONLY ON MAIN PAGE */}
+      {location.pathname === "/" && showIntro && (
+        <div className="intro-wrapper">
+          <Intro onFinish={handleIntroFinish} />
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -124,4 +136,10 @@ function ConditionalSidebar() {
   return null;
 }
 
-export default App;
+export default function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
+  );
+}
