@@ -120,7 +120,7 @@ const LightRevealGrid = forwardRef(function LightRevealGrid(
     octx.globalAlpha = 0.08;
     octx.strokeStyle = `rgba(${rgb.str},1)`;
     octx.lineJoin = "round";
-    octx.lineWidth = Math.max(1, Math.floor(cell * 0.06));
+    octx.lineWidth = Math.max(1, Math.floor(cell * 0.08));
 
     for (let r = 0, y = startY; r < rows; r++, y += step) {
       for (let c = 0, x = startX; c < cols; c++, x += step) {
@@ -198,8 +198,8 @@ const LightRevealGrid = forwardRef(function LightRevealGrid(
     // Reset compositing so we NEVER affect other canvases
     ctx.globalCompositeOperation = "source-over";
 
-    const W = canvas.clientWidth;
-    const H = canvas.clientHeight;
+    const W = document.documentElement.clientWidth;
+    const H = document.documentElement.clientHeight;
 
     blitGrid(ctx, W, H);
     drawLighting(ctx, W, H);
