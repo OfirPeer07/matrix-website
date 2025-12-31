@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import "./Title.css";
 
 const Title = () => {
-  const texts = ["Welcome", "Welcome to","Welcome to the Matrix World"];
+  const texts = ["Welcome", "Welcome to", "Welcome to the Matrix World"];
   const [currentText, setCurrentText] = useState("");
   const [textIndex, setTextIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
@@ -10,52 +10,43 @@ const Title = () => {
   const [isMobile, setIsMobile] = useState(false);
   const typingTimeout = useRef(null);
 
-  // Check if device is mobile
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    
-    // Initial check
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
     checkMobile();
-    
-    // Add event listener for window resize
-    window.addEventListener('resize', checkMobile);
-    
-    // Cleanup
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   useEffect(() => {
-    // On mobile, just show the final text without animation
     if (isMobile) {
       setCurrentText("Welcome to The Matrix World");
       return;
     }
 
-    const currentWord = texts[textIndex];
-    const isWordComplete = charIndex === currentWord.length;
-    const isWordEmpty = charIndex === 0;
-    
-    let typingSpeed = isDeleting ? 50 : 100;
-    let delay = isWordComplete ? 1000 : isWordEmpty ? 500 : typingSpeed;
+    const word = texts[textIndex];
+    const done = charIndex === word.length;
+    const empty = charIndex === 0;
 
     typingTimeout.current = setTimeout(() => {
-      setCurrentText(currentWord.substring(0, charIndex + (isDeleting ? -1 : 1)));
-      setCharIndex((prev) => prev + (isDeleting ? -1 : 1));
+      setCurrentText(word.substring(0, charIndex + (isDeleting ? -1 : 1)));
+      setCharIndex((c) => c + (isDeleting ? -1 : 1));
 
-      if (isWordComplete && !isDeleting) {
-        setIsDeleting(true);
-      } else if (isWordEmpty && isDeleting) {
+      if (done) setIsDeleting(true);
+      if (empty && isDeleting) {
         setIsDeleting(false);
-        setTextIndex((prev) => (prev + 1) % texts.length);
+        setTextIndex((i) => (i + 1) % texts.length);
       }
-    }, delay);
+    }, done ? 1000 : 90);
 
     return () => clearTimeout(typingTimeout.current);
-  }, [charIndex, isDeleting, textIndex, texts, isMobile]);
+  }, [charIndex, isDeleting, textIndex, isMobile]);
 
-  return <h1 className="typing-title">{currentText}<span className="cursor">|</span></h1>;
+  return (
+    <h1 className="typing-title">
+      {currentText}
+      {!isMobile && <span className="cursor">|</span>}
+    </h1>
+  );
 };
 
 export default Title;

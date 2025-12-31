@@ -25,8 +25,12 @@ import ResumeBuilder from "../Neo/ResumeBuilder/ResumeBuilder";
 import MatrixBar from "../Sidebar/MatrixBar";
 import PageNotFound from "../PageNotFound/PageNotFound";
 import ContactUs from "../ContactUs/ContactUs";
-import Intro from "../Intro/Intro";
+import Intro from "../MainPage/Intro";
 import Thanks from "../Thanks/Thanks";
+
+// Lazy
+const MainPage = lazy(() => import("../MainPage/MainPage"));
+const Hacking = lazy(() => import("../Neo/Hacking/Hacking"));
 
 // Safari detect
 function isMobileSafari() {
@@ -41,14 +45,11 @@ function isMobileSafari() {
 
 function AppContent() {
   const location = useLocation();
+
   const [showIntro, setShowIntro] = useState(false);
-
-  const Hacking = lazy(() => import("../Neo/Hacking/Hacking"));
-  const MainPage = lazy(() => import("../MainPage/MainPage"));
-
   const [isSafariMobile, setIsSafariMobile] = useState(false);
 
-  /* Safari */
+  /* Safari detection */
   useEffect(() => {
     if (isMobileSafari()) setIsSafariMobile(true);
   }, []);
@@ -58,9 +59,7 @@ function AppContent() {
     if (location.pathname !== "/") return;
 
     const seen = sessionStorage.getItem("introSeen");
-    if (!seen) {
-      setShowIntro(true);
-    }
+    setShowIntro(!seen);
   }, [location.pathname]);
 
   const handleIntroFinish = () => {
@@ -75,10 +74,20 @@ function AppContent() {
       <div className="content">
         <Suspense fallback={<div>Loading...</div>}>
           <Routes>
-            {/* MAIN PAGE */}
-            <Route path="/" element={<MainPage />} />
 
-            {/* NEO */}
+            {/* ===== MAIN (Intro OR MainPage) ===== */}
+            <Route
+              path="/"
+              element={
+                showIntro ? (
+                  <Intro onFinish={handleIntroFinish} />
+                ) : (
+                  <MainPage hideMatrix={false} />
+                )
+              }
+            />
+
+            {/* ===== NEO ===== */}
             <Route path="/neo" element={<Neo />} />
             <Route path="/neo/hacking" element={<Hacking />} />
             <Route path="/neo/hacking/build-your-resume" element={<ResumeBuilder />} />
@@ -86,14 +95,26 @@ function AppContent() {
             <Route path="/neo/hacking/articles" element={<Articles />} />
             <Route path="/neo/hacking/videos" element={<Videos />} />
 
-            {/* AGENT SMITH */}
+            {/* ===== AGENT SMITH ===== */}
             <Route path="/agent-smith" element={<AgentSmith />} />
-            <Route path="/agent-smith/agent-smith-department" element={<AgentSmithDepartment />} />
-            <Route path="/agent-smith/agent-smith-department/technology-news" element={<TechnologyNews />} />
-            <Route path="/agent-smith/agent-smith-department/troubleshooting-guides" element={<TroubleshootingGuides />} />
-            <Route path="/agent-smith/agent-smith-department/building-computers" element={<BuildingComputers />} />
+            <Route
+              path="/agent-smith/agent-smith-department"
+              element={<AgentSmithDepartment />}
+            />
+            <Route
+              path="/agent-smith/agent-smith-department/technology-news"
+              element={<TechnologyNews />}
+            />
+            <Route
+              path="/agent-smith/agent-smith-department/troubleshooting-guides"
+              element={<TroubleshootingGuides />}
+            />
+            <Route
+              path="/agent-smith/agent-smith-department/building-computers"
+              element={<BuildingComputers />}
+            />
 
-            {/* GENERAL */}
+            {/* ===== GENERAL ===== */}
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/thanks" element={<Thanks />} />
 
@@ -103,13 +124,6 @@ function AppContent() {
 
         {isSafariMobile && <div className="invisible-block" />}
       </div>
-
-      {/* INTRO OVERLAY — ONLY ON MAIN PAGE */}
-      {location.pathname === "/" && showIntro && (
-        <div className="intro-wrapper">
-          <Intro onFinish={handleIntroFinish} />
-        </div>
-      )}
     </div>
   );
 }

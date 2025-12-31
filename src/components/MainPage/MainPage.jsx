@@ -67,7 +67,9 @@ function usePersistentSettings(key, initial) {
   return [state, setState];
 }
 
-const MainPage = () => {
+/* ================= MAIN PAGE ================= */
+
+const MainPage = ({ hideMatrix = false }) => {
   const [busy, setBusy] = useState(false);
   const [open, setOpen] = useState(false);
   const [settings, setSettings] = usePersistentSettings(
@@ -140,17 +142,19 @@ const MainPage = () => {
         aria-hidden={!open}
       />
 
-      {/* Matrix Rain */}
-      <MatrixRainCanvas
-        color={settings.accent}
-        glow={settings.rainGlow}
-        fontSize={settings.rainFont}
-        speed={settings.rainSpeed}
-        density={settings.rainDensity}
-        fps={settings.rainFps}
-      />
+      {/* ================= MATRIX RAIN ================= */}
+      {!hideMatrix && (
+        <MatrixRainCanvas
+          color={settings.accent}
+          glow={settings.rainGlow}
+          fontSize={settings.rainFont}
+          speed={settings.rainSpeed}
+          density={settings.rainDensity}
+          fps={settings.rainFps}
+        />
+      )}
 
-      {/* Light Grid */}
+      {/* ================= LIGHT GRID ================= */}
       <LightRevealGrid
         cell={settings.cell}
         gap={settings.gap}
@@ -169,7 +173,7 @@ const MainPage = () => {
 
       <Title id={headingId} />
 
-      {/* Character Cards */}
+      {/* ================= CARDS ================= */}
       <main className="cards">
         <section className="card-wrap" aria-label="Agent Smith card">
           <button
@@ -222,7 +226,7 @@ const MainPage = () => {
         </section>
       </main>
 
-      {/* Control Panel — FIXED! */}
+      {/* ================= CONTROL PANEL ================= */}
       <ControlPanel
         open={open}
         setOpen={setOpen}

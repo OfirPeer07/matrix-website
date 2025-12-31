@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Intro.css";
 
 /* ================= CONFIG ================= */
@@ -9,7 +9,7 @@ const TEXT = "WELCOME TO \n THE MATRIX WORLD";
 
 const MATRIX_CHARS =
   "アイウエオカキクケコサシスセソタチツテトナニヌネノ" +
-  "ハヒフヘホマミムメモヤユヨラリルレロワヲン" +
+  "ハヒフヘホマמיממוヤユヨラリルレロワヲン" +
   "0123456789";
 
 /* -------- MOVIE PRESET (1999) -------- */
@@ -24,17 +24,13 @@ const PRESET = {
   activationChance: 0.002,
 };
 
-/* -------- COLORS -------- */
 const COLOR_HEAD = "#e0ffe0";
 const COLOR_BUILD = "#88ffcc";
 const COLOR_LOCKED = "#ffffff";
 
-/* -------- STATES -------- */
 const STATE = { RAIN: 0, BUILD: 1, LOOP: 2 };
 const RAIN_TIME = 1.5;
 const BUILD_INTERVAL = 0.025;
-
-/* -------- SIMULATION -------- */
 const FIXED_STEP = 1 / 120;
 
 export default function Intro({ onFinish }) {
@@ -44,9 +40,10 @@ export default function Intro({ onFinish }) {
 
   const lastTime = useRef(0);
   const accumulator = useRef(0);
-
-  const finishTimer = useRef(null);
   const finishedOnce = useRef(false);
+
+  const [canProceed, setCanProceed] = useState(false);
+  const [finished, setFinished] = useState(false); // 🔑 NEW
 
   const state = useRef(STATE.RAIN);
   const time = useRef(0);
@@ -65,21 +62,37 @@ export default function Intro({ onFinish }) {
 
   /* ================= HELPERS ================= */
   const cellKey = (c, r) => `${c},${r}`;
+  const randomChar = pool => pool[(Math.random() * pool.length) | 0];
 
   const inText = (x, y) => {
     const { w, mask } = data.current;
     return mask && mask[((x | 0) + (y | 0) * w) * 4] > 0;
   };
 
-  const randomChar = pool =>
-    pool[(Math.random() * pool.length) | 0];
+  /* ================= FINISH HANDLING ================= */
+  const finishIntro = () => {
+    if (finishedOnce.current) return;
+    finishedOnce.current = true;
 
-  /* ================= SKIP INTRO ================= */
-  const skipIntro = () => {
+    setFinished(true);
+    setCanProceed(false);
+
+    cancelAnimationFrame(rafRef.current);
+    onFinish?.();
+  };
+
+  const triggerTransitionReady = () => {
+    if (finishedOnce.current) return;
+    setCanProceed(true);
+  };
+
+  const skipIntro = (e) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+
     if (state.current === STATE.LOOP) return;
 
     const d = data.current;
-
     for (let i = d.buildIndex; i < d.targets.length; i++) {
       const key = d.targets[i];
       if (!d.locked.has(key)) {
@@ -89,25 +102,18 @@ export default function Intro({ onFinish }) {
 
     d.buildIndex = d.targets.length;
     state.current = STATE.LOOP;
-
-    if (!finishedOnce.current) {
-      finishedOnce.current = true;
-      clearTimeout(finishTimer.current);
-      finishTimer.current = setTimeout(() => {
-        onFinish?.();
-      }, 300);
-    }
+    triggerTransitionReady();
   };
 
-  /* ================= KEYBOARD SKIP ================= */
+  const handleScreenClick = () => {
+    if (canProceed) finishIntro();
+  };
+
   const handleKeyDown = (e) => {
-    if (
-      e.key === "Escape" ||
-      e.key === " " ||
-      e.key === "Enter"
-    ) {
+    if (e.key === "Escape" || e.key === " " || e.key === "Enter") {
       e.preventDefault();
-      skipIntro();
+      if (canProceed) finishIntro();
+      else skipIntro();
     }
   };
 
@@ -116,15 +122,13 @@ export default function Intro({ onFinish }) {
     const d = data.current;
     time.current += dt;
 
-    if (time.current > RAIN_TIME) state.current = STATE.BUILD;
+    if (time.current > RAIN_TIME && state.current === STATE.RAIN) {
+      state.current = STATE.BUILD;
+    }
 
     if (state.current === STATE.BUILD) {
       d.buildTimer += dt;
-
-      if (
-        d.buildTimer >= BUILD_INTERVAL &&
-        d.buildIndex < d.targets.length
-      ) {
+      if (d.buildTimer >= BUILD_INTERVAL && d.buildIndex < d.targets.length) {
         d.buildTimer = 0;
         const key = d.targets[d.buildIndex++];
         d.locked.set(key, randomChar(MATRIX_CHARS));
@@ -132,14 +136,8 @@ export default function Intro({ onFinish }) {
 
       if (d.buildIndex >= d.targets.length) {
         state.current = STATE.LOOP;
+        triggerTransitionReady();
       }
-    }
-
-    if (state.current === STATE.LOOP && !finishedOnce.current) {
-      finishedOnce.current = true;
-      finishTimer.current = setTimeout(() => {
-        onFinish?.();
-      }, 3000);
     }
 
     d.streams.forEach(s => {
@@ -152,7 +150,6 @@ export default function Intro({ onFinish }) {
       }
 
       s.y += s.speed * dt;
-
       s.charTimer += dt;
       if (s.charTimer >= PRESET.charInterval) {
         s.charTimer = 0;
@@ -166,9 +163,10 @@ export default function Intro({ onFinish }) {
     });
   };
 
-  /* ================= DRAW ================= */
+  /* ================= RENDER ================= */
   const render = (ctx) => {
     const d = data.current;
+    if (!d.w) return;
 
     ctx.fillStyle = "#000";
     ctx.fillRect(0, 0, d.w, d.h);
@@ -214,12 +212,10 @@ export default function Intro({ onFinish }) {
 
   /* ================= LOOP ================= */
   const loop = (now) => {
-    if (!mounted.current) return;
+    if (!mounted.current || finished) return;
 
     const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas?.getContext("2d");
     if (!ctx) return;
 
     const dt = Math.min((now - lastTime.current) / 1000, 0.05);
@@ -237,29 +233,24 @@ export default function Intro({ onFinish }) {
 
   /* ================= RESIZE ================= */
   const resize = () => {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    const cols = Math.floor(w / FONT_SIZE);
-
     canvas.width = w * DPR;
     canvas.height = h * DPR;
-    canvas.style.width = `${w}px`;
-    canvas.style.height = `${h}px`;
+
+    const ctx = canvas.getContext("2d");
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 
+    const cols = Math.floor(w / FONT_SIZE);
     const streams = Array.from({ length: cols }, () => {
       const pool = MATRIX_CHARS.split("").slice(0, 14);
       return {
         y: Math.random() * -h,
         speed: PRESET.fallSpeed + Math.random() * PRESET.speedVariance,
-        trail: PRESET.trailMin +
-          Math.random() * (PRESET.trailMax - PRESET.trailMin),
+        trail: PRESET.trailMin + Math.random() * (PRESET.trailMax - PRESET.trailMin),
         chars: Array.from({ length: 50 }, () => randomChar(pool)),
         charPool: pool,
         charTimer: Math.random() * PRESET.charInterval,
@@ -268,10 +259,10 @@ export default function Intro({ onFinish }) {
       };
     });
 
-    const maskCanvas = document.createElement("canvas");
-    maskCanvas.width = w;
-    maskCanvas.height = h;
-    const mctx = maskCanvas.getContext("2d");
+    const mcanvas = document.createElement("canvas");
+    mcanvas.width = w;
+    mcanvas.height = h;
+    const mctx = mcanvas.getContext("2d");
 
     mctx.fillStyle = "#000";
     mctx.fillRect(0, 0, w, h);
@@ -283,14 +274,13 @@ export default function Intro({ onFinish }) {
     const lines = TEXT.split("\n");
     const lh = TEXT_FONT_SIZE * 1.1;
     const startY = h / 2 - ((lines.length - 1) * lh) / 2;
-
     lines.forEach((line, i) =>
       mctx.fillText(line, w / 2, startY + i * lh)
     );
 
     const mask = mctx.getImageData(0, 0, w, h).data;
-
     const targets = [];
+
     for (let c = 0; c < cols; c++) {
       for (let r = 0; r < h / FONT_SIZE; r++) {
         if (mask[((c * FONT_SIZE) + (r * FONT_SIZE) * w) * 4] > 0) {
@@ -311,15 +301,9 @@ export default function Intro({ onFinish }) {
       buildTimer: 0,
     };
 
-    time.current = 0;
-    state.current = STATE.RAIN;
-    accumulator.current = 0;
-    finishedOnce.current = false;
-    clearTimeout(finishTimer.current);
     lastTime.current = performance.now();
   };
 
-  /* ================= LIFECYCLE ================= */
   useEffect(() => {
     resize();
     window.addEventListener("resize", resize);
@@ -331,21 +315,28 @@ export default function Intro({ onFinish }) {
       cancelAnimationFrame(rafRef.current);
       window.removeEventListener("resize", resize);
       window.removeEventListener("keydown", handleKeyDown);
-      clearTimeout(finishTimer.current);
     };
   }, []);
 
   return (
-    <>
-      <button
-        className="intro-skip"
-        onClick={skipIntro}
-        aria-label="Skip intro"
-      >
-        SKIP
-      </button>
-
+    <div
+      className={`intro-container ${finished ? "finished" : ""}`}
+      onClick={handleScreenClick}
+      style={{ pointerEvents: finished ? "none" : "auto" }} // 🔑 KEY FIX
+    >
       <canvas ref={canvasRef} className="intro-canvas" />
-    </>
+
+      {!canProceed && !finished && (
+        <button className="intro-skip" onClick={skipIntro}>
+          SKIP_
+        </button>
+      )}
+
+      {canProceed && !finished && (
+        <div className="continue-prompt">
+          [ CLICK TO ENTER ]
+        </div>
+      )}
+    </div>
   );
 }
