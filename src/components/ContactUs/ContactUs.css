@@ -1,58 +1,176 @@
-.contact-us-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
-    background-color: #1e1e1e;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 255, 0, 0.1);
-    color: #e0e0e0;
-    direction: rtl;
-  }
-  
-  .contact-us-container h1 {
-    color: #0f0;
-    text-align: center;
-    margin-bottom: 2rem;
-    font-size: 2rem;
-  }
-  
-  .contact-methods {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .contact-method {
-    display: flex;
-    align-items: center;
-    padding: 1rem;
-    background-color: #2a2a2a;
-    border-radius: 8px;
-    text-decoration: none;
-    color: #e0e0e0;
-    transition: all 0.3s ease;
-  }
-  
-  .contact-method:hover {
-    background-color: #3a3a3a;
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
-  }
-  
-  .contact-method svg {
-    margin-left: 1.2rem;
-    color: #0f0;
-  }
-  
-  .contact-method span {
-    font-size: 1.1rem;
-  }
-  
-  @media (max-width: 768px) {
-    .contact-us-container {
-      padding: 1rem;
-    }
-    
-    .contact-method {
-      padding: 0.75rem;
-    }
-  }
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=JetBrains+Mono:wght@400;600&display=swap');
+
+.matrix-viewport {
+  height: 100vh;
+  width: 100%;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.cyber-back-btn {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 10001;
+  background: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 255, 0, 0.6);
+  border: 1px solid rgba(0, 255, 0, 0.6);
+  padding: 6px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cyber-back-btn:hover {
+  background: rgba(80, 80, 80, 0.217);
+  box-shadow: 0 0 10px rgba(21, 255, 0, 0.3);
+}
+
+.matrix-rain-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+}
+
+.glass-panel {
+  position: relative;
+  z-index: 10;
+  width: 90%;
+  max-width: 480px;
+  background: rgba(6, 6, 6, 0.96);
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(0, 255, 0, 0.25);
+  padding: 50px 40px;
+  box-shadow: 0 0 60px rgba(0, 0, 0, 1);
+}
+
+.corner-tag {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(0, 255, 0, 0.6);
+}
+.tl { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.tr { top: -1px; right: -1px; border-left: 0; border-bottom: 0; }
+.bl { bottom: -1px; left: -1px; border-right: 0; border-top: 0; }
+.br { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+
+.cyber-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 45px;
+  text-align: center;
+}
+
+.cyber-title span {
+  color: rgba(0, 255, 0, 0.6);
+  text-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
+}
+
+.interaction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* עיצוב השורה כקישור לחיץ מלא */
+.interactive-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(0, 255, 0, 0.05);
+  text-decoration: none; /* ביטול קו תחתון */
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.interactive-row:hover {
+  background: rgba(0, 255, 0, 0.06);
+  border-color: rgba(0, 255, 0, 0.3);
+}
+
+.row-main-content {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.icon-container {
+  color: rgba(0, 255, 0, 0.6);
+  transition: all 0.3s ease;
+}
+
+.interactive-row:hover .icon-container {
+  color: #00FF00;
+  filter: drop-shadow(0 0 5px #00FF00);
+}
+
+.info-stack { display: flex; flex-direction: column; }
+
+.info-label {
+  font-size: 0.6rem;
+  color: rgba(0, 255, 0, 0.6);
+  opacity: 0.6;
+  text-transform: uppercase;
+}
+
+.info-value {
+  font-size: 1.05rem;
+  color: #efefef;
+  margin-top: 3px;
+}
+
+/* רמז ויזואלי (חץ) שמופיע ב-Hover */
+.external-hint {
+  color: #00FF00;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+}
+
+.interactive-row:hover .external-hint {
+  opacity: 0.7;
+  transform: translateX(0);
+}
+
+.status-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(0, 255, 0, 0.6);
+  font-size: 0.65rem;
+  margin-bottom: 15px;
+}
+
+.spin-icon { animation: spin 4s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.blink-text { animation: blink 1.5s infinite; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.panel-footer {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 255, 0, 0.1);
+}
+
+.footer-status {
+  display: flex;
+  justify-content: space-between;
+  color: #555;
+  font-size: 0.7rem;
+}
+
+.status-item { display: flex; align-items: center; gap: 8px; }

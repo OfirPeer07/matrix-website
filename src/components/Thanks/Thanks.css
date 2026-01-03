@@ -10,31 +10,114 @@ canvas {
   height: 100% !important;
 }
 
-.back-button {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 20;
-
-  padding: 10px 16px;
-  font-size: 0.9rem;
-  font-weight: 500;
-
-  color: #ffffff;
-  background: rgba(0, 0, 0, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 6px;
-
+.back-button, .free-camera-btn, .color-btn, .text-btn {
+  position: fixed;
+  left: 16px;
+  z-index: 10001;
+  background: rgba(0, 0, 0, 0.6);
+  color: #ff8888;
+  border: 1px solid #512114;
+  padding: 6px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  letter-spacing: 1px;
   cursor: pointer;
-  backdrop-filter: blur(6px);
-  transition: all 0.25s ease;
+  user-select: none;
+  transition: all 0.2s ease;
+  text-align: left;
+  width: 90px; /* רוחב אחיד לכפתורי הבקרה */
+}
+
+.back-button {
+  top: 16px;
+  width: auto; /* כפתור חזרה נשאר ברוחב טבעי */
 }
 
 .back-button:hover {
   background: rgba(255, 0, 0, 0.6);
-  border-color: rgba(255, 0, 0, 0.8);
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
 }
 
-.back-button:active {
+.free-camera-btn {
+  top: 60px;
+}
+
+.color-btn {
+  top: 104px;
+}
+
+.text-btn {
+  top: 148px; /* ממוקם מתחת לכפתור הצבע */
+}
+
+.free-camera-btn:hover, .color-btn:hover, .text-btn:hover {
+  background: rgba(255, 0, 0, 0.2);
+  border-color: #ff0000;
+}
+
+.free-camera-btn.active {
+  background: rgba(255, 0, 0, 0.6);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+}
+
+.back-button:active, .free-camera-btn:active, .color-btn:active, .text-btn:active {
   transform: scale(0.95);
+}
+
+.text-bg-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* יצירת פנס עמום במרכז התחתון שבו נמצא הטקסט */
+  background: radial-gradient(
+    circle at 50% 80%, 
+    rgba(255, 0, 0, 0.15) 0%, 
+    rgba(255, 0, 0, 0.05) 40%, 
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 1; /* מעל הרקע השחור, מתחת לקנבס */
+}
+
+/* וודא שהקנבס נמצא מעל ההילה */
+canvas {
+  position: relative;
+  z-index: 2;
+  background: transparent !important;
+}
+
+.thanks-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: #000; /* שחור מוחלט */
+  overflow: hidden;
+}
+
+/* הודעת הנחיה לפנס */
+.flashlight-hint {
+  position: fixed;
+  left: 16px;
+  top: 195px; /* ממוקם מתחת לכפתור האחרון (148px + גובה כפתור) */
+  color: #ffffff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  pointer-events: none;
+  z-index: 10001;
+  opacity: 0;
+  transition: opacity 0.8s ease-out; /* Fade Out חלק */
+}
+
+.flashlight-hint.visible {
+  opacity: 0.8;
+  animation: gentleBlink 1.5s infinite ease-in-out;
+}
+
+@keyframes gentleBlink {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.9; }
 }

@@ -40,13 +40,14 @@ function useTitlePoints(text) {
 }
 
 /* ================= TITLE ================= */
-export default function Title({ Diamond }) {
-  const points = useTitlePoints("THANK YOU");
+export default function Title({ Diamond, text }) {
+  const points = useTitlePoints(text);
 
   return (
     <group position={[0, -1.75, 0]} scale={-0.6}>
       {points.map((p, i) => (
-        <Diamond key={i} position={p} />
+        /* הזרקת צבע אדום קבוע ליהלומי הטקסט כדי שלא ישתנו עם הלב */
+        <Diamond key={i} position={p} heartColor="#ff0000" />
       ))}
     </group>
   );
