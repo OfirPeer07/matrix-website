@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import '../../../styles/IndicatorDots.css';
+import '../../../styles/indicators/IndicatorDots.css';
 
 /**
  * CLEAN + STABLE VERSION

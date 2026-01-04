@@ -85,3 +85,16 @@ body {
 body.intro-active {
   overflow: hidden;
 }
+
+/* ========================= */
+/* ===== RESUME PREVIEW ===== */
+/* ========================= */
+
+.screen-only {
+  display: block;
+}
+
+.pdf-only {
+  display: none;
+}
+

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './PhotoCarousel.css'; // Ensure to create or update this CSS file
-import '../../../styles/Sections.css';
+import '../../../styles/sections/Sections.css';
 
 // Image imports
 import Story1 from './Story1.png';

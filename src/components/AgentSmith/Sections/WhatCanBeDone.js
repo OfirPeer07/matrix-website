@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../../styles/Sections.css';
+import '../../../styles/sections/Sections.css';
 import wcbdImg from './Experience.png'; // ייבוא התמונה הרלוונטית
 
  

@@ -1,0 +1,25 @@
+.preview-toolbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.preview-toolbar span {
+  color: #aaa;
+  font-size: 13px;
+}
+
+.preview-toolbar button {
+  background: #111;
+  border: 1px solid #333;
+  color: #eee;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.preview-toolbar button.active {
+  border-color: #0d6efd;
+  color: #0d6efd;
+}

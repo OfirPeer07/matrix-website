@@ -1,0 +1,97 @@
+/* ========= PRINT MODE ========= */
+@media print {
+
+  /* 1️⃣ הסתרת הכל */
+  body * {
+    visibility: hidden;
+  }
+
+  /* 2️⃣ הצגת אזור ה-resume בלבד */
+  .resume-preview-wrapper,
+  .resume-preview-wrapper * {
+    visibility: visible;
+  }
+
+  .resume-preview-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 210mm;
+    padding: 0;
+  }
+
+  /* 3️⃣ בסיס A4 */
+  .live-resume {
+    width: 210mm;
+    box-shadow: none;
+    margin: 0;
+    padding: 20mm;
+  }
+
+  /* ============================= */
+  /* ===== PAGE COUNT CONTROL ===== */
+  /* ============================= */
+
+  /* 🔒 ברירת מחדל – עמוד אחד בלבד */
+  body:not([data-multipage="true"]) .live-resume {
+    height: 297mm;
+    overflow: hidden;
+  }
+
+  /* 🔓 מצב מתקדם – ריבוי עמודים */
+  body[data-multipage="true"] .live-resume {
+    height: auto;
+    overflow: visible;
+  }
+
+  body[data-multipage="true"] .entry {
+    page-break-inside: avoid;
+  }
+
+  /* ============================= */
+  /* ===== CLEAN PRINT ===== */
+  /* ============================= */
+
+  /* ביטול צבעים */
+  * {
+    background: transparent !important;
+    color: #000 !important;
+  }
+
+  /* כותרות לא נשברות */
+  h1, h2, h3 {
+    page-break-after: avoid;
+  }
+
+  /* הסתרת כפתורים */
+  button {
+    display: none !important;
+  }
+
+  /* ============================= */
+  /* ===== TEMPLATE SELECTION ===== */
+  /* ============================= */
+
+  /* הסתרת Preview רגיל */
+  .screen-only {
+    display: none !important;
+  }
+
+  /* הסתרת כל ה-PDF templates */
+  .pdf-only {
+    display: none !important;
+  }
+
+  /* הצגת Template לפי בחירה */
+  body[data-pdf-template="classic"] .pdf-only.classic {
+    display: block !important;
+  }
+
+  body[data-pdf-template="modern"] .pdf-only.modern {
+    display: block !important;
+  }
+
+  body[data-pdf-template="ats"] .pdf-only.ats {
+    display: block !important;
+  }
+}

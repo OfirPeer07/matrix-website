@@ -1,415 +1,92 @@
-@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+/* ============================= */
+/* ===== RESUME BUILDER UI ===== */
+/* ============================= */
 
-/* בסיס כללי */
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;              /* חובה */
-  overflow-x: hidden;        /* הסתר גלילה לרוחב */
-  background-color: #000;
-  color: #212529;
+.resume-builder-layout {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  height: 100vh;
+  background: #000;
+  color: #eee;
 }
 
-.resume-title-wrapper {
-  position: relative;
-  top: -16.5rem;
-  display: flex;
-  flex-direction: column;
-  max-width: 1500px;
-  padding: auto;
-  margin: 40px auto;
-  padding: 40px;
-  border-radius: 8px;
+/* ===== LEFT: EDITORS ===== */
+.resume-editors {
+  background: radial-gradient(circle at top, #0b0b0b, #000 75%);
+  padding: 24px 20px;
+  overflow-y: auto;
+  border-right: 1px solid rgba(255,255,255,0.08);
 }
 
-.resume-title {
-  position: absolute;
-  top: 16rem;
-  left: 4.5rem;
-  font-size: 7.5rem;
-  color: #2adef2;
-  line-height: 1.7;
-  letter-spacing: 4.5px;
-  margin-top: 0;
-  z-index: 1;
-  text-shadow: 0 0 8px #2adef2;
-  transform: perspective(1100px) rotateX(0.5deg) rotateY(15deg) skewX(0.3deg) skewY(2.8deg);
-  transform-origin: top right;
-  font-family: 'Monoton', cursive;  
-  cursor: pointer;  
+.resume-editors section {
+  margin-bottom: 28px;
 }
 
-.resume-title-two {
-  position: absolute;
-  top: 15.5rem;
-  left: 4.90rem;
-  font-size: 7.5rem;
-  color: #000;
-  line-height: 1.7;
-  letter-spacing: 4.5px;
-  margin-top: 0;
-  z-index: 1;
-  text-shadow: 0 0 10px #2adef2;
-  transform: perspective(1100px) rotateX(0.5deg) rotateY(15deg) skewX(0.3deg) skewY(2.8deg);
-  transform-origin: top right;
-  font-family: 'Monoton', cursive;  
-  cursor: pointer;  
-}
-
-.word-line {
-  gap: 0.4rem;
-}
-
-.resume-title-two:hover .letter {
-  animation: cyber-glitch 2s infinite;
-  transition: all 0.3s ease-in-out;
-}
-
-.resume-title-two .letter:nth-child(1) { animation-delay: 0s; }
-.resume-title-two .letter:nth-child(2) { animation-delay: 0.05s; }
-.resume-title-two .letter:nth-child(3) { animation-delay: 0.1s; }
-.resume-title-two .letter:nth-child(4) { animation-delay: 0.15s; }
-.resume-title-two .letter:nth-child(5) { animation-delay: 0.2s; }
-/* תוכל להמשיך עד ה־n בהתאם לאורך המילים */
-
-@keyframes cyber-glitch {
-  0% {
-    text-shadow: 
-      1px 1px #2adef2, 
-      -1px -1px #000, 
-      0 0 2px #2adef2;
-    transform: none;
-    opacity: 1;
-  }
-  20% {
-    text-shadow: 
-      -2px 0 #000, 
-      2px 2px #2adef2, 
-      0 0 5px #000;
-    transform: translateX(1px) skewX(5deg);
-    opacity: 0.9;
-  }
-  40% {
-    text-shadow: 
-      2px -2px #2adef2, 
-      -2px 2px #000, 
-      0 0 10px #2adef2;
-    transform: translateX(-2px) skewY(-3deg);
-    opacity: 0.8;
-  }
-  60% {
-    text-shadow: 
-      0 0 10px #2adef2, 
-      2px -2px #2adef2;
-    transform: translateX(1px);
-    opacity: 0.95;
-  }
-  80% {
-    text-shadow: 
-      -1px 2px #2adef2, 
-      1px -2px #000,
-      0 0 4px #2adef2;
-    transform: translateX(-1px) skewX(2deg);
-    opacity: 0.9;
-  }
-  100% {
-    text-shadow: 
-      1px 1px #000, 
-      -1px -1px #000, 
-      0 0 2px #000;
-    transform: none;
-    opacity: 1;
-  }
-}
-
-@media (max-width: 768px) {
-  .header-with-ofair {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 20px;
-    padding-right: 0;
-  }
-
-  .resume-title {
-    text-align: center;
-    font-size: 2.2rem;
-  }
-}
-
-/* חלוקת טופס לשני צדדים */
-.resume-form {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 40px;
-}
-
-.form-left, .form-right {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  min-width: 300px;
-}
-
-/* עיצוב של כל מקטע עריכה */
-.editor-section {
-  background: #f9fafb;
-  padding: 20px;
-  border-radius: 6px;
-  border: 1px solid #dee2e6;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-}
-
-/* כותרות מקטעים */
-.editor-section h2 {
-  font-size: 1.2rem;
-  color: #0d6efd;
-  margin-bottom: 16px;
-  border-bottom: 2px solid #0d6efd;
-  padding-bottom: 6px;
-}
-
-/* תוויות */
-.editor-section label {
-  display: block;
-  margin-bottom: 12px;
-  font-weight: 600;
-  color: #333;
-}
-
-/* קלטים */
-.editor-section input,
-.editor-section textarea,
-.editor-section select {
-  width: 100%;
-  padding: 10px 12px;
-  font-size: 1rem;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  background-color: #fff;
-  transition: border-color 0.2s ease;
-  box-sizing: border-box;
-  direction: ltr;
-  text-align: left;
-}
-
-.editor-section input:focus,
-.editor-section textarea:focus,
-.editor-section select:focus {
-  border-color: #0d6efd;
-  outline: none;
-}
-
-.editor-section textarea {
-  min-height: 100px;
-  resize: vertical;
-}
-
-/* רשימות */
-.list-items {
-  list-style: none;
-  padding: 0;
-  margin-top: 12px;
-}
-
-.list-items li {
-  background: #fff;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  padding: 10px;
+.resume-editors h3 {
+  color: #3aff3a;
+  font-size: 13px;
+  letter-spacing: 1px;
   margin-bottom: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  text-transform: uppercase;
 }
 
-/* כפתור מחיקה בתוך רשימות */
-.list-items button {
-  align-self: flex-end;
-  background: transparent;
-  color: #dc3545;
-  border: none;
-  font-size: 0.9rem;
+.resume-editors input,
+.resume-editors textarea {
+  width: 100%;
+  background: #111;
+  border: 1px solid #222;
+  color: #eee;
+  padding: 8px 10px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.resume-editors textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.resume-editors input:focus,
+.resume-editors textarea:focus {
+  outline: none;
+  border-color: #3aff3a;
+}
+
+.resume-editors button {
+  background: #111;
+  border: 1px solid #333;
+  color: #eee;
+  padding: 6px 12px;
+  border-radius: 4px;
   cursor: pointer;
 }
 
-.list-items button:hover {
-  text-decoration: underline;
+.resume-editors button:hover {
+  border-color: #3aff3a;
+  color: #3aff3a;
 }
 
-/* כפתורים כלליים */
-button {
-  background-color: #3a4657;
-  color: #fff;
-  border: none;
-  padding: 10px 14px;
-  font-size: 0.9rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-button:hover {
-  background-color: #084298;
-}
-
+/* ===== ACTIONS ===== */
 .resume-actions {
+  margin-top: 32px;
   display: flex;
-  gap: 20px;
-  justify-content: center;
-  margin-bottom: 70px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
-.pdf-button, .save-button, .clear-button {
-  padding: 12px 20px;
-  font-size: 1rem;
-  border-radius: 6px;
-  transition: background-color 0.2s ease;
-  cursor: pointer;
-}
-
-.pdf-button {
-  background-color: #198754;
-}
-
-.save-button {
-  background-color: #084298;
-  color: #fff;
-}
-
-.clear-button {
-  background-color: #dc3545;
-  color: #fff;
-}
-
-.pdf-button:hover,
-.save-button:hover,
-.clear-button:hover {
-  background-color: #000000;
-}
-
-/* תצוגת קורות החיים */
-.resume-preview {
+/* ===== RIGHT: PREVIEW ===== */
+.resume-preview-area {
+  background: linear-gradient(180deg, #1a1a1a, #111);
+  padding: 40px 0;
+  overflow-y: auto;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding: 20px;
-  width: 100%;
-  overflow: hidden;  /* במקום auto */
-  box-sizing: border-box;
-  margin-bottom: 20px;
-  flex-shrink: 1;     /* תאפשר התכווצות */
 }
 
-.a4-page {
-  width: 100%;
-  max-width: 1250px;
-  background: white;
-  box-sizing: border-box;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  border-radius: 6px;
-  margin: 0 auto;
-  overflow: hidden;
-  min-height: 10px;   /* קטן מאוד במקום ברירת מחדל גדולה */
+.preview-hint {
+  font-size: 12px;
+  color: #dfd400;
+  margin-bottom: 8px;
+  font-style: italic;
 }
-
-/* מיקום קבוע ל-OFAiR */
-.ofair-fixed {
-  position: relative;
-  width: 100%;
-  max-height: none;
-  background-color: transparent;
-  border-radius: 0;
-  box-shadow: none;
-  padding: 0;
-  color: inherit;
-  margin-bottom: 20px;
-  overflow: visible;
-}
-
-/* מובייל */
-@media (max-width: 768px) {
-  .ofair-fixed {
-    position: static;
-    width: 100%;
-    max-height: none;
-    box-shadow: none;
-    border-radius: 0;
-    margin-bottom: 20px;
-  }
-}
-
-.save-feedback {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #198754;
-  color: white;
-  padding: 12px 18px;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 1rem;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-  animation: fadeOut 2.5s ease-out forwards;
-  z-index: 1000;
-}
-
-@keyframes fadeOut {
-  0% { opacity: 1; transform: translateY(0); }
-  80% { opacity: 1; }
-  100% { opacity: 0; transform: translateY(10px); }
-}
-
-.live-resume a {
-  color: #000;
-  text-decoration: none;
-}
-
-.live-resume a:hover {
-  text-decoration: underline;
-}
-
-.terminal-launch {
-  position: relative;
-  top: 7.6rem;
-  right: 26.5rem;
-  margin-left: -13.6rem;           /* דחיפה שמאלה */
-  transform: perspective(950px) rotateX(13.5deg) rotateY(-10deg) skewX(5.5deg);
-  z-index: 9999;
-  /* right/width/padding-right מיותרים */
-}
-
-@media (max-width: 1200px) {
-  .terminal-launch { transform: translateX(-32rem) perspective(950px) rotateX(13.5deg) rotateY(-10deg) skewX(5.5deg); }
-}
-@media (max-width: 900px) {
-  .terminal-launch { transform: translateX(-18rem) perspective(950px) rotateX(13.5deg) rotateY(-10deg) skewX(5.5deg); }
-}
-
-
-.open-terminal-button {
-  background: #00ffff;
-  border: none;
-  color: #000;
-  font-weight: bold;
-  font-size: 14px;
-  border-radius: 4px;
-  cursor: pointer;
-  box-shadow: 0 0 10px #00ffff80;
-  transition: all 0.3s ease-in-out;
-  height: 1.1rem;          /* גובה מותאם */
-  line-height: 1.2;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.open-terminal-button:hover {
-  background: #00cccc;
-  box-shadow: 0 0 20px #00ffff;
-}
-

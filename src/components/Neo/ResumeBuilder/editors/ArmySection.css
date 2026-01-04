@@ -1,0 +1,8 @@
+.editor-row {
+  display: flex;
+  gap: 8px;
+}
+
+.editor-row input {
+  flex: 1;
+}

@@ -12,7 +12,12 @@ function useHeartPoints(count = 320) {
     for (let i = 0; i < count; i++) {
       const t = Math.random() * Math.PI * 2;
       const x = 16 * Math.pow(Math.sin(t), 3) * 0.12;
-      const y = (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t)) * 0.12;
+      const y =
+        (13 * Math.cos(t) -
+          5 * Math.cos(2 * t) -
+          2 * Math.cos(3 * t) -
+          Math.cos(4 * t)) *
+        0.12;
       const z = (Math.random() - 0.5) * 1.2;
       points.push(new THREE.Vector3(x, y, z));
     }
@@ -24,7 +29,10 @@ function useHeartPoints(count = 320) {
 function Diamond({ position, heartColor }) {
   const ref = useRef();
   const scale = useMemo(() => 0.00008 + Math.random() * 0.08, []);
-  const rotation = useMemo(() => [Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI], []);
+  const rotation = useMemo(
+    () => [Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI],
+    []
+  );
 
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
@@ -76,11 +84,18 @@ function Pedestal() {
   );
 }
 
-/* ================= FLASHLIGHT ================= */
+/* ================= FLASHLIGHT (UPGRADED, NON-DESTRUCTIVE) ================= */
 function Flashlight() {
-  const lightRef = useRef();
+  const groupRef = useRef();
+  const pointLightRef = useRef();
   const isLocked = useRef(false);
   const { viewport, mouse, gl } = useThree();
+
+  const targetPos = useMemo(() => new THREE.Vector3(), []);
+
+  // ⬇️ תוספות בלבד (לא מוחקות כלום)
+  const velocity = useRef(new THREE.Vector3());
+  const lastMouse = useRef(new THREE.Vector2());
 
   useEffect(() => {
     const handleRightClick = (e) => {
@@ -93,14 +108,66 @@ function Flashlight() {
   }, [gl]);
 
   useFrame(() => {
-    if (lightRef.current && !isLocked.current) {
-      const x = (mouse.x * viewport.width) / 2;
-      const y = (mouse.y * viewport.height) / 2;
-      lightRef.current.position.set(x, y, 2);
+    if (!groupRef.current || isLocked.current) return;
+
+    // 1️⃣ חישוב מהירות עכבר (בלי להשפיע על לוגיקות אחרות)
+    const mouseVelocity = new THREE.Vector2(
+      mouse.x - lastMouse.current.x,
+      mouse.y - lastMouse.current.y
+    );
+    lastMouse.current.copy(mouse);
+
+    // 2️⃣ יעד משופר עם חיזוי קל
+    const prediction = 0.6;
+    const x =
+      ((mouse.x + mouseVelocity.x * prediction) * viewport.width) / 2;
+    const y =
+      ((mouse.y + mouseVelocity.y * prediction) * viewport.height) / 2;
+
+    targetPos.set(x, y, 2.5);
+
+    // 3️⃣ Spring Physics במקום lerp (שדרוג בלבד)
+    const stiffness = 0.18;
+    const damping = 0.75;
+
+    const force = targetPos
+      .clone()
+      .sub(groupRef.current.position)
+      .multiplyScalar(stiffness);
+
+    velocity.current.add(force);
+    velocity.current.multiplyScalar(damping);
+    groupRef.current.position.add(velocity.current);
+
+    // 4️⃣ חיזוק נצנוץ עדין (לא נוגע באובייקטים)
+    if (pointLightRef.current) {
+      const distance = groupRef.current.position.length();
+      pointLightRef.current.intensity = THREE.MathUtils.lerp(
+        18,
+        30,
+        1 - Math.min(distance / 6, 1)
+      );
     }
   });
 
-  return <pointLight ref={lightRef} intensity={15} distance={15} decay={2} color="#ffffff" />;
+  return (
+    <group ref={groupRef}>
+      <pointLight
+        ref={pointLightRef}
+        intensity={25}
+        distance={12}
+        decay={2}
+        color="#ffffff"
+      />
+      <spotLight
+        position={[0, 0, 1]}
+        intensity={8}
+        angle={0.4}
+        penumbra={1}
+        color="#ffffff"
+      />
+    </group>
+  );
 }
 
 /* ================= SCENE ================= */
@@ -117,7 +184,7 @@ function Scene({ freeCamera, heartColor, currentText }) {
 
   return (
     <>
-      <ambientLight intensity={0.4} /> 
+      <ambientLight intensity={0.3} />
       <Flashlight />
       <spotLight position={[5, 5, 5]} intensity={0.5} angle={0.35} penumbra={0.4} />
       <pointLight position={[0, 1.2, -1.5]} intensity={2} color={heartColor} />
@@ -141,15 +208,10 @@ export default function Thanks() {
   const messages = ["THANK YOU", "COME BACK SOON", "THANKS FOR VISITING", "GLAD YOU'RE HERE", "SEE YOU AGAIN"];
   const [msgIndex, setMsgIndex] = useState(0);
 
-  // ניהול זיהוי תזוזת עכבר להודעת ההנחיה
   useEffect(() => {
     const handleMouseMove = () => {
       setShowHint(true);
-      
-      // איפוס הטיימר בכל תזוזה
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      
-      // אם אין תזוזה במשך 2 שניות, נעל את ההודעה (Fade Out)
       timeoutRef.current = setTimeout(() => {
         setShowHint(false);
       }, 2000);
@@ -168,14 +230,16 @@ export default function Thanks() {
   return (
     <div className="thanks-container">
       <button className="back-button" onClick={goBack}>Back_</button>
-      <button className={`free-camera-btn ${freeCamera ? 'active' : ''}`} onClick={() => setFreeCamera(!freeCamera)}>
+      <button
+        className={`free-camera-btn ${freeCamera ? "active" : ""}`}
+        onClick={() => setFreeCamera(!freeCamera)}
+      >
         {freeCamera ? "Locked_" : "Camera_"}
       </button>
       <button className="color-btn" onClick={() => colorInputRef.current.click()}>Color_</button>
       <button className="text-btn" onClick={nextMessage}>Text_</button>
 
-      {/* הודעת הנחיה דינמית */}
-      <div className={`flashlight-hint ${showHint ? 'visible' : ''}`}>
+      <div className={`flashlight-hint ${showHint ? "visible" : ""}`}>
         Right-click to lock flashlight
       </div>
 
@@ -189,7 +253,11 @@ export default function Thanks() {
 
       <Canvas camera={{ position: [3.8, 0, -8], fov: 50 }}>
         <Suspense fallback={null}>
-          <Scene freeCamera={freeCamera} heartColor={heartColor} currentText={messages[msgIndex]} />
+          <Scene
+            freeCamera={freeCamera}
+            heartColor={heartColor}
+            currentText={messages[msgIndex]}
+          />
         </Suspense>
       </Canvas>
     </div>

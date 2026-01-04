@@ -27,6 +27,7 @@ import PageNotFound from "../PageNotFound/PageNotFound";
 import ContactUs from "../ContactUs/ContactUs";
 import Intro from "../MainPage/Intro";
 import Thanks from "../Thanks/Thanks";
+import "../../styles/print/resume-print.css";
 
 // Lazy
 const MainPage = lazy(() => import("../MainPage/MainPage"));

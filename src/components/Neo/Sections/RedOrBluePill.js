@@ -1,6 +1,6 @@
 import React from 'react';
 import './RedOrBluePill.css';
-import '../../../styles/Sections.css';
+import '../../../styles/sections/Sections.css';
 
 
 const RedOrBluePhil = () => {
