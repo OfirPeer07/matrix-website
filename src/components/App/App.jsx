@@ -1,6 +1,6 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Route,
   Routes,
   useLocation,
@@ -150,13 +150,9 @@ function ConditionalSidebar() {
   return null;
 }
 
-/* ===== 🔥 CRITICAL FIX ===== */
-const basename =
-  process.env.NODE_ENV === "production" ? "/" : "";
-
 export default function App() {
   return (
-    <Router basename={basename}>
+    <Router>
       <AppContent />
     </Router>
   );
