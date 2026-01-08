@@ -50,15 +50,12 @@ function AppContent() {
   const [showIntro, setShowIntro] = useState(false);
   const [isSafariMobile, setIsSafariMobile] = useState(false);
 
-  /* Safari detection */
   useEffect(() => {
     if (isMobileSafari()) setIsSafariMobile(true);
   }, []);
 
-  /* Intro — ONLY once, ONLY on "/" */
   useEffect(() => {
     if (location.pathname !== "/") return;
-
     const seen = sessionStorage.getItem("introSeen");
     setShowIntro(!seen);
   }, [location.pathname]);
@@ -73,10 +70,9 @@ function AppContent() {
       <ConditionalSidebar />
 
       <div className="content">
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div style={{ color: "lime" }}>Loading…</div>}>
           <Routes>
-
-            {/* ===== MAIN (Intro OR MainPage) ===== */}
+            {/* ===== MAIN ===== */}
             <Route
               path="/"
               element={
@@ -154,9 +150,13 @@ function ConditionalSidebar() {
   return null;
 }
 
+/* ===== 🔥 CRITICAL FIX ===== */
+const basename =
+  process.env.NODE_ENV === "production" ? "/" : "";
+
 export default function App() {
   return (
-    <Router basename="/matrix-website">
+    <Router basename={basename}>
       <AppContent />
     </Router>
   );
