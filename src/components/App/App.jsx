@@ -7,21 +7,21 @@ import {
 } from "react-router-dom";
 import "./App.css";
 
-// Agent Smith
+// ===== AGENT SMITH =====
 import AgentSmith from "../AgentSmith/AgentSmith";
 import AgentSmithDepartment from "../AgentSmith/AgentSmithDepartment/AgentSmithDepartment";
 import TroubleshootingGuides from "../AgentSmith/TroubleshootingGuides/TroubleshootingGuides";
 import TechnologyNews from "../AgentSmith/TechnologyNews/TechnologyNews";
 import BuildingComputers from "../AgentSmith/BuildingComputers/BuildingComputers";
 
-// Neo
+// ===== NEO =====
 import Neo from "../Neo/Neo";
 import Articles from "../Neo/Articles/Articles";
 import Guides from "../Neo/Guides/Guides";
 import Videos from "../Neo/Videos/Videos";
 import ResumeBuilder from "../Neo/ResumeBuilder/ResumeBuilder";
 
-// General
+// ===== GENERAL =====
 import MatrixBar from "../Sidebar/MatrixBar";
 import PageNotFound from "../PageNotFound/PageNotFound";
 import ContactUs from "../ContactUs/ContactUs";
@@ -29,11 +29,11 @@ import Intro from "../MainPage/Intro";
 import Thanks from "../Thanks/Thanks";
 import "../../styles/print/resume-print.css";
 
-// Lazy
+// ===== LAZY =====
 const MainPage = lazy(() => import("../MainPage/MainPage"));
 const Hacking = lazy(() => import("../Neo/Hacking/Hacking"));
 
-// Safari detect
+// ===== SAFARI DETECT =====
 function isMobileSafari() {
   const ua = navigator.userAgent;
   return (
@@ -91,7 +91,10 @@ function AppContent() {
             {/* ===== NEO ===== */}
             <Route path="/neo" element={<Neo />} />
             <Route path="/neo/hacking" element={<Hacking />} />
-            <Route path="/neo/hacking/build-your-resume" element={<ResumeBuilder />} />
+            <Route
+              path="/neo/hacking/build-your-resume"
+              element={<ResumeBuilder />}
+            />
             <Route path="/neo/hacking/guides" element={<Guides />} />
             <Route path="/neo/hacking/articles" element={<Articles />} />
             <Route path="/neo/hacking/videos" element={<Videos />} />
@@ -153,7 +156,7 @@ function ConditionalSidebar() {
 
 export default function App() {
   return (
-    <Router>
+    <Router basename="/matrix-website">
       <AppContent />
     </Router>
   );

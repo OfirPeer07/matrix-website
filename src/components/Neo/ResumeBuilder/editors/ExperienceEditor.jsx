@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "../../../../styles/editors/editors.css";
+import "../../../../styles/editors/Editors.css";
 
 export default function ExperienceEditor({ experience = [], setExperience }) {
   const [editingId, setEditingId] = useState(null);

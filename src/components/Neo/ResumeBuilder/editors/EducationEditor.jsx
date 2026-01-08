@@ -1,4 +1,4 @@
-import "../../../../styles/editors/editors.css";
+import "../../../../styles/editors/Editors.css";
 
 export default function EducationEditor({ education = [], setEducation }) {
   const addEducation = () => {
