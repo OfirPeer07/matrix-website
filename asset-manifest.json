@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/matrix-website/static/css/main.15b11ce2.css",
-    "main.js": "/matrix-website/static/js/main.2da6b14c.js",
+    "main.js": "/matrix-website/static/js/main.8075ba93.js",
     "static/css/837.b76fced1.chunk.css": "/matrix-website/static/css/837.b76fced1.chunk.css",
     "static/js/837.8fe84243.chunk.js": "/matrix-website/static/js/837.8fe84243.chunk.js",
     "static/css/715.ab8d891b.chunk.css": "/matrix-website/static/css/715.ab8d891b.chunk.css",
@@ -22,8 +22,10 @@
     "static/media/ChooseYourPill.png": "/matrix-website/static/media/ChooseYourPill.ee779607bb964f3a2cf5.png",
     "static/media/project-ai.jpg": "/matrix-website/static/media/project-ai.1d12159b1d11fe581239.jpg",
     "static/media/OFAiR.png": "/matrix-website/static/media/OFAiR.eede61723213d8a1bff0.png",
+    "static/media/agentSmithIcon.png": "/matrix-website/static/media/agentSmithIcon.f59ffb84b6119c34feae.png",
     "static/media/pair-programming.jpg": "/matrix-website/static/media/pair-programming.263cdbb4f51e60e60375.jpg",
     "static/media/study-mode.jpg": "/matrix-website/static/media/study-mode.fef53aeb56234b7ff9eb.jpg",
+    "static/media/neoIcon.png": "/matrix-website/static/media/neoIcon.26cdff15f5d2793f6540.png",
     "static/media/prompting.jpg": "/matrix-website/static/media/prompting.c512113c1b9768bd7d62.jpg",
     "static/media/MatrixBackground.png": "/matrix-website/static/media/MatrixBackground.80ac65f2591c62473edb.png",
     "static/media/deep-research.jpg": "/matrix-website/static/media/deep-research.bce11aaac767cd43d89c.jpg",
@@ -31,9 +33,10 @@
     "static/media/agentSmith.png": "/matrix-website/static/media/agentSmith.cfad7007976e441f42c9.png",
     "static/media/portfolio.jpg": "/matrix-website/static/media/portfolio.71c3bee845a86f4d6712.jpg",
     "static/media/connectors.jpg": "/matrix-website/static/media/connectors.d53efb5bef7ae25cfe9a.jpg",
+    "static/media/logo.png": "/matrix-website/static/media/logo.a52c0598cba3dddee214.png",
     "index.html": "/matrix-website/index.html",
     "main.15b11ce2.css.map": "/matrix-website/static/css/main.15b11ce2.css.map",
-    "main.2da6b14c.js.map": "/matrix-website/static/js/main.2da6b14c.js.map",
+    "main.8075ba93.js.map": "/matrix-website/static/js/main.8075ba93.js.map",
     "837.b76fced1.chunk.css.map": "/matrix-website/static/css/837.b76fced1.chunk.css.map",
     "837.8fe84243.chunk.js.map": "/matrix-website/static/js/837.8fe84243.chunk.js.map",
     "715.ab8d891b.chunk.css.map": "/matrix-website/static/css/715.ab8d891b.chunk.css.map",
@@ -42,6 +45,6 @@
   },
   "entrypoints": [
     "static/css/main.15b11ce2.css",
-    "static/js/main.2da6b14c.js"
+    "static/js/main.8075ba93.js"
   ]
 }
