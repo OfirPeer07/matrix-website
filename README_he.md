@@ -1,4 +1,4 @@
-# 🟩 אתר מטריקס
+# 🟩 קצת על האתר
 
 אפליקציית ווב מבוססת React בהשראת *Matrix* המשלבת **ממשק משתמש אינטראקטיבי**, **ויזואליות תלת־ממדית**, ו־**יצירת מסמכים דינמית**.  
 הפרויקט נבנה כפרויקט Frontend מעשי לצורך חקירה ולמידה של דפוסי React מודרניים, אנימציות וממשקי משתמש יצירתיים.
@@ -103,7 +103,7 @@ http://localhost:3000
 
 ## 👤 Author
 
-**Ofir Peer|אופיר פאר**  
-Frontend Developer|מפתח Frontend  
+**Ofir Peer | אופיר פאר**  
+Frontend Developer | Frontend מפתח 
 
 GitHub: https://github.com/OfirPeer07
