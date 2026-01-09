@@ -4,6 +4,7 @@ import {
   Route,
   Routes,
   useLocation,
+  Navigate,
 } from "react-router-dom";
 import "./App.css";
 
@@ -42,6 +43,17 @@ function isMobileSafari() {
     !/CriOS/.test(ua) &&
     !/FxiOS/.test(ua)
   );
+}
+
+function NotFoundHandler() {
+  const isGitHubPages =
+    window.location.hostname === "ofirpeer07.github.io";
+
+  if (isGitHubPages) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <PageNotFound />;
 }
 
 function AppContent() {
@@ -118,7 +130,7 @@ function AppContent() {
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/thanks" element={<Thanks />} />
 
-            <Route path="*" element={<PageNotFound />} />
+            <Route path="*" element={<NotFoundHandler />} />
           </Routes>
         </Suspense>
 

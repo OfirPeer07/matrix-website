@@ -2,6 +2,9 @@ import React, {
   useEffect, useRef, useState, useCallback, forwardRef, useImperativeHandle
 } from 'react';
 import { Link } from 'react-router-dom';
+import neoIcon from "../../assets/images/neoIcon.png";
+import logoIcon from "../../assets/images/logo.png";
+import agentSmithIcon from "../../assets/images/agentSmithIcon.png";
 import './MatrixBar.css';
 
 const isMobileDevice = () =>
@@ -198,7 +201,7 @@ const MatrixBar = forwardRef(function MatrixBar({ mode = 'both' }, ref) {
         className="menu-icon"
         onClick={(e) => { if (isMobile) { e.preventDefault(); handleMobileIconClick('neoIcon'); } }}
       >
-        <img src="/images/neoIcon.png" alt="Neo" />
+        <img src={neoIcon} alt="Neo" />
         <span className="sweep" />
         {/* אפקטים */}
         <span className="fx-glitch" aria-hidden="true" />
@@ -228,7 +231,7 @@ const MatrixBar = forwardRef(function MatrixBar({ mode = 'both' }, ref) {
         className="menu-icon"
         onClick={(e) => { if (isMobile) { e.preventDefault(); handleMobileIconClick('logo'); } }}
       >
-        <img src="/images/logo.png" alt="Logo" />
+        <img src={logoIcon} alt="Logo" />
         <span className="sweep" />
       </Link>
       {activeMenu === 'logo' && !isMobile && (
@@ -254,7 +257,7 @@ const MatrixBar = forwardRef(function MatrixBar({ mode = 'both' }, ref) {
         className="menu-icon"
         onClick={(e) => { if (isMobile) { e.preventDefault(); handleMobileIconClick('agentSmithIcon'); } }}
       >
-        <img src="/images/agentSmithIcon.png" alt="Agent Smith" />
+        <img src={agentSmithIcon} alt="Agent Smith" />
         <span className="sweep" />
         {/* אפקטים */}
         <span className="fx-glitch" aria-hidden="true" />
