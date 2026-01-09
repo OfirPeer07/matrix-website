@@ -61,22 +61,30 @@ matrix-website/
 └── README.md
 ```
 
+<div dir="rtl">
+
 ## ▶️ התחלה
 
 ### דרישות מוקדמות
-- Node.js (מומלץ גרסה 16 ומעלה)
-- npm
+- <span dir="ltr">Node.js</span> (מומלץ גרסה 16 ומעלה)
+- <span dir="ltr">npm</span>
 
 ### התקנה
-```bash
-npm install
-```
+
+<div align="right">
+<pre dir="ltr">npm install</pre>
+</div>
+
 ### הרצה מקומית
-```bash
-npm start
-```
-האפליקציה תהיה זמינה בכתובת: 
-http://localhost:3000
+
+<div align="right">
+<pre dir="ltr">npm start</pre>
+</div>
+
+האפליקציה תהיה זמינה בכתובת:  
+<span dir="ltr">http://localhost:3000</span>
+
+</div>
 
 ---
 
@@ -108,9 +116,13 @@ http://localhost:3000
 
 ---
 
-## 👤 Author
+<div dir="rtl">
 
-**Ofir Peer | אופיר פאר**  
-Frontend Developer | Frontend מפתח 
+## 👤 מחבר
 
-GitHub: https://github.com/OfirPeer07
+**<span dir="ltr">Ofir Peer</span> | אופיר פאר**  
+מפתח <span dir="ltr">Frontend</span> | <span dir="ltr">Frontend Developer</span>
+
+GitHub: <span dir="ltr">https://github.com/OfirPeer07</span>
+
+</div>
