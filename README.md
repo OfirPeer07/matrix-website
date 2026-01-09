@@ -1,70 +1,109 @@
-# Getting Started with Create React App
+# 🟩 Matrix Website
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A Matrix-inspired React web application that combines **interactive UI**, **3D visuals**, and **dynamic document generation**.  
+This project was built as a hands-on frontend project to explore modern React patterns, animations, and creative user interfaces.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Project Overview
 
-### `npm start`
+Matrix Website is a frontend-focused React application featuring a strong visual identity inspired by *The Matrix*.  
+The project emphasizes **component-based architecture**, **motion & effects**, and **user-facing features** such as previewing content and exporting it as a PDF.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+It was developed as a personal project with a focus on learning, experimentation, and clean UI composition.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## ✨ Key Features
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- 🎬 Matrix-themed visuals and assets
+- 🧩 Modular React component structure
+- 🎥 Animations using **Framer Motion**
+- 🌐 3D elements powered by **Three.js** (`@react-three/fiber`, `@react-three/drei`)
+- 📄 Resume / document preview styling (screen & print)
+- 🖨️ Export content to PDF using **html2canvas** and **jsPDF**
+- 📱 Responsive layout and structured styling
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🛠️ Technologies Used
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **React** (Create React App)
+- **Framer Motion** – animations and transitions
+- **Three.js** via `@react-three/fiber` & `@react-three/drei`
+- **Postprocessing effects** for enhanced visuals
+- **HTML2Canvas & jsPDF** – client-side PDF generation
+- **CSS Modules & structured stylesheets**
+- **GitHub Pages** for deployment
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 📁 Project Structure
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```text
+matrix-website/
+├── public/
+│   └── static assets & build output
+├── src/
+│   ├── assets/        # Images, icons, media
+│   ├── components/    # Reusable UI & feature components
+│   ├── styles/        # Organized CSS by feature
+│   ├── index.js       # App entry point
+│   └── index.css      # Global styles
+├── package.json
+└── README.md
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## ▶️ Getting Started
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Prerequisites
+- Node.js (v16+ recommended)
+- npm
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Installation
+```bash
+npm install
+```
+### Run Locally
+```bash
+npm start
+```
+The app will be available at:  
+http://localhost:3000
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🌍 Live Demo
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The project is deployed via **GitHub Pages**:  
+👉 https://ofirpeer07.github.io/matrix-website
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 🎯 Purpose & Motivation
 
-### Analyzing the Bundle Size
+This project was built to:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- Practice advanced React frontend techniques
+- Experiment with animations and 3D visuals
+- Explore creative UI concepts beyond standard layouts
+- Strengthen portfolio-level frontend work
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 🔮 Possible Future Improvements
 
-### Advanced Configuration
+- Improve accessibility (ARIA, keyboard navigation)
+- Add more interactive 3D scenes
+- Optimize performance for low-end devices
+- Refactor styling to CSS-in-JS or Tailwind
+- Add tests for key components
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## 👤 Author
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+**Ofir Peer**  
+Frontend Developer  
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+GitHub: https://github.com/OfirPeer07
