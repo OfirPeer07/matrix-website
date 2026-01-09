@@ -29,16 +29,19 @@
 - 📱 עיצוב רספונסיבי ומבנה סגנונות מסודר
 
 ---
+<div dir="rtl">
 
 ## 🛠️ טכנולוגיות בשימוש
 
-- **React** (Create React App)
-- **Framer Motion** – אנימציות ומעברים
-- **Three.js** באמצעות `@react-three/fiber` ו־`@react-three/drei`
-- **אפקטי Postprocessing** לשיפור הוויזואליות
-- **HTML2Canvas & jsPDF** – יצירת PDF בצד הלקוח
-- **CSS Modules וסגנונות מאורגנים**
-- **GitHub Pages** לפריסה
+- **<span dir="ltr">React</span>** (<span dir="ltr">Create React App</span>)
+- **<span dir="ltr">Framer Motion</span>** – אנימציות ומעברים
+- **<span dir="ltr">Three.js</span>** באמצעות `<span dir="ltr">@react-three/fiber</span>` ו־`<span dir="ltr">@react-three/drei</span>`
+- **אפקטי <span dir="ltr">Postprocessing</span>** לשיפור הוויזואליות
+- **<span dir="ltr">HTML2Canvas</span> & <span dir="ltr">jsPDF</span>** – יצירת <span dir="ltr">PDF</span> בצד הלקוח
+- **<span dir="ltr">CSS Modules</span> וסגנונות מאורגנים**
+- **<span dir="ltr">GitHub Pages</span>** לפריסה
+
+</div>
 
 ---
 
