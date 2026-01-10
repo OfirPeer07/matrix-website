@@ -123,6 +123,6 @@ matrix-website/
 **<span dir="ltr">Ofir Peer</span> | אופיר פאר**  
 מפתח <span dir="ltr">Frontend</span> | <span dir="ltr">Frontend Developer</span>
 
-GitHub: <span dir="ltr">https://github.com/OfirPeer07</span>
+GitHub: https://github.com/OfirPeer07
 
 </div>
