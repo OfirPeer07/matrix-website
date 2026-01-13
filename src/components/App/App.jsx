@@ -130,7 +130,7 @@ function AppContent() {
             <Route path="/contact-us" element={<ContactUs />} />
             <Route path="/thanks" element={<Thanks />} />
 
-            <Route path="*" element={<NotFoundHandler />} />
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         </Suspense>
 

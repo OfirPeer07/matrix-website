@@ -334,7 +334,7 @@ export default function Intro({ onFinish }) {
 
       {canProceed && !finished && (
         <div className="continue-prompt">
-          [ CLICK TO ENTER ]
+          ENTER THE SYSTEM_
         </div>
       )}
     </div>
