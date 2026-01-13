@@ -41,9 +41,6 @@ const PageNotFound = () => {
         </div>
       </div>
 
-      {/* Text layers */}
-      <h1 id="pnf-heading" className="sr-only">404 Error: Page not found</h1>
-
       <div className="text text-back">
         <span className="line flickerJunior">JUNIOR&nbsp;&nbsp;&nbsp;submitted</span><br />
         <span className="line flickerCompany">COMPANY&nbsp;&nbsp;&nbsp;committed</span><br />

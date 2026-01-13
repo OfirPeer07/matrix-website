@@ -1,7 +1,16 @@
-/*@import url('https://fonts.googleapis.com/css2?family=Wallpoet&display=swap');*/
-@import url('https://fonts.googleapis.com/css2?family=Monoton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
-/* מניעת גלילה לחלוטין (נשמר כמו בקוד המקורי) */
+/* ================= VARIABLES ================= */
+:root {
+  --matrix-green: #00ff9c;
+  --matrix-green-dim: rgba(0,255,156,0.55);
+  --matrix-green-soft: rgba(0,255,156,0.18);
+  --matrix-bg-deep: #000;
+  --matrix-bg-soft: #0b1f14;
+  --matrix-red: #ff2a2a;
+}
+
+/* ================= RESET ================= */
 html, body {
   margin: 0;
   padding: 0;
@@ -9,289 +18,198 @@ html, body {
   height: 100vh;
   width: 100vw;
   position: fixed;
+  background:
+    radial-gradient(circle at 72% 50%, rgba(11,31,20,0.95) 0%, #000 55%),
+    linear-gradient(180deg, rgba(0,255,156,0.04), rgba(0,0,0,0.95));
+  color: var(--matrix-green);
+  font-family: 'Share Tech Mono', monospace;
 }
 
-.page-not-found-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100vw;
+body::before {
+  content: '';
   position: fixed;
+  inset: -2px;
+  background:
+    radial-gradient(circle at 72% 50%, rgba(11,31,20,0.95) 0%, #000 55%),
+    linear-gradient(180deg, rgba(0,255,156,0.04), rgba(0,0,0,0.95));
+  z-index: -1;
+}
+
+/* ================= CONTAINER ================= */
+.page-not-found-container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
 
-/* הדמות/האובייקט הימני – לא נוגעים במיקום, כדי לא להזיז אותו */
+/* ================= ENTITY ================= */
 .OFAiR {
-  position: relative;
-  margin-top: 12.7cqmax;
-  margin-left: 55.2cqmax;
-  background-size: 36.675cqmax;
-  background-repeat: no-repeat;
-  background-position: center;
-  width: 55vmax;
-  height: 55vmax;
-  opacity: 1;
-  cursor: pointer;
-}
-.OFAiR:hover {
-  position: relative;
-  margin-top: 12.7cqmax;
-  margin-left: 55.2cqmax;
+  position: absolute;
+  right: 10%;
+  top: 57.5%;
+  transform: translateY(-50%);
+  width: 46vmax;
+  height: 46vmax;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  width: 55vmax;
-  height: 55vmax;
-  opacity: 1;
   cursor: pointer;
+
+  filter:
+    drop-shadow(0 0 24px var(--matrix-green-soft))
+    drop-shadow(0 0 90px rgba(0,0,0,0.95));
+
+  transition: filter 0.5s ease;
 }
 
+.OFAiR:hover {
+  filter:
+    drop-shadow(0 0 36px rgba(0,255,156,0.4))
+    drop-shadow(0 0 120px rgba(0,0,0,1));
+}
+
+/* ================= TOOLTIP ================= */
 .OFAiR .tooltip-homepage {
   position: absolute;
-  top: -3.5rem;
-  left: 50%;
-  transform: translateX(-50%) scale(0.95);
-  width: max-content;
-  max-width: 100vw;
-  padding: 1rem 1.25rem;
-  color: #fff;
-  font-size: 1.1rem;
-  font-family: 'Share Tech Mono', monospace;
-  text-shadow: 0 0 46px #fff, 0 0 38px #fff;
-  border: 1px solid #868686;
-  border-radius: 12px;
-  background-color: rgba(0, 0, 0, 0.6);
-  box-shadow: 0 0 15px #868686;
-  z-index: 99999;
+  top: 8.5rem;
+  right: 55%;
+  transform: translateX(-50%);
+  padding: 0.75rem 1.2rem;
+  font-size: 0.9rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--matrix-green);
+  background: rgba(0, 18, 10, 0.92);
+  border: 1px solid rgba(0,255,156,0.35);
+  box-shadow:
+    0 0 22px rgba(0,255,156,0.25),
+    inset 0 0 12px rgba(0,255,156,0.08);
   opacity: 0;
   pointer-events: none;
 }
+
 .OFAiR:hover .tooltip-homepage {
   opacity: 1;
-  pointer-events: auto;
-  animation: neonGlow 3.5s ease-in-out infinite;
 }
 
-@keyframes neonGlow {
-  0%, 100% { filter: drop-shadow(0 0 12px #000); }
-  50% { filter: drop-shadow(0 0 24px #868686) drop-shadow(0 0 48px #000); }
-}
-
-.background-video {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  object-fit: cover;
-  pointer-events: none;
-}
-
-/* ------------ טקסט משוכפל לשכבות (Back/Front) – מיושר שמאלה ------------ */
+/* ================= TEXT ================= */
 .text {
-  font-size: 3.3rem;
-  font-family: "Monoton", monospace;
-  color: #000;
-  position: fixed;
+  position: absolute;
   left: 6vw;
-  top: 56%;
-  transform: translate(0, -50%);
-  z-index: 9999;
-  mix-blend-mode: difference;
-  font-weight: 900;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 55vw;
   text-align: left;
-  width: 60vw;
   pointer-events: none;
 }
 
 .text-back {
-  z-index: 99990;
-  filter: drop-shadow(0 0 22px #000);
-  opacity: 0.9;
+  opacity: 0.28;
+  filter: blur(1.2px);
 }
 
 .text-front {
-  z-index: 99991;
-  color: #000000;
-  mix-blend-mode: difference;
   opacity: 1;
 }
 
-/* === אפקט שכבה על שכבה (3D) === */
-:root{
-  --depth-x: 0.35rem;
-  --depth-y: 0.35rem;
-}
-.text-back{
-  left: calc(6vw - var(--depth-x));
-  top: calc(56% + var(--depth-y));
-}
-.text-front{
-  left: calc(6vw + var(--depth-x));
-  top: calc(56% - var(--depth-y));
-}
-
-/* הגדלה לקווי הכותרות העליונים */
+/* ================= TOP SYSTEM LINES ================= */
 .text .line {
   display: block;
-  font-size: 1.2em;       /* גדול יותר – שלושת הקווים */
-  line-height: 1;
-  font-weight: 900;
-  letter-spacing: 0.02em;
-  margin-bottom: -4rem;   /* מותאם לגודל החדש */
-  white-space: nowrap;
+  font-size: 2.1rem;
+  line-height: 1.15;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  margin-bottom: 0.45rem;
+  color: var(--matrix-green-dim);
+
+  animation: matrixSignalFlicker 11.3s infinite;
 }
 
-.text-front .line {
-  text-shadow: 0 0 18px #fff, 0 0 8px #fff, 0 0 36px #000;
-}
-.text-back .line {
-  filter: drop-shadow(0 0 28px #868686);
-}
+/* ================= 404 NUMBERS ================= */
+._4_4,
+._0 {
+  font-size: 6.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--matrix-red);
+  text-shadow:
+    0 0 14px rgba(255,42,42,0.55),
+    0 0 36px rgba(0,0,0,0.95);
 
-/* ספרות ו־Error */
-._4_4 {
-  font-size: 6.75rem;
-  font-weight: bold;
-  color: #a31c1c;
-  text-shadow:
-    2px 2px 1px rgba(0,0,0,0.3),
-    0 0px 15px #000,
-    0 0 15px #fff,
-    0 0 50px #000;
-  animation: flicker 5s infinite alternate;
-}
-._4_4:hover {
-  text-shadow:
-    2px 2px 1px rgba(0,0,0,0.3),
-    0 0px 15px #000,
-    0 0 15px #fff,
-    0 0 50px #fff;
+  animation: errorSignalFlicker 13.7s infinite;
 }
 
 ._0 {
-  font-size: 8.5rem;
-  font-weight: bold;
-  color: #a31c1c;
-  text-shadow:
-    2px 2px 1px rgba(0,0,0,0.3),
-    0 0px 15px #000,
-    0 0 15px #fff,
-    0 0 50px #000;
-  animation: flicker 3s infinite alternate;
-}
-._0:hover {
-  color: #000;
-  text-shadow:
-    2px 2px 1px rgba(0,0,0,0.3),
-    0 0px 15px #000,
-    0 0 15px #fff,
-    0 0 50px #fff;
+  font-size: 8.2rem;
 }
 
+/* ================= ERROR TEXT ================= */
 .err_r {
-  white-space: nowrap;
-  font-size: 7.75rem;
-  color: #a31c1c;
-  font-weight: bold;
+  font-size: 7.1rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--matrix-red);
   text-shadow:
-    2px 2px 1px rgba(0,0,0,0.3),
-    0 0px 15px #000,
-    0 0 15px #fff,
-    0 0 50px #000;
-}
-.err_r:hover {
-  color: #000000;
-  text-shadow:
-    2px 2px 1px rgba(0,0,0,0.3),
-    0 0px 15px #000,
-    0 0 15px #fff,
-    0 0 50px #fff;
+    0 0 14px rgba(255,42,42,0.55),
+    0 0 44px rgba(0,0,0,0.95);
+
+  animation: errorSignalFlicker 16.9s infinite;
 }
 
+/* ================= SPACING ================= */
 .spacer {
   display: inline-block;
-  width: 3.5vmax;
+  width: 3vmax;
 }
 
-.blink { animation: blink 0.3s infinite; }
+/* ================= UPGRADED FLICKER ================= */
 
-.flickerJunior {
-  opacity: 1;
-  text-shadow:
-    2px 2px 1px rgba(0,0,0,0.3),
-    0 0px 15px #868686,
-    0 0 15px #868686,
-    0 0 50px #000;
-  animation: flicker 3s infinite alternate;
-}
-.flickerCompany {
-  opacity: 1;
-  text-shadow:
-    2px 2px 1px rgba(0,0,0,0.3),
-    0 0px 15px #868686,
-    0 0 15px #868686,
-    0 0 50px #000;
-  animation: flicker 5s infinite alternate;
-}
-.flickerPage {
-  opacity: 0.8;
-  text-shadow:
-    2px 2px 1px rgba(0,0,0,0.3),
-    0 0px 15px #868686,
-    0 0 15px #868686,
-    0 0 50px #000;
-  animation: flicker 6s infinite alternate;
+/* System text: subtle signal instability */
+@keyframes matrixSignalFlicker {
+  0%   { opacity: 0.92; }
+  7%   { opacity: 0.85; }
+  9%   { opacity: 0.35; }
+  10%  { opacity: 0.9; }
+  23%  { opacity: 0.88; }
+  24%  { opacity: 0.4; }
+  25%  { opacity: 0.9; }
+  47%  { opacity: 0.86; }
+  48%  { opacity: 0.25; }
+  49%  { opacity: 0.92; }
+  71%  { opacity: 0.9; }
+  72%  { opacity: 0.55; }
+  73%  { opacity: 0.92; }
+  100% { opacity: 0.95; }
 }
 
-/* אנימציות */
-@keyframes blink { 70% { opacity: 0.7; } }
-@keyframes flicker {
-  40% { opacity: 0.8; }
-  42% { opacity: 0.1; }
-  43% { opacity: 0.8; }
-  45% { opacity: 0.1; }
-  46% { opacity: 0.8; }
+/* Error elements: harsher, rarer drops */
+@keyframes errorSignalFlicker {
+  0%   { opacity: 1; }
+  18%  { opacity: 0.95; }
+  19%  { opacity: 0.35; }
+  20%  { opacity: 1; }
+  46%  { opacity: 0.9; }
+  47%  { opacity: 0.2; }
+  48%  { opacity: 1; }
+  74%  { opacity: 0.92; }
+  75%  { opacity: 0.4; }
+  76%  { opacity: 1; }
+  100% { opacity: 1; }
 }
 
-/* ---------- מסכי 21:9 בלבד (נשמר) ---------- */
+/* ================= ULTRAWIDE ================= */
 @media screen and (min-aspect-ratio: 21/9) {
-  html, body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden !important;
-    height: 100vh;
-    width: 100vw;
-    position: fixed;
-  }
-
-  .page-not-found-container {
-    height: 100vh; width: 100vw;
-    overflow: hidden;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 5vw;
-  }
-
   .OFAiR {
-    width: 50vmax; height: 50vmax;
-    position: absolute;
+    width: 44vmax;
+    height: 44vmax;
     right: 5%;
-    top: 50%;
-    transform: translate(0, -50%);
-    margin: 0;
-    background-position: center;
-    background-size: contain;
   }
 
-  .text-back {
-    left: calc(5vw - var(--depth-x));
-    top:  calc(55% + var(--depth-y));
+  .text {
     width: 42vw;
-  }
-  .text-front {
-    left: calc(5vw + var(--depth-x));
-    top:  calc(55% - var(--depth-y));
-    width: 42vw;
+    left: 5vw;
   }
 }
