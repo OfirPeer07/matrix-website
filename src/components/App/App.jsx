@@ -145,7 +145,7 @@ function ConditionalSidebar() {
 
   if (location.pathname.startsWith("/neo")) {
     return (
-      <div dir="ltr">
+      <div dir="rtl">
         <MatrixBar mode="neo" showLogo />
       </div>
     );
@@ -153,7 +153,7 @@ function ConditionalSidebar() {
 
   if (location.pathname.startsWith("/agent-smith")) {
     return (
-      <div dir="ltr">
+      <div dir="trl">
         <MatrixBar mode="agent-smith" showLogo />
       </div>
     );
