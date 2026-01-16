@@ -1,10 +1,10 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
 import {
   HashRouter as Router,
-  Route,
   Routes,
-  useLocation,
+  Route,
   Navigate,
+  useLocation,
 } from "react-router-dom";
 import "./App.css";
 
@@ -34,7 +34,6 @@ import "../../styles/print/resume-print.css";
 const MainPage = lazy(() => import("../MainPage/MainPage"));
 const Hacking = lazy(() => import("../Neo/Hacking/Hacking"));
 
-// ===== SAFARI DETECT =====
 function isMobileSafari() {
   const ua = navigator.userAgent;
   return (
@@ -43,17 +42,6 @@ function isMobileSafari() {
     !/CriOS/.test(ua) &&
     !/FxiOS/.test(ua)
   );
-}
-
-function NotFoundHandler() {
-  const isGitHubPages =
-    window.location.hostname === "ofirpeer07.github.io";
-
-  if (isGitHubPages) {
-    return <Navigate to="/" replace />;
-  }
-
-  return <PageNotFound />;
 }
 
 function AppContent() {
@@ -99,32 +87,17 @@ function AppContent() {
             {/* ===== NEO ===== */}
             <Route path="/neo" element={<Neo />} />
             <Route path="/neo/hacking" element={<Hacking />} />
-            <Route
-              path="/neo/hacking/build-your-resume"
-              element={<ResumeBuilder />}
-            />
+            <Route path="/neo/hacking/build-your-resume" element={<ResumeBuilder />} />
             <Route path="/neo/hacking/guides" element={<Guides />} />
             <Route path="/neo/hacking/articles" element={<Articles />} />
             <Route path="/neo/hacking/videos" element={<Videos />} />
 
             {/* ===== AGENT SMITH ===== */}
             <Route path="/agent-smith" element={<AgentSmith />} />
-            <Route
-              path="/agent-smith/agent-smith-department"
-              element={<AgentSmithDepartment />}
-            />
-            <Route
-              path="/agent-smith/agent-smith-department/technology-news"
-              element={<TechnologyNews />}
-            />
-            <Route
-              path="/agent-smith/agent-smith-department/troubleshooting-guides"
-              element={<TroubleshootingGuides />}
-            />
-            <Route
-              path="/agent-smith/agent-smith-department/building-computers"
-              element={<BuildingComputers />}
-            />
+            <Route path="/agent-smith/agent-smith-department" element={<AgentSmithDepartment />} />
+            <Route path="/agent-smith/agent-smith-department/technology-news" element={<TechnologyNews />} />
+            <Route path="/agent-smith/agent-smith-department/troubleshooting-guides" element={<TroubleshootingGuides />} />
+            <Route path="/agent-smith/agent-smith-department/building-computers" element={<BuildingComputers />} />
 
             {/* ===== GENERAL ===== */}
             <Route path="/contact-us" element={<ContactUs />} />
@@ -153,7 +126,7 @@ function ConditionalSidebar() {
 
   if (location.pathname.startsWith("/agent-smith")) {
     return (
-      <div dir="trl">
+      <div dir="rtl">
         <MatrixBar mode="agent-smith" showLogo />
       </div>
     );

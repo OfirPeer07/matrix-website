@@ -2,12 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import "./Title.css";
 
 const Title = () => {
-  const texts = ["Welcome", "Welcome to", "Welcome to the Matrix World"];
+  const texts = ["Welcome to the Matrix World"];
   const [currentText, setCurrentText] = useState("");
   const [textIndex, setTextIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(true);
   const typingTimeout = useRef(null);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const Title = () => {
 
       if (done) setIsDeleting(true);
       if (empty && isDeleting) {
-        setIsDeleting(false);
+        setIsDeleting(true);
         setTextIndex((i) => (i + 1) % texts.length);
       }
     }, done ? 1000 : 90);

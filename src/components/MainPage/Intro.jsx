@@ -9,7 +9,7 @@ const TEXT = "WELCOME TO \n THE MATRIX WORLD";
 
 const MATRIX_CHARS =
   "アイウエオカキクケコサシスセソタチツテトナニヌネノ" +
-  "ハヒフヘホマמיממוヤユヨラリルレロワヲン" +
+  "ハヒフヘホマヤユヨラリルレロワヲン" +
   "0123456789";
 
 /* -------- MOVIE PRESET (1999) -------- */

@@ -1,76 +1,62 @@
-import React, { useEffect, useState } from 'react';
-import './Hacking.css';
-import ofairImage from './OFAiR.png';
-import fight from './Fight.mp4';
-import agentSmith from './Agent-smith-dodges-bullets.mp4';
-import neo from './Neo-dodges-bullets.mp4';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./Hacking.css";
+
+import ofairImage from "./OFAiR.png";
+import fight from "./Fight.mp4";
+import agentSmith from "./Agent-smith-dodges-bullets.mp4";
+import neo from "./Neo-dodges-bullets.mp4";
 
 function Hacking() {
-  const [rectanglesVisible] = useState(true); // Rectangle visibility
+  const navigate = useNavigate();
+  const [rectanglesVisible] = useState(true);
 
   useEffect(() => {
-    const canvas = document.getElementById('matrix');
+    const canvas = document.getElementById("matrix");
     if (!canvas) return;
 
-    const context = canvas.getContext('2d');
+    const context = canvas.getContext("2d");
     if (!context) return;
 
     const fontSize = 16;
     const katakana =
-      'アカサタナハマヤラワガザダバパイキシチニヒミリギジヂビピウクスツヌフムユルグズヅブプエケセテネヘメレゲゼデベペオコソトノホモヨロヲゴゾドボポヴッン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const letters = katakana.split('');
-    let columns = Math.floor(canvas.width / fontSize);
+      "アイウエオカキクケコサシスセソタチツテトナニヌネノ" +
+      "ハヒフヘホマヤユヨラリルレロワヲン0123456789";
+    const letters = katakana.split("");
+
+    let columns = Math.floor(window.innerWidth / fontSize);
     let drops = Array(columns).fill(1);
 
     const resizeCanvas = () => {
-      const newColumns = Math.floor(window.innerWidth / fontSize);
-      if (newColumns !== columns) {
-        columns = newColumns;
-        drops = Array(columns).fill(1);
-      }
+      columns = Math.floor(window.innerWidth / fontSize);
+      drops = Array(columns).fill(1);
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
 
-    let resizeTimeout = null;
-    const debounceResize = () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(resizeCanvas, 100);
-    };
-
     resizeCanvas();
-    window.addEventListener('resize', debounceResize);
+    window.addEventListener("resize", resizeCanvas);
 
-    const drawMatrix = () => {
-      context.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    const draw = () => {
+      context.fillStyle = "rgba(0, 0, 0, 0.05)";
       context.fillRect(0, 0, canvas.width, canvas.height);
-
-      context.fillStyle = '#0F0';
+      context.fillStyle = "#0F0";
       context.font = `${fontSize}px monospace`;
 
-      for (let i = 0; i < drops.length; i++) {
+      drops.forEach((y, i) => {
         const text = letters[Math.floor(Math.random() * letters.length)];
-        const x = i * fontSize;
-        const y = drops[i] * fontSize;
-
-        context.fillText(text, x, y);
-
-        if (y > canvas.height && Math.random() > 0.975) drops[i] = 0;
-        drops[i]++;
-      }
+        context.fillText(text, i * fontSize, y * fontSize);
+        drops[i] = y * fontSize > canvas.height && Math.random() > 0.975 ? 0 : y + 1;
+      });
     };
 
-    const interval = setInterval(drawMatrix, 33);
+    const interval = setInterval(draw, 33);
 
     return () => {
       clearInterval(interval);
-      window.removeEventListener('resize', debounceResize);
+      window.removeEventListener("resize", resizeCanvas);
     };
   }, []);
-
-  const handleNavigation = (path) => {
-    window.location.href = path;
-  };
 
   return (
     <div className="app-container">
@@ -79,25 +65,27 @@ function Hacking() {
       <div
         className="ofair"
         style={{ backgroundImage: `url(${ofairImage})` }}
-        onClick={() => handleNavigation('/neo/hacking/build-your-resume')}
+        onClick={() => navigate("/neo/hacking/build-your-resume")}
       />
 
       {rectanglesVisible && (
         <>
-          <div className="rectangle first" onClick={() => handleNavigation('/neo/hacking/articles')}>
-            <video className="background-video" autoPlay loop muted playsInline>
+          <div className="rectangle first" onClick={() => navigate("/neo/hacking/articles")}>
+            <video autoPlay loop muted playsInline className="background-video">
               <source src={agentSmith} type="video/mp4" />
             </video>
             <div className="hackingTitle">Articles</div>
           </div>
-          <div className="rectangle second" onClick={() => handleNavigation('/neo/hacking/guides')}>
-            <video className="background-video" autoPlay loop muted playsInline>
+
+          <div className="rectangle second" onClick={() => navigate("/neo/hacking/guides")}>
+            <video autoPlay loop muted playsInline className="background-video">
               <source src={neo} type="video/mp4" />
             </video>
             <div className="hackingTitle">Guides</div>
           </div>
-          <div className="rectangle third" onClick={() => handleNavigation('/neo/hacking/videos')}>
-            <video className="background-video" autoPlay loop muted playsInline>
+
+          <div className="rectangle third" onClick={() => navigate("/neo/hacking/videos")}>
+            <video autoPlay loop muted playsInline className="background-video">
               <source src={fight} type="video/mp4" />
             </video>
             <div className="hackingTitle">Videos</div>
