@@ -1,176 +1,205 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=JetBrains+Mono:wght@400;600&display=swap');
-
-.matrix-viewport {
-  height: 100vh;
-  width: 100%;
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  position: relative;
-  font-family: 'JetBrains Mono', monospace;
+/* ===================== Force Page Scrolling ===================== */
+html, body {
+  height: auto;
+  min-height: 100%;
+  overflow-y: auto !important;
+}
+#root, #app, .App, .page, .layout {
+  height: auto !important;
+  min-height: 100% !important;
+  overflow: visible !important;
 }
 
-.cyber-back-btn {
-  position: fixed;
-  top: 16px;
-  left: 16px;
-  z-index: 10001;
-  background: rgba(0, 0, 0, 0.6);
-  color: rgba(0, 255, 0, 0.6);
-  border: 1px solid rgba(0, 255, 0, 0.6);
-  padding: 6px 14px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 14px;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: all 0.2s ease;
+/* ===================== TRUE MATRIX GREEN THEME ===================== */
+:root{
+  /* Backgrounds */
+  --tg-bg:#020403;
+  --tg-surface:#050b07;
+  --tg-surface-2:#07120c;
+
+  /* Borders / separators */
+  --tg-border:rgba(0, 180, 90, 0.35);
+
+  /* Text */
+  --tg-text:#c9ffd9;          /* main text */
+  --tg-muted:#6fae8a;         /* secondary text */
+
+  /* Accents by ROLE */
+  --tg-accent-primary:#00ff41;   /* Matrix neon – CTA */
+  --tg-accent-active:#00d936;    /* active / running */
+  --tg-accent-soft:#00a82d;      /* hover / focus */
+  --tg-accent-dim:#007a22;       /* secondary buttons */
+
+  /* Effects */
+  --tg-shadow:rgba(0, 255, 65, 0.25);
+  --tg-focus:rgba(0, 255, 65, 0.85);
 }
 
-.cyber-back-btn:hover {
-  background: rgba(80, 80, 80, 0.217);
-  box-shadow: 0 0 10px rgba(21, 255, 0, 0.3);
+body{
+  background:var(--tg-bg);
+  color:var(--tg-text);
 }
 
-.matrix-rain-layer {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+/* ===================== Page ===================== */
+.tg-page{
+  padding:2rem;
+  text-align:center;
+  min-height:100vh;
 }
 
-.glass-panel {
-  position: relative;
-  z-index: 10;
-  width: 90%;
-  max-width: 480px;
-  background: rgba(6, 6, 6, 0.96);
-  backdrop-filter: blur(30px);
-  border: 1px solid rgba(0, 255, 0, 0.25);
-  padding: 50px 40px;
-  box-shadow: 0 0 60px rgba(0, 0, 0, 1);
+.tg-hero h1{
+  margin:0;
+  font-size:2.2rem;
+  color:var(--tg-accent-primary);
+  text-shadow:0 0 14px rgba(0,255,65,.45);
 }
 
-.corner-tag {
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  border: 2px solid rgba(0, 255, 0, 0.6);
-}
-.tl { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
-.tr { top: -1px; right: -1px; border-left: 0; border-bottom: 0; }
-.bl { bottom: -1px; left: -1px; border-right: 0; border-top: 0; }
-.br { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
-
-.cyber-title {
-  font-family: 'Orbitron', sans-serif;
-  font-size: 2.6rem;
-  font-weight: 900;
-  color: #fff;
-  margin-bottom: 45px;
-  text-align: center;
+.tg-hero p{
+  margin:.5rem 0 0;
+  color:var(--tg-muted);
 }
 
-.cyber-title span {
-  color: rgba(0, 255, 0, 0.6);
-  text-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
+/* ===================== Category Cards (Menu) ===================== */
+.tg-card{
+  cursor:pointer;
+  background:var(--tg-surface-2);
+  color:var(--tg-text);
+  border:1px solid var(--tg-border);
+  border-radius:12px;
+  padding:1rem 1.2rem;
+  min-width:160px;
+  transition:.2s;
 }
 
-.interaction-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.tg-card:hover,
+.tg-card:focus-visible{
+  border-color:var(--tg-accent-soft);
+  box-shadow:0 0 18px rgba(0,255,65,.25);
+  transform:translateY(-3px);
 }
 
-/* עיצוב השורה כקישור לחיץ מלא */
-.interactive-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 22px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(0, 255, 0, 0.05);
-  text-decoration: none; /* ביטול קו תחתון */
-  color: inherit;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.tg-card.is-active{
+  background:linear-gradient(
+    180deg,
+    rgba(0,255,65,.18),
+    rgba(0,255,65,.05)
+  );
+  border-color:var(--tg-accent-active);
 }
 
-.interactive-row:hover {
-  background: rgba(0, 255, 0, 0.06);
-  border-color: rgba(0, 255, 0, 0.3);
+/* ===================== Runner Dock ===================== */
+.tg-dock{
+  background:var(--tg-surface);
+  border:1px solid var(--tg-border);
+  border-radius:14px;
+  box-shadow:0 14px 36px rgba(0,255,65,.25);
 }
 
-.row-main-content {
-  display: flex;
-  align-items: center;
-  gap: 24px;
+.tg-title strong{
+  color:var(--tg-accent-active);
 }
 
-.icon-container {
-  color: rgba(0, 255, 0, 0.6);
-  transition: all 0.3s ease;
+.tg-sub{
+  color:var(--tg-muted);
 }
 
-.interactive-row:hover .icon-container {
-  color: #00FF00;
-  filter: drop-shadow(0 0 5px #00FF00);
+/* ===================== Buttons ===================== */
+.tg-btn{
+  background:var(--tg-surface-2);
+  color:var(--tg-text);
+  border:1px solid var(--tg-border);
+  border-radius:10px;
+  padding: 0.6rem;
+  transition:.2s;
 }
 
-.info-stack { display: flex; flex-direction: column; }
-
-.info-label {
-  font-size: 0.6rem;
-  color: rgba(0, 255, 0, 0.6);
-  opacity: 0.6;
-  text-transform: uppercase;
+.tg-btn:hover,
+.tg-btn:focus-visible{
+  border-color:var(--tg-accent-soft);
+  box-shadow:0 0 14px rgba(0,255,65,.35);
+  outline:2px solid var(--tg-focus);
 }
 
-.info-value {
-  font-size: 1.05rem;
-  color: #efefef;
-  margin-top: 3px;
+.tg-btn.tg-primary{
+  background:linear-gradient(
+    90deg,
+    var(--tg-accent-primary),
+    var(--tg-accent-active)
+  );
+  color:#001b07;
+  border-color:transparent;
+  box-shadow:0 0 24px rgba(0,255,65,.55);
 }
 
-/* רמז ויזואלי (חץ) שמופיע ב-Hover */
-.external-hint {
-  color: #00FF00;
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: all 0.3s ease;
+/* ===================== Progress ===================== */
+.tg-progress{
+  background:#021a09;
+  border:1px solid var(--tg-border);
 }
 
-.interactive-row:hover .external-hint {
-  opacity: 0.7;
-  transform: translateX(0);
+.tg-progress-bar{
+  background:linear-gradient(
+    90deg,
+    var(--tg-accent-active),
+    var(--tg-accent-primary)
+  );
 }
 
-.status-bar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: rgba(0, 255, 0, 0.6);
-  font-size: 0.65rem;
-  margin-bottom: 15px;
+/* ===================== Steps ===================== */
+.tg-step{
+  color:var(--tg-muted);
 }
 
-.spin-icon { animation: spin 4s linear infinite; }
-@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-.blink-text { animation: blink 1.5s infinite; }
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-.panel-footer {
-  margin-top: 40px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(0, 255, 0, 0.1);
+.tg-step.is-running{
+  background:rgba(0,255,65,.12);
+  border:1px solid rgba(0,255,65,.4);
+  color:var(--tg-text);
 }
 
-.footer-status {
-  display: flex;
-  justify-content: space-between;
-  color: #555;
-  font-size: 0.7rem;
+.tg-step.is-done{
+  color:var(--tg-accent-primary);
 }
 
-.status-item { display: flex; align-items: center; gap: 8px; }
+/* ===================== Panels ===================== */
+.tg-card-panel{
+  background:var(--tg-surface);
+  border:1px solid var(--tg-border);
+  box-shadow:0 0 26px rgba(0,255,65,.2);
+}
+
+.tg-card-title{
+  color:var(--tg-muted);
+}
+
+/* ===================== Summary ===================== */
+.tg-summary{
+  background:var(--tg-surface);
+  border:1px solid var(--tg-border);
+  box-shadow:0 0 40px rgba(0,255,65,.3);
+}
+
+.tg-summary-head h3{
+  color:var(--tg-accent-primary);
+}
+
+/* ===================== Toast ===================== */
+.tg-toast{
+  background:rgba(0,255,65,.12);
+  border:1px solid rgba(0,255,65,.45);
+  box-shadow:0 0 30px rgba(0,255,65,.6);
+}
+
+/* ===================== Footer ===================== */
+.tg-foot{
+  color:var(--tg-muted);
+}
+
+/* ===================== Reduced Motion ===================== */
+@media (prefers-reduced-motion: reduce){
+  .tg-card,
+  .tg-btn,
+  .tg-progress-bar,
+  .tg-toast{
+    transition:none !important;
+  }
+}

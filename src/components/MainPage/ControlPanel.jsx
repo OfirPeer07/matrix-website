@@ -53,7 +53,7 @@ const ControlPanel = ({ open, setOpen, settings, setSettings, onReset }) => {
       {/* Header */}
       <header className="neo-panel-header">
         <div className="neo-title">
-          <span className="neo-bolt">⚡</span> MATRIX CONTROL PANEL
+          <div className="neo-bolt"> MATRIX CONTROL PANEL</div>
         </div>
 
         {/* FIXED BUTTON — now works */}
