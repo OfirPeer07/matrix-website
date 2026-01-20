@@ -1,44 +1,78 @@
-/* ================= BASE APP LAYOUT ================= */
+/* =========================================================
+   APP.CSS - התיקון הסופי והמלא
+   מטפל ב: פסים לבנים, הבהובי טעינה, ויציבות ריענון (F5)
+   ========================================================= */
 
+/* 1. הגדרות בסיס - חסימת גלישה אופקית וצבע רקע קשיח */
+html,
+body {
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative; 
+  /* ה-overflow-x הוא התיקון המרכזי לקצוות הלבנים בצדדים */
+  overflow-x: hidden !important; 
+  background-color: #000 !important; 
+  color: #17ca07;
+  font-family: "Share Tech Mono", monospace;
+}
+
+/* 2. הגדרת ה-Root של React */
+#root {
+  background-color: #000 !important;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* 3. פריסת האפליקציה המרכזית (Container) */
 .App {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  width: 100%;
   max-height: 100vh;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  background-color: #000 !important;
+  overflow: hidden; 
 }
 
-html,
-body {
+/* 4. ה-Grid המרכזי (חיוני ליציבות העיצוב ב-Neo ו-Agent Smith) */
+.text-image-container {
+  display: grid !important;
+  /* הכרחת חלוקה של 50/50 שתמנע מהתבניות להשתנות בריענון */
+  grid-template-columns: 1fr 1fr !important; 
+  gap: 5rem;
+  align-items: start; /* מונע מתיחה של תמונה אם הטקסט מתארך */
   width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-/* ================= SIDEBAR ================= */
-
-.sidebar {
-  width: 250px;
-  background-color: #333;
-  color: white;
-  padding: 20px;
   box-sizing: border-box;
-  direction: ltr;
-
 }
 
-/* ================= MAIN CONTENT ================= */
+/* התאמה למובייל - מעבר לטור אחד */
+@media (max-width: 768px) {
+  .text-image-container {
+    grid-template-columns: 1fr !important;
+    gap: 2rem;
+  }
+}
 
+/* 5. אזור התוכן הראשי (Content) */
 .content {
   flex: 1;
   padding: 0;
   margin: 0;
   overflow-y: auto;
+  /* מניעת פסים לבנים שנובעים מתוכן פנימי שחורג מהרוחב */
+  overflow-x: hidden; 
   position: relative;
   z-index: 1;
   box-sizing: border-box;
   min-height: 100%;
+  background-color: #000 !important;
 }
 
 /* ================= CUSTOM SCROLLBAR (WEBKIT) ================= */
@@ -48,21 +82,30 @@ body {
 }
 
 .content::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
+  background: #000;
 }
 
 .content::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 255, 0, 0.7);
+  background-color: rgba(0, 255, 65, 0.6);
   border-radius: 10px;
-  border: 2px solid rgba(0, 0, 0, 0.1);
 }
 
 /* ================= CUSTOM SCROLLBAR (FIREFOX) ================= */
 
 .content {
-  overflow-x: hidden;
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 255, 0, 0.7) rgba(0, 0, 0, 0.1);
+  scrollbar-color: rgba(0, 255, 65, 0.6) #000;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar {
+  width: 250px;
+  background-color: #1a1a1a;
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+  direction: ltr;
 }
 
 /* ================= INTRO OVERLAY ================= */
@@ -82,15 +125,23 @@ body {
   pointer-events: none;
 }
 
-/* ================= BODY LOCK (PREVENT SCROLL DURING INTRO) ================= */
+/* ================= BODY LOCK ================= */
 
 body.intro-active {
   overflow: hidden;
 }
 
-/* ========================= */
-/* ===== RESUME PREVIEW ===== */
-/* ========================= */
+/* ================= GLOBAL UTILS ================= */
+
+* {
+  box-sizing: border-box;
+  outline: none;
+}
+
+/* מניעת הבהוב לבן על תמונות שנטענות */
+img {
+  background-color: #000;
+}
 
 .screen-only {
   display: block;
@@ -99,4 +150,3 @@ body.intro-active {
 .pdf-only {
   display: none;
 }
-

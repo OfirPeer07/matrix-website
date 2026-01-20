@@ -1,0 +1,50 @@
+.ig-bottom-nav {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  height: 52px;
+  padding-bottom: env(safe-area-inset-bottom);
+
+  background: #000;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+
+.ig-bottom-nav button {
+  background: none;
+  border: 0;
+  color: #fff;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.ig-bottom-nav svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.ig-bottom-nav button.active svg {
+  stroke-width: 2;
+}
+
+.ig-bottom-nav .reels svg {
+  width: 26px;
+  height: 26px;
+}
+
+/* Profile avatar */
+.ig-bottom-nav .avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+}
+
+.ig-bottom-nav button.active .avatar {
+  border-color: #fff;
+}

@@ -1,48 +1,156 @@
-/* Page container: allow vertical scroll at 100% zoom */
-.guides-page{
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  color: #e7e9ec;
-  background: #000;
-  min-height: 100vh;         /* page can grow past the fold */
-  overflow-x: hidden;
+/* =========================
+   Guides – Design Tokens 2026
+   ========================= */
+
+:root{
+  /* Surfaces */
+  --surface-app: #0b0c0e;
+  --surface-base: rgba(255,255,255,.02);
+  --surface-elevated: rgba(255,255,255,.045);
+  --surface-glass: rgba(20,22,28,.72);
+
+  /* Text */
+  --text-primary: #f5f7fa;
+  --text-secondary: rgba(245,247,250,.72);
+  --text-muted: rgba(245,247,250,.52);
+
+  /* Radius */
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 22px;
+
+  /* Motion */
+  --motion-fast: cubic-bezier(.2,.8,.2,1);
+  --motion-soft: cubic-bezier(.4,0,.2,1);
+
+  /* Shadow */
+  --shadow-soft:
+    0 1px 1px rgba(0,0,0,.35),
+    0 8px 24px rgba(0,0,0,.45);
 }
+
+/* =========================
+   Page container
+   ========================= */
+
+.guides-page{
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    "Noto Sans Hebrew",
+    sans-serif;
+
+  color: var(--text-primary);
+  background:
+    radial-gradient(
+      1200px 600px at 50% -200px,
+      rgba(255,255,255,.04),
+      transparent 60%
+    ),
+    var(--surface-app);
+
+  min-height: 100svh;
+  overflow-x: hidden;
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* =========================
+   Header
+   ========================= */
 
 .guides-header{
   text-align: center;
-  padding: 18px 16px 6px;
-  opacity: .9;
+  padding: 20px 16px 10px;
 }
+
 .guides-header h1{
   margin: 0 0 6px;
-  font-size: clamp(20px, 2.6vw, 28px);
+  font-size: clamp(22px, 2.8vw, 30px);
   font-weight: 700;
+  letter-spacing: -0.015em;
 }
+
 .guides-header p{
   margin: 0;
-  color: #c9ced6;
   font-size: .95rem;
+  color: var(--text-secondary);
 }
+
+/* =========================
+   Body container
+   ========================= */
 
 .guides-body{
-  max-width: 1100px;
+  max-width: 1120px;
   margin: 0 auto;
-  padding: 4px 12px 40px;
+  padding: 6px 14px 48px;
 }
 
-/* simple demo UI that renders inside the phone */
+/* =========================
+   Demo UI (inside phone)
+   ========================= */
+
 .demo-ui{
   display: grid;
-  gap: 12px;
+  gap: 14px;
 }
+
 .demo-ui h2{
-  margin: 0 0 8px;
+  margin: 0 0 6px;
   font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
+
 .demo-ui .card{
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.06);
-  border-radius: 14px;
-  padding: 14px 16px;
+  position: relative;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.06),
+      rgba(255,255,255,.015)
+    ),
+    var(--surface-elevated);
+
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+
+  box-shadow: var(--shadow-soft);
+
+  transition:
+    transform .25s var(--motion-soft),
+    box-shadow .25s var(--motion-soft);
 }
-.demo-ui .sub{ opacity:.8; font-size:.9rem; margin-top:4px; }
-.demo-ui .link{ opacity:.85; margin-top:8px; font-size:.9rem; }
+
+.demo-ui .card:hover{
+  transform: translateY(-1px);
+  box-shadow:
+    0 2px 6px rgba(0,0,0,.4),
+    0 14px 32px rgba(0,0,0,.55);
+}
+
+.demo-ui .sub{
+  margin-top: 6px;
+  font-size: .9rem;
+  color: var(--text-muted);
+}
+
+.demo-ui .link{
+  margin-top: 10px;
+  font-size: .9rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: inline-block;
+  transition: opacity .2s var(--motion-fast);
+}
+
+.demo-ui .link:hover{
+  opacity: .9;
+}

@@ -1,0 +1,148 @@
+/* InstagramReels.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.12);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --shadow-heavy: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+}
+
+.reel-feed-unit {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  background: #000;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+}
+
+/* Edge-to-Edge Video */
+.video-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.video-element {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Scannable Overlay Gradient */
+.ui-vignette {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.85) 0%,
+    rgba(0,0,0,0.3) 20%,
+    transparent 45%,
+    transparent 85%,
+    rgba(0,0,0,0.4) 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Floating Action Sidebar */
+.action-sidebar {
+  position: absolute;
+  right: 14px;
+  bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  z-index: 10;
+  align-items: center;
+}
+
+.interaction-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+}
+
+.interaction-unit span {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+/* Bottom Metadata Block */
+.reel-info-block {
+  position: absolute;
+  left: 16px;
+  bottom: 40px;
+  right: 80px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.user-profile-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid #fff;
+  object-fit: cover;
+}
+
+.user-text {
+  font-weight: 700;
+  font-size: 15px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+.follow-pill-2026 {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.9);
+  color: white;
+  padding: 5px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  backdrop-filter: blur(5px);
+}
+
+.caption-area {
+  font-size: 15px;
+  line-height: 1.4;
+  direction: rtl; /* Support for Hebrew from your image */
+  text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+}
+
+/* The Glass Audio Component */
+.audio-meta-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  padding: 6px 14px;
+  border-radius: 20px;
+  width: fit-content;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid var(--glass-border);
+}
+
+.audio-icon-spin {
+  animation: rotate 4s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

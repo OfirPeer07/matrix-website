@@ -2,39 +2,36 @@ import React, { useRef, useState, useMemo } from "react";
 import "./iPhoneMockup.css";
 
 /**
- * iPhone-17 style mockup + optional hand overlays.
- * - Pass `screen` (URL) or put JSX children inside to render inside the device.
- * - Hand PNGs are optional; if they fail to load, SVG fallbacks appear automatically.
- * - Set `tiltEnabled={false}` (default) to keep phone static.
+ * iPhone-17 style mockup - גרסה מעודכנת ונקייה
  */
 export default function IPhoneMockup({
-  /** Size */
-  width = 360,                   // device width in px
-  ratio = 9 / 19,                // “shorter” aspect (closer to 17 Pro Max)
+  /** גודל המכשיר */
+  width = 300,                   // ברירת מחדל מוקטנת כפי שביקשת
+  ratio = 9 / 19,                
   className = "",
 
-  /** Screen */
-  screen,                        // URL of image to show
-  children,                      // JSX to render inside
+  /** תוכן המסך */
+  screen,                        
+  children,                      
 
-  /** Hand (overlay) */
-  showHand = true,
+  /** הגדרות יד (כבוי כברירת מחדל) */
+  showHand = false,              
   handImageBack = "/assets/hand-back.png",
   handImageFront = "/assets/hand-front.png",
-  handSide = "right",            // 'right' | 'left'
+  handSide = "right",            
   handScale = 0.58,
-  handOffsetX,                   // px; default depends on side
-  handOffsetY = 110,             // px
-  handRotate,                    // deg; default depends on side
+  handOffsetX,                   
+  handOffsetY = 110,             
+  handRotate,                    
 
-  /** Look & feel */
+  /** מראה ותחושה */
   color = "titanium-black",
   islandScale = 0.96,
   glassShine = 1,
   ambient = 0.88,
 
-  /** Interaction */
-  tiltEnabled = false,           // <— disable motion by default
+  /** אינטראקציה */
+  tiltEnabled = false,           
 }) {
   const wrapRef = useRef(null);
   const [tilt, setTilt] = useState({ rx: 0, ry: 0, tz: 0 });
@@ -42,7 +39,7 @@ export default function IPhoneMockup({
   const defaultX  = handSide === "right" ? 180 : -140;
   const defaultRot= handSide === "right" ? 12  : -12;
 
-  /** pointer tilt (desktop & mobile) */
+  /** חישובי הטיה (Tilt) */
   const onPointerMove = (e) => {
     if (!tiltEnabled) return;
     const el = wrapRef.current;
@@ -56,6 +53,7 @@ export default function IPhoneMockup({
     el.style.setProperty("--rx", `${rx}deg`);
     el.style.setProperty("--ry", `${ry}deg`);
   };
+
   const onPointerLeave = () => {
     if (!tiltEnabled) return;
     setTilt({ rx: 0, ry: 0, tz: 0 });
@@ -65,7 +63,7 @@ export default function IPhoneMockup({
     el.style.setProperty("--ry", `0deg`);
   };
 
-  /** transforms */
+  /** חישובי טרנספורמציה */
   const baseHandTransform = `
     translate(${(handOffsetX ?? defaultX)}px, ${handOffsetY}px)
     rotate(${handRotate ?? defaultRot}deg)
@@ -75,69 +73,59 @@ export default function IPhoneMockup({
   const handTransform  = tiltEnabled ? `${tilt3D} ${baseHandTransform}` : baseHandTransform;
   const phoneTransform = tiltEnabled ? tilt3D : "none";
 
-  /** PNG load fallback flags */
   const [backErr,  setBackErr]  = useState(false);
   const [frontErr, setFrontErr] = useState(false);
 
-  /** Simple SVG fallbacks so שתמיד תראה יד */
-  const FallbackBack = useMemo(
-    () => (
-      <svg viewBox="0 0 800 900" className="hand-svg" aria-hidden>
-        <defs>
-          <linearGradient id="hg" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0" stopColor="#4b4f55" />
-            <stop offset="1" stopColor="#2b2e33" />
-          </linearGradient>
-        </defs>
-        <path d="M160 700 C 250 540, 300 490, 360 480 420 470, 520 480, 610 520 655 540, 680 560, 696 590 708 612, 708 638, 695 660 680 683, 638 700, 590 705 470 716, 430 735, 380 820 360 855, 340 860, 320 850 270 825, 245 795, 160 700 Z" fill="url(#hg)" />
-        <path d="M175 690 c -30 -35 -40 -70 -25 -95 10 -17 40 -15 75 10 30 22 45 55 38 78 -8 27 -41 35 -88 7 Z" fill="#3a3e44" />
-        <ellipse cx="640" cy="585" rx="26" ry="58" fill="#23262a" opacity="0.55"/>
-        <ellipse cx="680" cy="605" rx="22" ry="52" fill="#23262a" opacity="0.55"/>
-      </svg>
-    ),
-    []
-  );
-  const FallbackFront = useMemo(
-    () => (
-      <svg viewBox="0 0 800 900" className="hand-svg" aria-hidden>
-        <ellipse cx="625" cy="565" rx="24" ry="54" fill="#202328" opacity="0.6"/>
-        <ellipse cx="665" cy="585" rx="22" ry="50" fill="#202328" opacity="0.6"/>
-      </svg>
-    ),
-    []
-  );
+  /** Fallbacks ל-SVG של היד */
+  const FallbackBack = useMemo(() => (
+    <svg viewBox="0 0 800 900" className="hand-svg" aria-hidden>
+      <defs>
+        <linearGradient id="hg" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stopColor="#4b4f55" />
+          <stop offset="1" stopColor="#2b2e33" />
+        </linearGradient>
+      </defs>
+      <path d="M160 700 C 250 540, 300 490, 360 480 420 470, 520 480, 610 520 655 540, 680 560, 696 590 708 612, 708 638, 695 660 680 683, 638 700, 590 705 470 716, 430 735, 380 820 360 855, 340 860, 320 850 270 825, 245 795, 160 700 Z" fill="url(#hg)" />
+    </svg>
+  ), []);
+
+  const FallbackFront = useMemo(() => (
+    <svg viewBox="0 0 800 900" className="hand-svg" aria-hidden>
+      <ellipse cx="625" cy="565" rx="24" ry="54" fill="#202328" opacity="0.6"/>
+      <ellipse cx="665" cy="585" rx="22" ry="50" fill="#202328" opacity="0.6"/>
+    </svg>
+  ), []);
 
   return (
     <section className={`iphone17-section ${className}`}>
+      {/* ambient כאן משפיע על התאורה הכללית */}
       <div className="iphone17-scene" style={{ "--ambient": ambient }}>
+        
+        {/* ה-bg-grid הוסר ויזואלית ב-CSS שסיפקתי קודם */}
         <div className="bg-grid" aria-hidden />
+
         <div
           ref={wrapRef}
           className="persp"
           onPointerMove={tiltEnabled ? onPointerMove : undefined}
           onPointerLeave={tiltEnabled ? onPointerLeave : undefined}
         >
-          {/* HAND BACK */}
+          {/* יד אחורית */}
           {showHand && (
             <div className="hand-layer hand-back" style={{ transform: handTransform }}>
               {!backErr ? (
-                <img
-                  className="hand-img"
-                  src={handImageBack}
-                  alt=""
-                  onError={() => setBackErr(true)}
-                />
+                <img className="hand-img" src={handImageBack} alt="" onError={() => setBackErr(true)} />
               ) : (
                 <div className="hand-fallback">{FallbackBack}</div>
               )}
             </div>
           )}
 
-          {/* PHONE */}
+          {/* גוף הטלפון */}
           <div
             className={`iphone17 ${color}`}
             style={{
-              width,
+              width: `${width}px`,
               "--device-ratio": ratio,
               "--island-scale": islandScale,
               "--shine": glassShine,
@@ -163,8 +151,7 @@ export default function IPhoneMockup({
                   <img className="screen-img" src={screen} alt="screen" />
                 ) : (
                   <div className="screen-ph">
-                    <div className="t1">Put your screen here</div>
-                    <div className="t2">Dynamic phone mockup</div>
+                    <div className="t1">No Content</div>
                   </div>
                 )}
                 <div className="panel-glow" aria-hidden />
@@ -175,7 +162,7 @@ export default function IPhoneMockup({
               </div>
             </div>
 
-            {/* Bottom I/O hint */}
+            {/* חיבור טעינה ורמקולים בתחתית */}
             <div className="io" aria-hidden>
               <div className="grid">
                 {Array.from({ length: 6 }).map((_, i) => <span key={`l${i}`} className="dot" />)}
@@ -189,16 +176,11 @@ export default function IPhoneMockup({
             <div className="floor-shadow" />
           </div>
 
-          {/* HAND FRONT */}
+          {/* יד קדמית */}
           {showHand && (
             <div className="hand-layer hand-front" style={{ transform: handTransform }}>
               {!frontErr ? (
-                <img
-                  className="hand-img"
-                  src={handImageFront}
-                  alt=""
-                  onError={() => setFrontErr(true)}
-                />
+                <img className="hand-img" src={handImageFront} alt="" onError={() => setFrontErr(true)} />
               ) : (
                 <div className="hand-fallback">{FallbackFront}</div>
               )}

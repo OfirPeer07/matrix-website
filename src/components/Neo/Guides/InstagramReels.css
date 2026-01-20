@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+.reels-display-unit {
+  position: relative;
+  height: 100vh;           /* ✅ קריטי – Reel בגובה מסך מלא */
+  width: 100%;
+  background: #000;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+}
+
+.video-surface {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Bottom-only gradient (Instagram accurate) */
+.ui-overlay-gradient {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 55%;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.85) 0%,
+    rgba(0,0,0,0.45) 30%,
+    rgba(0,0,0,0.2) 55%,
+    transparent 75%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Sidebar */
+.interaction-sidebar {
+  position: absolute;
+  right: 12px;
+  bottom: 110px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  z-index: 10;
+  align-items: center;
+  filter:
+    drop-shadow(0 1px 2px rgba(0,0,0,0.55))
+    drop-shadow(0 2px 6px rgba(0,0,0,0.35));
+}
+
+.icon-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.icon-group span {
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* Icons */
+.ig-icon {
+  width: 28px;
+  height: 28px;
+  fill: white;
+  stroke: white;
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ig-icon.no-fill {
+  fill: none;
+}
+
+.ig-icon.active {
+  fill: #ff3040;
+  stroke: #ff3040;
+  animation: likePop 0.25s ease-out;
+}
+
+@keyframes likePop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+.more-dots {
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+/* Metadata */
+.content-metadata {
+  position: absolute;
+  left: 16px;
+  bottom: 20px;
+  right: 80px;
+  z-index: 10;
+  direction: rtl;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+}
+
+.user-identity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  direction: ltr;
+  justify-content: flex-end;
+}
+
+.user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid #fff;
+}
+
+.user-name {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.follow-pill-2026 {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.8);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.reel-caption {
+  font-size: 14px;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+/* Audio pill */
+.audio-glass-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  padding: 6px 12px;
+  border-radius: 20px;
+  width: fit-content;
+  font-size: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.audio-thumb-container {
+  width: 30px;
+  height: 30px;
+  border: 2px solid white;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.audio-mini-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: spin 6s linear infinite;
+}
+
+.spinning-icon {
+  animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

@@ -70,7 +70,25 @@ function AppContent() {
       <ConditionalSidebar />
 
       <div className="content">
-        <Suspense fallback={<div style={{ color: "lime" }}>Loading…</div>}>
+        {/* התיקון: Fallback עם רקע שחור וגובה מלא למניעת הבהוב לבן */}
+        <Suspense
+          fallback={
+            <div
+              style={{
+                backgroundColor: "black",
+                height: "100vh",
+                width: "100vw",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "lime",
+                fontFamily: "monospace",
+              }}
+            >
+              Loading…
+            </div>
+          }
+        >
           <Routes>
             {/* ===== MAIN ===== */}
             <Route
@@ -87,17 +105,32 @@ function AppContent() {
             {/* ===== NEO ===== */}
             <Route path="/neo" element={<Neo />} />
             <Route path="/neo/hacking" element={<Hacking />} />
-            <Route path="/neo/hacking/build-your-resume" element={<ResumeBuilder />} />
+            <Route
+              path="/neo/hacking/build-your-resume"
+              element={<ResumeBuilder />}
+            />
             <Route path="/neo/hacking/guides" element={<Guides />} />
             <Route path="/neo/hacking/articles" element={<Articles />} />
             <Route path="/neo/hacking/videos" element={<Videos />} />
 
             {/* ===== AGENT SMITH ===== */}
             <Route path="/agent-smith" element={<AgentSmith />} />
-            <Route path="/agent-smith/agent-smith-department" element={<AgentSmithDepartment />} />
-            <Route path="/agent-smith/agent-smith-department/technology-news" element={<TechnologyNews />} />
-            <Route path="/agent-smith/agent-smith-department/troubleshooting-guides" element={<TroubleshootingGuides />} />
-            <Route path="/agent-smith/agent-smith-department/building-computers" element={<BuildingComputers />} />
+            <Route
+              path="/agent-smith/agent-smith-department"
+              element={<AgentSmithDepartment />}
+            />
+            <Route
+              path="/agent-smith/agent-smith-department/technology-news"
+              element={<TechnologyNews />}
+            />
+            <Route
+              path="/agent-smith/agent-smith-department/troubleshooting-guides"
+              element={<TroubleshootingGuides />}
+            />
+            <Route
+              path="/agent-smith/agent-smith-department/building-computers"
+              element={<BuildingComputers />}
+            />
 
             {/* ===== GENERAL ===== */}
             <Route path="/contact-us" element={<ContactUs />} />
