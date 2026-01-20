@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./InstagramReels.css";
 
 const REEL_DATA = {
@@ -18,20 +18,28 @@ export default function InstagramReels() {
   const [isLiked, setIsLiked] = useState(false);
   const videoRef = useRef(null);
 
+  /* Hide BottomToolbar while Reel is active */
+  useEffect(() => {
+    document.body.classList.add("reel-mode");
+    return () => document.body.classList.remove("reel-mode");
+  }, []);
+
   return (
     <div className="reels-display-unit">
 
-      {/* Video */}
-      <video
-        ref={videoRef}
-        className="video-surface"
-        src={REEL_DATA.videoUrl}
-        autoPlay
-        loop
-        muted={isMuted}
-        playsInline
-        onClick={() => setIsMuted(!isMuted)}
-      />
+      {/* Video wrapper enforces 9:16 and rounded corners */}
+      <div className="video-wrapper">
+        <video
+          ref={videoRef}
+          className="video-surface"
+          src={REEL_DATA.videoUrl}
+          autoPlay
+          loop
+          muted={isMuted}
+          playsInline
+          onClick={() => setIsMuted(!isMuted)}
+        />
+      </div>
 
       {/* Bottom readability gradient */}
       <div className="ui-overlay-gradient" />
@@ -39,21 +47,13 @@ export default function InstagramReels() {
       {/* Interaction sidebar */}
       <aside className="interaction-sidebar">
 
-        {/* Like */}
-        <div
-          className="icon-group"
-          onClick={() => setIsLiked(!isLiked)}
-        >
-          <svg
-            viewBox="0 0 24 24"
-            className={`ig-icon ${isLiked ? "active" : ""}`}
-          >
+        <div className="icon-group" onClick={() => setIsLiked(!isLiked)}>
+          <svg viewBox="0 0 24 24" className={`ig-icon ${isLiked ? "active" : ""}`}>
             <path d="M16.792 3.904A4.989 4.989 0 0 1 21.5 9.122c0 3.072-2.652 4.959-5.197 7.222-2.512 2.243-3.865 3.469-4.303 3.752-.477-.309-2.143-1.823-4.303-3.752C5.141 14.071 2.5 12.194 2.5 9.122a4.989 4.989 0 0 1 4.708-5.218 4.21 4.21 0 0 1 3.675 1.941c.03.044.06.091.092.14.032-.049.062-.096.092-.14a4.21 4.21 0 0 1 3.725-1.941z" />
           </svg>
           <span>{REEL_DATA.likes}</span>
         </div>
 
-        {/* Comments */}
         <div className="icon-group">
           <svg viewBox="0 0 24 24" className="ig-icon">
             <path d="M20.656 17.008a9.993 9.993 0 1 0-3.59 3.615L22 22z" />
@@ -61,7 +61,6 @@ export default function InstagramReels() {
           <span>{REEL_DATA.comments}</span>
         </div>
 
-        {/* Repost */}
         <div className="icon-group">
           <svg viewBox="0 0 24 24" className="ig-icon no-fill">
             <path d="M19 1l3 3-3 3M5 23l-3-3 3-3M2 20h14c3.314 0 6-2.686 6-6V10M22 4H8c-3.314 0-6 2.686-6 6v4" />
@@ -69,7 +68,6 @@ export default function InstagramReels() {
           <span>{REEL_DATA.reposts}</span>
         </div>
 
-        {/* Share */}
         <div className="icon-group">
           <svg viewBox="0 0 24 24" className="ig-icon no-fill">
             <path d="M21 3L2.27 10.53a.5.5 0 0 0-.03.94l5.41 2.03 2.03 5.41a.5.5 0 0 0 .94-.03L18.47 6.53 21 3z" />
@@ -77,30 +75,19 @@ export default function InstagramReels() {
           <span>{REEL_DATA.shares}</span>
         </div>
 
-        {/* More */}
         <div className="icon-group">
           <span className="more-dots">···</span>
         </div>
 
-        {/* Audio thumbnail */}
         <div className="audio-thumb-container">
-          <img
-            src={REEL_DATA.avatar}
-            className="audio-mini-img"
-            alt="audio"
-          />
+          <img src={REEL_DATA.avatar} className="audio-mini-img" alt="audio" />
         </div>
-
       </aside>
 
       {/* Bottom metadata */}
       <section className="content-metadata">
         <div className="user-identity">
-          <img
-            src={REEL_DATA.avatar}
-            className="user-avatar"
-            alt="avatar"
-          />
+          <img src={REEL_DATA.avatar} className="user-avatar" alt="avatar" />
           <span className="user-name">{REEL_DATA.user}</span>
           <button className="follow-pill-2026">Follow</button>
         </div>

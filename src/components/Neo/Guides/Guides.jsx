@@ -1,56 +1,66 @@
 // src/components/Neo/Guides/Guides.jsx
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
+import "./Guides.css";
+
 import IPhoneMockup from "./iPhoneMockup";
 
 import InstagramFeed from "./InstagramFeed";
 import InstagramReels from "./InstagramReels";
-// בהמשך:
-// import GuidesSearch from "./GuidesSearch";
-// import GuidesProfile from "./GuidesProfile";
+import InstagramProfile from "./InstagramProfile";
+import InstagramDM from "./InstagramDM";
 
 import BottomToolbar from "./BottomToolbar.jsx";
 
 export default function Guides() {
-  /**
-   * activeTab = הטאב הראשי באפליקציה
-   * זה מחליף Router בשלב הזה (כמו React Native)
-   */
   const [activeTab, setActiveTab] = useState("feed");
 
-  /**
-   * שמירה על instances של המסכים
-   * כדי לא לאבד scroll / state כשעוברים טאב
-   */
-  const screens = useMemo(
-    () => ({
-      feed: <InstagramFeed />,
-      reels: <InstagramReels />,
-      search: <div style={placeholderStyle}>Search (soon)</div>,
-      profile: <div style={placeholderStyle}>Profile (soon)</div>,
-    }),
-    []
-  );
+  const renderScreen = () => {
+    switch (activeTab) {
+      case "feed":
+        return (
+          <InstagramFeed
+            showHeader={true}
+            onOpenDM={() => setActiveTab("activity")}
+          />
+        );
+
+      case "reels":
+        return <InstagramReels />;
+
+      case "search":
+        return <div style={placeholderStyle}>Search (soon)</div>;
+
+      // ❤️ Activity = DM
+      case "activity":
+        return (
+          <InstagramDM onBack={() => setActiveTab("feed")} />
+        );
+
+      case "profile":
+        return <InstagramProfile />;
+
+      default:
+        return null;
+    }
+  };
 
   return (
     <section className="guides-section">
-      <IPhoneMockup
-        width={380}
-        showHand={false}
-        islandScale={0.95}
-        glassShine={0.9}
-        ambient={0.9}
-      >
+      <IPhoneMockup width={380}>
         <div className="app-shell">
-          {/* אזור המסך */}
+
           <main className="screen-area">
-            {screens[activeTab]}
+            {renderScreen()}
           </main>
 
-          {/* Toolbar קבוע */}
-          <BottomToolbar
-            active={activeTab}
-            onChange={setActiveTab}
-          />
+          {/* Toolbar מוסתר ב-DM */}
+          {activeTab !== "activity" && (
+            <BottomToolbar
+              active={activeTab}
+              onChange={setActiveTab}
+            />
+          )}
+
         </div>
       </IPhoneMockup>
     </section>

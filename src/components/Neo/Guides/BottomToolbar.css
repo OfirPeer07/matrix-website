@@ -10,26 +10,43 @@
   height: 52px;
   padding-bottom: env(safe-area-inset-bottom);
 
-  background: #000;
-  border-top: 1px solid rgba(255,255,255,.08);
+  /* Instagram-style overlay */
+  background: rgba(0,0,0,.65);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+
+  border-top: none;
 }
 
 .ig-bottom-nav button {
   background: none;
   border: 0;
-  color: #fff;
   padding: 6px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #fff;
   cursor: pointer;
+  opacity: .7;
+
+  transition: opacity .15s ease, transform .12s ease;
+}
+
+.ig-bottom-nav button.active {
+  opacity: 1;
+}
+
+.ig-bottom-nav button:active {
+  transform: scale(.94);
 }
 
 .ig-bottom-nav svg {
   width: 24px;
   height: 24px;
   display: block;
-}
-
-.ig-bottom-nav button.active svg {
-  stroke-width: 2;
+  fill: currentColor;
 }
 
 .ig-bottom-nav .reels svg {
@@ -37,11 +54,11 @@
   height: 26px;
 }
 
-/* Profile avatar */
 .ig-bottom-nav .avatar {
   width: 24px;
   height: 24px;
   border-radius: 50%;
+  object-fit: cover;
   border: 1.5px solid transparent;
 }
 

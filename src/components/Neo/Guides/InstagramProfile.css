@@ -1,0 +1,114 @@
+.ig-profile-root {
+  background: #000;
+  color: #fff;
+  min-height: 100%;
+}
+
+/* Header */
+.ig-profile-header {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.ig-profile-header h2 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.header-actions {
+  display: flex;
+  gap: 14px;
+  font-size: 18px;
+}
+
+/* Info */
+.ig-profile-info {
+  display: flex;
+  align-items: center;
+  padding: 14px;
+  gap: 16px;
+}
+
+.profile-avatar {
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-stats {
+  display: flex;
+  flex: 1;
+  justify-content: space-around;
+}
+
+.stat {
+  text-align: center;
+  font-size: 13px;
+}
+
+.stat strong {
+  display: block;
+  font-size: 15px;
+}
+
+/* Bio */
+.ig-profile-bio {
+  padding: 0 14px 10px;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+/* Actions */
+.ig-profile-actions {
+  display: flex;
+  gap: 8px;
+  padding: 6px 14px 12px;
+}
+
+.ig-profile-actions button {
+  flex: 1;
+  background: #262626;
+  border: 0;
+  color: #fff;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+/* Tabs */
+.ig-profile-tabs {
+  display: flex;
+  border-top: 1px solid rgba(255,255,255,.08);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.ig-profile-tabs button {
+  flex: 1;
+  height: 44px;
+  background: none;
+  border: 0;
+  color: #888;
+  font-size: 18px;
+}
+
+.ig-profile-tabs button.active {
+  color: #fff;
+  border-bottom: 1.5px solid #fff;
+}
+
+/* Grid */
+.ig-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.grid-item {
+  aspect-ratio: 1 / 1;
+  background: #222;
+}
