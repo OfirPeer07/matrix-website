@@ -1,51 +1,58 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-
 .reels-display-unit {
   position: relative;
   height: 72.5vh;
   width: 100%;
-  border-radius: 22px;
   background: #000;
   color: #fff;
-  font-family: 'Inter', sans-serif;
   overflow: hidden;
+  background: none;
 }
 
-/* === VIDEO WRAPPER (ROUNDED CORNERS FIX) === */
+/* ONLY TOP ROUNDED */
 .video-wrapper {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #000;
-  border-radius: 22px;
   overflow: hidden;
+  border-radius: 22px 22px 0 0;
 }
 
-/* Instagram Reels ratio: 9:16 */
 .video-surface {
   width: 100%;
   height: 100%;
-  max-width: calc(100vh * 9 / 16);
-  max-height: 100%;
-  aspect-ratio: 9 / 16;
   object-fit: cover;
 }
 
-/* Bottom-only gradient */
+/* Progress bar – flush to bottom of video */
+.reel-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(255,255,255,0.2);
+  z-index: 15;
+}
+
+.reel-progress span {
+  display: block;
+  height: 100%;
+  background: #fff;
+  transition: width .15s linear;
+}
+
+/* Bottom gradient */
 .ui-overlay-gradient {
   position: absolute;
-  inset: auto 0 0 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   height: 55%;
   background: linear-gradient(
     to top,
-    rgba(0,0,0,0.85) 0%,
-    rgba(0,0,0,0.45) 30%,
-    rgba(0,0,0,0.2) 55%,
-    transparent 75%
+    rgba(0,0,0,.85),
+    rgba(0,0,0,.25),
+    transparent
   );
-  pointer-events: none;
   z-index: 2;
 }
 
@@ -53,15 +60,12 @@
 .interaction-sidebar {
   position: absolute;
   right: 12px;
-  bottom: 110px;
+  bottom: 120px;
   display: flex;
   flex-direction: column;
   gap: 18px;
   z-index: 10;
   align-items: center;
-  filter:
-    drop-shadow(0 1px 2px rgba(0,0,0,0.55))
-    drop-shadow(0 2px 6px rgba(0,0,0,0.35));
 }
 
 .icon-group {
@@ -84,8 +88,6 @@
   fill: white;
   stroke: white;
   stroke-width: 1.25;
-  stroke-linecap: round;
-  stroke-linejoin: round;
 }
 
 .ig-icon.no-fill {
@@ -95,41 +97,18 @@
 .ig-icon.active {
   fill: #ff3040;
   stroke: #ff3040;
-  animation: likePop 0.25s ease-out;
-}
-
-@keyframes likePop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.25); }
-  100% { transform: scale(1); }
-}
-
-.more-dots {
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 1;
 }
 
 /* Metadata */
 .content-metadata {
   position: absolute;
   left: 16px;
-  bottom: 20px;
+  bottom: 24px;
   right: 80px;
   z-index: 10;
-  direction: rtl;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
 }
 
-.user-identity {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-  direction: ltr;
-  justify-content: flex-end;
-}
-
+/* Avatar */
 .user-avatar {
   width: 34px;
   height: 34px;
@@ -144,38 +123,33 @@
 
 .follow-pill-2026 {
   background: transparent;
-  border: 1px solid rgba(255,255,255,0.8);
-  color: white;
+  border: 1px solid rgba(255,255,255,.8);
+  color: #fff;
   padding: 6px 14px;
   border-radius: 8px;
   font-size: 12px;
-  font-weight: 600;
 }
 
 .reel-caption {
   font-size: 14px;
   margin-bottom: 12px;
-  line-height: 1.4;
 }
 
-/* Audio pill */
 .audio-glass-pill {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255,255,255,.15);
   backdrop-filter: blur(20px);
   padding: 6px 12px;
   border-radius: 20px;
-  width: fit-content;
   font-size: 12px;
-  border: 1px solid rgba(255,255,255,0.1);
 }
 
 .audio-thumb-container {
   width: 30px;
   height: 30px;
-  border: 2px solid white;
+  border: 2px solid #fff;
   border-radius: 6px;
   overflow: hidden;
 }
@@ -187,10 +161,14 @@
   animation: spin 6s linear infinite;
 }
 
-.spinning-icon {
-  animation: spin 4s linear infinite;
-}
-
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+.user-identity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  direction: ltr;
 }
