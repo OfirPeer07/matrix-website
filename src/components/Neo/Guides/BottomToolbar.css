@@ -1,13 +1,14 @@
 .ig-bottom-nav {
-  position: sticky;
-  bottom: 0;
+  position: relative;
+  top: 43.40rem;
+  width: 22rem;
   z-index: 20;
-
+  border-radius: 22px 22px 0 0;
   display: flex;
   justify-content: space-around;
   align-items: center;
 
-  height: 52px;
+  height: 42px;
   padding-bottom: env(safe-area-inset-bottom);
 
   /* Instagram-style overlay */

@@ -30,11 +30,9 @@ export default function Guides() {
       case "search":
         return <div style={placeholderStyle}>Search (soon)</div>;
 
-      // ❤️ Activity = DM
+      // ❤️ DM
       case "activity":
-        return (
-          <InstagramDM onBack={() => setActiveTab("feed")} />
-        );
+        return <InstagramDM onBack={() => setActiveTab("feed")} />;
 
       case "profile":
         return <InstagramProfile />;
@@ -53,7 +51,7 @@ export default function Guides() {
             {renderScreen()}
           </main>
 
-          {/* Toolbar מוסתר ב-DM */}
+          {/* ✅ Toolbar קיים תמיד — חוץ מ-DM */}
           {activeTab !== "activity" && (
             <BottomToolbar
               active={activeTab}

@@ -1,11 +1,10 @@
 .reels-display-unit {
-  position: relative;
-  height: 72.5vh;
+  position: absolute; /* CHANGED */
+  inset: 0;           /* CHANGED */
   width: 100%;
   background: #000;
   color: #fff;
   overflow: hidden;
-  background: none;
 }
 
 /* ONLY TOP ROUNDED */
@@ -16,6 +15,7 @@
   border-radius: 22px 22px 0 0;
 }
 
+/* Video fills entire container */
 .video-surface {
   width: 100%;
   height: 100%;
@@ -25,7 +25,7 @@
 /* Progress bar – flush to bottom of video */
 .reel-progress {
   position: absolute;
-  bottom: 0;
+  bottom: 56px; /* CHANGED – sits exactly above Toolbar */
   left: 0;
   right: 0;
   height: 2px;
@@ -103,7 +103,7 @@
 .content-metadata {
   position: absolute;
   left: 16px;
-  bottom: 24px;
+  bottom: 72px; /* CHANGED – above progress + toolbar */
   right: 80px;
   z-index: 10;
 }

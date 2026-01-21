@@ -2,8 +2,8 @@
 
 /* ===== Section wrapper ===== */
 .iphone17-section {
-  /* הקטנו את ה-padding מכיוון שהסרנו את הרקע והיד */
-  padding: 5px 0;
+
+  padding: 0;
   background: transparent;
 }
 

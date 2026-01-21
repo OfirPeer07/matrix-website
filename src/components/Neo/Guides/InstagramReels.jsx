@@ -20,7 +20,7 @@ export default function InstagramReels() {
   const [progress, setProgress] = useState(0);
   const videoRef = useRef(null);
 
-  /* Hide BottomToolbar while Reel is active */
+  /* Reels mode – hides ALL toolbars */
   useEffect(() => {
     document.body.classList.add("reel-mode");
     return () => document.body.classList.remove("reel-mode");
@@ -29,14 +29,14 @@ export default function InstagramReels() {
   /* Progress bar sync */
   const handleTimeUpdate = () => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || !video.duration) return;
     setProgress((video.currentTime / video.duration) * 100);
   };
 
   return (
     <div className="reels-display-unit">
 
-      {/* Video */}
+      {/* VIDEO */}
       <div className="video-wrapper">
         <video
           ref={videoRef}
@@ -49,11 +49,11 @@ export default function InstagramReels() {
           onClick={() => setIsMuted(!isMuted)}
           onTimeUpdate={handleTimeUpdate}
         />
-      </div>
 
-      {/* Progress bar */}
-      <div className="reel-progress">
-        <span style={{ width: `${progress}%` }} />
+        {/* Progress bar – flush to bottom of video */}
+        <div className="reel-progress">
+          <span style={{ width: `${progress}%` }} />
+        </div>
       </div>
 
       {/* Bottom readability gradient */}
