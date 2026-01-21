@@ -1,49 +1,137 @@
 .ig-profile-root {
-  background: #000;
+  background: #0b0c0e;
   color: #fff;
   min-height: 100%;
+  padding-bottom: 12px;
+  padding-top: 24px;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
 }
 
-/* Header */
-.ig-profile-header {
-  height: 48px;
-  display: flex;
+/* Top bar */
+.ig-profile-topbar {
+
+  height: 65px;
+  display: grid;
+  grid-template-columns: 40px 1fr 88px;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 14px;
-  border-bottom: 1px solid rgba(255,255,255,.08);
+  padding: 0 12px;
 }
 
-.ig-profile-header h2 {
+.top-icon {
+  background: none;
+  border: 0;
+  color: #fff;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.top-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.top-center {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.lock-icon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.6;
+}
+
+.chevron-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.top-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Profile info */
+.ig-profile-info {
+  display: grid;
+  grid-template-columns: 108px 1fr;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px 6px;
+}
+
+.avatar-wrap {
+  position: relative;
+  width: 96px;
+  height: 96px;
+}
+
+.profile-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #1a1d22;
+}
+
+.avatar-plus {
+  position: absolute;
+  right: 2px;
+  bottom: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  color: #111;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  border: 2px solid #0b0c0e;
+  font-size: 16px;
+}
+
+.share-pill {
+  position: absolute;
+  top: -6px;
+  left: -2px;
+  background: #2b2f36;
+  color: #d7d7d7;
+  border-radius: 18px;
+  padding: 8px 10px;
+  font-size: 11px;
+  line-height: 1.1;
+  box-shadow: 0 6px 16px rgba(0,0,0,.35);
+  width: 110px;
+}
+
+.profile-meta {
+  display: grid;
+  gap: 8px;
+}
+
+.profile-name {
   font-size: 16px;
   font-weight: 700;
 }
 
-.header-actions {
-  display: flex;
-  gap: 14px;
-  font-size: 18px;
-}
-
-/* Info */
-.ig-profile-info {
-  display: flex;
-  align-items: center;
-  padding: 14px;
-  gap: 16px;
-}
-
-.profile-avatar {
-  width: 86px;
-  height: 86px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
 .profile-stats {
-  display: flex;
-  flex: 1;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
 }
 
 .stat {
@@ -53,47 +141,99 @@
 
 .stat strong {
   display: block;
-  font-size: 15px;
+  font-size: 16px;
 }
 
 /* Bio */
 .ig-profile-bio {
-  padding: 0 14px 10px;
-  font-size: 14px;
+  padding: 4px 14px 10px;
+  font-size: 13px;
   line-height: 1.35;
+  color: #e6e6e6;
+  text-align: left;
 }
 
 /* Actions */
 .ig-profile-actions {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   padding: 6px 14px 12px;
 }
 
 .ig-profile-actions button {
   flex: 1;
-  background: #262626;
+  background: #2b2f36;
   border: 0;
   color: #fff;
-  padding: 8px;
-  border-radius: 8px;
+  padding: 10px;
+  border-radius: 12px;
   font-size: 14px;
+}
+
+/* Highlights */
+.ig-profile-highlights {
+  display: flex;
+  gap: 14px;
+  padding: 4px 14px 12px;
+  overflow-x: auto;
+}
+
+.highlight {
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  font-size: 12px;
+  color: #d8d8d8;
+  min-width: 72px;
+}
+
+.highlight-ring {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid #2b2f36;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #14161a;
+}
+
+.highlight-ring img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.highlight-plus {
+  font-size: 26px;
+  color: #fff;
 }
 
 /* Tabs */
 .ig-profile-tabs {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   border-top: 1px solid rgba(255,255,255,.08);
   border-bottom: 1px solid rgba(255,255,255,.08);
 }
 
 .ig-profile-tabs button {
-  flex: 1;
-  height: 44px;
+  height: 46px;
   background: none;
   border: 0;
   color: #888;
-  font-size: 18px;
+  display: grid;
+  place-items: center;
+}
+
+.ig-profile-tabs button svg {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .ig-profile-tabs button.active {
@@ -106,9 +246,29 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2px;
+  padding: 2px 0 0;
 }
 
 .grid-item {
+  position: relative;
   aspect-ratio: 1 / 1;
   background: #222;
+  overflow: hidden;
+}
+
+.grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.reel-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1.5px solid #fff;
 }

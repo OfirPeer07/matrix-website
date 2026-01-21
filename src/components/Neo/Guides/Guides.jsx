@@ -6,6 +6,7 @@ import IPhoneMockup from "./iPhoneMockup";
 
 import InstagramFeed from "./InstagramFeed";
 import InstagramReels from "./InstagramReels";
+import SearchInstagram from "./SearchInstagram";
 import InstagramProfile from "./InstagramProfile";
 import InstagramDM from "./InstagramDM";
 
@@ -28,7 +29,7 @@ export default function Guides() {
         return <InstagramReels />;
 
       case "search":
-        return <div style={placeholderStyle}>Search (soon)</div>;
+        return <SearchInstagram />;
 
       // ❤️ DM
       case "activity":
@@ -44,7 +45,7 @@ export default function Guides() {
 
   return (
     <section className="guides-section">
-      <IPhoneMockup width={380}>
+      <IPhoneMockup width="calc(380px - 1rem)">
         <div className="app-shell">
 
           <main className="screen-area">
@@ -65,10 +66,3 @@ export default function Guides() {
   );
 }
 
-const placeholderStyle = {
-  height: "100%",
-  display: "grid",
-  placeItems: "center",
-  color: "#888",
-  fontSize: 14,
-};

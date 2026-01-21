@@ -1,0 +1,96 @@
+.ig-search-root {
+  margin-top: 3rem;
+  background: #0b0c0e;
+  color: #fff;
+  min-height: 100%;
+  padding: 6px 10px 70px;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+.ig-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 36px;
+  border-radius: 14px;
+  padding: 0 14px;
+  background: #1f2227;
+  color: #b7b7b7;
+  margin-bottom: 8px;
+}
+
+.search-icon {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #b7b7b7;
+  border-radius: 50%;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.search-icon::after {
+  content: "";
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  width: 8px;
+  height: 2px;
+  background: #b7b7b7;
+  transform: rotate(45deg);
+  border-radius: 2px;
+}
+
+.search-placeholder {
+  font-size: 16px;
+}
+
+.ig-search-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.search-tile {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: #1a1a1a;
+}
+
+.search-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tile-meta {
+  position: absolute;
+  left: 6px;
+  bottom: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,.6);
+}
+
+.tile-play {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  border: 1.5px solid #fff;
+  position: relative;
+}
+
+.tile-play::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 2px;
+  border-left: 4px solid #fff;
+  border-top: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+}

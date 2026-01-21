@@ -1,14 +1,16 @@
 .ig-bottom-nav {
-  position: relative;
-  top: 43.40rem;
-  width: 22rem;
-  z-index: 20;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
   border-radius: 22px 22px 0 0;
   display: flex;
   justify-content: space-around;
   align-items: center;
 
-  height: 42px;
+  height: 48px;
+  width: 100%;
   padding-bottom: env(safe-area-inset-bottom);
 
   /* Instagram-style overlay */
@@ -31,6 +33,7 @@
   color: #fff;
   cursor: pointer;
   opacity: .7;
+  position: relative;
 
   transition: opacity .15s ease, transform .12s ease;
 }
@@ -55,14 +58,17 @@
   height: 26px;
 }
 
-.ig-bottom-nav .avatar {
-  width: 24px;
-  height: 24px;
+.ig-bottom-nav .dm::after {
+  content: "";
+  position: absolute;
+  right: 4px;
+  top: 3px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  object-fit: cover;
-  border: 1.5px solid transparent;
+  background: #ff3b5c;
 }
 
-.ig-bottom-nav button.active .avatar {
-  border-color: #fff;
+.ig-bottom-nav button.active svg {
+  opacity: 1;
 }

@@ -93,6 +93,33 @@
 }
 
 /* =========================
+   Scrollbar hiding (Guides only)
+   ========================= */
+
+.guides-section,
+.guides-section * {
+  scrollbar-width: none;
+}
+
+.guides-section *::-webkit-scrollbar {
+  display: none;
+}
+
+/* =========================
+   Phone app shell
+   ========================= */
+
+.app-shell{
+  position: relative;
+  height: 100%;
+}
+
+.screen-area{
+  height: 100%;
+  overflow: auto;
+}
+
+/* =========================
    Demo UI (inside phone)
    ========================= */
 

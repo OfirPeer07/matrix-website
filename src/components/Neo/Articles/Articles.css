@@ -222,6 +222,7 @@ body { overflow-y: scroll; }
 
 /* === Hero image – תמיד מלאה, בלי חיתוך, ודוחפת את הכפתורים מתחת לקפל === */
 .modal-hero {
+  object-fit: fill;
   width: 100%;
   height: 150%;
   display: block;

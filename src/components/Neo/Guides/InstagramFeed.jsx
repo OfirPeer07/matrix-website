@@ -4,21 +4,49 @@ import { motion, AnimatePresence } from "framer-motion";
 import "./InstagramFeed.css";
 
 /* ===== Mock Data ===== */
+const STORIES = [
+  {
+    id: "own",
+    user: "Your story",
+    avatar:
+      "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=120",
+    own: true,
+  },
+  {
+    id: 1,
+    user: "maya.salti",
+    avatar:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120",
+  },
+  {
+    id: 2,
+    user: "linoy_avraham21",
+    avatar:
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=120",
+  },
+  {
+    id: 3,
+    user: "simonacat",
+    avatar:
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120",
+  },
+];
+
 const POSTS = [
   {
     id: 1,
-    user: "morkoen",
-    location: "Tel-Aviv, תל-אביב",
+    user: "fast.news.il",
+    music: "Punksy - Extreme Situation",
     avatar:
-      "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=80",
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120",
     images: [
-      "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=1200",
-      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=1200",
+      "https://images.unsplash.com/photo-1603513492128-ba7bc9b3c84a?w=1200",
     ],
-    caption: "התמונה הרביעית לקחה בגדול.",
-    tags: ["#תל-אביב", "#שבת", "#שוטוב"],
+    caption:
+      "Breaking: major update from the region. Full coverage and analysis.",
+    tags: ["#news", "#world", "#updates"],
     likedBy: "amir_gecht",
-    time: "2 days ago",
+    time: "2 hours ago",
   },
 ];
 
@@ -30,22 +58,55 @@ export default function InstagramFeed({
 
   return (
     <div className="ig-root">
+      {showHeader && (
+        <div className="ig-top">
+          <div className="ig-status">
+            <div className="ig-status-left">
+              <span className="ig-time">19:24</span>
+              <span className="ig-signal">
+                <span />
+                <span />
+                <span />
+                <span />
+              </span>
+            </div>
+            <div className="ig-status-right">
+              <span>LTE</span>
+              <span className="ig-battery">
+                <span>56</span>
+                <span className="cell" />
+                <span className="cap" />
+              </span>
+            </div>
+          </div>
+
+          <div className="ig-header">
+            <button className="ig-header-btn" aria-label="Create">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 5v14M5 12h14" strokeLinecap="round" />
+              </svg>
+            </button>
+            <div className="ig-logo">Instagram</div>
+            <button className="ig-header-btn heart" aria-label="Activity">
+              <svg viewBox="0 0 24 24">
+                <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* ===== Stories ===== */}
       <div className="ig-stories">
-        <div className="story own">
-          <div className="ring">
-            <img src={POSTS[0].avatar} alt="" />
-          </div>
-          <span>Your story</span>
-        </div>
-
-        {POSTS.map(p => (
-          <div key={p.id} className="story">
-            <div className="ring">
-              <img src={p.avatar} alt="" />
+        {STORIES.map(story => (
+          <div key={story.id} className={`story ${story.own ? "own" : ""}`}>
+            <div className="ring-wrap">
+              <div className="ring">
+                <img src={story.avatar} alt="" />
+              </div>
+              {story.own && <span className="story-plus">+</span>}
             </div>
-            <span>{p.user}</span>
+            <span>{story.user}</span>
           </div>
         ))}
       </div>
@@ -80,7 +141,6 @@ export default function InstagramFeed({
           </motion.div>
         )}
       </AnimatePresence>
-
     </div>
   );
 }
@@ -104,17 +164,21 @@ function Post({ post, onOpenComments }) {
 
   return (
     <article className="ig-post">
-
       {/* Post Header */}
       <header className="ig-post-header">
         <div className="ig-user">
           <img src={post.avatar} alt="" />
           <div>
             <div className="ig-username">{post.user}</div>
-            <div className="ig-location">{post.location}</div>
+            <div className="ig-music">
+              <span className="ig-music-icon" aria-hidden />
+              <span>{post.music}</span>
+            </div>
           </div>
         </div>
-        <button className="ig-more">⋯</button>
+        <button className="ig-more" aria-label="More">
+          ...
+        </button>
       </header>
 
       {/* Media */}
@@ -137,10 +201,7 @@ function Post({ post, onOpenComments }) {
         {post.images.length > 1 && (
           <div className="ig-dots">
             {post.images.map((_, i) => (
-              <span
-                key={i}
-                className={i === index ? "active" : ""}
-              />
+              <span key={i} className={i === index ? "active" : ""} />
             ))}
           </div>
         )}
@@ -154,7 +215,7 @@ function Post({ post, onOpenComments }) {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              ♥
+              <HeartIcon filled />
             </motion.div>
           )}
         </AnimatePresence>
@@ -166,15 +227,20 @@ function Post({ post, onOpenComments }) {
           <button
             className={`ig-icon ${liked ? "liked" : ""}`}
             onClick={() => setLiked(l => !l)}
+            aria-label="Like"
           >
-            {liked ? "♥" : "♡"}
+            <HeartIcon filled={liked} />
           </button>
-          <button className="ig-icon" onClick={onOpenComments}>
-            💬
+          <button className="ig-icon" onClick={onOpenComments} aria-label="Comment">
+            <CommentIcon />
           </button>
-          <button className="ig-icon">✈︎</button>
+          <button className="ig-icon" aria-label="Share">
+            <ShareIcon />
+          </button>
         </div>
-        <button className="ig-icon">🔖</button>
+        <button className="ig-icon" aria-label="Save">
+          <BookmarkIcon />
+        </button>
       </div>
 
       {/* Meta */}
@@ -193,7 +259,46 @@ function Post({ post, onOpenComments }) {
       </div>
 
       <div className="ig-time">{post.time}</div>
-
     </article>
+  );
+}
+
+function HeartIcon({ filled = false }) {
+  if (filled) {
+    return (
+      <svg viewBox="0 0 24 24" className="fill">
+        <path d="M12 21l-8.8-8.6a5.5 5.5 0 0 1 7.8-7.8l1 1 1-1a5.5 5.5 0 0 1 7.8 7.8z" />
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 24 24">
+      <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z" />
+    </svg>
+  );
+}
+
+function CommentIcon() {
+  return (
+    <svg viewBox="0 0 24 24">
+      <path d="M20 15a4 4 0 0 1-4 4H8l-4 3V7a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4z" />
+    </svg>
+  );
+}
+
+function ShareIcon() {
+  return (
+    <svg viewBox="0 0 24 24">
+      <path d="M22 3L11 14" strokeLinecap="round" />
+      <path d="M22 3l-7 18-4-7-7-4z" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function BookmarkIcon() {
+  return (
+    <svg viewBox="0 0 24 24">
+      <path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z" />
+    </svg>
   );
 }

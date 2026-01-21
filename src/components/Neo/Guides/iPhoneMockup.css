@@ -3,7 +3,7 @@
 /* ===== Section wrapper ===== */
 .iphone17-section {
 
-  padding: 0;
+  padding: 5px;
   background: transparent;
 }
 
@@ -116,11 +116,11 @@
 .screen-ui {
   position: absolute;
   inset: 0;
-  overflow: auto;
+  overflow: hidden;
   color: #e9eaec;
   background: linear-gradient(180deg, #0a0b0c 0%, #121416 100%);
   /* ה-padding מותאם לאי המרכזי */
-  padding: 45px 12px 20px;
+  padding: 0;
   scrollbar-width: none;
 }
 .screen-ui::-webkit-scrollbar { display: none; }

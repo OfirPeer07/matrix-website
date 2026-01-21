@@ -125,7 +125,7 @@ export default function IPhoneMockup({
           <div
             className={`iphone17 ${color}`}
             style={{
-              width: `${width}px`,
+              width: typeof width === "number" ? `${width}px` : width,
               "--device-ratio": ratio,
               "--island-scale": islandScale,
               "--shine": glassShine,

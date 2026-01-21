@@ -6,8 +6,8 @@ import {
   HomeFilled,
   SearchIcon,
   ReelsIcon,
-  HeartOutline,
-  HeartFilled,
+  SendIcon,
+  ProfileIcon,
 } from "./InstagramIcons";
 
 export default function BottomToolbar({ active, onChange }) {
@@ -31,11 +31,11 @@ export default function BottomToolbar({ active, onChange }) {
       </button>
 
       <button
-        className={active === "activity" ? "active" : ""}
+        className={`dm ${active === "activity" ? "active" : ""}`}
         onClick={() => onChange("activity")}
-        aria-label="Activity"
+        aria-label="Direct Messages"
       >
-        {active === "activity" ? <HeartFilled /> : <HeartOutline />}
+        <SendIcon />
       </button>
 
       <button
@@ -51,11 +51,7 @@ export default function BottomToolbar({ active, onChange }) {
         onClick={() => onChange("profile")}
         aria-label="Profile"
       >
-        <img
-          src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=80"
-          alt=""
-          className="avatar"
-        />
+        <ProfileIcon />
       </button>
 
     </nav>

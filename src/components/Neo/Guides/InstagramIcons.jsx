@@ -6,10 +6,12 @@ import React from "react";
 export const HomeOutline = () => (
   <svg viewBox="0 0 24 24">
     <path
-      d="M12 3l9 7v11a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V10z"
+      d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );
@@ -17,7 +19,7 @@ export const HomeOutline = () => (
 export const HomeFilled = () => (
   <svg viewBox="0 0 24 24">
     <path
-      d="M12 3l9 7v11a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V10z"
+      d="M3 10.5L12 3l9 7.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"
       fill="currentColor"
     />
   </svg>
@@ -31,15 +33,15 @@ export const SearchIcon = () => (
     <circle
       cx="10.5"
       cy="10.5"
-      r="6"
+      r="6.5"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
+      strokeWidth="1.7"
     />
     <path
       d="M21 21l-4.35-4.35"
       stroke="currentColor"
-      strokeWidth="1.5"
+      strokeWidth="1.7"
       strokeLinecap="round"
     />
   </svg>
@@ -58,31 +60,51 @@ export const ReelsIcon = () => (
       rx="4"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
+      strokeWidth="1.7"
+      strokeLinejoin="round"
     />
     <path d="M12 9v6l4-3z" fill="currentColor" />
   </svg>
 );
 
 /* =========================
-   Activity (Heart)
+   Send (DM)
    ========================= */
-export const HeartOutline = () => (
+export const SendIcon = () => (
   <svg viewBox="0 0 24 24">
     <path
-      d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z"
+      d="M22 3L11 14"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M22 3l-7 18-4-7-7-4z"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );
 
-export const HeartFilled = () => (
+/* =========================
+   Profile
+   ========================= */
+export const ProfileIcon = () => (
   <svg viewBox="0 0 24 24">
-    <path
-      d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1a5.5 5.5 0 0 0-7.8 7.8L12 21z"
-      fill="currentColor"
+    <circle
+      cx="12"
+      cy="12"
+      r="9"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
     />
+    <circle cx="12" cy="10" r="3" fill="currentColor" />
+    <path d="M6.5 19c1.7-2 3.6-3 5.5-3s3.8 1 5.5 3" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
   </svg>
 );

@@ -1,13 +1,117 @@
 .reels-display-unit {
-  position: absolute; /* CHANGED */
-  inset: 0;           /* CHANGED */
+  position: absolute;
+  inset: 0;
   width: 100%;
   background: #000;
   color: #fff;
   overflow: hidden;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
 }
 
-/* ONLY TOP ROUNDED */
+/* ===== Top bar ===== */
+.reels-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 12;
+  padding: 12px 10px 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,.6),
+    rgba(0,0,0,.2),
+    transparent
+  );
+}
+
+.reels-header {
+  display: grid;
+  grid-template-columns: 34px 1fr 36px;
+  align-items: center;
+  gap: 8px;
+  margin-top: 1.5rem;
+}
+
+.reels-plus {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  background: none;
+  color: #fff;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.reels-plus svg {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.reels-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.reels-title .is-active {
+  color: #fff;
+}
+
+.reels-title .is-muted {
+  opacity: .5;
+  font-weight: 600;
+}
+
+.friends-avatars {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 2px;
+}
+
+.friends-avatars img {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid #111;
+  margin-left: -6px;
+}
+
+.reels-top-actions {
+  display: block;
+}
+
+.reels-top-btn {
+  border: 0;
+  background: none;
+  color: #fff;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.reels-top-btn svg {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ===== Video ===== */
 .video-wrapper {
   position: absolute;
   inset: 0;
@@ -15,17 +119,15 @@
   border-radius: 22px 22px 0 0;
 }
 
-/* Video fills entire container */
 .video-surface {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-/* Progress bar – flush to bottom of video */
 .reel-progress {
   position: absolute;
-  bottom: 56px; /* CHANGED – sits exactly above Toolbar */
+  bottom: 56px;
   left: 0;
   right: 0;
   height: 2px;
@@ -40,13 +142,13 @@
   transition: width .15s linear;
 }
 
-/* Bottom gradient */
+/* ===== Gradients ===== */
 .ui-overlay-gradient {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 55%;
+  height: 60%;
   background: linear-gradient(
     to top,
     rgba(0,0,0,.85),
@@ -56,7 +158,7 @@
   z-index: 2;
 }
 
-/* Sidebar */
+/* ===== Sidebar ===== */
 .interaction-sidebar {
   position: absolute;
   right: 12px;
@@ -81,13 +183,14 @@
   margin-top: 4px;
 }
 
-/* Icons */
 .ig-icon {
   width: 28px;
   height: 28px;
-  fill: white;
-  stroke: white;
-  stroke-width: 1.25;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .ig-icon.no-fill {
@@ -99,16 +202,48 @@
   stroke: #ff3040;
 }
 
-/* Metadata */
+.more-dots {
+  font-weight: 700;
+  letter-spacing: 2px;
+  transform: translateY(-2px);
+}
+
+.audio-thumb-container {
+  width: 30px;
+  height: 30px;
+  border: 2px solid #fff;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.audio-mini-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: spin 6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===== Metadata ===== */
 .content-metadata {
   position: absolute;
   left: 16px;
-  bottom: 72px; /* CHANGED – above progress + toolbar */
+  bottom: 72px;
   right: 80px;
   z-index: 10;
 }
 
-/* Avatar */
+.user-identity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  direction: ltr;
+}
+
 .user-avatar {
   width: 34px;
   height: 34px;
@@ -146,29 +281,21 @@
   font-size: 12px;
 }
 
-.audio-thumb-container {
-  width: 30px;
-  height: 30px;
-  border: 2px solid #fff;
-  border-radius: 6px;
-  overflow: hidden;
+.spinning-icon {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,.9);
+  position: relative;
 }
 
-.audio-mini-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  animation: spin 6s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.user-identity {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-  direction: ltr;
+.spinning-icon::after {
+  content: "";
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fff;
 }
