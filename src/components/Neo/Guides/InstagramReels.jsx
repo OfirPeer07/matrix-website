@@ -108,8 +108,8 @@ export default function InstagramReels() {
 
         <div className="icon-group">
           <svg viewBox="0 0 24 24" className="ig-icon no-fill">
-            <path d="M22 3L10.5 13.5" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M22 3l-6.5 18-3.5-7.5L3 10z" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M3.5 11.8L20.5 4.5 13.8 21.5 11 13 3.5 11.8z" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M11 13l4.7 3.3 2.3-8.2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           <span>{REEL_DATA.shares}</span>
         </div>

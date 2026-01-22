@@ -73,7 +73,7 @@ export const ReelsIcon = () => (
 export const SendIcon = () => (
   <svg viewBox="0 0 24 24">
     <path
-      d="M22 3L11 14"
+      d="M21.5 4.5L4.5 11.2l7 2.3 2.3 7 7.7-16z"
       fill="none"
       stroke="currentColor"
       strokeWidth="1.7"
@@ -81,7 +81,7 @@ export const SendIcon = () => (
       strokeLinejoin="round"
     />
     <path
-      d="M22 3l-7 18-4-7-7-4z"
+      d="M11.5 13.5l3.8 3.8"
       fill="none"
       stroke="currentColor"
       strokeWidth="1.7"

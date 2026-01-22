@@ -231,10 +231,10 @@ function Post({ post, onOpenComments }) {
           >
             <HeartIcon filled={liked} />
           </button>
-          <button className="ig-icon" onClick={onOpenComments} aria-label="Comment">
+          <button className="ig-icon big" onClick={onOpenComments} aria-label="Comment">
             <CommentIcon />
           </button>
-          <button className="ig-icon" aria-label="Share">
+          <button className="ig-icon big" aria-label="Share">
             <ShareIcon />
           </button>
         </div>
@@ -272,7 +272,7 @@ function HeartIcon({ filled = false }) {
     );
   }
   return (
-    <svg viewBox="0 0 24 24">
+    <svg viewBox="0 0 23 24">
       <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8z" />
     </svg>
   );
@@ -280,8 +280,12 @@ function HeartIcon({ filled = false }) {
 
 function CommentIcon() {
   return (
-    <svg viewBox="0 0 24 24">
-      <path d="M20 15a4 4 0 0 1-4 4H8l-4 3V7a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4z" />
+    <svg viewBox="1 0 20 24">
+      <path
+        d="M12 4c-4.4 0-8 3-8 6.7 0 2.1 1.2 4 3.2 5.1L7 20l3.2-2.1c.6.1 1.2.2 1.8.2 4.4 0 8-3 8-6.7S16.4 4 12 4z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -289,8 +293,16 @@ function CommentIcon() {
 function ShareIcon() {
   return (
     <svg viewBox="0 0 24 24">
-      <path d="M22 3L11 14" strokeLinecap="round" />
-      <path d="M22 3l-7 18-4-7-7-4z" strokeLinejoin="round" />
+      <path
+        d="M21.5 4.5L4.5 11.2l7 2.3 2.3 7 7.7-16z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M11.5 13.5l3.8 3.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }

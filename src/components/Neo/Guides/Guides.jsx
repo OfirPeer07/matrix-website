@@ -53,12 +53,10 @@ export default function Guides() {
           </main>
 
           {/* ✅ Toolbar קיים תמיד — חוץ מ-DM */}
-          {activeTab !== "activity" && (
-            <BottomToolbar
-              active={activeTab}
-              onChange={setActiveTab}
-            />
-          )}
+          <BottomToolbar
+            active={activeTab}
+            onChange={setActiveTab}
+          />
 
         </div>
       </IPhoneMockup>
