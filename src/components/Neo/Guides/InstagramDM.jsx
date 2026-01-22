@@ -5,25 +5,25 @@ import "./InstagramDM.css";
 const THREADS = [
   {
     id: 1,
-    user: "amir_gecht",
-    avatar: "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=80",
-    lastMessage: "יאללה נדבר מחר",
+    user: "mentor_tal",
+    avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80",
+    lastMessage: "שלח/י את ה-CV ונעבור יחד על תיקונים.",
     time: "2h",
     unread: true,
   },
   {
     id: 2,
-    user: "linoy_avraham",
+    user: "recruiter_neta",
     avatar: "https://images.unsplash.com/photo-1544725176-7c40e5a2c9f9?w=80",
-    lastMessage: "שלחתי לך את הקובץ",
+    lastMessage: "ראיתי את הפרויקט שלך, יש משרה שיכולה להתאים.",
     time: "1d",
     unread: false,
   },
   {
     id: 3,
-    user: "simona_cataldo",
+    user: "junior_club",
     avatar: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=80",
-    lastMessage: "🔥🔥🔥",
+    lastMessage: "מחר ב-19:00 סשן שאלות על ראיונות.",
     time: "3d",
     unread: false,
   },
@@ -32,28 +32,24 @@ const THREADS = [
 export default function InstagramDM({ onBack }) {
   return (
     <div className="ig-dm-root">
-
-      {/* Header */}
       <header className="ig-dm-header">
         <button
           className="dm-back"
           onClick={onBack}
           aria-label="Back"
         >
-          ←
+          ‹
         </button>
 
-        <h2>morkoen</h2>
+        <h2>junior.guides</h2>
 
-        <span className="dm-new">✎</span>
+        <span className="dm-new">+</span>
       </header>
 
-      {/* Search */}
       <div className="ig-dm-search">
-        <input placeholder="Search" />
+        <input placeholder="חיפוש" />
       </div>
 
-      {/* Threads */}
       <section className="ig-dm-list">
         {THREADS.map(t => (
           <div
@@ -77,7 +73,6 @@ export default function InstagramDM({ onBack }) {
           </div>
         ))}
       </section>
-
     </div>
   );
 }

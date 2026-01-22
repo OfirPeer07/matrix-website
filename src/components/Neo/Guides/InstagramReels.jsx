@@ -3,21 +3,21 @@ import React, { useState, useRef, useEffect } from "react";
 import "./InstagramReels.css";
 
 const REEL_DATA = {
-  user: "makehealthgreat",
-  avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120",
-  caption: "Never feed your pet this",
-  likes: "156K",
-  comments: "857",
-  reposts: "7,203",
-  shares: "69.1K",
-  audio: "Well Path - Original audio",
+  user: "junior.playbook",
+  avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120",
+  caption: "איך לבנות CV של עמוד אחד ב-30 דקות",
+  likes: "48.3K",
+  comments: "1,204",
+  reposts: "742",
+  shares: "9.8K",
+  audio: "Junior Guides - CV checklist",
   videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
 };
 
 const FRIENDS = [
-  "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60",
-  "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60",
-  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=60",
+  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60",
+  "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=60",
+  "https://images.unsplash.com/photo-1544725176-7c40e5a2c9f9?w=60",
 ];
 
 export default function InstagramReels() {
@@ -127,7 +127,7 @@ export default function InstagramReels() {
         <div className="user-identity">
           <img src={REEL_DATA.avatar} className="user-avatar" alt="" />
           <span className="user-name">{REEL_DATA.user}</span>
-          <button className="follow-pill-2026">Follow</button>
+          <button className="follow-pill-2026">עקוב</button>
         </div>
 
         <div className="reel-caption">{REEL_DATA.caption}</div>

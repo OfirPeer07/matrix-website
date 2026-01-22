@@ -2,59 +2,59 @@ import React, { useState } from "react";
 import "./InstagramProfile.css";
 
 const PROFILE = {
-  user: "ofirpeer7",
-  name: "Ofir Peer",
+  user: "junior.guides.il",
+  name: "מדריכי ג׳וניורים",
   bio: [
-    "Live * Life * You * Will * Remember",
-    "Try sharing a song...",
+    "צעדים פרקטיים לכניסה להייטק",
+    "CV • פורטפוליו • ראיונות • נטוורקינג",
   ],
   avatar:
-    "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=160",
+    "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=160",
   stats: {
-    posts: 75,
-    followers: "16.6K",
-    following: 172,
+    posts: 42,
+    followers: "8.4K",
+    following: 213,
   },
 };
 
 const HIGHLIGHTS = [
-  { id: "new", label: "New", new: true },
+  { id: "new", label: "חדש", new: true },
   {
-    id: "friday",
-    label: "My Friday",
+    id: "cv",
+    label: "קורות חיים",
     image:
-      "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=120",
+      "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=120",
   },
   {
-    id: "dog",
-    label: "My Dog",
+    id: "portfolio",
+    label: "פורטפוליו",
     image:
-      "https://images.unsplash.com/photo-1507146426996-ef05306b995a?w=120",
+      "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=120",
   },
   {
-    id: "vietnam",
-    label: "Vietnam",
+    id: "networking",
+    label: "נטוורקינג",
     image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=120",
+      "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=120",
   },
   {
-    id: "netherlands",
-    label: "Netherlands",
+    id: "interviews",
+    label: "ראיונות",
     image:
-      "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=120",
+      "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=120",
   },
 ];
 
 const GRID = [
-  "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600",
-  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600",
-  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600",
-  "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600",
-  "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=600",
-  "https://images.unsplash.com/photo-1507146426996-ef05306b995a?w=600",
-  "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600",
-  "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600",
-  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600",
+  "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600",
+  "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600",
+  "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=600",
+  "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=600",
+  "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600",
+  "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=600",
+  "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600",
+  "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600",
+  "https://images.unsplash.com/photo-1545239351-ef35f43d514b?w=600",
 ];
 
 export default function InstagramProfile() {
@@ -99,15 +99,15 @@ export default function InstagramProfile() {
         <div className="avatar-wrap">
           <img src={PROFILE.avatar} className="profile-avatar" alt="" />
           <span className="avatar-plus">+</span>
-          <div className="share-pill">Try sharing a song...</div>
+          <div className="share-pill">שתף/י הישג חדש...</div>
         </div>
 
         <div className="profile-meta">
           <div className="profile-name">{PROFILE.name}</div>
           <div className="profile-stats">
-            <Stat label="posts" value={PROFILE.stats.posts} />
-            <Stat label="followers" value={PROFILE.stats.followers} />
-            <Stat label="following" value={PROFILE.stats.following} />
+            <Stat label="פוסטים" value={PROFILE.stats.posts} />
+            <Stat label="עוקבים" value={PROFILE.stats.followers} />
+            <Stat label="עוקב/ת" value={PROFILE.stats.following} />
           </div>
         </div>
       </section>
@@ -119,8 +119,8 @@ export default function InstagramProfile() {
       </section>
 
       <section className="ig-profile-actions">
-        <button>Edit profile</button>
-        <button>Share profile</button>
+        <button>עריכת פרופיל</button>
+        <button>שיתוף פרופיל</button>
       </section>
 
       <section className="ig-profile-highlights">

@@ -7,46 +7,61 @@ import "./InstagramFeed.css";
 const STORIES = [
   {
     id: "own",
-    user: "Your story",
+    user: "הסטורי שלך",
     avatar:
       "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=120",
     own: true,
   },
   {
     id: 1,
-    user: "maya.salti",
-    avatar:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120",
-  },
-  {
-    id: 2,
-    user: "linoy_avraham21",
+    user: "cv_tips",
     avatar:
       "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=120",
   },
   {
-    id: 3,
-    user: "simonacat",
+    id: 2,
+    user: "portfolio.lab",
     avatar:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120",
+  },
+  {
+    id: 3,
+    user: "junior.network",
+    avatar:
+      "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=120",
   },
 ];
 
 const POSTS = [
   {
     id: 1,
-    user: "fast.news.il",
-    music: "Punksy - Extreme Situation",
+    user: "junior.guides",
+    music: "Soft skills • טיפ שבועי",
     avatar:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120",
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120",
     images: [
-      "https://images.unsplash.com/photo-1603513492128-ba7bc9b3c84a?w=1200",
+      "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200",
     ],
     caption:
-      "Breaking: major update from the region. Full coverage and analysis.",
-    tags: ["#news", "#world", "#updates"],
-    likedBy: "amir_gecht",
-    time: "2 hours ago",
+      "כדי להיכנס להייטק: בנו פרויקט אחד שמדגים ערך אמיתי, לא רק תרגילים.",
+    tags: ["#ג׳וניור", "#פורטפוליו", "#פרויקט"],
+    likedBy: "ofirpeer7",
+    time: "לפני יום",
+  },
+  {
+    id: 2,
+    user: "interview.playbook",
+    music: "Interview prep • Mock #3",
+    avatar:
+      "https://images.unsplash.com/photo-1544725176-7c40e5a2c9f9?w=120",
+    images: [
+      "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=1200",
+    ],
+    caption:
+      "3 שאלות שחוזרות כמעט בכל ראיון: ספר/י על עצמך, פרויקט מאתגר, ומה למדת.",
+    tags: ["#ראיון", "#הכנה", "#קריירה"],
+    likedBy: "neta_dev",
+    time: "לפני 3 ימים",
   },
 ];
 
@@ -136,8 +151,8 @@ export default function InstagramFeed({
             }}
           >
             <div className="sheet-handle" />
-            <h3>Comments</h3>
-            <p>No comments yet.</p>
+            <h3>תגובות</h3>
+            <p>אין תגובות עדיין.</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -245,7 +260,7 @@ function Post({ post, onOpenComments }) {
 
       {/* Meta */}
       <div className="ig-likes">
-        Liked by <strong>{post.likedBy}</strong> and others
+        אהבו <strong>{post.likedBy}</strong> ועוד אחרים
       </div>
 
       <div className="ig-caption">

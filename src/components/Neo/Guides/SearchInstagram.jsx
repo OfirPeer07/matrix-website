@@ -3,51 +3,51 @@ import "./SearchInstagram.css";
 
 const GRID_ITEMS = [
   {
-    src: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600",
+    src: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600",
     views: "283K",
   },
   {
-    src: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600",
+    src: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=600",
     views: "1.9M",
   },
   {
-    src: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600",
+    src: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=600",
     views: "259K",
   },
   {
-    src: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=600",
+    src: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=600",
     views: "814K",
   },
   {
-    src: "https://images.unsplash.com/photo-1507146426996-ef05306b995a?w=600",
+    src: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=600",
     views: "95.2K",
   },
   {
-    src: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600",
+    src: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600",
     views: "344K",
   },
   {
-    src: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600",
+    src: "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=600",
     views: "512K",
   },
   {
-    src: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=600",
+    src: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600",
     views: "120K",
   },
   {
-    src: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600",
+    src: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=600",
     views: "1.2M",
   },
   {
-    src: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=600",
+    src: "https://images.unsplash.com/photo-1545239351-ef35f43d514b?w=600",
     views: "78.1K",
   },
   {
-    src: "https://images.unsplash.com/photo-1507146426996-ef05306b995a?w=600",
+    src: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600",
     views: "452K",
   },
   {
-    src: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600",
+    src: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600",
     views: "210K",
   },
 ];
@@ -57,7 +57,7 @@ export default function SearchInstagram() {
     <div className="ig-search-root">
       <div className="ig-search-bar">
         <span className="search-icon" aria-hidden />
-        <span className="search-placeholder">Search</span>
+        <span className="search-placeholder">חיפוש מדריכים</span>
       </div>
 
       <div className="ig-search-grid">
