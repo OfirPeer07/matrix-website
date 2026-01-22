@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/matrix-website/static/css/main.a261573a.css",
-    "main.js": "/matrix-website/static/js/main.d307c60e.js",
+    "main.css": "/matrix-website/static/css/main.46c50f67.css",
+    "main.js": "/matrix-website/static/js/main.91d0a689.js",
     "static/css/837.abd0d168.chunk.css": "/matrix-website/static/css/837.abd0d168.chunk.css",
     "static/js/837.a871d11f.chunk.js": "/matrix-website/static/js/837.a871d11f.chunk.js",
     "static/css/715.ab8d891b.chunk.css": "/matrix-website/static/css/715.ab8d891b.chunk.css",
@@ -35,8 +35,8 @@
     "static/media/connectors.jpg": "/matrix-website/static/media/connectors.d53efb5bef7ae25cfe9a.jpg",
     "static/media/logo.png": "/matrix-website/static/media/logo.a52c0598cba3dddee214.png",
     "index.html": "/matrix-website/index.html",
-    "main.a261573a.css.map": "/matrix-website/static/css/main.a261573a.css.map",
-    "main.d307c60e.js.map": "/matrix-website/static/js/main.d307c60e.js.map",
+    "main.46c50f67.css.map": "/matrix-website/static/css/main.46c50f67.css.map",
+    "main.91d0a689.js.map": "/matrix-website/static/js/main.91d0a689.js.map",
     "837.abd0d168.chunk.css.map": "/matrix-website/static/css/837.abd0d168.chunk.css.map",
     "837.a871d11f.chunk.js.map": "/matrix-website/static/js/837.a871d11f.chunk.js.map",
     "715.ab8d891b.chunk.css.map": "/matrix-website/static/css/715.ab8d891b.chunk.css.map",
@@ -44,7 +44,7 @@
     "453.f75aa5fc.chunk.js.map": "/matrix-website/static/js/453.f75aa5fc.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.a261573a.css",
-    "static/js/main.d307c60e.js"
+    "static/css/main.46c50f67.css",
+    "static/js/main.91d0a689.js"
   ]
 }
