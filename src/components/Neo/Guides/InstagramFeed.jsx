@@ -14,7 +14,7 @@ const STORIES = [
   },
   {
     id: 1,
-    user: "cv_tips",
+    user: "cv.tips.il",
     avatar:
       "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=120",
   },
@@ -36,7 +36,7 @@ const POSTS = [
   {
     id: 1,
     user: "junior.guides",
-    music: "Soft skills • טיפ שבועי",
+    music: "טיפ שבועי • Soft skills",
     avatar:
       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120",
     images: [
@@ -62,6 +62,21 @@ const POSTS = [
     tags: ["#ראיון", "#הכנה", "#קריירה"],
     likedBy: "neta_dev",
     time: "לפני 3 ימים",
+  },
+  {
+    id: 3,
+    user: "portfolio.lab",
+    music: "מדריך מעשי • CV ב‑30 דק׳",
+    avatar:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120",
+    images: [
+      "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=1200",
+    ],
+    caption:
+      "CV של עמוד אחד: תפקיד מבוקש, פרויקט מרכזי, וטכנולוגיות ששלטת בהן.",
+    tags: ["#קורות_חיים", "#חיפוש_עבודה", "#הייטק"],
+    likedBy: "roni_ui",
+    time: "לפני שבוע",
   },
 ];
 
