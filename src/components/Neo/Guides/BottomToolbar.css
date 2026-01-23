@@ -47,24 +47,24 @@
 }
 
 .ig-bottom-nav svg {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   display: block;
   fill: currentColor;
 }
 
-.ig-bottom-nav .reels svg {
-  width: 26px;
-  height: 26px;
+.ig-bottom-nav .dm svg {
+  transform: rotate(8deg);
+  transform-origin: 50% 50%;
 }
 
 .ig-bottom-nav .dm::after {
   content: "";
   position: absolute;
-  right: 4px;
-  top: 3px;
-  width: 6px;
-  height: 6px;
+  right: 1px;
+  top: 26px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: #ff3b5c;
 }

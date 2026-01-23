@@ -56,6 +56,19 @@ const REELS = [
     audio: "Junior Guides - Keep going",
     videoUrl: "/vids/waiting-for-you.mp4",
   },
+  {
+    id: 5,
+    user: "junior.day1",
+    avatar:
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120",
+    caption: "First day at work: introduce yourself early, ask for a 30/60/90 plan, and take notes.",
+    likes: "54.9K",
+    comments: "1,532",
+    reposts: "902",
+    shares: "11.3K",
+    audio: "Junior Guides - First day at work",
+    videoUrl: "/vids/first-day-at-work.mp4",
+  },
 ];
 
 const FRIENDS = [
