@@ -3,10 +3,10 @@ import "./InstagramProfile.css";
 
 const PROFILE = {
   user: "junior.guides.il",
-  name: "מדריכי ג׳וניורים",
+  name: "Junior Guides",
   bio: [
-    "צעדים פרקטיים לכניסה להייטק",
-    "CV • פורטפוליו • ראיונות • נטוורקינג",
+    "Your go-to place for junior career tips and real project ideas.",
+    "CV | Portfolio | Interview prep | Networking",
   ],
   avatar:
     "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=160",
@@ -18,28 +18,28 @@ const PROFILE = {
 };
 
 const HIGHLIGHTS = [
-  { id: "new", label: "חדש", new: true },
+  { id: "new", label: "New", new: true },
   {
     id: "cv",
-    label: "קורות חיים",
+    label: "CV tips",
     image:
       "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=120",
   },
   {
     id: "portfolio",
-    label: "פורטפוליו",
+    label: "Portfolio",
     image:
       "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=120",
   },
   {
     id: "networking",
-    label: "נטוורקינג",
+    label: "Networking",
     image:
       "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=120",
   },
   {
     id: "interviews",
-    label: "ראיונות",
+    label: "Interviews",
     image:
       "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=120",
   },
@@ -71,20 +71,22 @@ export default function InstagramProfile() {
 
         <div className="top-center">
           <svg className="lock-icon" viewBox="0 0 24 24" aria-hidden>
-            <path d="M7 10V8a5 5 0 0 1 10 0v2" />
-            <rect x="5" y="10" width="14" height="10" rx="2" />
+            <rect x="5" y="11" width="14" height="10" rx="2" />
+            <path d="M8 11V8a4 4 0 1 1 8 0v3" />
           </svg>
           <span className="handle">{PROFILE.user}</span>
           <svg className="chevron-icon" viewBox="0 0 24 24" aria-hidden>
-            <path d="M6 9l6 6 6-6" />
+            <path d="M7 10l5 5 5-5" />
           </svg>
+          <span className="handle-dot" aria-hidden />
         </div>
 
         <div className="top-actions">
           <button className="top-icon" aria-label="Threads">
             <svg viewBox="0 0 24 24">
-              <path d="M7 8c2-2 6-2 8 0 2 2 2 6 0 8s-6 2-8 0" />
-              <path d="M9 10c1-1 5-1 6 0 1 1 1 3 0 4s-5 1-6 0" />
+              <circle cx="12" cy="12" r="9" />
+              <path d="M9.1 12.2c0-2.3 1.8-3.7 4.4-3.7 2.7 0 4.5 1.5 4.5 3.9 0 2.6-2 4.2-4.9 4.2-2.9 0-4.4-1.5-4.5-3.6" />
+              <path d="M10.3 12.1c.8 1.1 2.2 1.8 3.9 1.8" />
             </svg>
           </button>
           <button className="top-icon" aria-label="Menu">
@@ -99,15 +101,15 @@ export default function InstagramProfile() {
         <div className="avatar-wrap">
           <img src={PROFILE.avatar} className="profile-avatar" alt="" />
           <span className="avatar-plus">+</span>
-          <div className="share-pill">שתף/י הישג חדש...</div>
+          <div className="share-pill">Share your profile...</div>
         </div>
 
         <div className="profile-meta">
           <div className="profile-name">{PROFILE.name}</div>
           <div className="profile-stats">
-            <Stat label="פוסטים" value={PROFILE.stats.posts} />
-            <Stat label="עוקבים" value={PROFILE.stats.followers} />
-            <Stat label="עוקב/ת" value={PROFILE.stats.following} />
+            <Stat label="Posts" value={PROFILE.stats.posts} />
+            <Stat label="Followers" value={PROFILE.stats.followers} />
+            <Stat label="Following" value={PROFILE.stats.following} />
           </div>
         </div>
       </section>
@@ -119,8 +121,8 @@ export default function InstagramProfile() {
       </section>
 
       <section className="ig-profile-actions">
-        <button>עריכת פרופיל</button>
-        <button>שיתוף פרופיל</button>
+        <button>Edit Profile</button>
+        <button>Share Profile</button>
       </section>
 
       <section className="ig-profile-highlights">

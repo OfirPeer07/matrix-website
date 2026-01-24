@@ -7,7 +7,7 @@ import "./InstagramFeed.css";
 const STORIES = [
   {
     id: "own",
-    user: "הסטורי שלך",
+    user: "Your story",
     avatar:
       "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=120",
     own: true,
@@ -36,47 +36,47 @@ const POSTS = [
   {
     id: 1,
     user: "junior.guides",
-    music: "טיפ שבועי • Soft skills",
+    music: "Junior Guides - Soft skills",
     avatar:
       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120",
     images: [
       "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200",
     ],
     caption:
-      "כדי להיכנס להייטק: בנו פרויקט אחד שמדגים ערך אמיתי, לא רק תרגילים.",
-    tags: ["#ג׳וניור", "#פורטפוליו", "#פרויקט"],
+      "Soft skills that help you stand out: show ownership, ask clear questions, and communicate progress.",
+    tags: ["#softskills", "#portfolio", "#interviews"],
     likedBy: "ofirpeer7",
-    time: "לפני יום",
+    time: "2 hours ago",
   },
   {
     id: 2,
     user: "interview.playbook",
-    music: "Interview prep • Mock #3",
+    music: "Interview prep - Mock #3",
     avatar:
       "https://images.unsplash.com/photo-1544725176-7c40e5a2c9f9?w=120",
     images: [
       "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=1200",
     ],
     caption:
-      "3 שאלות שחוזרות כמעט בכל ראיון: ספר/י על עצמך, פרויקט מאתגר, ומה למדת.",
-    tags: ["#ראיון", "#הכנה", "#קריירה"],
+      "3 quick interview prep tips: clarify expectations, practice out loud, and review your highlights.",
+    tags: ["#interviews", "#tips", "#preparation"],
     likedBy: "neta_dev",
-    time: "לפני 3 ימים",
+    time: "3 hours ago",
   },
   {
     id: 3,
     user: "portfolio.lab",
-    music: "מדריך מעשי • CV ב‑30 דק׳",
+    music: "Portfolio Lab - CV in 30 minutes",
     avatar:
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120",
     images: [
       "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=1200",
     ],
     caption:
-      "CV של עמוד אחד: תפקיד מבוקש, פרויקט מרכזי, וטכנולוגיות ששלטת בהן.",
-    tags: ["#קורות_חיים", "#חיפוש_עבודה", "#הייטק"],
+      "A one-page CV in 30 minutes: role, flagship project, and key technologies.",
+    tags: ["#cv", "#jobsearch", "#career"],
     likedBy: "roni_ui",
-    time: "לפני שבוע",
+    time: "1 hour ago",
   },
 ];
 
@@ -166,8 +166,8 @@ export default function InstagramFeed({
             }}
           >
             <div className="sheet-handle" />
-            <h3>תגובות</h3>
-            <p>אין תגובות עדיין.</p>
+            <h3>Comments</h3>
+            <p>Be the first to comment.</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -275,7 +275,7 @@ function Post({ post, onOpenComments }) {
 
       {/* Meta */}
       <div className="ig-likes">
-        אהבו <strong>{post.likedBy}</strong> ועוד אחרים
+        Liked by <strong>{post.likedBy}</strong> and others
       </div>
 
       <div className="ig-caption">
