@@ -276,16 +276,17 @@ const MatrixBar = forwardRef(function MatrixBar({ mode = 'both' }, ref) {
 
   // Build order (logo במרכז)
   let items = [];
+  const withKey = (node, key) => React.cloneElement(node, { key });
   if (mode === 'neo') {
-    if (showNeo) items.push(renderNeo());
-    if (showLogo) items.push(renderLogo());
+    if (showNeo) items.push(withKey(renderNeo(), 'neo'));
+    if (showLogo) items.push(withKey(renderLogo(), 'logo'));
   } else if (mode === 'agent-smith') {
-    if (showSmith) items.push(renderSmith());
-    if (showLogo) items.push(renderLogo());
+    if (showSmith) items.push(withKey(renderSmith(), 'smith'));
+    if (showLogo) items.push(withKey(renderLogo(), 'logo'));
   } else {
-    if (showNeo) items.push(renderNeo());
-    if (showLogo) items.push(renderLogo());
-    if (showSmith) items.push(renderSmith());
+    if (showNeo) items.push(withKey(renderNeo(), 'neo'));
+    if (showLogo) items.push(withKey(renderLogo(), 'logo'));
+    if (showSmith) items.push(withKey(renderSmith(), 'smith'));
   }
 
   return (

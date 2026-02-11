@@ -1,209 +1,910 @@
-/* -------------------------------------------------
-   NZXT CAM THEME – Clean, Modern, Minimal Tech UI
-   + FIXED toolbar text clipping & alignment
---------------------------------------------------*/
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Share+Tech+Mono&family=Sora:wght@300;500;700&display=swap");
 
-:root {
-  --bg: #0d1117;           /* Matte CAM dark */
-  --panel: #11161c;
-  --panel-light: #151b22;
-  --line: #202b37;
-  --accent: #6f7cff;       /* NZXT purple-blue */
-  --accent-hover: #8490ff;
-  --accent-soft: rgba(123, 138, 255, 0.15);
-  --text: #e4e7eb;
-  --text-dim: #a9b4c0;
-  --danger: #ff496a;
+.build-no-scrollbar,
+html.build-no-scrollbar,
+body.build-no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-/* -------------------------------------------------
-   ROOT BACKGROUND
---------------------------------------------------*/
-.pcv-root {
-  background: var(--bg);
-  font-family: "Inter", ui-sans-serif, system-ui, -apple-system;
-  color: var(--text);
+html.build-no-scrollbar::-webkit-scrollbar,
+body.build-no-scrollbar::-webkit-scrollbar,
+.build-no-scrollbar::-webkit-scrollbar,
+.build-no-scrollbar *::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.build-no-scrollbar * {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.build-page {
+  --bg-0: #0d131a;
+  --bg-1: #101824;
+  --bg-2: #0b1118;
+  --neon: #9ad1ff;
+  --teal: #9ad1ff;
+  --amber: #f0b45f;
+  --panel: rgba(12, 16, 22, 0.86);
+  --panel-soft: rgba(10, 14, 20, 0.7);
+  --border: rgba(255, 255, 255, 0.08);
+  --text: #eef4ff;
+  --muted: #a1adba;
+  --shadow: 0 18px 38px rgba(2, 6, 12, 0.55);
+
   min-height: 100vh;
-}
-
-/* -------------------------------------------------
-   TOP TOOLBAR — NZXT Matte Glass
-   + FIX: true vertical centering
-   + FIX: height forces text not to clip
---------------------------------------------------*/
-.pcv-toolbar {
-  position: sticky;
-  top: 0;
-  z-index: 30;
-
-  display: flex;
-  align-items: center !important;   /* FIX */
-  gap: 14px;
-
-  padding: 14px 20px;
-  min-height: 60px;                 /* FIX: ensures step text won't be cut */
-
-  background: rgba(17, 22, 28, 0.88);
-  border-bottom: 1px solid var(--line);
-  backdrop-filter: blur(10px);
-
-  box-shadow:
-      0 4px 10px rgba(0,0,0,0.22),
-      inset 0 -1px 0 rgba(255,255,255,0.03);
-}
-
-/* -------------------------------------------------
-   BUTTONS — CAM Style
---------------------------------------------------*/
-.pcv-btn {
-  appearance: none;
-  border: none;
-  border-radius: 10px;
-
-  height: 40px;                  /* HEIGHT = step height = alignment fix */
-  padding: 0 18px;
-  font-size: 14px;
-
-  background: var(--panel-light);
+  padding: 48px clamp(18px, 4vw, 60px) 70px;
   color: var(--text);
-  cursor: pointer;
-
-  display: flex;                 /* FIX: consistent alignment inside button */
-  align-items: center;
-  justify-content: center;
-
-  transition: background .2s ease, transform .12s ease, box-shadow .18s ease;
-}
-
-.pcv-btn:hover {
-  background: #1a212c;
-}
-
-/* Install Button */
-.pcv-primary {
-  background: var(--accent);
-  color: white;
-  box-shadow: 0 0 0 0 rgba(111,124,255,0.4);
-}
-
-.pcv-primary:hover {
-  background: var(--accent-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(111,124,255,0.35);
-}
-
-.pcv-primary:active {
-  transform: scale(0.97);
-}
-
-/* -------------------------------------------------
-   STEP + INSTALLED TEXT
-   + FIX: line-height, vertical alignment, height
---------------------------------------------------*/
-.pcv-step {
-  margin-left: auto;
-  white-space: nowrap;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text);
-  opacity: 0.9;
-
-  display: flex !important;        /* FIX */
-  align-items: center !important;  /* FIX */
-  height: 40px !important;         /* matches button height */
-  line-height: 1.5 !important;     /* FIX */
-  padding-top: 1px;                /* micro-adjust */
-}
-
-.pcv-installed {
-  white-space: nowrap;
-  color: var(--text-dim);
-  font-size: 13px;
-
-  display: flex;
-  align-items: center;
-  height: 40px;
-  line-height: 1.4;
-}
-
-/* -------------------------------------------------
-   3D CANVAS FRAME — CAM Minimal Card Style
---------------------------------------------------*/
-.pcv-canvas {
+  font-family: "Sora", sans-serif;
+  background:
+    radial-gradient(120% 120% at 80% 0%, rgba(124, 196, 255, 0.05), transparent 60%),
+    radial-gradient(120% 120% at 20% 20%, rgba(90, 167, 255, 0.04), transparent 55%),
+    linear-gradient(160deg, var(--bg-1), var(--bg-0) 70%, #080c11 100%);
   position: relative;
-  height: 720px;
-  width: calc(100% - 32px);
+  overflow: hidden;
+  isolation: isolate;
+}
 
-  margin: 20px auto;
-  border-radius: 18px;
+.build-page,
+.build-page * {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
 
+.build-page *::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.build-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+      90deg,
+      rgba(124, 196, 255, 0.05) 0,
+      rgba(124, 196, 255, 0.05) 1px,
+      transparent 1px,
+      transparent 140px
+    );
+  opacity: 0;
+  pointer-events: none;
+}
+
+.build-page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+      0deg,
+      rgba(124, 196, 255, 0.04) 0,
+      rgba(124, 196, 255, 0.04) 1px,
+      transparent 1px,
+      transparent 180px
+    );
+  opacity: 0;
+  pointer-events: none;
+}
+
+.build-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.build-brand {
+  font-family: "Orbitron", sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: clamp(1.3rem, 2.2vw, 2rem);
+}
+
+.build-tagline {
+  color: var(--muted);
+  font-size: 0.9rem;
+  max-width: 460px;
+  text-align: right;
+}
+
+.build-page.is-minimal {
+  padding-top: 28px;
+}
+
+.build-page.is-minimal .build-grid {
+  grid-template-columns: 1fr;
+}
+
+.build-page.is-minimal .stage-title span {
+  display: none;
+}
+
+.build-page.is-minimal .build-stage {
+  min-height: calc(100vh - 160px);
+}
+
+.build-page.is-minimal .build-canvas {
+  height: min(88vh, 980px);
+}
+
+.build-page.is-focus .build-grid {
+  grid-template-columns: 1fr;
+}
+
+.build-page.is-focus .parts-tray {
+  display: none;
+}
+
+.build-page.is-focus .build-status {
+  display: none;
+}
+
+.build-page.is-focus .build-topbar {
+  margin-bottom: 18px;
+}
+
+.build-page.is-focus .build-stage {
+  min-height: calc(100vh - 220px);
+}
+
+.build-page.is-focus .build-canvas {
+  height: min(84vh, 920px);
+}
+
+.build-page.is-minimal.is-focus .build-stage {
+  min-height: calc(100vh - 160px);
+}
+
+.build-page.is-minimal.is-focus .build-canvas {
+  height: min(88vh, 980px);
+}
+
+.panel-toggle {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 1000;
+  border: 1px solid rgba(124, 196, 255, 0.5);
+  background: rgba(8, 12, 18, 0.85);
+  color: var(--text);
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-family: "Share Tech Mono", monospace;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(2, 6, 12, 0.45);
+}
+
+.panel-toggle:hover {
+  box-shadow: 0 14px 26px rgba(2, 6, 12, 0.55);
+}
+
+.panel-toggle.console-dock-toggle {
+  top: 18px;
+  bottom: auto;
+  right: 24px;
+}
+
+.panel-toggle.console-dock-toggle.is-open {
+  border-color: rgba(124, 196, 255, 0.8);
+  background: rgba(124, 196, 255, 0.18);
+}
+
+.build-hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 22px;
+  position: relative;
+  z-index: 1;
+  animation: none;
+}
+
+.build-kicker {
+  font-family: "Share Tech Mono", monospace;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--neon);
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+
+.build-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(2.2rem, 4vw, 3.6rem);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  text-shadow: 0 0 18px rgba(124, 196, 255, 0.2);
+}
+
+.build-subtitle {
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 620px;
+}
+
+.build-status {
   background: var(--panel);
-  border: 1px solid var(--line);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+}
 
-  box-shadow:
-      0 12px 32px rgba(0,0,0,0.35),
-      inset 0 0 30px rgba(0,0,0,0.3);
+.status-badge {
+  font-family: "Share Tech Mono", monospace;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  color: var(--neon);
+  margin-bottom: 8px;
+}
+
+.status-meta {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+}
+
+.status-track {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 99px;
   overflow: hidden;
 }
 
-.pcv-canvas canvas {
-  background: var(--panel) !important;
+.status-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--neon), var(--teal));
+  box-shadow: 0 0 14px rgba(124, 196, 255, 0.25);
+  transition: width 0.4s ease;
 }
 
-/* -------------------------------------------------
-   ERROR BOX — CAM Red Alert
---------------------------------------------------*/
-.pcv-error {
-  position: absolute;
-  top: 16px;
-  left: 16px;
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
 
-  max-width: 480px;
-  padding: 12px 16px;
+.status-pill {
+  border: 1px solid var(--border);
   border-radius: 12px;
-
-  background: rgba(255, 73, 106, 0.12);
-  color: #ffc4cf;
-  border: 1px solid rgba(255, 73, 106, 0.3);
-
-  font-size: 13px;
-  box-shadow: 0 0 20px rgba(255,73,106,0.2);
+  padding: 8px 10px;
+  font-family: "Share Tech Mono", monospace;
+  font-size: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  background: rgba(10, 14, 20, 0.7);
 }
 
-/* -------------------------------------------------
-   LOADER — CAM Ring Spinner
---------------------------------------------------*/
-.pcv-loader-card {
+.status-pill strong {
+  font-weight: 600;
+}
+
+.status-pill.ok {
+  color: var(--neon);
+  border-color: rgba(124, 196, 255, 0.55);
+}
+
+.status-pill.warn {
+  color: var(--amber);
+  border-color: rgba(249, 199, 79, 0.45);
+}
+
+.build-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.build-stage {
+  background: rgba(12, 16, 22, 0.7);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(8px);
+  min-height: 72vh;
+}
+
+.build-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: none;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.stage-toolbar {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(10, 14, 20, 0.65);
+  margin-bottom: 12px;
+}
 
-  padding: 12px 16px;
-  border-radius: 12px;
+.stage-title h2 {
+  font-family: "Orbitron", sans-serif;
+  font-size: 1.2rem;
+  margin-bottom: 2px;
+}
 
-  background: var(--panel-light);
-  border: 1px solid rgba(255,255,255,0.05);
+.stage-title span {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
 
+.stage-controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.mode-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 12, 18, 0.7);
+}
+
+.mode-btn {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-family: "Share Tech Mono", monospace;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.mode-btn.is-active {
   color: var(--text);
-  font-size: 13px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  background: rgba(154, 209, 255, 0.18);
 }
 
-.pcv-spinner {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  border: 3px solid rgba(255,255,255,0.18);
-  border-top-color: var(--accent);
-  animation: cam-spin 0.8s linear infinite;
+.mode-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
-@keyframes cam-spin {
-  to { transform: rotate(360deg); }
+.build-canvas {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #0b0f15;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  height: clamp(520px, 74vh, 860px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
 }
 
-/* Reduce motion */
+
+.build-canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  cursor: grab;
+  touch-action: none;
+  position: relative;
+  z-index: 0;
+}
+
+.build-canvas canvas:active {
+  cursor: grabbing;
+}
+
+.build-canvas.is-fullscreen,
+.build-canvas:fullscreen {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  border-radius: 0;
+  z-index: 9999;
+  background: #0a0e14;
+}
+
+.build-canvas.is-fullscreen .stage-hint,
+.build-canvas:fullscreen .stage-hint {
+  left: 24px;
+  right: 24px;
+  bottom: 24px;
+  font-size: 0.8rem;
+}
+
+.stage-hint {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(8, 12, 18, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--muted);
+  font-family: "Share Tech Mono", monospace;
+  font-size: 0.72rem;
+  z-index: 2;
+}
+
+.parts-tray {
+  position: absolute;
+  right: 16px;
+  top: 76px;
+  bottom: 16px;
+  width: min(320px, 92%);
+  z-index: 5;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(11, 15, 21, 0.92);
+  box-shadow: 0 12px 24px rgba(2, 6, 12, 0.45);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+  overflow: hidden;
+}
+
+.tray-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 10px;
+}
+
+.tray-header h2 {
+  font-family: "Orbitron", sans-serif;
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+}
+
+.tray-header p {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.tray-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tray-progress {
+  display: grid;
+  gap: 8px;
+}
+
+.tray-progress-track {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.tray-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, rgba(154, 209, 255, 0.8), rgba(154, 209, 255, 0.4));
+  box-shadow: 0 0 10px rgba(154, 209, 255, 0.35);
+  transition: width 0.4s ease;
+}
+
+.tray-progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-family: "Share Tech Mono", monospace;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.tray-progress-meta strong {
+  color: var(--neon);
+}
+
+.parts-scroll {
+  display: grid;
+  gap: 14px;
+  overflow-y: auto;
+  padding-right: 4px;
+  flex: 1;
+  max-height: none;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.parts-scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.parts-scroll::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 999px;
+}
+
+.part-item {
+  display: grid;
+  gap: 6px;
+}
+
+.part-button {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(8, 12, 18, 0.7);
+  color: var(--text);
+  font-family: "Share Tech Mono", monospace;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+
+.part-button:hover {
+  border-color: rgba(154, 209, 255, 0.5);
+  background: rgba(12, 18, 26, 0.85);
+  transform: translateY(-1px);
+}
+
+.part-item.is-installed .part-button {
+  border-color: rgba(154, 209, 255, 0.6);
+  background: rgba(12, 18, 26, 0.9);
+}
+
+.part-item.is-active .part-button {
+  border-color: rgba(154, 209, 255, 0.8);
+  box-shadow: 0 0 0 1px rgba(154, 209, 255, 0.2);
+}
+
+.part-item.is-next .part-button {
+  border-color: rgba(240, 180, 95, 0.7);
+}
+
+.part-item.is-blocked .part-button {
+  border-color: rgba(255, 107, 107, 0.55);
+  color: rgba(255, 220, 220, 0.9);
+}
+
+.part-next {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(240, 180, 95, 0.12);
+  border: 1px solid rgba(240, 180, 95, 0.3);
+  color: var(--amber);
+  font-size: 0.64rem;
+  font-family: "Share Tech Mono", monospace;
+  text-transform: uppercase;
+}
+
+.part-item.is-dragging .part-button {
+  border-color: rgba(154, 209, 255, 0.9);
+}
+
+.part-label {
+  font-size: 0.82rem;
+  letter-spacing: 0.3px;
+}
+
+.part-card {
+  background: linear-gradient(135deg, rgba(12, 16, 22, 0.96), rgba(8, 12, 18, 0.96));
+  border: 1px solid rgba(124, 196, 255, 0.14);
+  border-radius: 16px;
+  padding: 10px;
+  display: grid;
+  gap: 12px;
+  animation: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.part-card:hover {
+  border-color: rgba(124, 196, 255, 0.45);
+  box-shadow: 0 14px 30px rgba(2, 6, 12, 0.5);
+  transform: translateY(-2px);
+}
+
+.part-card.is-installed {
+  border-color: rgba(124, 196, 255, 0.6);
+  box-shadow: 0 0 16px rgba(124, 196, 255, 0.18);
+}
+
+.part-card.is-dragging {
+  border-color: rgba(106, 215, 255, 0.7);
+  box-shadow: 0 0 24px rgba(106, 215, 255, 0.25);
+  transform: translateY(-4px);
+}
+
+.part-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.part-head h3 {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.95rem;
+  margin-bottom: 6px;
+}
+
+.part-head p {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.part-blocked {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 0.7rem;
+  color: var(--amber);
+  font-family: "Share Tech Mono", monospace;
+}
+
+.part-state {
+  font-family: "Share Tech Mono", monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--muted);
+}
+
+.part-state.on {
+  color: var(--neon);
+  border-color: rgba(154, 209, 255, 0.55);
+  background: rgba(154, 209, 255, 0.12);
+}
+
+.part-options {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.option-btn {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: var(--muted);
+  background: transparent;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-family: "Share Tech Mono", monospace;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.option-btn:hover {
+  border-color: rgba(124, 196, 255, 0.45);
+  color: var(--text);
+}
+
+.option-btn:focus-visible {
+  outline: 2px solid rgba(124, 196, 255, 0.4);
+  outline-offset: 2px;
+}
+
+.option-btn.active {
+  border-color: var(--neon);
+  color: var(--neon);
+  background: rgba(124, 196, 255, 0.12);
+  box-shadow: 0 0 10px rgba(124, 196, 255, 0.2);
+}
+
+.part-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.build-btn {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(12, 16, 22, 0.7);
+  color: var(--text);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 500;
+  font-family: "Share Tech Mono", monospace;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  box-shadow: none;
+}
+
+.build-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.build-slider {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(10, 14, 20, 0.55);
+  color: var(--muted);
+  font-family: "Share Tech Mono", monospace;
+  font-size: 0.7rem;
+}
+
+.build-slider input[type="range"] {
+  width: 140px;
+}
+
+.build-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(154, 209, 255, 0.5);
+  background: rgba(18, 24, 34, 0.75);
+}
+
+.build-btn:focus-visible {
+  outline: 2px solid rgba(124, 196, 255, 0.5);
+  outline-offset: 2px;
+}
+
+.build-btn.ghost {
+  background: rgba(10, 14, 20, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--muted);
+}
+
+.build-btn[data-active="true"] {
+  border-color: rgba(154, 209, 255, 0.6);
+  background: rgba(154, 209, 255, 0.16);
+  color: var(--text);
+}
+
+.build-btn.ghost[data-active="true"] {
+  color: var(--text);
+  background: rgba(154, 209, 255, 0.16);
+}
+
+.panel-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding-top: 16px;
+}
+
+.build-log h4 {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+}
+
+.build-log p {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.build-log ul {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  font-family: "Share Tech Mono", monospace;
+  font-size: 0.74rem;
+  color: var(--muted);
+}
+
+.build-log li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: rgba(8, 12, 18, 0.7);
+}
+
+.build-log li strong {
+  color: var(--neon);
+  font-weight: 600;
+}
+
+.build-loader {
+  background: rgba(8, 12, 18, 0.85);
+  border: 1px solid rgba(124, 196, 255, 0.35);
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-family: "Share Tech Mono", monospace;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--neon);
+}
+
+@media (max-width: 1100px) {
+  .build-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .build-stage,
+  .parts-tray {
+    order: initial;
+  }
+}
+
+@media (max-width: 980px) {
+  .build-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .build-status {
+    width: 100%;
+  }
+
+  .stage-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 760px) {
+  .build-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .build-tagline {
+    text-align: left;
+  }
+
+  .build-canvas {
+    height: 440px;
+  }
+
+  .stage-hint {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tray-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .pcv-spinner { animation: none; }
-  .pcv-btn { transition: none; }
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
 }
