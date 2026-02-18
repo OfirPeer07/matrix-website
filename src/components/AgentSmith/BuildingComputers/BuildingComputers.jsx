@@ -1,23 +1,21 @@
 import React, { Suspense, useCallback, useMemo, useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { OrbitControls, Html, useGLTF, useProgress, ContactShadows } from "@react-three/drei";
+import { OrbitControls, Html, ContactShadows } from "@react-three/drei";
 import * as THREE from "three";
 import "./BuildingComputers.css";
+import {
+  O11CaseModel,
+  MotherboardPart,
+  CpuPart,
+  RamPart,
+  GpuPart,
+  PsuPart,
+  StoragePart,
+  FanPart,
+} from "./PCParts";
 
-const ASSET_ROOT = process.env.PUBLIC_URL || "";
 
-const MODEL_PATHS = {
-  case: `${ASSET_ROOT}/models/pc.glb`,
-  gpu: `${ASSET_ROOT}/pc_parts/gpu_large.glb`,
-  psu: `${ASSET_ROOT}/pc_parts/psu_ATX.glb`,
-  ssd: `${ASSET_ROOT}/pc_parts/ssd_2_5in.glb`,
-  hdd: `${ASSET_ROOT}/pc_parts/hdd_3_5in.glb`,
-  fan: `${ASSET_ROOT}/pc_parts/fan_120mm.glb`,
-  panel: `${ASSET_ROOT}/pc_parts/side_panel_glass.glb`,
-  mbATX: `${ASSET_ROOT}/pc_parts/motherboard_ATX.glb`,
-  mbMATX: `${ASSET_ROOT}/pc_parts/motherboard_mATX.glb`,
-  mbITX: `${ASSET_ROOT}/pc_parts/motherboard_ITX.glb`,
-};
+// All models are now procedural — no GLB files needed.
 
 const REDUCE_MOTION = false;
 
@@ -38,138 +36,133 @@ const PARTS = [
   {
     id: "motherboard",
     label: "Motherboard",
+    icon: "🖥️",
     slot: "motherboard",
     description: "Backbone for every connection and bus lane.",
     options: [
-      { id: "mb-atx", label: "ATX", model: MODEL_PATHS.mbATX },
-      { id: "mb-matx", label: "mATX", model: MODEL_PATHS.mbMATX },
-      { id: "mb-itx", label: "ITX", model: MODEL_PATHS.mbITX },
+      { id: "mb-atx", label: "ATX" },
+      { id: "mb-matx", label: "mATX" },
+      { id: "mb-itx", label: "ITX" },
     ],
     defaultOption: "mb-atx",
-    fit: 0.96,
   },
   {
     id: "cpu",
     label: "CPU",
+    icon: "⚡",
     slot: "cpu",
-    description: "Compute core with high frequency control.",
-    type: "custom",
+    description: "Compute core with high-frequency control.",
   },
   {
     id: "ram",
     label: "RAM Kit",
+    icon: "💾",
     slot: "ram",
-    description: "Low latency memory stack.",
-    type: "custom",
+    description: "Low-latency memory stack.",
+    options: [
+      { id: "ddr5-32", label: "DDR5 32GB" },
+      { id: "ddr5-64", label: "DDR5 64GB" },
+    ],
+    defaultOption: "ddr5-32",
   },
   {
     id: "psu",
     label: "Power Supply",
+    icon: "🔋",
     slot: "psu",
-    description: "Stable rails for every component.",
-    model: MODEL_PATHS.psu,
-    fit: 0.94,
+    description: "Stable power rails for every component.",
   },
   {
     id: "storage",
     label: "Storage",
+    icon: "💿",
     slot: "storage",
     description: "Primary system drive bay.",
     options: [
-      { id: "ssd", label: "SSD 2.5in", model: MODEL_PATHS.ssd },
-      { id: "hdd", label: "HDD 3.5in", model: MODEL_PATHS.hdd },
+      { id: "ssd", label: "NVMe SSD" },
+      { id: "hdd", label: "HDD 3.5in" },
     ],
     defaultOption: "ssd",
-    fit: 0.94,
   },
   {
     id: "gpu",
     label: "Graphics Card",
+    icon: "🎮",
     slot: "gpu",
     description: "Visual processing powerhouse.",
-    model: MODEL_PATHS.gpu,
-    fit: 0.92,
   },
   {
     id: "fan",
     label: "120mm Fan",
+    icon: "🌀",
     slot: "fan",
-    description: "Airflow and thermal control.",
-    model: MODEL_PATHS.fan,
-    fit: 0.95,
-  },
-  {
-    id: "panel",
-    label: "Glass Side Panel",
-    slot: "sidePanel",
-    description: "Seal and showcase the build.",
-    model: MODEL_PATHS.panel,
-    fit: 0.98,
+    description: "Airflow and thermal management.",
   },
 ];
 
+
 const SLOT_CONFIG = {
+  // Case W=3.2, H=3.6, D=1.8
+  // Motherboard: back wall (Z ~ -0.45)
   motherboard: {
-    position: [0.16, 0.02, -0.16],
-    rotation: [0, Math.PI / 2, 0],
-    size: [0.55, 0.35, 0.05],
-    guide: [0.6, 0.42, 0.06],
+    position: [0.0, 0.1, -0.42],
+    rotation: [0, 0, 0],
+    size: [0.48, 0.52, 0.04],
+    guide: [0.52, 0.56, 0.05],
   },
+  // CPU: upper-left of motherboard
   cpu: {
-    position: [0.07, 0.12, -0.05],
-    rotation: [0, Math.PI / 2, 0],
-    size: [0.12, 0.08, 0.08],
-    guide: [0.14, 0.1, 0.1],
+    position: [-0.08, 0.22, -0.40],
+    rotation: [0, 0, 0],
+    size: [0.12, 0.12, 0.06],
+    guide: [0.14, 0.14, 0.08],
   },
+  // RAM: right of CPU, vertical sticks
   ram: {
-    position: [0.2, 0.12, 0.02],
-    rotation: [0, Math.PI / 2, 0],
-    size: [0.22, 0.08, 0.08],
-    guide: [0.28, 0.12, 0.1],
+    position: [0.12, 0.20, -0.40],
+    rotation: [0, 0, 0],
+    size: [0.20, 0.12, 0.06],
+    guide: [0.24, 0.14, 0.08],
   },
+  // GPU: massive RTX 5090 size, sits in PCIe slot
   gpu: {
-    position: [0.26, -0.02, 0.1],
-    rotation: [0, Math.PI / 2, 0],
-    size: [0.42, 0.13, 0.1],
-    guide: [0.48, 0.16, 0.12],
+    position: [0.0, -0.08, -0.25],
+    rotation: [0, 0, 0],
+    size: [0.42, 0.14, 0.22],
+    guide: [0.46, 0.16, 0.26],
   },
+  // PSU: bottom compartment (below divider at Y=-0.26)
   psu: {
-    position: [-0.22, -0.24, 0.2],
-    rotation: [0, Math.PI / 2, 0],
-    size: [0.25, 0.16, 0.2],
-    guide: [0.3, 0.2, 0.24],
+    position: [0.06, -0.38, -0.1],
+    rotation: [0, 0, 0],
+    size: [0.28, 0.14, 0.28],
+    guide: [0.32, 0.17, 0.32],
   },
+  // Storage: bottom area, front-left
   storage: {
-    position: [-0.24, -0.04, -0.18],
-    rotation: [0, Math.PI / 2, 0],
-    size: [0.2, 0.09, 0.14],
-    guide: [0.24, 0.12, 0.18],
+    position: [-0.25, -0.32, 0.2],
+    rotation: [0, 0, 0],
+    size: [0.18, 0.1, 0.14],
+    guide: [0.22, 0.13, 0.18],
   },
+  // Fan: top of case, front area
   fan: {
-    position: [0.34, 0.22, 0.25],
+    position: [0.0, 0.44, 0.0],
     rotation: [Math.PI / 2, 0, 0],
-    size: [0.18, 0.18, 0.06],
-    guide: [0.22, 0.22, 0.08],
-  },
-  sidePanel: {
-    position: [0.52, 0.0, 0.0],
-    rotation: [0, Math.PI / 2, 0],
-    size: [0.05, 0.7, 0.9],
-    guide: [0.06, 0.76, 0.95],
+    size: [0.16, 0.16, 0.06],
+    guide: [0.20, 0.20, 0.08],
   },
 };
 
+
+
 const SLOT_SCALE = 1;
-const PART_FIT = 0.92;
-const CUSTOM_FIT = 0.5;
 const GUIDE_SCALE = 0.9;
-const CASE_TARGET_SIZE = 4.8;
-const CASE_FLAT_Y = 0.035;
-const CASE_FLAT_XZ = 2.4;
 const DRAG_SNAP_RATIO = 0.6;
 const DRAG_PLANE_RATIO = 0.04;
 const DRAG_ACTIVATION_DISTANCE = 0.08;
 const HAS_DOCUMENT = typeof document !== "undefined";
+
 
 const buildState = (value) =>
   PARTS.reduce((acc, part) => {
@@ -182,96 +175,19 @@ const defaultSelections = PARTS.reduce((acc, part) => {
   return acc;
 }, {});
 
-function cloneScene(scene) {
-  const cloned = scene.clone(true);
-  cloned.traverse((child) => {
-    if (child.isMesh) {
-      child.castShadow = true;
-      child.receiveShadow = true;
-      if (Array.isArray(child.material)) {
-        child.material = child.material.map((mat) => (mat ? mat.clone() : mat));
-      } else if (child.material) {
-        child.material = child.material.clone();
-      }
-    }
-  });
-  return cloned;
-}
+// ─── LOADER ──────────────────────────────────────────────────────────────────
 
-function getSceneSize(scene) {
-  const box = new THREE.Box3().setFromObject(scene);
-  const size = new THREE.Vector3();
-  box.getSize(size);
-  return size;
-}
-
-function computeFitScale(targetSize, partSize, fit = PART_FIT) {
-  const safeX = Math.max(partSize.x, 0.0001);
-  const safeY = Math.max(partSize.y, 0.0001);
-  const safeZ = Math.max(partSize.z, 0.0001);
-  const scale = Math.min(
-    targetSize.x / safeX,
-    targetSize.y / safeY,
-    targetSize.z / safeZ
+function Loader() {
+  return (
+    <Html center className="build-loader">
+      Loading…
+    </Html>
   );
-  return scale * fit;
 }
 
-function isLargeFlatMesh(child) {
-  if (!child?.isMesh) return false;
-  const box = new THREE.Box3().setFromObject(child);
-  const size = new THREE.Vector3();
-  box.getSize(size);
-  const maxDim = Math.max(size.x, size.y, size.z);
-  const minDim = Math.min(size.x, size.y, size.z);
-  const midDim = size.x + size.y + size.z - maxDim - minDim;
-  const isVeryFlat = minDim <= CASE_FLAT_Y || (maxDim > 0 && minDim / maxDim < 0.015);
-  const isLargePlane = maxDim >= CASE_FLAT_XZ && midDim >= CASE_FLAT_XZ * 0.6;
-  if (child.name && /plane|ground|floor|base/i.test(child.name)) return true;
-  return isVeryFlat && isLargePlane;
-}
-
-function useFittedScene(url, targetSize = 4.6, { ignoreLargeFlats = false } = {}) {
-  const { scene } = useGLTF(url);
-  const cloned = useMemo(() => cloneScene(scene), [scene]);
-
-  const fit = useMemo(() => {
-    scene.updateWorldMatrix(true, true);
-    const box = new THREE.Box3();
-    const tempBox = new THREE.Box3();
-    const size = new THREE.Vector3();
-    let hasMesh = false;
-
-    scene.traverse((child) => {
-      if (!child.isMesh) return;
-      if (ignoreLargeFlats && isLargeFlatMesh(child)) return;
-      tempBox.setFromObject(child);
-      tempBox.getSize(size);
-      if (!hasMesh) {
-        box.copy(tempBox);
-        hasMesh = true;
-      } else {
-        box.union(tempBox);
-      }
-    });
-
-    if (!hasMesh) {
-      box.setFromObject(scene);
-    }
-    const center = new THREE.Vector3();
-    box.getSize(size);
-    box.getCenter(center);
-    const maxDim = Math.max(size.x, size.y, size.z) || 1;
-    const scale = targetSize / maxDim;
-    const offset = center.multiplyScalar(-scale);
-    const scaledSize = size.multiplyScalar(scale);
-    return { scale, offset, size: scaledSize };
-  }, [scene, targetSize, ignoreLargeFlats]);
-
-  return { scene: cloned, ...fit };
-}
 
 function resolveSlot(slotId, caseSize, explodeFactor = 1) {
+
   const config = SLOT_CONFIG[slotId];
   const position = new THREE.Vector3(
     config.position[0] * caseSize.x,
@@ -451,240 +367,7 @@ function AnimatedTransform({
   );
 }
 
-function ModelPart({
-  url,
-  target,
-  staging,
-  installed,
-  floatSeed = 0,
-  glass = false,
-  fit = PART_FIT,
-  partId,
-  dragId,
-  dragState,
-  dragPlane,
-  onDragStart,
-  onDragMove,
-  onDragEnd,
-  onHoverSlot,
-  xray,
-  animate,
-}) {
-  const { scene } = useGLTF(url);
-  const cloned = useMemo(() => cloneScene(scene), [scene]);
-
-  const baseScale = useMemo(() => {
-    scene.updateWorldMatrix(true, true);
-    const size = getSceneSize(scene);
-    return computeFitScale(target.size, size, fit);
-  }, [scene, target.size.x, target.size.y, target.size.z, fit]);
-
-  useEffect(() => {
-    cloned.traverse((child) => {
-      if (!child.isMesh) return;
-      const mats = Array.isArray(child.material) ? child.material : [child.material];
-      mats.forEach((mat) => {
-        if (!mat) return;
-        mat.transparent = true;
-        const baseOpacity = installed ? 1 : 0.35;
-        const panelXray = xray && partId === "panel";
-        const panelOpacity = panelXray ? 0.06 : baseOpacity;
-        mat.opacity = glass ? (installed ? 0.55 : 0.18) : panelOpacity;
-        if (panelXray) {
-          mat.opacity = 0.06;
-        }
-        if ("emissive" in mat) {
-          mat.emissive = new THREE.Color(installed ? "#0d2236" : "#7cc4ff");
-          mat.emissiveIntensity = installed ? 0.28 : 0.6;
-        }
-        if (glass && mat.isMeshStandardMaterial) {
-          mat.metalness = 0.1;
-          mat.roughness = 0.1;
-        }
-      });
-    });
-  }, [cloned, installed, glass, xray, partId]);
-
-  return (
-    <AnimatedTransform
-      partId={partId}
-      dragId={dragId}
-      dragState={dragState}
-      dragPlane={dragPlane}
-      onDragStart={onDragStart}
-      onDragMove={onDragMove}
-      onDragEnd={onDragEnd}
-      onHoverSlot={onHoverSlot}
-      installed={installed}
-      target={target}
-      staging={staging}
-      baseScale={baseScale}
-      floatSeed={floatSeed}
-      animate={animate}
-    >
-      <primitive object={cloned} />
-    </AnimatedTransform>
-  );
-}
-
-function SimplePart({
-  target,
-  staging,
-  installed,
-  floatSeed = 0,
-  partId,
-  dragId,
-  dragState,
-  dragPlane,
-  onDragStart,
-  onDragMove,
-  onDragEnd,
-  onHoverSlot,
-  animate,
-  tint = "#36485b",
-}) {
-  const width = Math.max(0.02, target.size.x * 0.9);
-  const height = Math.max(0.02, target.size.y * 0.9);
-  const depth = Math.max(0.02, target.size.z * 0.9);
-
-  return (
-    <AnimatedTransform
-      partId={partId}
-      dragId={dragId}
-      dragState={dragState}
-      dragPlane={dragPlane}
-      onDragStart={onDragStart}
-      onDragMove={onDragMove}
-      onDragEnd={onDragEnd}
-      onHoverSlot={onHoverSlot}
-      installed={installed}
-      target={target}
-      staging={staging}
-      floatSeed={floatSeed}
-      animate={animate}
-    >
-      <mesh>
-        <boxGeometry args={[width, height, depth]} />
-        <meshStandardMaterial color={tint} metalness={0.35} roughness={0.55} />
-      </mesh>
-    </AnimatedTransform>
-  );
-}
-
-function CpuPart({
-  target,
-  staging,
-  installed,
-  floatSeed = 0,
-  partId,
-  dragId,
-  dragState,
-  dragPlane,
-  onDragStart,
-  onDragMove,
-  onDragEnd,
-  onHoverSlot,
-  xray,
-  explodeFactor,
-  insideView,
-  animate,
-}) {
-  const width = Math.max(0.02, target.size.x * 0.6) * CUSTOM_FIT;
-  const height = Math.max(0.02, target.size.y * 0.35) * CUSTOM_FIT;
-  const depth = Math.max(0.02, target.size.z * 0.6) * CUSTOM_FIT;
-
-  return (
-    <AnimatedTransform
-      partId={partId}
-      dragId={dragId}
-      dragState={dragState}
-      dragPlane={dragPlane}
-      onDragStart={onDragStart}
-      onDragMove={onDragMove}
-      onDragEnd={onDragEnd}
-      onHoverSlot={onHoverSlot}
-      installed={installed}
-      target={target}
-      staging={staging}
-      floatSeed={floatSeed}
-      animate={animate}
-    >
-      <group>
-        <mesh>
-          <boxGeometry args={[width, height, depth]} />
-          <meshStandardMaterial color="#2e3b4c" metalness={0.55} roughness={0.35} />
-        </mesh>
-        <mesh position={[0, height * 0.45, 0]}>
-          <boxGeometry args={[width * 0.82, height * 0.35, depth * 0.82]} />
-          <meshStandardMaterial color="#f9c74f" metalness={0.4} roughness={0.25} emissive="#7d4f0f" emissiveIntensity={0.35} />
-        </mesh>
-      </group>
-    </AnimatedTransform>
-  );
-}
-
-function RamPart({
-  target,
-  staging,
-  installed,
-  floatSeed = 0,
-  partId,
-  dragId,
-  dragState,
-  dragPlane,
-  onDragStart,
-  onDragMove,
-  onDragEnd,
-  onHoverSlot,
-  xray,
-  explodeFactor,
-  insideView,
-  animate,
-}) {
-  const stickWidth = Math.max(0.02, target.size.x * 0.42) * CUSTOM_FIT;
-  const stickHeight = Math.max(0.02, target.size.y * 0.45) * CUSTOM_FIT;
-  const stickDepth = Math.max(0.02, target.size.z * 0.35) * CUSTOM_FIT;
-  const gap = target.size.x * 0.15;
-
-  const chipWidth = stickWidth * 0.2;
-  const chipHeight = stickHeight * 0.3;
-  const chipDepth = stickDepth * 0.6;
-
-  return (
-    <AnimatedTransform
-      partId={partId}
-      dragId={dragId}
-      dragState={dragState}
-      dragPlane={dragPlane}
-      onDragStart={onDragStart}
-      onDragMove={onDragMove}
-      onDragEnd={onDragEnd}
-      onHoverSlot={onHoverSlot}
-      installed={installed}
-      target={target}
-      staging={staging}
-      floatSeed={floatSeed}
-      animate={animate}
-    >
-      <group>
-        {[-1, 1].map((side) => (
-          <group key={side} position={[side * (stickWidth * 0.5 + gap * 0.5), 0, 0]}>
-            <mesh>
-              <boxGeometry args={[stickWidth, stickHeight, stickDepth]} />
-              <meshStandardMaterial color="#1a9cff" metalness={0.4} roughness={0.35} emissive="#083b6b" emissiveIntensity={0.45} />
-            </mesh>
-            {[-0.25, 0.0, 0.25].map((offset, idx) => (
-              <mesh key={idx} position={[offset * stickWidth * 0.9, 0, stickDepth * 0.35]}>
-                <boxGeometry args={[chipWidth, chipHeight, chipDepth]} />
-                <meshStandardMaterial color="#0c1c26" metalness={0.2} roughness={0.4} />
-              </mesh>
-            ))}
-          </group>
-        ))}
-      </group>
-    </AnimatedTransform>
-  );
-}
+// ModelPart, SimplePart, CpuPart, RamPart replaced by procedural components in PCParts.jsx
 
 function SlotGuide({ transform, active, pulse, tone = "idle" }) {
   const ref = useRef();
@@ -694,8 +377,8 @@ function SlotGuide({ transform, active, pulse, tone = "idle" }) {
     tone === "blocked"
       ? "#ff6b6b"
       : tone === "valid"
-      ? "#7ef4c1"
-      : "#7cc4ff";
+        ? "#7ef4c1"
+        : "#7cc4ff";
 
   useFrame((state) => {
     if (!ref.current) return;
@@ -814,149 +497,12 @@ function AutoFrameCamera({ caseSize, controlsRef, enabled = true }) {
 }
 
 function CaseModel({ onReady, xray }) {
-  const { scene, scale, offset, size } = useFittedScene(
-    MODEL_PATHS.case,
-    CASE_TARGET_SIZE,
-    { ignoreLargeFlats: true }
-  );
-
-  useEffect(() => {
-    scene.updateWorldMatrix(true, true);
-    const sceneBox = new THREE.Box3().setFromObject(scene);
-    const sceneSize = new THREE.Vector3();
-    sceneBox.getSize(sceneSize);
-
-    scene.traverse((child) => {
-      if (!child.isMesh) return;
-      const box = new THREE.Box3().setFromObject(child);
-      const size = new THREE.Vector3();
-      const center = new THREE.Vector3();
-      box.getSize(size);
-      box.getCenter(center);
-      const maxDim = Math.max(size.x, size.y, size.z);
-      const minDim = Math.min(size.x, size.y, size.z);
-      const midDim = size.x + size.y + size.z - maxDim - minDim;
-      const isFlat = minDim <= CASE_FLAT_Y || (maxDim > 0 && minDim / maxDim < 0.02);
-      const isHorizontalPlane =
-        size.y <= sceneSize.y * 0.08 &&
-        size.x >= sceneSize.x * 0.6 &&
-        size.z >= sceneSize.z * 0.6;
-      const isFloorLike =
-        isFlat &&
-        maxDim >= Math.max(sceneSize.x, sceneSize.z) * 0.8 &&
-        center.y <= sceneBox.min.y + sceneSize.y * 0.2;
-
-      if (
-        isLargeFlatMesh(child) ||
-        isFloorLike ||
-        isHorizontalPlane ||
-        (isFlat && midDim >= Math.max(sceneSize.x, sceneSize.z) * 0.6) ||
-        (child.name && /floor|base|ground|plate|plane|panel_base/i.test(child.name))
-      ) {
-        child.visible = false;
-      }
-    });
-  }, [scene]);
-
-  useEffect(() => {
-    const sceneBox = new THREE.Box3().setFromObject(scene);
-    const sceneSize = new THREE.Vector3();
-    sceneBox.getSize(sceneSize);
-    const lines = [];
-    scene.traverse((child) => {
-      if (!child.isMesh || !child.geometry) return;
-      const box = new THREE.Box3().setFromObject(child);
-      const size = new THREE.Vector3();
-      box.getSize(size);
-      const maxDim = Math.max(size.x, size.y, size.z);
-      if (maxDim < Math.max(sceneSize.x, sceneSize.z) * 0.18) return;
-      // Lightweight edge accents to improve silhouette readability.
-      const edges = new THREE.EdgesGeometry(child.geometry, 25);
-      const material = new THREE.LineBasicMaterial({
-        color: "#5fb5ff",
-        transparent: true,
-        opacity: 0.22,
-      });
-      material.depthTest = false;
-      material.depthWrite = false;
-      const line = new THREE.LineSegments(edges, material);
-      line.renderOrder = 3;
-      line.userData.__edge = true;
-      child.add(line);
-      lines.push(line);
-    });
-
-    return () => {
-      lines.forEach((line) => {
-        line.geometry?.dispose?.();
-        line.material?.dispose?.();
-        line.removeFromParent();
-      });
-    };
-  }, [scene]);
-
-  const isCasePanel = useCallback((child) => {
-    if (!child?.name) return false;
-    return /panel|glass|side/i.test(child.name);
-  }, []);
-
-  useEffect(() => {
-    scene.traverse((child) => {
-      if (!child.isMesh) return;
-      const mats = Array.isArray(child.material) ? child.material : [child.material];
-      mats.forEach((mat) => {
-        if (!mat) return;
-        if (mat.userData.__origOpacity === undefined) {
-          mat.userData.__origOpacity = mat.opacity ?? 1;
-          mat.userData.__origTransparent = mat.transparent ?? false;
-          mat.userData.__origEmissive = mat.emissive ? mat.emissive.clone() : null;
-          mat.userData.__origEmissiveIntensity = mat.emissiveIntensity ?? 0;
-        }
-        if (xray) {
-          mat.transparent = true;
-          mat.opacity = isCasePanel(child) ? 0.02 : 0.08;
-          if ("emissive" in mat) {
-            mat.emissive = new THREE.Color("#7cc4ff");
-            mat.emissiveIntensity = 0.25;
-          }
-        } else {
-          mat.transparent = mat.userData.__origTransparent;
-          mat.opacity = mat.userData.__origOpacity;
-          if ("emissive" in mat && mat.userData.__origEmissive) {
-            mat.emissive = mat.userData.__origEmissive.clone();
-            mat.emissiveIntensity = mat.userData.__origEmissiveIntensity;
-          }
-        }
-      });
-      if (xray && isCasePanel(child)) {
-        child.visible = false;
-      } else if (isCasePanel(child)) {
-        child.visible = true;
-      }
-    });
-  }, [scene, xray]);
-
-  useEffect(() => {
-    if (!onReady) return;
-    onReady(size);
-  }, [onReady, size]);
-
-  return (
-    <group scale={scale} position={offset}>
-      <primitive object={scene} />
-    </group>
-  );
+  // Delegate to the procedural O11 Vision case from PCParts.jsx
+  return <O11CaseModel onReady={onReady} xray={xray} />;
 }
 
-function Loader() {
-  const { progress } = useProgress();
 
-  return (
-    <Html center className="build-loader">
-      Loading {Math.round(progress)}%
-    </Html>
-  );
-}
+
 
 function PCScene({
   installed,
@@ -999,9 +545,7 @@ function PCScene({
       const slot = resolveSlot(part.slot, sizeVec, explodeFactor);
       const staging = resolveStaging(index, sizeVec);
       const installedState = installed[part.id];
-      const option = part.options?.find((opt) => opt.id === selections[part.id]);
-      const modelUrl = option?.model || part.model;
-      return { part, slot, staging, installedState, modelUrl, index };
+      return { part, slot, staging, installedState, index };
     });
   }, [installed, selections, sizeVec, explodeFactor]);
 
@@ -1040,132 +584,110 @@ function PCScene({
     <>
       <color attach="background" args={["#0b0f15"]} />
 
-      {/* Key + rim + fill lighting for clear silhouettes and depth */}
-      {qualityMode ? (
-        <>
-          <hemisphereLight args={["#d7e8ff", "#0a0f15", 0.28]} />
-          <ambientLight intensity={0.2} />
-          <directionalLight
-            position={[6, 7, 5]}
-            intensity={1.55}
-            castShadow
-            shadow-mapSize={[2048, 2048]}
-            shadow-bias={-0.00015}
-          />
-          <directionalLight position={[-6, 3, -4]} intensity={0.95} color="#7fc3ff" />
-          <directionalLight position={[0, 2, -6]} intensity={0.45} color="#dbe7ff" />
-          <spotLight
-            position={[0, 5, 3]}
-            intensity={0.65}
-            angle={0.4}
-            penumbra={0.9}
-            color="#b5d7ff"
-          />
-          <pointLight position={[0, 2, 4]} intensity={0.5} color="#86c9ff" />
-        </>
-      ) : (
-        <>
-          <ambientLight intensity={0.45} />
-          <directionalLight position={[4, 4, 4]} intensity={1.1} />
-          <directionalLight position={[-4, 2, -2]} intensity={0.4} color="#7fc3ff" />
-          <pointLight position={[0, 1.8, 3.5]} intensity={0.45} color="#bfe1ff" />
-        </>
-      )}
+      {/* ── CINEMATIC LIGHTING RIG ── */}
+      {/* Soft ambient base — keeps shadows from going pitch black */}
+      <ambientLight intensity={0.12} color="#c8d8f0" />
+
+      {/* KEY LIGHT — warm white, front-right above (main illumination) */}
+      <spotLight
+        position={[maxDim * 1.4, maxDim * 2.2, maxDim * 1.6]}
+        target-position={[0, 0, 0]}
+        angle={0.28}
+        penumbra={0.75}
+        intensity={qualityMode ? 3.8 : 2.5}
+        color="#fff5e8"
+        castShadow
+        shadow-mapSize={[2048, 2048]}
+        shadow-bias={-0.00012}
+      />
+
+      {/* RIM LIGHT — cool blue, back-left above (separates model from bg) */}
+      <spotLight
+        position={[-maxDim * 1.6, maxDim * 1.8, -maxDim * 1.4]}
+        target-position={[0, 0, 0]}
+        angle={0.35}
+        penumbra={0.9}
+        intensity={qualityMode ? 2.2 : 1.4}
+        color="#4a90d9"
+      />
+
+      {/* FILL LIGHT — soft neutral, front-left (reduces harsh shadows) */}
+      <directionalLight
+        position={[-maxDim * 1.2, maxDim * 0.8, maxDim * 1.0]}
+        intensity={qualityMode ? 0.65 : 0.4}
+        color="#ddeeff"
+      />
+
+      {/* TOP OVERHEAD — straight down, cinematic "studio" feel */}
+      <spotLight
+        position={[0, maxDim * 2.8, 0]}
+        target-position={[0, 0, 0]}
+        angle={0.22}
+        penumbra={0.6}
+        intensity={qualityMode ? 1.8 : 1.0}
+        color="#ffffff"
+        castShadow={false}
+      />
+
+      {/* BACK ACCENT — behind the case, adds depth halo */}
+      <pointLight
+        position={[0, maxDim * 0.5, -maxDim * 1.8]}
+        intensity={qualityMode ? 1.2 : 0.7}
+        color="#2a5fa8"
+        distance={maxDim * 5}
+        decay={2}
+      />
+
+      {/* GREEN LED BOUNCE — simulates internal Lian Li fan glow */}
+      <pointLight
+        position={[0, -maxDim * 0.3, 0]}
+        intensity={qualityMode ? 0.9 : 0.5}
+        color="#17ca07"
+        distance={maxDim * 3}
+        decay={2}
+      />
+
 
       <Suspense fallback={<Loader />}>
         <AutoFrameCamera caseSize={sizeVec} controlsRef={controlsRef} enabled={!insideView} />
         <CaseModel onReady={onCaseReady} xray={xray} />
-        {partInstances.map(({ part, slot, staging, installedState, modelUrl, index }) => {
+        {partInstances.map(({ part, slot, staging, installedState, index }) => {
           const floatSeed = index * 0.7;
           const shouldShow = installedState || dragId === part.id || activePartId === part.id;
           if (!shouldShow) return null;
-          if (part.type === "custom") {
-            if (part.id === "cpu") {
-              return (
-                <CpuPart
-                  key={part.id}
-                  partId={part.id}
-                  dragId={dragId}
-                  dragState={dragState}
-                  dragPlane={dragPlane}
-                  onDragStart={onDragStart}
-                  onDragMove={onDragMove}
-                  onDragEnd={onDragEnd}
-                  onHoverSlot={onHoverSlot}
-                  target={slot}
-                  staging={staging}
-                  installed={installedState}
-                  floatSeed={floatSeed}
-                  animate={motionEnabled}
-                />
-              );
-            }
-            if (part.id === "ram") {
-              return (
-                <RamPart
-                  key={part.id}
-                  partId={part.id}
-                  dragId={dragId}
-                  dragState={dragState}
-                  dragPlane={dragPlane}
-                  onDragStart={onDragStart}
-                  onDragMove={onDragMove}
-                  onDragEnd={onDragEnd}
-                  onHoverSlot={onHoverSlot}
-                  target={slot}
-                  staging={staging}
-                  installed={installedState}
-                  floatSeed={floatSeed}
-                  animate={motionEnabled}
-                />
-              );
-            }
-          }
-          if (!modelUrl) return null;
-          const shouldUseSimple = liteParts && !installedState;
-          if (shouldUseSimple) {
-            return (
-              <SimplePart
-                key={part.id}
-                partId={part.id}
-                dragId={dragId}
-                dragState={dragState}
-                dragPlane={dragPlane}
-                onDragStart={onDragStart}
-                onDragMove={onDragMove}
-                onDragEnd={onDragEnd}
-                onHoverSlot={onHoverSlot}
-                target={slot}
-                staging={staging}
-                installed={installedState}
-                floatSeed={floatSeed}
-                animate={motionEnabled}
-              />
-            );
-          }
-          return (
-            <ModelPart
-              key={part.id}
-              partId={part.id}
-              dragId={dragId}
-              dragState={dragState}
-              dragPlane={dragPlane}
-              onDragStart={onDragStart}
-              onDragMove={onDragMove}
-              onDragEnd={onDragEnd}
-              onHoverSlot={onHoverSlot}
-              xray={xray}
-              url={modelUrl}
-              target={slot}
-              staging={staging}
-              installed={installedState}
-              floatSeed={floatSeed}
-              glass={part.id === "panel"}
-              fit={part.fit}
-              animate={motionEnabled}
-            />
-          );
+
+          const commonProps = {
+            key: part.id,
+            partId: part.id,
+            dragId,
+            dragState,
+            dragPlane,
+            onDragStart,
+            onDragMove,
+            onDragEnd,
+            onHoverSlot,
+            target: slot,
+            staging,
+            installed: installedState,
+            floatSeed,
+            animate: motionEnabled,
+            xray,
+            AnimatedTransform,
+          };
+
+          if (part.id === "motherboard") return <MotherboardPart {...commonProps} />;
+          if (part.id === "cpu") return <CpuPart {...commonProps} />;
+          if (part.id === "ram") return <RamPart {...commonProps} />;
+          if (part.id === "gpu") return <GpuPart {...commonProps} />;
+          if (part.id === "psu") return <PsuPart {...commonProps} />;
+          if (part.id === "storage") return <StoragePart {...commonProps} isSSD={(selections[part.id] || "ssd") === "ssd"} />;
+
+          if (part.id === "fan") return <FanPart {...commonProps} />;
+
+          return null;
+
         })}
+
         {dragId && activePart && <ConnectionLine dragState={dragState} target={activePart.slot} />}
         {insideView && wirePairs.map((wire) => {
           const startSlot = resolveSlot(wire.from, sizeVec, explodeFactor);
@@ -1243,7 +765,8 @@ export default function BuildingComputers() {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [activePartId, setActivePartId] = useState(null);
   const [draggingId, setDraggingId] = useState(null);
-  const [caseSize, setCaseSize] = useState({ x: 4, y: 5.2, z: 2.6 });
+  const [caseSize, setCaseSize] = useState({ x: 3.2, y: 3.6, z: 1.8 }); // New slim depth D=1.8
+
   const [, setLog] = useState([]);
   const [recentlyInstalled, setRecentlyInstalled] = useState(null);
 
@@ -1596,24 +1119,59 @@ export default function BuildingComputers() {
 
   return (
     <div className={`build-page ${showTray ? "" : "is-focus"}`}>
+      {/* ── TOPBAR ── */}
       <header className="build-topbar">
-        <div className="build-brand">PC Assembly Simulator</div>
-        <div className="build-tagline">Select a part, then drag it into the highlighted slot.</div>
+        <div className="build-brand">⬡ PC Build Sim</div>
+
+        <div className="build-tagline">
+          Select a part → drag into the glowing slot
+        </div>
+
+        <div className="topbar-actions">
+          <span className="topbar-progress">
+            {connectedCount}/{PARTS.length} parts
+          </span>
+          <button
+            className="build-btn primary"
+            onClick={installAll}
+            title="Install all parts (A)"
+          >
+            ⚡ Install All
+          </button>
+          <button
+            className="build-btn danger"
+            onClick={resetAll}
+            title="Reset build (X)"
+          >
+            ↺ Reset
+          </button>
+          <button
+            className="build-btn ghost"
+            onClick={toggleFullscreen}
+            title="Fullscreen (F)"
+          >
+            {isFullscreen ? "⊠ Exit" : "⊡ Fullscreen"}
+          </button>
+        </div>
       </header>
 
       <div className="build-grid">
         <section className="build-stage">
+
+          {/* ── STAGE TOOLBAR ── */}
           <div className="stage-toolbar">
             <div className="stage-title">
               <h2>Assembly Bay</h2>
-              <span>Select a part, then drag into the highlighted slot</span>
+              <span>Drag parts into highlighted slots · snap to install</span>
             </div>
+
             <div className="stage-controls">
+              {/* Mode tabs */}
               <div className="mode-selector" role="tablist" aria-label="Build mode">
                 {[
-                  { id: "assembly", label: "Assembly" },
-                  { id: "inspection", label: "Inspection" },
-                  { id: "cable", label: "Cable Mgmt" },
+                  { id: "assembly", label: "🔧 Assembly" },
+                  { id: "inspection", label: "🔍 Inspect" },
+                  { id: "cable", label: "🔌 Cables" },
                 ].map((mode) => (
                   <button
                     key={mode.id}
@@ -1626,6 +1184,8 @@ export default function BuildingComputers() {
                   </button>
                 ))}
               </div>
+
+              {/* Mode-specific actions */}
               <div className="mode-actions">
                 {buildMode === "assembly" && (
                   <>
@@ -1634,43 +1194,50 @@ export default function BuildingComputers() {
                       onClick={() => setPanelOpen((prev) => !prev)}
                       data-active={panelOpen}
                       aria-pressed={panelOpen}
+                      title="Toggle side panel (O)"
                     >
-                      {panelOpen ? "Close Side Panel" : "Open Side Panel"}
+                      {panelOpen ? "🪟 Close Panel" : "🪟 Side Panel"}
                     </button>
                     <button
                       className="build-btn ghost"
                       onClick={() => setShowTray((prev) => !prev)}
                       data-active={showTray}
                       aria-pressed={showTray}
+                      title="Toggle parts tray (P)"
                     >
-                      {showTray ? "Hide Parts" : "Parts Tray"}
+                      {showTray ? "📦 Hide Tray" : "📦 Parts Tray"}
                     </button>
                   </>
                 )}
                 {buildMode === "inspection" && (
-                  <button className="build-btn ghost" onClick={resetView}>
-                    Reset View
+                  <button className="build-btn ghost" onClick={resetView} title="Reset camera (R)">
+                    🎯 Reset View
                   </button>
                 )}
                 {buildMode === "cable" && (
-                  <>
-                    <button
-                      className="build-btn ghost"
-                      onClick={() => setCableExplode((prev) => !prev)}
-                      data-active={cableExplode}
-                      aria-pressed={cableExplode}
-                    >
-                      {cableExplode ? "Collapse View" : "Exploded View"}
-                    </button>
-                  </>
+                  <button
+                    className="build-btn ghost"
+                    onClick={() => setCableExplode((prev) => !prev)}
+                    data-active={cableExplode}
+                    aria-pressed={cableExplode}
+                    title="Toggle exploded view (E)"
+                  >
+                    {cableExplode ? "🗜 Collapse" : "💥 Explode"}
+                  </button>
                 )}
               </div>
-              <button className="build-btn ghost" onClick={toggleFullscreen} title="Full screen (F)">
-                {isFullscreen ? "Exit Full Screen" : "Full Screen"}
-              </button>
+
+              {/* Keyboard legend */}
+              <span className="kbd-legend">
+                <span className="kbd">1-3</span> mode ·
+                <span className="kbd">P</span> tray ·
+                <span className="kbd">R</span> reset view ·
+                <span className="kbd">F</span> fullscreen
+              </span>
             </div>
           </div>
 
+          {/* ── 3D CANVAS ── */}
           <div
             className={`build-canvas ${isFullscreen ? "is-fullscreen" : ""}`}
             ref={canvasWrapRef}
@@ -1713,25 +1280,33 @@ export default function BuildingComputers() {
                 onHoverSlot={handleHoverSlot}
               />
             </Canvas>
+
             <div className="stage-hint">
-              <span>Assembly: select a part, then drag into the highlighted slot.</span>
-              <span>Scroll to zoom / Drag to rotate</span>
+              <span>🖱 Drag part → glowing slot to install · click part to highlight</span>
+              <span>Scroll to zoom · drag to orbit</span>
             </div>
           </div>
+
+          {/* ── PARTS TRAY ── */}
           {showTray && (
             <aside className="parts-tray">
               <div className="tray-header">
                 <div>
                   <h2>Parts Tray</h2>
-                  <p>Pick a part, drag into the highlighted slot. Auto-wiring on snap.</p>
+                  <p>Drag into the glowing slot · snap to connect</p>
                 </div>
                 <div className="tray-actions">
-                  <button className="build-btn ghost" onClick={() => setShowTray(false)} title="Close tray">
-                    Close
+                  <button
+                    className="build-btn ghost"
+                    onClick={() => setShowTray(false)}
+                    title="Close tray (P)"
+                  >
+                    ✕
                   </button>
                 </div>
               </div>
 
+              {/* Progress bar */}
               <div className="tray-progress">
                 <div className="tray-progress-track">
                   <div className="tray-progress-fill" style={{ width: `${progress}%` }} />
@@ -1742,43 +1317,53 @@ export default function BuildingComputers() {
                 </div>
               </div>
 
+              {/* Part list */}
               <div className="parts-scroll">
-              {PARTS.map((part, index) => {
-                const isInstalled = installed[part.id];
-                const isDragging = draggingId === part.id;
-                const missingDeps = getMissingDeps(part.id, installed);
-                const isBlocked = !isInstalled && missingDeps.length > 0;
-                const isActive = activePartId === part.id;
-                const isNext = nextPart?.id === part.id;
-                return (
-                  <div
-                    key={part.id}
-                    className={`part-item ${isInstalled ? "is-installed" : ""} ${isDragging ? "is-dragging" : ""} ${isActive ? "is-active" : ""} ${isNext ? "is-next" : ""} ${isBlocked ? "is-blocked" : ""}`}
-                    style={{ "--i": index }}
-                    onMouseEnter={() => {
-                      if (!draggingId) setFocusedSlot(part.slot);
-                    }}
-                    onMouseLeave={() => {
-                      if (!draggingId) setFocusedSlot(null);
-                    }}
-                  >
-                    <button
-                      className="part-button"
-                      onClick={() => togglePart(part)}
-                      disabled={isBlocked}
+                {PARTS.map((part, index) => {
+                  const isInstalled = installed[part.id];
+                  const isDragging = draggingId === part.id;
+                  const missingDeps = getMissingDeps(part.id, installed);
+                  const isBlocked = !isInstalled && missingDeps.length > 0;
+                  const isActive = activePartId === part.id;
+                  const isNext = nextPart?.id === part.id;
+                  return (
+                    <div
+                      key={part.id}
+                      className={[
+                        "part-item",
+                        isInstalled ? "is-installed" : "",
+                        isDragging ? "is-dragging" : "",
+                        isActive ? "is-active" : "",
+                        isNext ? "is-next" : "",
+                        isBlocked ? "is-blocked" : "",
+                      ].join(" ")}
+                      style={{ "--i": index }}
+                      onMouseEnter={() => { if (!draggingId) setFocusedSlot(part.slot); }}
+                      onMouseLeave={() => { if (!draggingId) setFocusedSlot(null); }}
                     >
-                      <span className="part-label">{part.label}</span>
-                      <span className={`part-state ${isInstalled ? "on" : "off"}`}>
-                        {isInstalled ? "Installed" : isBlocked ? "Locked" : "Pick up"}
-                      </span>
-                    </button>
-                    {isNext && !isInstalled && (
-                      <span className="part-next">Next step</span>
-                    )}
-                    {part.options && (
-                      <div className="part-options">
-                        {part.options.map((option) => (
-                          <button
+                      <button
+                        className="part-button"
+                        onClick={() => togglePart(part)}
+                        disabled={isBlocked}
+                      >
+                        <span className="part-icon">{part.icon}</span>
+                        <span className="part-info">
+                          <span className="part-label">{part.label}</span>
+                          <span className="part-desc">{part.description}</span>
+                        </span>
+                        <span className={`part-state ${isInstalled ? "on" : "off"}`}>
+                          {isInstalled ? "✓ ON" : isBlocked ? "🔒" : "PICK"}
+                        </span>
+                      </button>
+
+                      {isNext && !isInstalled && (
+                        <span className="part-next">▶ Next step</span>
+                      )}
+
+                      {part.options && (
+                        <div className="part-options">
+                          {part.options.map((option) => (
+                            <button
                               key={option.id}
                               type="button"
                               className={`option-btn ${selections[part.id] === option.id ? "active" : ""}`}
@@ -1789,12 +1374,25 @@ export default function BuildingComputers() {
                           ))}
                         </div>
                       )}
+
                       {isBlocked && (
-                        <span className="part-blocked">Install {missingDeps.map((id) => partLookup[id]?.label || id).join(", ")} first</span>
+                        <span className="part-blocked">
+                          🔒 Requires: {missingDeps.map((id) => partLookup[id]?.label || id).join(", ")}
+                        </span>
                       )}
                     </div>
                   );
                 })}
+              </div>
+
+              {/* Tray bottom actions */}
+              <div className="tray-bottom-actions">
+                <button className="build-btn primary full" onClick={installAll} title="Install all (A)">
+                  ⚡ Install All
+                </button>
+                <button className="build-btn danger full" onClick={resetAll} title="Reset (X)">
+                  ↺ Reset
+                </button>
               </div>
             </aside>
           )}
@@ -1804,4 +1402,5 @@ export default function BuildingComputers() {
   );
 }
 
-useGLTF.preload(MODEL_PATHS.case);
+
+
