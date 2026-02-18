@@ -7,6 +7,7 @@ import {
   O11CaseModel,
   MotherboardPart,
   CpuPart,
+  CpuCoolerPart,
   RamPart,
   GpuPart,
   PsuPart,
@@ -124,12 +125,12 @@ const SLOT_CONFIG = {
     size: [0.20, 0.12, 0.06],
     guide: [0.24, 0.14, 0.08],
   },
-  // GPU: massive RTX 5090 size, sits in PCIe slot
+  // GPU: massive RTX 5090 size, sits in PCIe slot — enlarged to match real 336mm × 149mm × 75mm
   gpu: {
-    position: [0.0, -0.08, -0.25],
+    position: [0.0, -0.05, -0.20],
     rotation: [0, 0, 0],
-    size: [0.42, 0.14, 0.22],
-    guide: [0.46, 0.16, 0.26],
+    size: [0.58, 0.20, 0.30],
+    guide: [0.62, 0.22, 0.34],
   },
   // PSU: bottom compartment (below divider at Y=-0.26)
   psu: {
@@ -676,7 +677,22 @@ function PCScene({
           };
 
           if (part.id === "motherboard") return <MotherboardPart {...commonProps} />;
-          if (part.id === "cpu") return <CpuPart {...commonProps} />;
+          if (part.id === "cpu") return (
+            <group key={part.id}>
+              <CpuPart {...commonProps} />
+              {/* CPU Cooler sits above the CPU — rendered together with CPU */}
+              <CpuCoolerPart
+                {...commonProps}
+                key={part.id + "-cooler"}
+                partId={part.id + "-cooler"}
+                target={{
+                  ...slot,
+                  position: slot.position.clone().add(new THREE.Vector3(0, slot.size.y * 1.1, 0)),
+                  size: slot.size.clone(),
+                }}
+              />
+            </group>
+          );
           if (part.id === "ram") return <RamPart {...commonProps} />;
           if (part.id === "gpu") return <GpuPart {...commonProps} />;
           if (part.id === "psu") return <PsuPart {...commonProps} />;

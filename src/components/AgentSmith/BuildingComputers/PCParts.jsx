@@ -19,6 +19,8 @@ const MAT = {
 
 // Emissive green LED material (Lian Li / Matrix style)
 const LED_GREEN = { color: "#17ca07", emissive: "#17ca07", emissiveIntensity: 3.5, toneMapped: false };
+// Neon green for high-visibility components
+const NEON_GREEN = { color: "#22ff44", emissive: "#22ff44", emissiveIntensity: 4.5, toneMapped: false };
 // Emissive white LED
 const LED_WHITE = { color: "#ffffff", emissive: "#ffffff", emissiveIntensity: 2.0, toneMapped: false };
 
@@ -110,6 +112,53 @@ function LianLiInfinityFan({ size = 0.5, spinSpeed = 8, ledColor = "#17ca07", le
                 <boxGeometry args={[S * 0.08, S * 0.12, S * 0.1]} />
                 <M {...MAT.rubber} />
             </mesh>
+        </group>
+    );
+}
+
+// ─── GPU FAN component ──────────────────────────────────────────────────────
+function GpuFan({ radius, thickness }) {
+    const bladeRef = useRef();
+    useFrame((state) => {
+        if (bladeRef.current) {
+            // High-speed smooth spin
+            bladeRef.current.rotation.z = -state.clock.elapsedTime * 18;
+        }
+    });
+
+    return (
+        <group ref={bladeRef}>
+            {/* Fan hub — correctly oriented along Z axis */}
+            <mesh rotation={[Math.PI / 2, 0, 0]}>
+                <cylinderGeometry args={[radius * 0.28, radius * 0.28, thickness * 1.5, 16]} />
+                <meshStandardMaterial color="#111" metalness={0.9} roughness={0.1} />
+            </mesh>
+            {/* Center LED glow disk */}
+            <mesh position={[0, 0, thickness * 0.76]}>
+                <circleGeometry args={[radius * 0.22, 16]} />
+                <meshStandardMaterial {...NEON_GREEN} emissiveIntensity={3} />
+            </mesh>
+            {/* 7 blades, specifically requested */}
+            {Array.from({ length: 7 }, (_, i) => {
+                const angle = (i / 7) * Math.PI * 2;
+                // Positioned on the hub rim, oriented radially
+                const bx = Math.cos(angle) * radius * 0.5;
+                const by = Math.sin(angle) * radius * 0.5;
+                return (
+                    <group key={i} position={[bx, by, 0]} rotation={[0, 0, angle]}>
+                        {/* Blade body — tilted for aerodynamic look */}
+                        <mesh rotation={[0.4, 0, 0]}>
+                            <boxGeometry args={[radius * 0.35, radius * 0.8, thickness * 0.1]} />
+                            <meshStandardMaterial color="#051505" metalness={0.5} roughness={0.4} transparent opacity={0.9} />
+                        </mesh>
+                        {/* Blade green accent light */}
+                        <mesh position={[0, 0, thickness * 0.06]} rotation={[0.4, 0, 0]}>
+                            <boxGeometry args={[radius * 0.25, 0.005, 0.005]} />
+                            <meshStandardMaterial {...NEON_GREEN} emissiveIntensity={4} />
+                        </mesh>
+                    </group>
+                );
+            })}
         </group>
     );
 }
@@ -276,6 +325,48 @@ export function O11CaseModel({ onReady, xray }) {
     );
 }
 
+// ─── MOTHERBOARD MATRIX TRACES ──────────────────────────────────────────────
+function MatrixTraces({ W, H, color }) {
+    const traces = useMemo(() => {
+        return Array.from({ length: 15 }, () => ({
+            x: (Math.random() - 0.5) * W,
+            y: (Math.random() - 0.5) * H,
+            len: 0.15 + Math.random() * 0.35,
+            dir: Math.random() > 0.5 ? 'h' : 'v',
+            thickness: 0.004 + Math.random() * 0.008,
+            speed: 0.5 + Math.random() * 1.5,
+            offset: Math.random() * Math.PI * 2
+        }));
+    }, [W, H]);
+
+    return (
+        <group position={[0, 0, 0.015]}>
+            {traces.map((t, i) => (
+                <TraceLine key={i} {...t} color={color} />
+            ))}
+        </group>
+    );
+}
+
+function TraceLine({ x, y, len, dir, thickness, speed, offset, color }) {
+    const meshRef = useRef();
+    useFrame((state) => {
+        if (meshRef.current) {
+            const glow = 0.5 + Math.sin(state.clock.elapsedTime * speed + offset) * 0.5;
+            meshRef.current.material.emissiveIntensity = 4.0 * glow;
+            meshRef.current.material.opacity = 0.2 + glow * 0.6;
+        }
+    });
+
+    const isH = dir === 'h';
+    return (
+        <mesh ref={meshRef} position={[x, y, 0]}>
+            <boxGeometry args={[isH ? len : thickness, isH ? thickness : len, 0.001]} />
+            <meshStandardMaterial color={color} emissive={color} emissiveIntensity={2} transparent opacity={0.6} toneMapped={false} />
+        </mesh>
+    );
+}
+
 // ─── MOTHERBOARD (ASUS ROG MAXIMUS STYLE) ───────────────────────────────────
 // ATX: 305mm × 244mm. Mounts on left wall, facing right (+X direction)
 // In our scene: board lies in XY plane, thickness along Z
@@ -283,19 +374,28 @@ export function O11CaseModel({ onReady, xray }) {
 export function MotherboardPart({ target, staging, installed, floatSeed, partId, dragId, dragState, dragPlane, onDragStart, onDragMove, onDragEnd, onHoverSlot, animate, AnimatedTransform }) {
     const W = target.size.x * 0.94;
     const H = target.size.y * 0.94;
-    // PCB is a visible dark green-teal, not pitch black
-    const PCB_COLOR = "#0e1f14";
-    const PCB_BRIGHT = "#162b1c";
+    // PCB — Ultra-vibrant Matrix Green for maximum visibility
+    const PCB_COLOR = "#002a0a";
+    const PCB_NEON = "#33ff55"; // Brightened for visibility
 
     return (
         <AnimatedTransform partId={partId} dragId={dragId} dragState={dragState} dragPlane={dragPlane}
             onDragStart={onDragStart} onDragMove={onDragMove} onDragEnd={onDragEnd} onHoverSlot={onHoverSlot}
             installed={installed} target={target} staging={staging} baseScale={1} floatSeed={floatSeed} animate={animate}>
             <group>
-                {/* PCB — visible dark green, like a real PCB */}
+                {/* PCB — base layer with maximum neon visibility boost */}
                 <mesh>
                     <boxGeometry args={[W, H, 0.022]} />
-                    <M color={PCB_COLOR} metalness={0.12} roughness={0.72} />
+                    <meshStandardMaterial color={PCB_COLOR} emissive={PCB_NEON} emissiveIntensity={2.5} metalness={0.4} roughness={0.6} />
+                </mesh>
+
+                {/* Glowing Matrix Trace Layer — High impact */}
+                <MatrixTraces W={W} H={H} color={PCB_NEON} />
+
+                {/* PCB surface highlight - translucent neon overlay */}
+                <mesh position={[0, 0, 0.013]}>
+                    <boxGeometry args={[W * 0.98, H * 0.98, 0.001]} />
+                    <meshStandardMaterial color={PCB_NEON} emissive={PCB_NEON} emissiveIntensity={0.45} transparent opacity={0.4} />
                 </mesh>
 
                 {/* ── VRM / I/O Heatsink (top-left block) ── */}
@@ -395,10 +495,15 @@ export function MotherboardPart({ target, staging, installed, floatSeed, partId,
 // In our scene: W=card length (X), H=card height (Y), D=card thickness (Z toward viewer)
 
 export function GpuPart({ target, staging, installed, floatSeed, partId, dragId, dragState, dragPlane, onDragStart, onDragMove, onDragEnd, onHoverSlot, animate, AnimatedTransform }) {
-    // RTX 5090: 336mm L × 149mm H × 75mm thick (3.5-slot)
+    // RTX 5090 FE: 336mm L × 149mm H × 75mm thick (3.5-slot) — black shroud with silver/chrome accents
     const W = target.size.x * 0.98;  // card length — nearly full slot width
     const H = target.size.y * 0.96;  // card height — nearly full slot height
     const D = target.size.z * 0.96;  // card thickness (fans face +Z)
+
+    // RTX 5090 FE colors: matte black body, brushed silver accents, green LED
+    const SHROUD_BLACK = { color: "#111214", metalness: 0.55, roughness: 0.35 };
+    const SHROUD_SILVER = { color: "#c8cdd4", metalness: 0.88, roughness: 0.18 };
+    const BACKPLATE_COLOR = { color: "#1a1c20", metalness: 0.72, roughness: 0.22 };
 
     return (
         <AnimatedTransform partId={partId} dragId={dragId} dragState={dragState} dragPlane={dragPlane}
@@ -411,67 +516,102 @@ export function GpuPart({ target, staging, installed, floatSeed, partId, dragId,
                     <M {...MAT.pcbBlack} />
                 </mesh>
 
-                {/* ── SHROUD (White aluminum) — fans face +Z ── */}
-                {/* Main shroud body */}
+                {/* ── MAIN SHROUD BODY (matte black, RTX 5090 FE style) ── */}
                 <mesh>
-                    <boxGeometry args={[W, H, D * 0.55]} />
-                    <M {...MAT.plasticWhite} />
+                    <boxGeometry args={[W, H, D * 0.52]} />
+                    <M {...SHROUD_BLACK} />
+                </mesh>
+
+                {/* ── Silver accent strip along the top ── */}
+                <mesh position={[0, H * 0.48, D * 0.1]}>
+                    <boxGeometry args={[W * 0.96, H * 0.06, D * 0.08]} />
+                    <M {...SHROUD_SILVER} />
+                </mesh>
+
+                {/* ── Silver accent strip along the bottom ── */}
+                <mesh position={[0, -H * 0.48, D * 0.1]}>
+                    <boxGeometry args={[W * 0.96, H * 0.06, D * 0.08]} />
+                    <M {...SHROUD_SILVER} />
+                </mesh>
+
+                {/* ── Diagonal design slash (RTX 5090 FE signature) ── */}
+                <mesh position={[-W * 0.28, 0, D * 0.27]} rotation={[0, 0, 0.18]}>
+                    <boxGeometry args={[W * 0.06, H * 0.88, D * 0.01]} />
+                    <M color="#2a2c30" metalness={0.6} roughness={0.3} />
+                </mesh>
+                <mesh position={[-W * 0.18, 0, D * 0.27]} rotation={[0, 0, 0.18]}>
+                    <boxGeometry args={[W * 0.03, H * 0.88, D * 0.01]} />
+                    <M color="#2a2c30" metalness={0.6} roughness={0.3} />
                 </mesh>
 
                 {/* ── 3x FANS (facing +Z, toward glass front) ── */}
                 {[-W * 0.3, 0, W * 0.3].map((xOff, i) => {
                     const fanR = D * 0.38;
                     return (
-                        <group key={i} position={[xOff, H * 0.05, D * 0.28]}>
-                            {/* Fan shroud cutout ring */}
+                        <group key={i} position={[xOff, H * 0.03, D * 0.27]}>
+                            {/* Fan shroud cutout ring — silver */}
                             <mesh>
-                                <torusGeometry args={[fanR * 1.05, D * 0.025, 16, 48]} />
-                                <M color="#ccc" metalness={0.9} roughness={0.1} />
+                                <torusGeometry args={[fanR * 1.05, D * 0.022, 16, 48]} />
+                                <M {...SHROUD_SILVER} />
                             </mesh>
-                            {/* Blade disc */}
-                            <mesh>
-                                <cylinderGeometry args={[fanR, fanR, D * 0.04, 32]} />
-                                <M color="#e8e8e8" opacity={0.55} transparent />
-                            </mesh>
-                            {/* Center hub */}
-                            <mesh>
-                                <cylinderGeometry args={[fanR * 0.18, fanR * 0.18, D * 0.06, 16]} />
-                                <M {...MAT.rogSilver} />
-                            </mesh>
+                            {/* Animated Fan Component — rotated 90 deg to lie flat on card face */}
+                            <group rotation={[Math.PI / 2, 0, 0]}>
+                                <GpuFan radius={fanR} thickness={D * 0.04} />
+                            </group>
                         </group>
                     );
                 })}
 
-                {/* ── BACKPLATE (flow-through design) ── */}
+                {/* ── BACKPLATE (RTX 5090 FE style — dark with cutouts) ── */}
                 <mesh position={[0, 0, -D * 0.28]}>
                     <boxGeometry args={[W, H, D * 0.04]} />
-                    <M {...MAT.rogSilver} />
+                    <M {...BACKPLATE_COLOR} />
                 </mesh>
-                {/* Flow-through cutout (center) */}
-                <mesh position={[W * 0.2, 0, -D * 0.26]}>
-                    <boxGeometry args={[W * 0.35, H * 0.5, D * 0.02]} />
-                    <M color="#000" />
+                {/* Flow-through vent cutout */}
+                <mesh position={[W * 0.15, 0, -D * 0.26]}>
+                    <boxGeometry args={[W * 0.40, H * 0.55, D * 0.02]} />
+                    <M color="#050507" />
+                </mesh>
+                {/* Backplate silver accent lines */}
+                <mesh position={[-W * 0.3, 0, -D * 0.26]}>
+                    <boxGeometry args={[W * 0.28, H * 0.92, D * 0.005]} />
+                    <M color="#888" metalness={0.85} roughness={0.2} />
                 </mesh>
 
-                {/* ── RGB Accent bar (top edge) ── */}
-                <mesh position={[0, H * 0.5, D * 0.1]}>
-                    <boxGeometry args={[W * 0.88, 0.018, 0.018]} />
+                {/* ── GEFORCE RTX Logo bar (large, prominent) ── */}
+                <mesh position={[-W * 0.12, -H * 0.28, D * 0.27]}>
+                    <boxGeometry args={[W * 0.55, H * 0.09, 0.006]} />
+                    <M color="#ffffff" emissive="#ffffff" emissiveIntensity={1.8} toneMapped={false} />
+                </mesh>
+
+                {/* ── RGB Accent bar (top edge, green LED) ── */}
+                <mesh position={[0, H * 0.5, D * 0.08]}>
+                    <boxGeometry args={[W * 0.92, 0.016, 0.016]} />
                     <M {...LED_GREEN} />
                 </mesh>
-                {/* RTX logo on shroud */}
-                <mesh position={[-W * 0.35, -H * 0.15, D * 0.28]}>
-                    <boxGeometry args={[0.12, 0.06, 0.005]} />
-                    <M {...LED_WHITE} />
+                {/* Side LED strip */}
+                <mesh position={[W * 0.49, 0, D * 0.08]}>
+                    <boxGeometry args={[0.012, H * 0.85, 0.012]} />
+                    <M {...LED_GREEN} />
                 </mesh>
 
-                {/* ── PCIe power connectors (top) ── */}
-                <mesh position={[W * 0.4, H * 0.42, -D * 0.1]}>
-                    <boxGeometry args={[0.08, 0.06, 0.05]} />
+                {/* ── PCIe 16-pin power connector (top, RTX 5090 style) ── */}
+                <mesh position={[W * 0.38, H * 0.44, -D * 0.08]}>
+                    <boxGeometry args={[0.14, 0.06, 0.06]} />
                     <M color="#111" metalness={0.2} roughness={0.8} />
                 </mesh>
-                <mesh position={[W * 0.4 + 0.1, H * 0.42, -D * 0.1]}>
-                    <boxGeometry args={[0.08, 0.06, 0.05]} />
-                    <M color="#111" metalness={0.2} roughness={0.8} />
+                {/* Connector pins detail */}
+                {[-0.04, 0, 0.04].map((xo, i) => (
+                    <mesh key={i} position={[W * 0.38 + xo, H * 0.47, -D * 0.08]}>
+                        <boxGeometry args={[0.025, 0.04, 0.04]} />
+                        <M color="#222" metalness={0.3} roughness={0.7} />
+                    </mesh>
+                ))}
+
+                {/* ── PCIe bracket (back edge) ── */}
+                <mesh position={[-W * 0.49, 0, -D * 0.1]}>
+                    <boxGeometry args={[0.018, H * 0.9, D * 0.55]} />
+                    <M color="#888" metalness={0.85} roughness={0.2} />
                 </mesh>
             </group>
         </AnimatedTransform>
@@ -622,6 +762,125 @@ export function CpuPart({ target, staging, installed, floatSeed, partId, dragId,
     );
 }
 
+
+// ─── CPU COOLER (Premium AIO Liquid Cooler with Square LCD Screen) ───────────
+// Featuring a sleek block, high-res Matrix LCD, and liquid tubes
+
+function MatrixLCD({ size }) {
+    const screenRef = useRef();
+    const rows = 16;
+    const cols = 16;
+    const charData = useMemo(() =>
+        Array.from({ length: rows * cols }, () => ({
+            brightness: Math.random(),
+            speed: 0.2 + Math.random() * 0.8
+        }))
+        , []);
+
+    useFrame((state) => {
+        if (screenRef.current) {
+            screenRef.current.material.emissiveIntensity = 2.0 + Math.sin(state.clock.elapsedTime * 4) * 0.5;
+        }
+    });
+
+    return (
+        <group>
+            {/* Screen base */}
+            <mesh>
+                <boxGeometry args={[size, size, 0.004]} />
+                <M color="#000" metalness={0.9} roughness={0.1} />
+            </mesh>
+            {/* Matrix Characters Grid */}
+            <group position={[0, 0, 0.003]}>
+                {charData.map((d, i) => {
+                    const r = Math.floor(i / cols);
+                    const c = i % cols;
+                    const x = (c / (cols - 1) - 0.5) * size * 0.85;
+                    const y = (r / (rows - 1) - 0.5) * size * 0.85;
+                    return (
+                        <MatrixPixel key={i} x={x} y={y} size={size * 0.04} seed={i} />
+                    );
+                })}
+            </group>
+            {/* Glossy overlay */}
+            <mesh position={[0, 0, 0.005]}>
+                <boxGeometry args={[size * 0.98, size * 0.98, 0.001]} />
+                <meshStandardMaterial color="#fff" transparent opacity={0.15} metalness={1} roughness={0} />
+            </mesh>
+        </group>
+    );
+}
+
+function MatrixPixel({ x, y, size, seed }) {
+    const ref = useRef();
+    const speed = 0.5 + Math.random() * 2;
+    useFrame((state) => {
+        if (ref.current) {
+            const val = Math.sin(state.clock.elapsedTime * speed + seed) * 0.5 + 0.5;
+            ref.current.material.emissiveIntensity = val * 5;
+            ref.current.material.opacity = 0.2 + val * 0.8;
+        }
+    });
+
+    return (
+        <mesh ref={ref} position={[x, y, 0]}>
+            <planeGeometry args={[size, size]} />
+            <meshStandardMaterial color="#22ff44" emissive="#22ff44" transparent toneMapped={false} />
+        </mesh>
+    );
+}
+
+export function CpuCoolerPart({ target, staging, installed, floatSeed, partId, dragId, dragState, dragPlane, onDragStart, onDragMove, onDragEnd, onHoverSlot, animate, AnimatedTransform }) {
+    const CW = target.size.x * 1.1; // cooler width
+    const CH = target.size.y * 1.1; // cooler height
+    const CD = target.size.z * 0.6; // cooler thickness
+
+    return (
+        <AnimatedTransform partId={partId} dragId={dragId} dragState={dragState} dragPlane={dragPlane}
+            onDragStart={onDragStart} onDragMove={onDragMove} onDragEnd={onDragEnd} onHoverSlot={onHoverSlot}
+            installed={installed} target={target} staging={staging} baseScale={1} floatSeed={floatSeed} animate={animate}>
+            <group>
+                {/* ── Main AIO Block Body ── */}
+                <mesh castShadow>
+                    <boxGeometry args={[CW, CH, CD]} />
+                    <M color="#15171a" metalness={0.9} roughness={0.15} />
+                </mesh>
+                {/* Brushed metal ring */}
+                <mesh position={[0, 0, CD * 0.4]}>
+                    <torusGeometry args={[CW * 0.42, 0.015, 16, 64]} />
+                    <M color="#c8cdd4" metalness={1} roughness={0.1} />
+                </mesh>
+
+                {/* ── High-Res Square LCD ── */}
+                <group position={[0, 0, CD * 0.51]}>
+                    <MatrixLCD size={CW * 0.75} />
+                </group>
+
+                {/* ── AIO Tubes ── */}
+                {[0.2, -0.2].map((y, i) => (
+                    <group key={i} position={[CW * 0.5, y * CH, 0]} rotation={[0, Math.PI / 2, 0]}>
+                        {/* Fitting */}
+                        <mesh>
+                            <cylinderGeometry args={[0.035, 0.045, 0.08, 16]} />
+                            <M color="#222" metalness={0.7} roughness={0.3} />
+                        </mesh>
+                        {/* Tube segment start */}
+                        <mesh position={[0, 0.15, 0]} rotation={[0, 0, 0.4]}>
+                            <cylinderGeometry args={[0.028, 0.028, 0.4, 16]} />
+                            <M color="#0a0a0d" metalness={0.2} roughness={0.8} />
+                        </mesh>
+                    </group>
+                ))}
+
+                {/* ── ROG / Brand Logo (bottom corner of block) ── */}
+                <mesh position={[CW * 0.3, -CH * 0.38, CD * 0.51]}>
+                    <planeGeometry args={[CW * 0.25, CH * 0.1]} />
+                    <meshStandardMaterial color="#fff" emissive="#fff" emissiveIntensity={1} transparent opacity={0.8} />
+                </mesh>
+            </group>
+        </AnimatedTransform>
+    );
+}
 
 // ─── FAN (Lian Li Infinity — standalone installable) ─────────────────────────
 
