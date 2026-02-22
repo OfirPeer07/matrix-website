@@ -1,25 +1,27 @@
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Share+Tech+Mono&family=Sora:wght@300;500;700&display=swap");
 
 /* ============================================================
-   MATRIX THEME TOKENS
+   CYBERPUNK THEME TOKENS
    ============================================================ */
 .build-page {
-  --matrix:        #17ca07;
-  --matrix-dim:    rgba(23, 202, 7, 0.18);
-  --matrix-glow:   rgba(23, 202, 7, 0.55);
-  --matrix-border: rgba(23, 202, 7, 0.45);
-  --matrix-soft:   rgba(23, 202, 7, 0.12);
-  --amber:         #f0b45f;
-  --danger:        #ff6b6b;
-  --bg-0:          #000000;
-  --bg-1:          #060a06;
-  --bg-2:          #0a100a;
-  --panel:         rgba(4, 10, 4, 0.88);
-  --panel-soft:    rgba(6, 12, 6, 0.72);
-  --border:        rgba(23, 202, 7, 0.15);
-  --text:          #e8ffe8;
-  --muted:         #8aad8a;
-  --shadow:        0 18px 38px rgba(0, 0, 0, 0.7);
+  --matrix: #00e5ff;
+  --matrix-dim: rgba(0, 229, 255, 0.18);
+  --matrix-glow: rgba(0, 229, 255, 0.55);
+  --matrix-border: rgba(0, 229, 255, 0.45);
+  --matrix-soft: rgba(0, 229, 255, 0.12);
+  --neon-magenta: #ff2d95;
+  --neon-purple: #a855f7;
+  --amber: #f0b45f;
+  --danger: #ff6b6b;
+  --bg-0: #030108;
+  --bg-1: #0a0515;
+  --bg-2: #120822;
+  --panel: rgba(8, 4, 20, 0.88);
+  --panel-soft: rgba(12, 6, 28, 0.72);
+  --border: rgba(0, 229, 255, 0.15);
+  --text: #e8f4ff;
+  --muted: #8a9ead;
+  --shadow: 0 18px 38px rgba(0, 0, 0, 0.8);
 }
 
 /* ============================================================
@@ -50,14 +52,13 @@ body.build-no-scrollbar::-webkit-scrollbar,
    PAGE SHELL
    ============================================================ */
 .build-page {
-  min-height: 100vh;
-  padding: 48px clamp(18px, 4vw, 60px) 70px;
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
   color: var(--text);
   font-family: "Sora", sans-serif;
-  background:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(23, 202, 7, 0.07), transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(23, 202, 7, 0.04), transparent 55%),
-    linear-gradient(160deg, #060a06, #000000 70%, #000000 100%);
+  background: #030108;
   position: relative;
   overflow: hidden;
   isolation: isolate;
@@ -76,234 +77,38 @@ body.build-no-scrollbar::-webkit-scrollbar,
 
 /* Subtle scan-line grid overlay */
 .build-page::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(23, 202, 7, 0.025) 0,
-    rgba(23, 202, 7, 0.025) 1px,
-    transparent 1px,
-    transparent 60px
-  );
-  pointer-events: none;
-  z-index: 0;
+  display: none;
 }
 
 /* ============================================================
    TOPBAR
    ============================================================ */
-.build-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 20px;
-  position: relative;
-  z-index: 1;
-  padding: 14px 20px;
-  border-radius: 14px;
-  background: rgba(4, 10, 4, 0.82);
-  border: 1px solid var(--border);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 0 24px rgba(23, 202, 7, 0.08), var(--shadow);
-}
+/* Removed topbar styles as header was deleted */
 
-.build-brand {
-  font-family: "Orbitron", sans-serif;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-size: clamp(1.1rem, 2vw, 1.7rem);
-  color: var(--matrix);
-  text-shadow: 0 0 14px var(--matrix-glow), 0 0 30px rgba(23, 202, 7, 0.3);
-}
-
-.build-tagline {
-  color: var(--muted);
-  font-size: 0.82rem;
-  font-family: "Share Tech Mono", monospace;
-  max-width: 380px;
-  text-align: center;
-}
-
-.topbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.topbar-progress {
-  font-family: "Share Tech Mono", monospace;
-  font-size: 0.75rem;
-  color: var(--matrix);
-  letter-spacing: 1px;
-  padding: 4px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--matrix-border);
-  background: var(--matrix-soft);
-  white-space: nowrap;
-}
 
 /* ============================================================
    FOCUS / MINIMAL LAYOUT MODIFIERS
    ============================================================ */
-.build-page.is-focus .build-grid {
-  grid-template-columns: 1fr;
-}
+/* Removed focus styles as showTray is always true now and header is gone */
 
-.build-page.is-focus .parts-tray {
-  display: none;
-}
-
-.build-page.is-focus .build-stage {
-  min-height: calc(100vh - 220px);
-}
-
-.build-page.is-focus .build-canvas {
-  height: min(84vh, 920px);
-}
 
 /* ============================================================
-   MAIN GRID
+   MAIN GRID — removed, canvas is full-page now
    ============================================================ */
-.build-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 28px;
-  position: relative;
-  z-index: 1;
-}
 
 /* ============================================================
-   STAGE
-   ============================================================ */
-.build-stage {
-  background: rgba(4, 10, 4, 0.72);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 16px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: var(--shadow), 0 0 0 1px rgba(23, 202, 7, 0.06);
-  backdrop-filter: blur(8px);
-  min-height: 72vh;
-}
-
-/* ============================================================
-   STAGE TOOLBAR
-   ============================================================ */
-.stage-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: rgba(4, 10, 4, 0.75);
-  margin-bottom: 12px;
-  backdrop-filter: blur(6px);
-}
-
-.stage-title h2 {
-  font-family: "Orbitron", sans-serif;
-  font-size: 1.05rem;
-  margin-bottom: 2px;
-  color: var(--matrix);
-  text-shadow: 0 0 8px var(--matrix-glow);
-}
-
-.stage-title span {
-  color: var(--muted);
-  font-size: 0.74rem;
-  font-family: "Share Tech Mono", monospace;
-}
-
-.stage-controls {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-/* ============================================================
-   MODE SELECTOR (pill tabs)
-   ============================================================ */
-.mode-selector {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: rgba(0, 0, 0, 0.65);
-}
-
-.mode-btn {
-  border: 0;
-  background: transparent;
-  color: var(--muted);
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-family: "Share Tech Mono", monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.mode-btn:hover {
-  color: var(--text);
-  background: rgba(23, 202, 7, 0.08);
-}
-
-.mode-btn.is-active {
-  color: var(--matrix);
-  background: var(--matrix-soft);
-  box-shadow: 0 0 10px rgba(23, 202, 7, 0.25);
-}
-
-.mode-actions {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-/* ============================================================
-   KEYBOARD SHORTCUT LEGEND
-   ============================================================ */
-.kbd-legend {
-  font-family: "Share Tech Mono", monospace;
-  font-size: 0.65rem;
-  color: var(--muted);
-  letter-spacing: 0.5px;
-  opacity: 0.75;
-  white-space: nowrap;
-}
-
-.kbd {
-  display: inline-block;
-  padding: 1px 5px;
-  border-radius: 4px;
-  border: 1px solid rgba(23, 202, 7, 0.3);
-  background: rgba(23, 202, 7, 0.06);
-  color: var(--matrix);
-  font-size: 0.62rem;
-  margin: 0 1px;
-}
-
-/* ============================================================
-   CANVAS
+   CANVAS (fills entire viewport)
    ============================================================ */
 .build-canvas {
-  position: relative;
-  border-radius: 16px;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #030108;
+  border: none;
+  border-radius: 0;
   overflow: hidden;
-  background: #000;
-  border: 1px solid var(--border);
-  height: clamp(520px, 74vh, 860px);
-  box-shadow: inset 0 0 0 1px rgba(23, 202, 7, 0.04);
+  z-index: 0;
 }
 
 .build-canvas canvas {
@@ -318,17 +123,6 @@ body.build-no-scrollbar::-webkit-scrollbar,
 
 .build-canvas canvas:active {
   cursor: grabbing;
-}
-
-.build-canvas.is-fullscreen,
-.build-canvas:fullscreen {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  border-radius: 0;
-  z-index: 9999;
-  background: #000;
 }
 
 .build-canvas.is-fullscreen .stage-hint,
@@ -353,7 +147,7 @@ body.build-no-scrollbar::-webkit-scrollbar,
   gap: 12px;
   padding: 8px 14px;
   border-radius: 10px;
-  background: rgba(0, 0, 0, 0.72);
+  background: rgba(3, 1, 8, 0.72);
   border: 1px solid var(--border);
   color: var(--muted);
   font-family: "Share Tech Mono", monospace;
@@ -366,24 +160,73 @@ body.build-no-scrollbar::-webkit-scrollbar,
    PARTS TRAY (floating panel)
    ============================================================ */
 .parts-tray {
-  position: absolute;
-  right: 16px;
-  top: 76px;
-  bottom: 16px;
-  width: min(300px, 92%);
-  z-index: 5;
-  border-radius: 16px;
-  border: 1px solid var(--border);
-  border-left: 2px solid var(--matrix-border);
-  background: rgba(2, 8, 2, 0.94);
-  box-shadow: -4px 0 24px rgba(23, 202, 7, 0.12), var(--shadow);
-  backdrop-filter: blur(12px);
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 300px;
+  max-height: calc(100vh - 40px);
+  z-index: 100;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  background: rgba(8, 4, 20, 0.75);
+  backdrop-filter: blur(20px) saturate(1.4);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(0, 229, 255, 0.06),
+    0 0 40px rgba(168, 85, 247, 0.04);
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 16px;
-  overflow: hidden;
+  gap: 8px;
+  padding: 14px 16px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: traySlideIn 0.3s ease;
 }
+
+@keyframes traySlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.parts-tray:hover {
+  border-color: rgba(0, 229, 255, 0.35);
+}
+
+/* ── TOGGLE BUTTON ── */
+.tray-toggle-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 200;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  background: rgba(8, 4, 20, 0.8);
+  backdrop-filter: blur(12px);
+  color: var(--matrix);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.tray-toggle-btn:hover {
+  border-color: var(--matrix);
+  background: rgba(0, 229, 255, 0.12);
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+}
+
 
 .tray-header {
   display: flex;
@@ -426,15 +269,15 @@ body.build-no-scrollbar::-webkit-scrollbar,
 
 .tray-progress-track {
   height: 5px;
-  background: rgba(23, 202, 7, 0.1);
+  background: rgba(0, 229, 255, 0.08);
   border-radius: 999px;
   overflow: hidden;
 }
 
 .tray-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--matrix), rgba(23, 202, 7, 0.5));
-  box-shadow: 0 0 10px rgba(23, 202, 7, 0.5);
+  background: linear-gradient(90deg, var(--neon-magenta), var(--matrix));
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
   transition: width 0.4s ease;
 }
 
@@ -455,33 +298,51 @@ body.build-no-scrollbar::-webkit-scrollbar,
    PARTS SCROLL LIST
    ============================================================ */
 .parts-scroll {
-  display: grid;
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   overflow-y: auto;
-  padding-right: 2px;
+  overflow-x: hidden;
+  padding: 4px 0;
   flex: 1;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--matrix-border) transparent;
 }
 
 .parts-scroll::-webkit-scrollbar {
+  height: 4px;
   width: 0;
-  height: 0;
 }
 
 /* ============================================================
    PART ITEM
    ============================================================ */
 .part-item {
-  display: grid;
-  gap: 5px;
-  animation: partFadeIn 0.25s ease both;
-  animation-delay: calc(var(--i, 0) * 0.04s);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 2px;
+  position: relative;
+  transition: transform 0.25s ease;
+  animation: partFadeIn 0.2s ease both;
+  animation-delay: calc(var(--i, 0) * 0.03s);
 }
 
+.part-item:hover {
+  transform: translateY(-2px);
+}
+
+
 @keyframes partFadeIn {
-  from { opacity: 0; transform: translateX(8px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .part-button {
@@ -490,22 +351,21 @@ body.build-no-scrollbar::-webkit-scrollbar,
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 10px;
-  padding: 9px 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(23, 202, 7, 0.15);
-  background: rgba(4, 10, 4, 0.75);
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 229, 255, 0.15);
+  background: rgba(8, 4, 20, 0.5);
   color: var(--text);
   font-family: "Share Tech Mono", monospace;
   cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease;
   text-align: left;
 }
 
 .part-button:hover {
-  border-color: var(--matrix-border);
-  background: rgba(8, 18, 8, 0.9);
-  transform: translateX(-2px);
-  box-shadow: 0 0 12px rgba(23, 202, 7, 0.12);
+  border-color: var(--matrix);
+  background: rgba(0, 229, 255, 0.08);
+  box-shadow: 0 0 18px rgba(0, 229, 255, 0.15);
 }
 
 .part-button:disabled {
@@ -515,29 +375,31 @@ body.build-no-scrollbar::-webkit-scrollbar,
 }
 
 .part-item.is-installed .part-button {
-  border-color: rgba(23, 202, 7, 0.55);
-  background: rgba(8, 20, 8, 0.9);
-  box-shadow: 0 0 10px rgba(23, 202, 7, 0.1);
+  border-color: rgba(0, 229, 255, 0.5);
+  background: rgba(0, 229, 255, 0.08);
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.1);
 }
 
 .part-item.is-active .part-button {
-  border-color: var(--matrix);
-  box-shadow: 0 0 0 1px rgba(23, 202, 7, 0.3), 0 0 14px rgba(23, 202, 7, 0.2);
+  border-color: var(--neon-magenta);
+  background: rgba(255, 45, 149, 0.1);
+  box-shadow: 0 0 0 1px rgba(255, 45, 149, 0.3), 0 0 18px rgba(255, 45, 149, 0.15);
 }
 
 .part-item.is-next .part-button {
-  border-color: rgba(240, 180, 95, 0.6);
-  box-shadow: 0 0 8px rgba(240, 180, 95, 0.12);
+  border-color: rgba(168, 85, 247, 0.5);
+  background: rgba(168, 85, 247, 0.06);
+  box-shadow: 0 0 8px rgba(168, 85, 247, 0.1);
 }
 
 .part-item.is-blocked .part-button {
-  border-color: rgba(255, 107, 107, 0.4);
-  color: rgba(255, 200, 200, 0.85);
+  border-color: rgba(255, 107, 107, 0.35);
+  color: rgba(255, 200, 200, 0.7);
 }
 
 .part-item.is-dragging .part-button {
   border-color: var(--matrix);
-  box-shadow: 0 0 18px rgba(23, 202, 7, 0.3);
+  box-shadow: 0 0 22px rgba(0, 229, 255, 0.3);
 }
 
 /* Part icon column */
@@ -627,7 +489,7 @@ body.build-no-scrollbar::-webkit-scrollbar,
 }
 
 .option-btn {
-  border: 1px solid rgba(23, 202, 7, 0.2);
+  border: 1px solid rgba(0, 229, 255, 0.2);
   color: var(--muted);
   background: transparent;
   padding: 3px 10px;
@@ -650,10 +512,10 @@ body.build-no-scrollbar::-webkit-scrollbar,
 }
 
 .option-btn.active {
-  border-color: var(--matrix);
-  color: var(--matrix);
-  background: var(--matrix-soft);
-  box-shadow: 0 0 8px rgba(23, 202, 7, 0.2);
+  border-color: var(--neon-magenta);
+  color: var(--neon-magenta);
+  background: rgba(255, 45, 149, 0.1);
+  box-shadow: 0 0 8px rgba(255, 45, 149, 0.2);
 }
 
 /* ============================================================
@@ -671,8 +533,8 @@ body.build-no-scrollbar::-webkit-scrollbar,
    BUILD BUTTONS
    ============================================================ */
 .build-btn {
-  border: 1px solid rgba(23, 202, 7, 0.25);
-  background: rgba(4, 10, 4, 0.75);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  background: rgba(8, 4, 20, 0.75);
   color: var(--text);
   padding: 6px 14px;
   border-radius: 999px;
@@ -687,8 +549,8 @@ body.build-no-scrollbar::-webkit-scrollbar,
 .build-btn:hover {
   transform: translateY(-1px);
   border-color: var(--matrix-border);
-  background: rgba(8, 18, 8, 0.85);
-  box-shadow: 0 0 12px rgba(23, 202, 7, 0.2);
+  background: rgba(12, 8, 28, 0.85);
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.2);
 }
 
 .build-btn:focus-visible {
@@ -706,7 +568,7 @@ body.build-no-scrollbar::-webkit-scrollbar,
 /* Ghost variant */
 .build-btn.ghost {
   background: transparent;
-  border: 1px solid rgba(23, 202, 7, 0.18);
+  border: 1px solid rgba(0, 229, 255, 0.18);
   color: var(--muted);
 }
 
@@ -722,20 +584,20 @@ body.build-no-scrollbar::-webkit-scrollbar,
   border-color: var(--matrix);
   background: var(--matrix-soft);
   color: var(--matrix);
-  box-shadow: 0 0 10px rgba(23, 202, 7, 0.2);
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
 }
 
 /* Primary / accent variant */
 .build-btn.primary {
-  background: rgba(23, 202, 7, 0.14);
+  background: rgba(0, 229, 255, 0.14);
   border-color: var(--matrix);
   color: var(--matrix);
-  box-shadow: 0 0 14px rgba(23, 202, 7, 0.18);
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.18);
 }
 
 .build-btn.primary:hover {
-  background: rgba(23, 202, 7, 0.22);
-  box-shadow: 0 0 20px rgba(23, 202, 7, 0.3);
+  background: rgba(0, 229, 255, 0.22);
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
 }
 
 /* Danger variant */
@@ -774,30 +636,19 @@ body.build-no-scrollbar::-webkit-scrollbar,
    RESPONSIVE
    ============================================================ */
 @media (max-width: 768px) {
-  .build-topbar {
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-
-  .build-tagline {
-    display: none;
-  }
-
   .parts-tray {
-    width: min(280px, 90%);
+    width: calc(100% - 20px);
+    right: 10px;
+    top: 10px;
+    max-height: calc(100vh - 20px);
   }
 
-  .stage-toolbar {
-    flex-wrap: wrap;
-    gap: 8px;
+  .tray-toggle-btn {
+    right: 10px;
+    top: 10px;
   }
+}
 
-  .stage-controls {
-    width: 100%;
-    justify-content: flex-start;
-  }
-
-  .kbd-legend {
-    display: none;
-  }
+.build-spacer {
+  display: none;
 }

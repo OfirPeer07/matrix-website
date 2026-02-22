@@ -787,10 +787,10 @@ export default function BuildingComputers() {
   const [recentlyInstalled, setRecentlyInstalled] = useState(null);
 
   const isInspection = buildMode === "inspection";
-  const isCable = buildMode === "cable";
-  const insideView = isInspection || isCable;
-  const explodeFactor = isCable && cableExplode ? 1.22 : 1;
-  const xray = panelOpen || isInspection || isCable;
+  const isCable = false; // Cable mode removed from UI
+  const insideView = isInspection;
+  const explodeFactor = 1;
+  const xray = panelOpen || isInspection;
   const showGuides = buildMode !== "inspection";
   const qualityMode = true;
   const liteParts = false;
@@ -1101,7 +1101,7 @@ export default function BuildingComputers() {
           setBuildMode("inspection");
           break;
         case "3":
-          setBuildMode("cable");
+          // Cable mode removed
           break;
         case "p":
           setShowTray((prev) => !prev);
@@ -1110,7 +1110,7 @@ export default function BuildingComputers() {
           if (buildMode === "assembly") setPanelOpen((prev) => !prev);
           break;
         case "e":
-          if (buildMode === "cable") setCableExplode((prev) => !prev);
+          // Cable explode removed
           break;
         case "f":
           toggleFullscreen();
@@ -1134,289 +1134,157 @@ export default function BuildingComputers() {
   }, [buildMode, installAll, resetAll, resetView, toggleFullscreen]);
 
   return (
-    <div className={`build-page ${showTray ? "" : "is-focus"}`}>
-      {/* ── TOPBAR ── */}
-      <header className="build-topbar">
-        <div className="build-brand">⬡ PC Build Sim</div>
-
-        <div className="build-tagline">
-          Select a part → drag into the glowing slot
-        </div>
-
-        <div className="topbar-actions">
-          <span className="topbar-progress">
-            {connectedCount}/{PARTS.length} parts
-          </span>
-          <button
-            className="build-btn primary"
-            onClick={installAll}
-            title="Install all parts (A)"
-          >
-            ⚡ Install All
-          </button>
-          <button
-            className="build-btn danger"
-            onClick={resetAll}
-            title="Reset build (X)"
-          >
-            ↺ Reset
-          </button>
-          <button
-            className="build-btn ghost"
-            onClick={toggleFullscreen}
-            title="Fullscreen (F)"
-          >
-            {isFullscreen ? "⊠ Exit" : "⊡ Fullscreen"}
-          </button>
-        </div>
-      </header>
-
-      <div className="build-grid">
-        <section className="build-stage">
-
-          {/* ── STAGE TOOLBAR ── */}
-          <div className="stage-toolbar">
-            <div className="stage-title">
-              <h2>Assembly Bay</h2>
-              <span>Drag parts into highlighted slots · snap to install</span>
-            </div>
-
-            <div className="stage-controls">
-              {/* Mode tabs */}
-              <div className="mode-selector" role="tablist" aria-label="Build mode">
-                {[
-                  { id: "assembly", label: "🔧 Assembly" },
-                  { id: "inspection", label: "🔍 Inspect" },
-                  { id: "cable", label: "🔌 Cables" },
-                ].map((mode) => (
-                  <button
-                    key={mode.id}
-                    className={`mode-btn ${buildMode === mode.id ? "is-active" : ""}`}
-                    onClick={() => setBuildMode(mode.id)}
-                    aria-pressed={buildMode === mode.id}
-                    role="tab"
-                  >
-                    {mode.label}
-                  </button>
-                ))}
-              </div>
-
-              {/* Mode-specific actions */}
-              <div className="mode-actions">
-                {buildMode === "assembly" && (
-                  <>
-                    <button
-                      className="build-btn ghost"
-                      onClick={() => setPanelOpen((prev) => !prev)}
-                      data-active={panelOpen}
-                      aria-pressed={panelOpen}
-                      title="Toggle side panel (O)"
-                    >
-                      {panelOpen ? "🪟 Close Panel" : "🪟 Side Panel"}
-                    </button>
-                    <button
-                      className="build-btn ghost"
-                      onClick={() => setShowTray((prev) => !prev)}
-                      data-active={showTray}
-                      aria-pressed={showTray}
-                      title="Toggle parts tray (P)"
-                    >
-                      {showTray ? "📦 Hide Tray" : "📦 Parts Tray"}
-                    </button>
-                  </>
-                )}
-                {buildMode === "inspection" && (
-                  <button className="build-btn ghost" onClick={resetView} title="Reset camera (R)">
-                    🎯 Reset View
-                  </button>
-                )}
-                {buildMode === "cable" && (
-                  <button
-                    className="build-btn ghost"
-                    onClick={() => setCableExplode((prev) => !prev)}
-                    data-active={cableExplode}
-                    aria-pressed={cableExplode}
-                    title="Toggle exploded view (E)"
-                  >
-                    {cableExplode ? "🗜 Collapse" : "💥 Explode"}
-                  </button>
-                )}
-              </div>
-
-              {/* Keyboard legend */}
-              <span className="kbd-legend">
-                <span className="kbd">1-3</span> mode ·
-                <span className="kbd">P</span> tray ·
-                <span className="kbd">R</span> reset view ·
-                <span className="kbd">F</span> fullscreen
-              </span>
-            </div>
-          </div>
-
-          {/* ── 3D CANVAS ── */}
-          <div
-            className={`build-canvas ${isFullscreen ? "is-fullscreen" : ""}`}
-            ref={canvasWrapRef}
-          >
-            <Canvas
-              frameloop={qualityMode ? "always" : "demand"}
-              shadows={qualityMode}
-              dpr={qualityMode ? [1.5, 2] : [0.75, 1]}
-              gl={{
-                antialias: qualityMode,
-                alpha: false,
-                powerPreference: qualityMode ? "high-performance" : "low-power",
-              }}
-              camera={{ position: [5.2, 2.4, 6.4], fov: 42, near: 0.1, far: 60 }}
-            >
-              <RendererSettings qualityMode={qualityMode} />
-              <PCScene
-                installed={installed}
-                selections={selections}
-                focusedSlot={focusedSlot}
-                showGuides={showGuides}
-                caseSize={caseSize}
-                onCaseReady={handleCaseReady}
-                controlsRef={controlsRef}
-                lockCamera={Boolean(draggingId)}
-                xray={xray}
-                explodeFactor={explodeFactor}
-                insideView={insideView}
-                qualityMode={qualityMode}
-                liteParts={liteParts}
-                activePartId={activePartId}
-                activeSlotId={activeSlotId}
-                activeBlocked={activeBlocked}
-                recentlyInstalled={recentlyInstalled}
-                dragId={draggingId}
-                dragState={dragStateRef}
-                onDragStart={handleDragStart}
-                onDragMove={handleDragMove}
-                onDragEnd={handleDragEnd}
-                onHoverSlot={handleHoverSlot}
-              />
-            </Canvas>
-
-            <div className="stage-hint">
-              <span>🖱 Drag part → glowing slot to install · click part to highlight</span>
-              <span>Scroll to zoom · drag to orbit</span>
-            </div>
-          </div>
-
-          {/* ── PARTS TRAY ── */}
-          {showTray && (
-            <aside className="parts-tray">
-              <div className="tray-header">
-                <div>
-                  <h2>Parts Tray</h2>
-                  <p>Drag into the glowing slot · snap to connect</p>
-                </div>
-                <div className="tray-actions">
-                  <button
-                    className="build-btn ghost"
-                    onClick={() => setShowTray(false)}
-                    title="Close tray (P)"
-                  >
-                    ✕
-                  </button>
-                </div>
-              </div>
-
-              {/* Progress bar */}
-              <div className="tray-progress">
-                <div className="tray-progress-track">
-                  <div className="tray-progress-fill" style={{ width: `${progress}%` }} />
-                </div>
-                <div className="tray-progress-meta">
-                  <span>{connectedCount} / {PARTS.length} connected</span>
-                  <strong>{progress}% integrity</strong>
-                </div>
-              </div>
-
-              {/* Part list */}
-              <div className="parts-scroll">
-                {PARTS.map((part, index) => {
-                  const isInstalled = installed[part.id];
-                  const isDragging = draggingId === part.id;
-                  const missingDeps = getMissingDeps(part.id, installed);
-                  const isBlocked = !isInstalled && missingDeps.length > 0;
-                  const isActive = activePartId === part.id;
-                  const isNext = nextPart?.id === part.id;
-                  return (
-                    <div
-                      key={part.id}
-                      className={[
-                        "part-item",
-                        isInstalled ? "is-installed" : "",
-                        isDragging ? "is-dragging" : "",
-                        isActive ? "is-active" : "",
-                        isNext ? "is-next" : "",
-                        isBlocked ? "is-blocked" : "",
-                      ].join(" ")}
-                      style={{ "--i": index }}
-                      onMouseEnter={() => { if (!draggingId) setFocusedSlot(part.slot); }}
-                      onMouseLeave={() => { if (!draggingId) setFocusedSlot(null); }}
-                    >
-                      <button
-                        className="part-button"
-                        onClick={() => togglePart(part)}
-                        disabled={isBlocked}
-                      >
-                        <span className="part-icon">{part.icon}</span>
-                        <span className="part-info">
-                          <span className="part-label">{part.label}</span>
-                          <span className="part-desc">{part.description}</span>
-                        </span>
-                        <span className={`part-state ${isInstalled ? "on" : "off"}`}>
-                          {isInstalled ? "✓ ON" : isBlocked ? "🔒" : "PICK"}
-                        </span>
-                      </button>
-
-                      {isNext && !isInstalled && (
-                        <span className="part-next">▶ Next step</span>
-                      )}
-
-                      {part.options && (
-                        <div className="part-options">
-                          {part.options.map((option) => (
-                            <button
-                              key={option.id}
-                              type="button"
-                              className={`option-btn ${selections[part.id] === option.id ? "active" : ""}`}
-                              onClick={() => updateSelection(part.id, option.id)}
-                            >
-                              {option.label}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-
-                      {isBlocked && (
-                        <span className="part-blocked">
-                          🔒 Requires: {missingDeps.map((id) => partLookup[id]?.label || id).join(", ")}
-                        </span>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Tray bottom actions */}
-              <div className="tray-bottom-actions">
-                <button className="build-btn primary full" onClick={installAll} title="Install all (A)">
-                  ⚡ Install All
-                </button>
-                <button className="build-btn danger full" onClick={resetAll} title="Reset (X)">
-                  ↺ Reset
-                </button>
-              </div>
-            </aside>
-          )}
-        </section>
+    <div className="build-page">
+      {/* ── FULL-PAGE 3D CANVAS ── */}
+      <div
+        className={`build-canvas ${isFullscreen ? "is-fullscreen" : ""}`}
+        ref={canvasWrapRef}
+      >
+        <Canvas
+          frameloop={qualityMode ? "always" : "demand"}
+          shadows={qualityMode}
+          dpr={qualityMode ? [1.5, 2] : [0.75, 1]}
+          gl={{
+            antialias: qualityMode,
+            alpha: false,
+            powerPreference: qualityMode ? "high-performance" : "low-power",
+          }}
+          camera={{ position: [5.2, 2.4, 6.4], fov: 42, near: 0.1, far: 60 }}
+        >
+          <RendererSettings qualityMode={qualityMode} />
+          <PCScene
+            installed={installed}
+            selections={selections}
+            focusedSlot={focusedSlot}
+            showGuides={showGuides}
+            caseSize={caseSize}
+            onCaseReady={handleCaseReady}
+            controlsRef={controlsRef}
+            lockCamera={false}
+            xray={xray}
+            explodeFactor={explodeFactor}
+            insideView={insideView}
+            qualityMode={qualityMode}
+            liteParts={liteParts}
+            activePartId={activePartId}
+            activeSlotId={activeSlotId}
+            activeBlocked={activeBlocked}
+            recentlyInstalled={recentlyInstalled}
+            dragId={null}
+            dragState={dragStateRef}
+            onDragStart={handleDragStart}
+            onDragMove={handleDragMove}
+            onDragEnd={handleDragEnd}
+            onHoverSlot={handleHoverSlot}
+          />
+        </Canvas>
       </div>
+
+      {/* ── FLOATING TOGGLE BUTTON ── */}
+      <button
+        className="tray-toggle-btn"
+        onClick={() => setShowTray((prev) => !prev)}
+        title="Toggle Parts (P)"
+      >
+        {showTray ? "✕" : "⚙"}
+      </button>
+
+      {/* ── FLOATING PARTS OVERLAY ── */}
+      {showTray && (
+        <aside className="parts-tray">
+          <div className="tray-header">
+            <div>
+              <h2>Components</h2>
+              <p>Click to install · click again to remove</p>
+            </div>
+          </div>
+
+          <div className="tray-progress">
+            <div className="tray-progress-track">
+              <div className="tray-progress-fill" style={{ width: `${progress}%` }} />
+            </div>
+            <div className="tray-progress-meta">
+              <span>{connectedCount} / {PARTS.length}</span>
+              <strong>{progress}%</strong>
+            </div>
+          </div>
+
+          <div className="parts-scroll">
+            {PARTS.map((part, index) => {
+              const isInstalled = installed[part.id];
+              const missingDeps = getMissingDeps(part.id, installed);
+              const isBlocked = !isInstalled && missingDeps.length > 0;
+              const isActive = activePartId === part.id;
+              const isNext = nextPart?.id === part.id;
+              return (
+                <div
+                  key={part.id}
+                  className={[
+                    "part-item",
+                    isInstalled ? "is-installed" : "",
+                    isActive ? "is-active" : "",
+                    isNext ? "is-next" : "",
+                    isBlocked ? "is-blocked" : "",
+                  ].join(" ")}
+                  style={{ "--i": index }}
+                  onMouseEnter={() => setFocusedSlot(part.slot)}
+                  onMouseLeave={() => setFocusedSlot(null)}
+                >
+                  <button
+                    className="part-button"
+                    onClick={() => togglePart(part)}
+                    disabled={isBlocked}
+                  >
+                    <span className="part-icon">{part.icon}</span>
+                    <span className="part-info">
+                      <span className="part-label">{part.label}</span>
+                      <span className="part-desc">{part.description}</span>
+                    </span>
+                    <span className={`part-state ${isInstalled ? "on" : "off"}`}>
+                      {isInstalled ? "✓" : isBlocked ? "🔒" : "○"}
+                    </span>
+                  </button>
+
+                  {part.options && (
+                    <div className="part-options">
+                      {part.options.map((option) => (
+                        <button
+                          key={option.id}
+                          type="button"
+                          className={`option-btn ${selections[part.id] === option.id ? "active" : ""}`}
+                          onClick={() => updateSelection(part.id, option.id)}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {isBlocked && (
+                    <span className="part-blocked">
+                      Requires: {missingDeps.map((id) => partLookup[id]?.label || id).join(", ")}
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="tray-bottom-actions">
+            <button className="build-btn primary full" onClick={installAll} title="Install all (A)">
+              ⚡ Install All
+            </button>
+            <button className="build-btn danger full" onClick={resetAll} title="Reset (X)">
+              ↺ Reset
+            </button>
+          </div>
+        </aside>
+      )}
     </div>
   );
 }
+
+
 
 
 
