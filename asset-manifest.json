@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/matrix-website/static/css/main.09e05509.css",
+    "main.css": "/matrix-website/static/css/main.505bfb2f.css",
     "main.js": "/matrix-website/static/js/main.02d426cc.js",
     "static/css/113.5ddcadfe.chunk.css": "/matrix-website/static/css/113.5ddcadfe.chunk.css",
     "static/js/113.4b68c9e6.chunk.js": "/matrix-website/static/js/113.4b68c9e6.chunk.js",
@@ -37,7 +37,7 @@
     "index.html": "/matrix-website/index.html"
   },
   "entrypoints": [
-    "static/css/main.09e05509.css",
+    "static/css/main.505bfb2f.css",
     "static/js/main.02d426cc.js"
   ]
 }
