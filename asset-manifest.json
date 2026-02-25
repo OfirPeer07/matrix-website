@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/matrix-website/static/css/main.505bfb2f.css",
-    "main.js": "/matrix-website/static/js/main.02d426cc.js",
-    "static/css/113.5ddcadfe.chunk.css": "/matrix-website/static/css/113.5ddcadfe.chunk.css",
-    "static/js/113.4b68c9e6.chunk.js": "/matrix-website/static/js/113.4b68c9e6.chunk.js",
-    "static/css/212.ee47aff2.chunk.css": "/matrix-website/static/css/212.ee47aff2.chunk.css",
+    "main.css": "/matrix-website/static/css/main.57e76e20.css",
+    "main.js": "/matrix-website/static/js/main.53f8c9aa.js",
+    "static/css/113.a448f8d6.chunk.css": "/matrix-website/static/css/113.a448f8d6.chunk.css",
+    "static/js/113.0a151565.chunk.js": "/matrix-website/static/js/113.0a151565.chunk.js",
+    "static/css/212.b72bccfc.chunk.css": "/matrix-website/static/css/212.b72bccfc.chunk.css",
     "static/js/212.d06af597.chunk.js": "/matrix-website/static/js/212.d06af597.chunk.js",
     "static/js/206.a27bf86f.chunk.js": "/matrix-website/static/js/206.a27bf86f.chunk.js",
     "static/media/neoVideo.mp4": "/matrix-website/static/media/neoVideo.ed7a1ea95d3e84ea3e48.mp4",
@@ -37,7 +37,7 @@
     "index.html": "/matrix-website/index.html"
   },
   "entrypoints": [
-    "static/css/main.505bfb2f.css",
-    "static/js/main.02d426cc.js"
+    "static/css/main.57e76e20.css",
+    "static/js/main.53f8c9aa.js"
   ]
 }
