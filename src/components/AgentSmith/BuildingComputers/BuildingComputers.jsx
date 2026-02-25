@@ -22,16 +22,16 @@ const REDUCE_MOTION = false;
 
 const CONNECTION_REQUIREMENTS = {
   motherboard: [],
-  psu: ["motherboard"],
   cpu: ["motherboard"],
-  ram: ["motherboard"],
-  storage: ["motherboard", "psu"],
-  gpu: ["motherboard", "psu"],
-  fan: ["motherboard", "psu"],
-  panel: ["motherboard", "psu", "cpu", "ram", "storage", "gpu", "fan"],
+  ram: ["cpu"],
+  storage: ["ram"],
+  psu: ["storage"],
+  fan: ["psu"],
+  gpu: ["fan"],
+  panel: ["gpu"],
 };
 
-const CONNECTION_ORDER = ["motherboard", "psu", "cpu", "ram", "storage", "gpu", "fan", "panel"];
+const CONNECTION_ORDER = ["motherboard", "cpu", "ram", "storage", "psu", "fan", "gpu", "panel"];
 
 const PARTS = [
   {
@@ -359,9 +359,10 @@ function AnimatedTransform({
       ref={ref}
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
+      onClick={(e) => {
+        e.stopPropagation();
+        if (onHoverSlot && partId) onHoverSlot(partId, true);
+      }}
     >
       {children}
     </group>
@@ -947,23 +948,41 @@ export default function BuildingComputers() {
 
   const togglePart = useCallback(
     (part) => {
-      const nextValue = !installedRef.current[part.id];
-      if (nextValue) {
+      const isInstalled = installedRef.current[part.id];
+
+      if (!isInstalled) {
+        // Try to Install
         const missing = getMissingDeps(part.id, installedRef.current);
         if (missing.length > 0) {
-          const missingLabels = missing.map((id) => partLookup[id]?.label || id).join(", ");
-          pushLog(`Blocked: install ${missingLabels} first`);
+          const nextRequired = partLookup[missing[0]]?.label || missing[0];
+          pushLog(`Blocked: Install ${nextRequired} first`);
           return;
         }
+
+        setInstalled((prev) => ({ ...prev, [part.id]: true }));
+        setRecentlyInstalled(part.id);
+        setActivePartId(null);
+        setFocusedSlot(null);
+        pushLog(`${part.label} connected`);
+      } else {
+        // Try to Remove
+        // Check if any installed part depends on this one
+        const dependents = PARTS.filter(p =>
+          installedRef.current[p.id] &&
+          (CONNECTION_REQUIREMENTS[p.id] || []).includes(part.id)
+        );
+
+        if (dependents.length > 0) {
+          const depLabel = dependents[0].label;
+          pushLog(`Blocked: Remove ${depLabel} first`);
+          return;
+        }
+
+        setInstalled((prev) => ({ ...prev, [part.id]: false }));
         setActivePartId(part.id);
         setFocusedSlot(part.slot);
-        pushLog(`${part.label} ready to connect`);
-        return;
+        pushLog(`${part.label} disconnected`);
       }
-      setInstalled((prev) => ({ ...prev, [part.id]: false }));
-      setActivePartId(part.id);
-      setFocusedSlot(part.slot);
-      pushLog(`${part.label} disconnected`);
     },
     [pushLog, getMissingDeps, partLookup]
   );
@@ -1271,9 +1290,25 @@ export default function BuildingComputers() {
           </div>
 
           <div className="tray-bottom-actions">
-            <button className="build-btn primary full" onClick={installAll} title="Install all (A)">
-              ⚡ Install All
-            </button>
+            {progress < 100 && (
+              <button className="build-btn primary full" onClick={installAll} title="Install all (A)">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{ marginRight: "6px" }}
+                >
+                  <circle cx="12" cy="12" r="3" />
+                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                </svg>
+                Install All
+              </button>
+            )}
             <button className="build-btn danger full" onClick={resetAll} title="Reset (X)">
               ↺ Reset
             </button>

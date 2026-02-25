@@ -91,16 +91,25 @@ const Neo = () => {
 
   const scrollToSection = (ref, section) => {
     if (!ref?.current) return;
+
+    // Notify MatrixBar to stay visible during this programmatic scroll
+    window.isProgrammaticScroll = true;
+
     setActiveSection(section);
 
     setTimeout(() => {
       ref.current.scrollIntoView({ behavior: "smooth" });
+
+      // Clear flag after scroll is likely finished
+      setTimeout(() => {
+        window.isProgrammaticScroll = false;
+      }, 1200);
     }, 20);
   };
 
   return (
     <div className="neo-wrapper">
-      <div className="main-page">
+      <div className="sectional-layout">
         <IndicatorDots
           activeSection={activeSection}
           scrollToSection={scrollToSection}
@@ -143,11 +152,11 @@ const Neo = () => {
             </div>
 
             {/* TEXT SIDE */}
-                <div>
-                  <Escape />
-                </div>
-              </div>
+            <div>
+              <Escape />
             </div>
+          </div>
+        </div>
 
 
         {/* PILL SECTION */}

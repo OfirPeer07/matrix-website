@@ -9,15 +9,29 @@ import '../../../styles/indicators/IndicatorDots.css';
  * - Stable observer configuration
  */
 
-const IndicatorDots = ({ experienceRef, whatCanBeDoneRef, photoCarouselRef }) => {
+const IndicatorDots = ({ experienceRef, whatCanBeDoneRef, photoCarouselRef, scrollToSection: externalScrollToSection }) => {
   const [activeSection, setActiveSection] = useState('experience');
   const indicatorRef = useRef(null);
 
   // Stable, clean scroll-to-section
   const scrollToSection = (ref, sectionName) => {
+    if (externalScrollToSection) {
+      externalScrollToSection(ref, sectionName);
+      return;
+    }
+
     if (!ref?.current) return;
+
+    // Notify MatrixBar to stay visible during this programmatic scroll
+    window.isProgrammaticScroll = true;
+
     ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     setActiveSection(sectionName);
+
+    // Clear flag after scroll is likely finished
+    setTimeout(() => {
+      window.isProgrammaticScroll = false;
+    }, 1200);
   };
 
   // IntersectionObserver to track visible section
@@ -53,7 +67,7 @@ const IndicatorDots = ({ experienceRef, whatCanBeDoneRef, photoCarouselRef }) =>
   return (
     <div className="indicator__list-wrap" ref={indicatorRef}>
       <div className="indicator__list">
-        
+
         {/* Experience */}
         <button
           className={`indicator__item ${activeSection === 'experience' ? 'indicator__item--active' : ''}`}

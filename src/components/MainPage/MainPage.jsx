@@ -51,12 +51,12 @@ function usePersistentSettings(key, initial) {
   useEffect(() => {
     let t = window.requestIdleCallback
       ? requestIdleCallback(() =>
-          localStorage.setItem(key, JSON.stringify(state))
-        )
+        localStorage.setItem(key, JSON.stringify(state))
+      )
       : setTimeout(
-          () => localStorage.setItem(key, JSON.stringify(state)),
-          120
-        );
+        () => localStorage.setItem(key, JSON.stringify(state)),
+        120
+      );
 
     return () => {
       if (typeof t === "number") clearTimeout(t);
@@ -117,7 +117,7 @@ const MainPage = ({ hideMatrix = false }) => {
   const reset = () => setSettings(DEFAULT_SETTINGS);
 
   return (
-    <div className="main-page" aria-labelledby={headingId}>
+    <div className="hero-landing-container" aria-labelledby={headingId}>
       {/* Floating open/close buttons */}
       <button
         className="fab open-drawer-btn"

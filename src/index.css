@@ -3,23 +3,18 @@
 @tailwind utilities;
 
 @layer components {
+
   /* Matrix Card Styles */
   .matrix-card {
-    @apply bg-matrix-dark border border-matrix-green/30 rounded-lg p-6 
-           hover:border-matrix-green/60 hover:shadow-lg hover:shadow-matrix-green/20 
-           transition-all duration-300 transform hover:scale-105;
+    @apply bg-matrix-dark border border-matrix-green/30 rounded-lg p-6 hover:border-matrix-green/60 hover:shadow-lg hover:shadow-matrix-green/20 transition-all duration-300 transform hover:scale-105;
   }
 
   .matrix-button {
-    @apply bg-matrix-green text-matrix-dark font-matrix font-bold py-2 px-4 rounded 
-           hover:bg-matrix-green/80 hover:shadow-lg hover:shadow-matrix-green/40 
-           transition-all duration-200 transform hover:scale-105 active:scale-95;
+    @apply bg-matrix-green text-matrix-dark font-matrix font-bold py-2 px-4 rounded hover:bg-matrix-green/80 hover:shadow-lg hover:shadow-matrix-green/40 transition-all duration-200 transform hover:scale-105 active:scale-95;
   }
 
   .matrix-input {
-    @apply bg-matrix-light border border-matrix-green/30 text-white rounded px-3 py-2 
-           focus:border-matrix-green focus:outline-none focus:ring-2 focus:ring-matrix-green/50 
-           placeholder-gray-400;
+    @apply bg-matrix-light border border-matrix-green/30 text-white rounded px-3 py-2 focus:border-matrix-green focus:outline-none focus:ring-2 focus:ring-matrix-green/50 placeholder-gray-400;
   }
 
   /* Matrix Text Styles */
@@ -71,8 +66,7 @@
   }
 
   .matrix-nav-link {
-    @apply text-matrix-green/70 hover:text-matrix-green px-4 py-2 
-           hover:bg-matrix-green/10 rounded transition-all duration-200;
+    @apply text-matrix-green/70 hover:text-matrix-green px-4 py-2 hover:bg-matrix-green/10 rounded transition-all duration-200;
   }
 
   .matrix-nav-link.active {
@@ -98,6 +92,7 @@
 }
 
 @layer utilities {
+
   /* Matrix-specific utilities */
   .text-matrix-shadow {
     text-shadow: 0 0 10px theme('colors.matrix.green');
@@ -108,7 +103,7 @@
   }
 
   .bg-matrix-pattern {
-    background-image: 
+    background-image:
       radial-gradient(circle at 25% 25%, theme('colors.matrix.green')/10 1px, transparent 1px),
       radial-gradient(circle at 75% 75%, theme('colors.matrix.green')/10 1px, transparent 1px);
     background-size: 50px 50px;
@@ -116,12 +111,8 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
 }
 
 code {
@@ -133,11 +124,4 @@ code {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-
-body, html {
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden; /* מונע סקרול אופקי שיוצר פסים לבנים */
-  background-color: #000; /* מבטיח שגם אם יש שוליים, הם יהיו שחורים */
 }

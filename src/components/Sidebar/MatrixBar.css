@@ -1,254 +1,691 @@
-:root{
-  --bg:#000; --neon:#17ca07; --panel:rgba(27,27,27,.92);
-  --radius:16px; --ring:3px solid var(--neon);
-  --icon-min:60px; --icon-ideal:7.25vw; --icon-max:140px;
-  --gap-min:20px; --gap-ideal:1vw; --gap-max:40px;
-  --dropdown-offset-y:.75rem;
-  --z-sidebar:999; --z-dropdown:1010;
+/* ════════════════════════════════════════════════════════════════════
+   MatrixBar — Cyber Grid Edition
+   ════════════════════════════════════════════════════════════════════ */
+:root {
+  --neon: #17ca07;
+  --neon-bright: #5fff47;
+  --neon-dim: rgba(23, 202, 7, .35);
+  --panel-bg: rgba(3, 10, 3, 0.96);
+  --radius: 12px;
 
-  /* משכי תנועה */
-  --shift-in-dur:1s;
-  --shift-out-dur:1.5s;
-  --shift-in-ease:cubic-bezier(.22,.61,.36,1);
-  --shift-out-ease:cubic-bezier(.16,.84,.44,1);
+  --icon-min: 86px;
+  --icon-ideal: 10vw;
+  --icon-max: 140px;
 
-  /* אפקטים (חדשים) */
-  --glitch-shift: 1.5px;             /* עוצמת פיצול צבעים */
-  --glitch-slices: 6;                /* מספר פרוסות */
-  --glitch-dur: 950ms;               /* משך מחזור גליץ' */
-  --scan-dur: 1600ms;                /* משך סריקה אנכית */
-  --ripple-dur: 900ms;               /* משך ריפל */
-}
+  --gap-min: calc(32px - 1rem);
+  --gap-ideal: calc(4vw - 2rem);
+  --gap-max: calc(80px - 2rem);
 
-html,body{margin:0; background:var(--bg); color:var(--neon); height:100vh; width:100vw; overflow:hidden;}
-.sidebar{position:relative; width:100%; height:clamp(100px,17vh,120px); display:flex; align-items:center; justify-content:center;
-  padding-inline:4.2%; box-sizing:border-box; z-index:var(--z-sidebar);
-  background: radial-gradient(120% 180% at 50% 0%, rgba(23,202,7,.10) 0%, rgba(0,0,0,0) 55%),
-             linear-gradient(135deg,#000,#0f0f0f 55%,#1a1a1a);
-  transition:transform .3s ease, opacity .3s ease;
-}
-.sidebar.hidden{transform:translateY(-100%); opacity:0; pointer-events:none;}
-.sidebar.visible{transform:translateY(0); opacity:1;}
+  --z-sidebar: 999;
+  --z-panel: 1000;
+  --z-mobile: 1500;
+  --z-sheet: 2000;
 
-.sidebar ul{list-style:none; margin:0; padding:0; display:flex; align-items:center; justify-content:center;
-  width:100%; max-width:2560px; height:100%; gap:clamp(var(--gap-min),var(--gap-ideal),var(--gap-max));}
-.sidebar li{position:relative; display:flex; align-items:center; justify-content:center; overflow:visible;}
+  /* Increased bar height to accommodate larger icons */
+  --bar-h: clamp(120px, 14vh, 150px);
 
-/* === Icon (עיגול, הילה וטבעת) ======================================= */
-.sidebar a.menu-icon{
-  position:relative; display:grid; place-items:center;
-  width:clamp(var(--icon-min), var(--icon-ideal), var(--icon-max));
-  aspect-ratio:1; border-radius:50%; isolation:isolate;
-  background: radial-gradient(120% 120% at 50% 40%, rgba(23,202,7,.12), rgba(23,202,7,.06) 60%, transparent 100%);
-  transition:transform .22s ease, filter .22s ease;
-}
-.sidebar a.menu-icon::before,
-.sidebar a.menu-icon::after{
-  content:""; position:absolute; inset:0; border-radius:70%; pointer-events:none;
-}
-.sidebar a.menu-icon::before{
-  mix-blend-mode:screen;
-}
-.sidebar a.menu-icon::after{
-  background: radial-gradient(70% 70% at 50% 50%, rgba(23,202,7,.55), transparent 60%);
-  filter: blur(10px); opacity:.9; z-index:-1;
-  transition: opacity .22s ease, transform .22s ease;
-}
-.sidebar a.menu-icon img{
-  width:100%; height:100%; border-radius:50%;
-  object-fit:cover; object-position:center 40%;
-  transition:transform .22s ease, filter .22s ease;
-  -webkit-user-drag:none; user-select:none;
-  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 90%, transparent 100%);
-          mask-image: radial-gradient(circle at 50% 50%, #000 90%, transparent 100%);
-}
-.sidebar a.menu-icon:hover{ transform: translateY(-2px) scale(1.025); }
-.sidebar a.menu-icon:hover::after{ opacity:1; transform: scale(1.03); }
-.sidebar a.menu-icon:hover img{ filter: grayscale(8%); }
-
-/* Sweep highlight */
-.sidebar a.menu-icon .sweep{
-  position:absolute; inset:-2px; border-radius:50%; pointer-events:none;
-  background: conic-gradient(from 0turn, transparent 0 80%, rgba(255,255,255,.35) 85%, transparent 95%);
-  -webkit-mask: radial-gradient(circle, #000 60%, transparent 68%);
-          mask: radial-gradient(circle, #000 60%, transparent 68%);
-  opacity:0; transform: rotate(0turn);
-  transition: opacity .25s ease, transform .9s cubic-bezier(.22,.61,.36,1);
-}
-.sidebar a.menu-icon:hover .sweep{ opacity:.55; transform: rotate(1.05turn); }
-
-/* === Dropdown – ברירת מחדל מתחת לאייקון (רוחבי) ===================== */
-.dropdown-menu{
-  position:absolute; top:calc(100% + var(--dropdown-offset-y));
-  left:50%; transform:translateX(-50%) translateY(-6px);
-  min-width:200px; background:var(--panel); border:var(--ring);
-  border-radius:var(--radius); padding:10px 12px;
-  box-shadow:0 12px 28px rgba(23,202,7,.25);
-  opacity:0; visibility:hidden; pointer-events:none;
-  z-index:var(--z-dropdown); backdrop-filter:blur(3px);
-  transition:opacity .22s ease, visibility .22s ease, transform .22s ease;
-
-  display:flex; flex-direction:row; align-items:center; gap:4px; white-space:nowrap;
-}
-.sidebar li:hover .dropdown-menu,
-.sidebar li:focus-within .dropdown-menu{
-  opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%) translateY(0);
-}
-.dropdown-menu.logo-menu{ transition-delay:.6s; }
-.dropdown-menu a{
-  color:var(--neon); text-decoration:none; display:inline-flex;
-  padding:8px 10px; border-radius:10px; text-align:center; direction:rtl;
-}
-.dropdown-menu a:hover, .dropdown-menu a:focus-visible{ background-color:rgba(23,202,7,.12); color:#fff; }
-
-/* === פתיחה לצד (drop-left / drop-right) ============================== */
-.sidebar li.drop-right .dropdown-menu{
-  top:50%; left:calc(100% + 14px); right:auto;
-  transform:translateY(-50%) translateX(6px);
-}
-.sidebar li.drop-left .dropdown-menu{
-  top:50%; right:calc(100% + 14px); left:auto;
-  transform:translateY(-50%) translateX(6px);
-}
-.sidebar li.drop-right:hover .dropdown-menu,
-.sidebar li.drop-right:focus-within .dropdown-menu,
-.sidebar li.drop-left:hover .dropdown-menu,
-.sidebar li.drop-left:focus-within .dropdown-menu{
-  opacity:1; visibility:visible; pointer-events:auto; transform:translateY(-50%) translateX(0);
+  --panel-slide-dur: 0.3s;
+  --panel-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --scan-dur: 2s;
 }
 
-/* גשר hover שקוף בין האייקון לתפריט (מונע סגירה מוקדמת) */
-.sidebar li.drop-left::before,
-.sidebar li.drop-right::before{
-  content:""; position:absolute; top:50%; transform:translateY(-50%);
-  height:62px; width:16px; background:transparent;
-}
-.sidebar li.drop-left::before{ right:100%; }
-.sidebar li.drop-right::before{ left:100%; }
 
-/* === הזזה שמאלה + חזרה איטית (ל־Neo ול־Smith) ======================= */
-.sidebar ul li.neoIcon,
-.sidebar ul li.agentSmithIcon{
-  transform: translateX(0);
-  transition: transform var(--shift-in-dur) var(--shift-in-ease);
-}
-.sidebar ul li.neoIcon.shift,
-.sidebar ul li.agentSmithIcon.shift{
-  transform: translateX(-330px);
-}
-/* כשחוזרים – משך ועקומה איטיים יותר */
-.sidebar ul li.neoIcon.is-returning,
-.sidebar ul li.agentSmithIcon.is-returning{
-  transition-duration: var(--shift-out-dur);
-  transition-timing-function: var(--shift-out-ease);
-}
-
-/* === Mobile bottom sheet ============================================== */
-.mobile-device .mobile-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:1500; }
-.mobile-device .mobile-dropdown-menu{
-  position:fixed; left:0; right:0; bottom:0; z-index:2000; border-radius:20px 20px 0 0;
-  background:rgba(27,27,27,.95); padding:25px 20px; display:flex; flex-direction:column; align-items:center;
-  border:3px solid var(--neon); border-bottom:none; box-shadow:0 -4px 20px rgba(23,202,7,.4); backdrop-filter:blur(5px);
-  animation:slideUp .3s ease-out;
-}
-.mobile-device .mobile-dropdown-menu.closing{ animation:slideDown .3s ease-out forwards; }
-.mobile-device .mobile-dropdown-menu a{ color:var(--neon); text-decoration:none; display:block; width:100%; text-align:center; padding:18px; margin:8px 0; border-radius:12px; font-weight:bold; }
-.mobile-device .mobile-dropdown-menu .swipe-indicator{ width:60px; height:6px; background:rgba(23,202,7,.5); border-radius:10px; margin:0 auto 20px; }
-.mobile-device .mobile-dropdown-menu .close-menu-btn{ position:absolute; top:20px; right:20px; width:48px; height:48px; border-radius:50%; background:none; border:none; color:var(--neon); font-size:28px; }
-
-@keyframes slideUp{from{transform:translateY(100%)} to{transform:translateY(0)}}
-@keyframes slideDown{from{transform:translateY(0)} to{transform:translateY(100%)}}
-
-@media (prefers-reduced-motion:reduce){
-  *{transition:none !important; animation:none !important;}
-  .sidebar a.menu-icon:hover img{ transform:none !important; filter:none !important; }
-}
-
-/* === Matrix glitch + ripple (רק ל־Neo/Smith) ========================= */
-/* מכין מעטפת יחסית לאפקטים */
-.sidebar li.neoIcon .menu-icon,
-.sidebar li.agentSmithIcon .menu-icon{
+/* ── Sidebar bar ─────────────────────────────────────────────────── */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* Bar is exactly --bar-h tall; panel sits OUTSIDE it */
+  height: var(--bar-h);
+  z-index: var(--z-sidebar);
   overflow: visible;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  /* Pure dark base — effect added by ::before and .bar-grid */
+  background: rgba(0, 4, 0, 1);
+
+  /* Neon gradient bottom border */
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(90deg,
+      transparent 0%,
+      rgba(23, 202, 7, .1) 8%,
+      rgba(23, 202, 7, .7) 32%,
+      var(--neon-bright) 50%,
+      rgba(23, 202, 7, .7) 68%,
+      rgba(23, 202, 7, .1) 92%,
+      transparent 100%) 1;
+
+  box-shadow:
+    0 0 0 1px rgba(23, 202, 7, .04),
+    0 8px 48px rgba(0, 0, 0, .95);
+
+  transition: transform .3s ease, opacity .3s ease;
+}
+
+.sidebar.hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+
+/* ── Cyber-grid background ──────────────────────────────────────────
+   Perspective grid like the 21st.dev cyber-matrix hero effect        */
+.bar-grid {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Horizontal lines — vanishing-point perspective */
+.bar-grid::before {
+  content: '';
+  position: absolute;
+  /* start from bottom-center and fan out */
+  bottom: -8px;
+  left: -20%;
+  right: -20%;
+  top: 0;
+  background-image:
+    /* Horizontal grid lines */
+    repeating-linear-gradient(180deg,
+      transparent 0%,
+      transparent calc(100% / 7 - 1px),
+      rgba(23, 202, 7, .18) calc(100% / 7 - 1px),
+      rgba(23, 202, 7, .18) calc(100% / 7));
+  /* Perspective shrink: wide near bottom, narrow near top */
+  -webkit-mask-image: linear-gradient(180deg,
+      rgba(0, 0, 0, .0) 0%,
+      rgba(0, 0, 0, .6) 40%,
+      rgba(0, 0, 0, 1) 100%);
+  mask-image: linear-gradient(180deg,
+      rgba(0, 0, 0, .0) 0%,
+      rgba(0, 0, 0, .6) 40%,
+      rgba(0, 0, 0, 1) 100%);
+}
+
+/* Vertical (converging) lines radiating from center-bottom */
+.bar-grid::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* 12 lines radiating from bottom-center */
+  background-image:
+    repeating-conic-gradient(from 270deg at 50% 110%,
+      transparent 0deg,
+      transparent calc(360deg / 24 - 0.4deg),
+      rgba(23, 202, 7, .14) calc(360deg / 24 - 0.4deg),
+      rgba(23, 202, 7, .14) calc(360deg / 24));
+  -webkit-mask-image: linear-gradient(180deg,
+      rgba(0, 0, 0, .0) 0%,
+      rgba(0, 0, 0, .5) 50%,
+      rgba(0, 0, 0, .9) 100%);
+  mask-image: linear-gradient(180deg,
+      rgba(0, 0, 0, .0) 0%,
+      rgba(0, 0, 0, .5) 50%,
+      rgba(0, 0, 0, .9) 100%);
+}
+
+/* Glow bloom at horizon (bottom of bar) */
+.bar-horizon {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(23, 202, 7, .3) 15%,
+      var(--neon) 50%,
+      rgba(23, 202, 7, .3) 85%,
+      transparent);
+  filter: blur(1px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Ambient fog layer at bottom */
+.bar-fog {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 55%;
+  background: radial-gradient(ellipse 80% 100% at 50% 100%,
+      rgba(23, 202, 7, .06) 0%,
+      transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Scanline texture overlay */
+.bar-scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(180deg,
+      transparent 0px,
+      transparent 3px,
+      rgba(0, 0, 0, .12) 3px,
+      rgba(0, 0, 0, .12) 4px);
+  pointer-events: none;
+  z-index: 2;
+}
+
+
+/* ── Icon strip ─────────────────────────────────────────────────── */
+.sidebar .icon-strip {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Exactly fill the bar height — no overflow */
+  height: var(--bar-h);
+  gap: clamp(var(--gap-min), var(--gap-ideal), var(--gap-max));
+  position: relative;
+  z-index: 3;
+  flex-shrink: 0;
+}
+
+/* ── Icon item ──────────────────────────────────────────────────── */
+.sidebar .bar-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── menu-icon link ─────────────────────────────────────────────── */
+.sidebar a.menu-icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  /* Icon fits within 85% of bar height so it never overflows */
+  width: min(clamp(var(--icon-min), var(--icon-ideal), var(--icon-max)), calc(var(--bar-h) * .85));
+  aspect-ratio: 1;
+  border-radius: 50%;
   isolation: isolate;
+  text-decoration: none;
+  transition: transform .22s ease;
 }
 
-/* שכבות אפקט מעל התמונה */
-.sidebar .menu-icon .fx-glitch,
-.sidebar .menu-icon .fx-ripple,
-.sidebar .menu-icon .fx-scan {
-  position:absolute; inset:-2px; border-radius:50%;
-  pointer-events:none; z-index: 3;
+.sidebar a.menu-icon:hover,
+.sidebar .bar-icon.icon-active a.menu-icon {
+  transform: scale(1.06) translateY(-2px);
 }
 
-/* --- glitch: 2 שכבות “RGB split” זעירות שזזות בפרוסות --- */
-.sidebar .menu-icon .fx-glitch{ mix-blend-mode: screen; opacity:0; }
-.sidebar a.menu-icon:hover .fx-glitch{ opacity:.9; }
-
-.sidebar .menu-icon .fx-glitch::before,
-.sidebar .menu-icon .fx-glitch::after{
-  content:""; position:absolute; inset:0; border-radius:50%;
-  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 92%, transparent 100%);
-          mask-image: radial-gradient(circle at 50% 50%, #000 92%, transparent 100%);
-  filter: blur(.3px) saturate(1.15);
-  animation: glitchSlices var(--glitch-dur) steps(var(--glitch-slices)) infinite;
+/* Icon image */
+.sidebar a.menu-icon img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 38%;
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 82%, transparent 100%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 82%, transparent 100%);
+  filter: brightness(.93) contrast(1.08) saturate(1.1);
+  transition: filter .22s ease;
+  position: relative;
+  z-index: 2;
 }
 
-/* גוון ירקרק וכחול ל־RGB split עדין */
-.sidebar .menu-icon .fx-glitch::before{
-  background: radial-gradient(120% 110% at 50% 45%, rgba(23,202,7,.55), transparent 60%);
-  transform: translate(var(--glitch-shift), 0);
-}
-.sidebar .menu-icon .fx-glitch::after{
-  background: radial-gradient(120% 110% at 50% 55%, rgba(90,200,255,.35), transparent 60%);
-  transform: translate(calc(var(--glitch-shift) * -1), 0);
+.sidebar a.menu-icon:hover img,
+.sidebar .bar-icon.icon-active a.menu-icon img {
+  filter: brightness(1.1) contrast(1.12) saturate(1.2);
 }
 
-/* --- scan: סריגי סריקה אנכיים שמטיילים באלכסון --- */
-.sidebar .menu-icon .fx-scan{
-  background:
-    repeating-linear-gradient(
-      90deg,
-      rgba(23,202,7,.0) 0 7px,
-      rgba(23,202,7,.08) 7px 9px
-    );
-  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 90%, transparent 100%);
-          mask-image: radial-gradient(circle at 50% 50%, #000 90%, transparent 100%);
-  opacity:0;
+/* Neon ring */
+.sidebar a.menu-icon .icon-ring {
+  position: absolute;
+  /* Reduced by another 0.35rem to make it even tighter */
+  inset: calc(-2.5px + 0.35rem);
+  border-radius: 50%;
+  border: 1.5px solid rgba(23, 202, 7, .22);
+  box-shadow:
+    0 0 6px rgba(23, 202, 7, .18),
+    inset 0 0 6px rgba(23, 202, 7, .08);
+  pointer-events: none;
+  z-index: 3;
+  transition: border-color .22s ease, box-shadow .22s ease;
 }
-.sidebar a.menu-icon:hover .fx-scan{
-  opacity:.45;
+
+.sidebar a.menu-icon:hover .icon-ring,
+.sidebar .bar-icon.icon-active a.menu-icon .icon-ring {
+  border-color: var(--neon);
+  box-shadow:
+    0 0 18px rgba(23, 202, 7, .6),
+    0 0 36px rgba(23, 202, 7, .25),
+    inset 0 0 12px rgba(23, 202, 7, .18);
+  animation: ringPulse 2s ease-in-out infinite;
+}
+
+/* Ambient glow blob */
+.sidebar a.menu-icon .icon-glow {
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(23, 202, 7, .45) 0%, transparent 65%);
+  filter: blur(14px);
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity .22s ease;
+}
+
+.sidebar a.menu-icon:hover .icon-glow,
+.sidebar .bar-icon.icon-active a.menu-icon .icon-glow {
+  opacity: 1;
+}
+
+/* Scan lines on icon */
+.sidebar a.menu-icon .fx-scan {
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0;
+  background: repeating-linear-gradient(90deg,
+      rgba(23, 202, 7, .0) 0 6px,
+      rgba(23, 202, 7, .08) 6px 8px);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 88%, transparent 100%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 88%, transparent 100%);
+  transition: opacity .2s ease;
+}
+
+.sidebar a.menu-icon:hover .fx-scan,
+.sidebar .bar-icon.icon-active a.menu-icon .fx-scan {
+  opacity: .45;
   animation: scanSweep var(--scan-dur) linear infinite;
 }
 
-/* --- ripple: טבעת מתרחבת קצרה על ההובר --- */
-.sidebar .menu-icon .fx-ripple{
-  border: 2px solid rgba(23,202,7,.55);
-  box-shadow: 0 0 18px rgba(23,202,7,.35), inset 0 0 12px rgba(23,202,7,.25);
-  opacity:0; transform: scale(.8);
-}
-.sidebar a.menu-icon:hover .fx-ripple{
-  animation: ripplePulse var(--ripple-dur) var(--shift-in-ease) forwards;
+
+/* ════════════════════════════════════════════════════════════════════
+   COMMAND PANEL
+   ════════════════════════════════════════════════════════════════════ */
+.command-panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  z-index: var(--z-panel);
+  overflow: hidden;
+  pointer-events: none;
+
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition:
+    max-height var(--panel-slide-dur) var(--panel-ease),
+    opacity var(--panel-slide-dur) var(--panel-ease),
+    transform var(--panel-slide-dur) var(--panel-ease);
+
+  background: var(--panel-bg);
+  border-bottom: 1px solid rgba(23, 202, 7, .3);
+  box-shadow:
+    0 0 0 1px rgba(23, 202, 7, .05),
+    0 10px 50px rgba(0, 0, 0, .9),
+    0 0 60px rgba(23, 202, 7, .06) inset;
 }
 
-/* כדי שהאפקט יהיה רק על Neo/Smith */
-.sidebar li.neoIcon a.menu-icon:hover img,
-.sidebar li.agentSmithIcon a.menu-icon:hover img{
-  filter: grayscale(0) contrast(1.08) saturate(1.1);
-  transform: translateY(-1px) scale(1.02);
+.command-panel.panel-open {
+  max-height: 120px;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 
-/* Keyframes */
-@keyframes glitchSlices{
-  0%{ clip-path: polygon(0 0, 100% 0, 100% 12%, 0 12%); }
-  20%{ clip-path: polygon(0 16%, 100% 16%, 100% 28%, 0 28%); }
-  40%{ clip-path: polygon(0 34%, 100% 34%, 100% 46%, 0 46%); }
-  60%{ clip-path: polygon(0 52%, 100% 52%, 100% 64%, 0 64%); }
-  80%{ clip-path: polygon(0 70%, 100% 70%, 100% 82%, 0 82%); }
-  100%{ clip-path: polygon(0 88%, 100% 88%, 100% 100%, 0 100%); }
+/* Panel — cyber grid background (same motif as bar) */
+.panel-bg-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
 }
 
-@keyframes ripplePulse{
-  0%  { opacity:.55; transform: scale(.86); }
-  60% { opacity:.35; transform: scale(1.08); }
-  100%{ opacity:0;    transform: scale(1.18); }
+.panel-bg-grid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-conic-gradient(from 270deg at 50% 200%,
+      transparent 0deg,
+      transparent calc(360deg / 20 - 0.4deg),
+      rgba(23, 202, 7, .1) calc(360deg / 20 - 0.4deg),
+      rgba(23, 202, 7, .1) calc(360deg / 20)),
+    repeating-linear-gradient(180deg,
+      transparent 0%,
+      transparent calc(100% / 5 - 1px),
+      rgba(23, 202, 7, .07) calc(100% / 5 - 1px),
+      rgba(23, 202, 7, .07) calc(100% / 5));
+}
+
+/* Top shimmer line */
+.command-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 5%;
+  right: 5%;
+  height: 1px;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(23, 202, 7, .4) 20%,
+      var(--neon) 50%,
+      rgba(23, 202, 7, .4) 80%,
+      transparent);
+  filter: blur(.5px);
+  z-index: 2;
+}
+
+/* Panel inner layout */
+.panel-inner {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  direction: rtl;
+  padding: 0 5%;
+  height: 100%;
+  min-height: 82px;
+  justify-content: center;
+  gap: 2rem;
+}
+
+/* Section header */
+.panel-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 120px;
+  border-right: 1px solid rgba(23, 202, 7, .18);
+  padding-right: 1.5rem;
+  flex-shrink: 0;
+}
+
+.panel-title {
+  font-family: 'Courier New', monospace;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--neon-bright);
+  letter-spacing: .12em;
+  text-shadow: 0 0 8px rgba(23, 202, 7, .7);
+}
+
+.panel-subtitle {
+  font-family: 'Courier New', monospace;
+  font-size: .6rem;
+  color: rgba(23, 202, 7, .45);
+  letter-spacing: .1em;
+}
+
+/* Links area */
+.panel-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* Individual link */
+.panel-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  text-decoration: none;
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(23, 202, 7, .14);
+  background: rgba(23, 202, 7, .04);
+  transition: background .18s ease, border-color .18s ease,
+    transform .18s ease, box-shadow .18s ease;
+}
+
+.panel-link:hover {
+  background: rgba(23, 202, 7, .13);
+  border-color: rgba(23, 202, 7, .45);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(23, 202, 7, .2);
+}
+
+.panel-link-bracket {
+  font-family: 'Courier New', monospace;
+  font-size: .8rem;
+  color: var(--neon);
+  opacity: .5;
+  transition: opacity .18s ease;
+  line-height: 1;
+}
+
+.panel-link:hover .panel-link-bracket {
+  opacity: 1;
+}
+
+.panel-link-text {
+  font-family: 'Courier New', monospace;
+  font-size: .82rem;
+  font-weight: 600;
+  color: rgba(23, 202, 7, .88);
+  letter-spacing: .04em;
+  transition: color .18s ease;
+  min-width: 4ch;
+  text-align: center;
+}
+
+.panel-link:hover .panel-link-text {
+  color: var(--neon-bright);
+  text-shadow: 0 0 8px rgba(23, 202, 7, .6);
+}
+
+
+/* ════════════════════════════════════════════════════════════════════
+   MOBILE BOTTOM SHEET
+   ════════════════════════════════════════════════════════════════════ */
+.mobile-device .mobile-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .78);
+  backdrop-filter: blur(5px);
+  z-index: var(--z-mobile);
+}
+
+.mobile-device .mobile-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-sheet);
+  border-radius: 22px 22px 0 0;
+  background: linear-gradient(180deg,
+      rgba(2, 12, 2, .98) 0%,
+      rgba(0, 5, 0, .99) 100%);
+  border: 1px solid rgba(23, 202, 7, .4);
+  border-bottom: none;
+  padding: 28px 22px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 -4px 40px rgba(23, 202, 7, .28);
+  animation: slideUp .32s var(--panel-ease);
+}
+
+.mobile-device .mobile-sheet.closing {
+  animation: slideDown .28s ease-out forwards;
+}
+
+.mobile-device .swipe-indicator {
+  width: 48px;
+  height: 5px;
+  background: rgba(23, 202, 7, .35);
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+
+.mobile-device .close-sheet-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(23, 202, 7, .08);
+  border: 1px solid rgba(23, 202, 7, .22);
+  color: var(--neon);
+  font-size: 20px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background .18s ease;
+}
+
+.mobile-device .close-sheet-btn:hover {
+  background: rgba(23, 202, 7, .18);
+}
+
+.mobile-device .sheet-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  margin-bottom: 12px;
+}
+
+.mobile-device .sheet-title {
+  font-family: 'Courier New', monospace;
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--neon-bright);
+  letter-spacing: .12em;
+  text-shadow: 0 0 8px rgba(23, 202, 7, .7);
+}
+
+.mobile-device .sheet-subtitle {
+  font-family: 'Courier New', monospace;
+  font-size: .62rem;
+  color: rgba(23, 202, 7, .45);
+  letter-spacing: .1em;
+}
+
+.mobile-device .sheet-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 15px 20px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  font-family: 'Courier New', monospace;
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--neon);
+  letter-spacing: .04em;
+  opacity: 0;
+  animation: fadeSlideIn .3s var(--panel-ease) forwards;
+  transition: background .18s ease, border-color .18s ease, color .18s ease;
+}
+
+.mobile-device .sheet-link:hover,
+.mobile-device .sheet-link:active {
+  background: rgba(23, 202, 7, .1);
+  border-color: rgba(23, 202, 7, .3);
+  color: var(--neon-bright);
+}
+
+.mobile-device .sheet-link .sheet-link-bracket {
+  font-size: .75rem;
+  opacity: .5;
+  transition: opacity .18s ease;
+}
+
+.mobile-device .sheet-link:hover .sheet-link-bracket {
+  opacity: 1;
+}
+
+
+/* ── Keyframes ──────────────────────────────────────────────────── */
+@keyframes ringPulse {
+
+  0%,
+  100% {
+    box-shadow:
+      0 0 12px rgba(23, 202, 7, .45),
+      0 0 26px rgba(23, 202, 7, .18),
+      inset 0 0 8px rgba(23, 202, 7, .12);
+  }
+
+  50% {
+    box-shadow:
+      0 0 22px rgba(23, 202, 7, .8),
+      0 0 50px rgba(23, 202, 7, .35),
+      inset 0 0 16px rgba(23, 202, 7, .25);
+  }
+}
+
+@keyframes scanSweep {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 80px 0;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Reduced motion ─────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
 }

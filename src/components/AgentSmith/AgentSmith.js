@@ -95,17 +95,26 @@ const AgentSmith = () => {
   // ---------------------------------------------------
   const scrollToSection = (ref, section) => {
     if (!ref?.current) return;
+
+    // Notify MatrixBar to stay visible during this programmatic scroll
+    window.isProgrammaticScroll = true;
+
     setActiveSection(section);
 
     setTimeout(() => {
       ref.current.scrollIntoView({ behavior: "smooth" });
+
+      // Clear flag after scroll is likely finished
+      setTimeout(() => {
+        window.isProgrammaticScroll = false;
+      }, 1200);
     }, 20);
   };
 
 
   return (
-    <div className="main-page">
-      
+    <div className="sectional-layout">
+
       <IndicatorDots
         activeSection={activeSection}
         scrollToSection={scrollToSection}
@@ -121,11 +130,11 @@ const AgentSmith = () => {
           {/* IMAGE SIDE */}
           <div className="image-content">
             <div className="text-box">
-                <img
-                  src={experienceImage}
-                  alt="Experience"
-                  className="experience-image"
-                />
+              <img
+                src={experienceImage}
+                alt="Experience"
+                className="experience-image"
+              />
             </div>
           </div>
 
@@ -143,11 +152,11 @@ const AgentSmith = () => {
           {/* IMAGE SIDE */}
           <div className="image-content">
             <div className="text-box">
-                <img
-                  src={WhatCanBeDoneImage}
-                  alt="WhatCanBeDone"
-                  className="whatCanBeDone-image"
-                />
+              <img
+                src={WhatCanBeDoneImage}
+                alt="WhatCanBeDone"
+                className="whatCanBeDone-image"
+              />
             </div>
           </div>
 
@@ -162,7 +171,7 @@ const AgentSmith = () => {
       <div ref={photoCarouselRef} className="section">
         <div className="photoCarousel-box">
           <div className="photoCarousel-inner-box">
-              <PhotoCarousel />
+            <PhotoCarousel />
           </div>
         </div>
       </div>

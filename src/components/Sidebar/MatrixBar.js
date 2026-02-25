@@ -1,41 +1,223 @@
 import React, {
-  useEffect, useRef, useState, useCallback, forwardRef, useImperativeHandle
+  useEffect, useRef, useState, useCallback,
+  forwardRef, useImperativeHandle, useMemo
 } from 'react';
 import { Link } from 'react-router-dom';
-import neoIcon from "../../assets/images/neoIcon.png";
-import logoIcon from "../../assets/images/logo.png";
-import agentSmithIcon from "../../assets/images/agentSmithIcon.png";
+import neoIcon from '../../assets/images/neoIcon.png';
+import logoIcon from '../../assets/images/logo.png';
+import agentSmithIcon from '../../assets/images/agentSmithIcon.png';
 import './MatrixBar.css';
 
+/* ─── Utilities ─────────────────────────────────────────────────────── */
 const isMobileDevice = () =>
   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
     navigator.userAgent || navigator.vendor || window.opera
   );
 
-const MatrixBar = forwardRef(function MatrixBar({ mode = 'both' }, ref) {
-  // mode: 'neo' | 'agent-smith' | 'both'
-  const showNeo   = mode === 'neo' || mode === 'both';
-  const showSmith = mode === 'agent-smith' || mode === 'both';
-  const showLogo  = true; // logo always visible
+/* ─── Matrix Rain ────────────────────────────────────────────────────── */
+const MATRIX_CHARS =
+  'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン' +
+  '0123456789ABCDEF<>[]{}|\\=+-*/';
 
-  const [activeMenu, setActiveMenu] = useState(null); // 'logo' | 'neoIcon' | 'agentSmithIcon' | null
+function useMatrixRain(canvasRef) {
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const FS = 13;
+    let drops = [], speeds = [], opacities = [], raf, columns;
+
+    function resize() {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+      columns = Math.floor(canvas.width / FS);
+      drops = Array.from({ length: columns }, () => Math.random() * -canvas.height / FS);
+      speeds = Array.from({ length: columns }, () => 0.3 + Math.random() * 0.6);
+      opacities = Array.from({ length: columns }, () => 0.3 + Math.random() * 0.6);
+    }
+
+    function draw() {
+      ctx.fillStyle = 'rgba(0,0,0,0.16)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.font = `${FS}px monospace`;
+      for (let i = 0; i < columns; i++) {
+        const ch = MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
+        const bright = Math.random() > 0.88;
+        ctx.fillStyle = bright
+          ? `rgba(190,255,190,${opacities[i]})`
+          : `rgba(23,202,7,${opacities[i] * 0.75})`;
+        ctx.fillText(ch, i * FS, drops[i] * FS);
+        drops[i] += speeds[i];
+        if (drops[i] * FS > canvas.height && Math.random() > 0.97)
+          drops[i] = Math.random() * -12;
+      }
+      raf = requestAnimationFrame(draw);
+    }
+
+    resize();
+    draw();
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas);
+    return () => { cancelAnimationFrame(raf); ro.disconnect(); };
+  }, [canvasRef]);
+}
+
+function MatrixRainCanvas({ className = 'matrix-rain-canvas' }) {
+  const ref = useRef(null);
+  useMatrixRain(ref);
+  return <canvas ref={ref} className={className} aria-hidden="true" />;
+}
+
+/* ─── Text Decode Hook ───────────────────────────────────────────────── */
+const DECODE_CHARS = 'アイウエ0123456789ABCDEF#$%&@';
+
+function useDecodeText(target, active, charDelay = 45) {
+  const [display, setDisplay] = useState(target);
+  const rafRef = useRef(null);
+
+  useEffect(() => {
+    if (!active) { setDisplay(target); return; }
+
+    let resolved = 0;
+    let frame = 0;
+    const len = target.length;
+
+    function tick() {
+      frame++;
+      // Resolve one char every charDelay ms worth of frames (~60fps ≈ every charDelay/16 frames)
+      const framesPerChar = Math.max(1, Math.round(charDelay / 16));
+      if (frame % framesPerChar === 0 && resolved < len) resolved++;
+
+      let str = '';
+      for (let i = 0; i < len; i++) {
+        if (i < resolved || target[i] === ' ') {
+          str += target[i];
+        } else {
+          str += DECODE_CHARS[Math.floor(Math.random() * DECODE_CHARS.length)];
+        }
+      }
+      setDisplay(str);
+      if (resolved < len) rafRef.current = requestAnimationFrame(tick);
+    }
+
+    setDisplay(target.replace(/[^ ]/g, () => DECODE_CHARS[Math.floor(Math.random() * DECODE_CHARS.length)]));
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [active, target, charDelay]);
+
+  return display;
+}
+
+/* ─── Decoded Link ───────────────────────────────────────────────────── */
+function DecodedLink({ to, label, delay = 0, panelOpen }) {
+  const [active, setActive] = useState(false);
+
+  useEffect(() => {
+    if (!panelOpen) { setActive(false); return; }
+    const t = setTimeout(() => setActive(true), delay);
+    return () => clearTimeout(t);
+  }, [panelOpen, delay]);
+
+  const text = useDecodeText(label, active, 38);
+
+  return (
+    <Link to={to} className="panel-link">
+      <span className="panel-link-bracket">[</span>
+      <span className="panel-link-text">{text}</span>
+      <span className="panel-link-bracket">]</span>
+    </Link>
+  );
+}
+
+/* ─── Section Data ───────────────────────────────────────────────────── */
+const SECTIONS = {
+  neoIcon: {
+    id: 'neoIcon',
+    title: 'NEO //',
+    subtitle: 'CYBER DIVISION',
+    links: [
+      { to: '/neo/hacking/guides', label: 'מדריכי סייבר' },
+      { to: '/neo/hacking/articles', label: 'מאמרי סייבר' },
+      { to: '/neo/hacking/videos', label: 'סרטוני סייבר' },
+    ],
+  },
+  logo: {
+    id: 'logo',
+    title: 'MATRIX //',
+    subtitle: 'MAIN SYSTEM',
+    links: [
+      { to: '/neo/works-with', label: 'ספקים וחברות' },
+      { to: '/thanks', label: 'תודות' },
+      { to: '/contact-us', label: 'צור קשר' },
+    ],
+  },
+  agentSmithIcon: {
+    id: 'agentSmithIcon',
+    title: 'SMITH //',
+    subtitle: 'CONTROL DIVISION',
+    links: [
+      { to: '/agent-smith/agent-smith-department/troubleshooting-guides', label: 'פתרון תקלות' },
+      { to: '/agent-smith/agent-smith-department/technology-news', label: 'חדשות טכנולוגיה' },
+      { to: '/agent-smith/agent-smith-department/building-computers', label: 'בניית מחשבים' },
+    ],
+  },
+};
+
+/* ─── Command Panel ──────────────────────────────────────────────────── */
+function CommandPanel({ section, open, onMouseEnter, onMouseLeave }) {
+  const data = SECTIONS[section];
+  return (
+    <div
+      className={`command-panel ${open ? 'panel-open' : ''}`}
+      aria-hidden={!open}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      {/* Cyber-grid panel background */}
+      <div className="panel-bg-grid" aria-hidden="true" />
+      {data && (
+        <div className="panel-inner">
+          <div className="panel-header">
+            <span className="panel-title">{data.title}</span>
+            <span className="panel-subtitle">{data.subtitle}</span>
+          </div>
+          <div className="panel-links">
+            {data.links.map((lk, i) => (
+              <DecodedLink
+                key={lk.to}
+                to={lk.to}
+                label={lk.label}
+                delay={i * 90}
+                panelOpen={open}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─── MatrixBar ──────────────────────────────────────────────────────── */
+const MatrixBar = forwardRef(function MatrixBar({ mode = 'both' }, ref) {
+  const showNeo = mode === 'neo' || mode === 'both';
+  const showSmith = mode === 'agent-smith' || mode === 'both';
+
+  const [activeSection, setActiveSection] = useState(null); // which panel is open
+  const [panelOpen, setPanelOpen] = useState(false); // animation state
   const [isMobile, setIsMobile] = useState(false);
-  const [isClosing, setIsClosing] = useState(false);
+  const [mobileMenu, setMobileMenu] = useState(null);
+  const [mobileClosing, setMobileClosing] = useState(false);
   const [showBar, setShowBar] = useState(true);
 
-  // מי זז שמאלה כשמרחפים על הלוגו
-  const [shiftLeftNeighbor, setShiftLeftNeighbor] = useState(false);
-  // דגל לחזרה איטית
-  const [isReturning, setIsReturning] = useState(true);
-
-  const menuRef = useRef(null);
-  const timersRef = useRef({});
+  const timers = useRef({});
+  const barRef = useRef(null);
   const touchStartY = useRef(0);
   const lastScrollY = useRef(0);
-  const logoScrollTargetRef = useRef(null);
+  const logoScrollRef = useRef(null);
 
   useImperativeHandle(ref, () => ({
-    scrollLogoIntoView: () => logoScrollTargetRef.current?.scrollIntoView({ behavior: 'smooth' })
+    scrollLogoIntoView: () => logoScrollRef.current?.scrollIntoView({ behavior: 'smooth' })
   }));
 
   useEffect(() => {
@@ -44,259 +226,201 @@ const MatrixBar = forwardRef(function MatrixBar({ mode = 'both' }, ref) {
     document.body.classList.toggle('mobile-device', mobile);
   }, []);
 
-  const clearAllTimeouts = () =>
-    Object.values(timersRef.current).forEach((t) => clearTimeout(t));
+  const clear = () => Object.values(timers.current).forEach(clearTimeout);
 
-  const closeMenuWithAnimation = useCallback(() => {
-    if (!activeMenu) return;
-    setIsClosing(true);
-    setTimeout(() => { setActiveMenu(null); setIsClosing(false); }, 350);
-  }, [activeMenu]);
-
-  const handleClickOutside = useCallback((event) => {
-    if (!menuRef.current) return;
-    if (menuRef.current.contains(event.target)) return;
-
-    if (isMobile) {
-      const hit = event.target.closest('.dropdown-menu') || event.target.closest('.menu-icon');
-      if (!hit) closeMenuWithAnimation();
-    } else {
-      // סגירה + חזרה איטית
-      setActiveMenu(null);
-      setIsReturning(true);
-      setShiftLeftNeighbor(false);
-      timersRef.current.returnDone = setTimeout(() => setIsReturning(false), 1050);
+  /* ── Panel open / close ─────────────────────────────────────────── */
+  const openPanel = useCallback((section) => {
+    clear();
+    if (activeSection === section && panelOpen) return;
+    // Switch section instantly if already open
+    if (panelOpen && activeSection !== section) {
+      setActiveSection(section);
+      return;
     }
-  }, [isMobile, closeMenuWithAnimation]);
+    setActiveSection(section);
+    timers.current.open = setTimeout(() => setPanelOpen(true), 0);
+  }, [activeSection, panelOpen]);
 
+  const closePanel = useCallback(() => {
+    clear();
+    timers.current.close = setTimeout(() => {
+      setPanelOpen(false);
+      timers.current.clear = setTimeout(() => setActiveSection(null), 320);
+    }, 350); // grace period
+  }, []);
+
+  const cancelClose = useCallback(() => {
+    clearTimeout(timers.current.close);
+    clearTimeout(timers.current.clear);
+  }, []);
+
+  /* ── Scroll visibility ──────────────────────────────────────────── */
+  const handleScroll = useCallback(() => {
+    const el = document.querySelector('.content.has-navbar');
+    if (!el) return;
+    const y = el.scrollTop;
+    const up = y < lastScrollY.current || y < 50;
+    if (showBar !== up) setShowBar(up);
+    if (!up) { setPanelOpen(false); setActiveSection(null); }
+    lastScrollY.current = y;
+  }, [showBar]);
+
+  /* ── Click outside ──────────────────────────────────────────────── */
+  const handleClickOutside = useCallback((e) => {
+    if (!barRef.current) return;
+    if (barRef.current.contains(e.target)) return;
+    setPanelOpen(false);
+    setActiveSection(null);
+    clear();
+  }, []);
+
+  /* ── Touch (mobile) ─────────────────────────────────────────────── */
   const handleTouchStart = (e) => (touchStartY.current = e.touches[0].clientY);
   const handleTouchMove = useCallback((e) => {
-    if (!activeMenu) return;
-    const deltaY = e.touches[0].clientY - touchStartY.current;
-    if (deltaY > 70) closeMenuWithAnimation();
-  }, [activeMenu, closeMenuWithAnimation]);
+    if (!mobileMenu) return;
+    if (e.touches[0].clientY - touchStartY.current > 70) closeMobileMenu();
+  }, [mobileMenu]); // eslint-disable-line
 
-  const handleScroll = () => {
-    const y = window.scrollY;
-    const up = y < lastScrollY.current;
-    if (showBar !== up) setShowBar(up);
-    lastScrollY.current = y;
-  };
-
-  // Desktop hover + shift behavior
-  const onEnter = (type) => {
-    if (isMobile) return;
-    clearAllTimeouts();
-
-    if (type === 'logo' && showLogo) {
-      setIsReturning(false); // היציאה מהירה יותר
-      timersRef.current.hoverLogo = setTimeout(() => {
-        setShiftLeftNeighbor(true); // מזיזים את השכן השמאלי
-        timersRef.current.hoverLogo = setTimeout(() => {
-          setActiveMenu('logo');
-        }, 475);
-      }, 300);
-    } else if (type === 'neoIcon' && showNeo) {
-      timersRef.current.hoverNeo = setTimeout(() => setActiveMenu('neoIcon'), 350);
-    } else if (type === 'agentSmithIcon' && showSmith) {
-      timersRef.current.hoverSmith = setTimeout(() => setActiveMenu('agentSmithIcon'), 350);
-    }
-  };
-
-  const onLeave = () => {
-    if (isMobile) return;
-    clearAllTimeouts();
-    timersRef.current.close = setTimeout(() => {
-      setActiveMenu(null);
-      setIsReturning(true);       // חזרה איטית
-      setShiftLeftNeighbor(false);
-      timersRef.current.returnDone = setTimeout(() => setIsReturning(false), 1050);
-    }, 300);
-  };
-
-  // בזמן ריחוף על התפריט – לא לסגור
-  const onDropdownEnter = () => clearAllTimeouts();
-  const onDropdownLeave = () => onLeave();
-
-  // Mobile click
-  const handleMobileIconClick = (menuType) => {
-    if (!isMobile) return;
-    if (activeMenu === menuType) {
-      closeMenuWithAnimation();
+  const openMobileMenu = (section) => {
+    if (mobileMenu === section) { closeMobileMenu(); return; }
+    if (mobileMenu) {
+      closeMobileMenu();
+      setTimeout(() => setMobileMenu(section), 350);
     } else {
-      if (activeMenu) {
-        closeMenuWithAnimation();
-        setTimeout(() => setActiveMenu(menuType), 350);
-      } else {
-        setActiveMenu(menuType);
-      }
-      if (menuType === 'logo') {
-        logoScrollTargetRef.current?.scrollIntoView({ behavior: 'smooth' });
-      }
+      setMobileMenu(section);
     }
+  };
+
+  const closeMobileMenu = () => {
+    setMobileClosing(true);
+    setTimeout(() => { setMobileMenu(null); setMobileClosing(false); }, 350);
   };
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
-    window.addEventListener('scroll', handleScroll);
-
+    const el = document.querySelector('.content.has-navbar');
+    if (el) el.addEventListener('scroll', handleScroll);
+    else window.addEventListener('scroll', handleScroll);
     if (isMobile) {
       document.addEventListener('touchstart', handleTouchStart, { passive: true });
       document.addEventListener('touchmove', handleTouchMove, { passive: true });
     }
-
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      if (el) el.removeEventListener('scroll', handleScroll);
       window.removeEventListener('scroll', handleScroll);
       document.removeEventListener('touchstart', handleTouchStart);
       document.removeEventListener('touchmove', handleTouchMove);
-      clearAllTimeouts();
+      clear();
     };
-  }, [isMobile, handleClickOutside, handleTouchMove]);
+  }, [isMobile, handleClickOutside, handleTouchMove, handleScroll]);
 
-  // Mobile bottom-sheet
-  const MobileMenu = () =>
-    !isMobile || !activeMenu ? null : (
-      <div className={`mobile-dropdown-menu ${isClosing ? 'closing' : ''}`}
-           onTouchStart={handleTouchStart} onTouchMove={handleTouchMove}>
-        <div className="swipe-indicator" />
-        <button className="close-menu-btn" onClick={closeMenuWithAnimation} aria-label="סגירת תפריט">✕</button>
-
-        {activeMenu === 'logo' && (
-          <>
-            <Link to="/" onClick={closeMenuWithAnimation}>דף ראשי</Link>
-            <Link to="/thanks" onClick={closeMenuWithAnimation}>תודות</Link>
-            <Link to="/contact-us" onClick={closeMenuWithAnimation}>צור קשר</Link>
-          </>
-        )}
-
-        {activeMenu === 'neoIcon' && showNeo && (
-          <>
-            <Link to="/neo/hacking/guides" onClick={closeMenuWithAnimation}>מדריכי סייבר</Link>
-            <Link to="/neo/hacking/articles" onClick={closeMenuWithAnimation}>מאמרי סייבר</Link>
-            <Link to="/neo/hacking/videos" onClick={closeMenuWithAnimation}>סרטוני סייבר</Link>
-          </>
-        )}
-
-        {activeMenu === 'agentSmithIcon' && showSmith && (
-          <>
-            <Link to="/agent-smith/agent-smith-department/roubleshooting-guides" onClick={closeMenuWithAnimation}>מדריכי פתרון תקלות</Link>
-            <Link to="/agent-smith/agent-smith-department/technology-news" onClick={closeMenuWithAnimation}>חדשות טכנולוגיה</Link>
-          </>
-        )}
-      </div>
+  /* ── Icon renderer ──────────────────────────────────────────────── */
+  const renderIcon = (sectionKey, src, alt, to) => {
+    const isActive = activeSection === sectionKey && panelOpen;
+    return (
+      <li
+        key={sectionKey}
+        className={`bar-icon ${isActive ? 'icon-active' : ''}`}
+        onMouseEnter={() => !isMobile && openPanel(sectionKey)}
+        onMouseLeave={() => !isMobile && closePanel()}
+      >
+        <Link
+          to={to}
+          className="menu-icon"
+          onClick={(e) => {
+            if (isMobile) { e.preventDefault(); openMobileMenu(sectionKey); }
+          }}
+          aria-expanded={isActive}
+        >
+          <span className="icon-ring" />
+          <img src={src} alt={alt} />
+          <span className="icon-glow" />
+          <span className="fx-scan" aria-hidden="true" />
+        </Link>
+      </li>
     );
+  };
 
-  // --- Items (all drop-left) -------------------------------------------
-  const renderNeo = () => (
-    <li
-      className={`neoIcon drop-left ${((mode === 'neo' || mode === 'both') && shiftLeftNeighbor) ? 'shift' : ''} ${isReturning ? 'is-returning' : ''} ${isMobile && activeMenu === 'neoIcon' ? 'active-mobile' : ''}`}
-      onMouseEnter={() => onEnter('neoIcon')}
-      onMouseLeave={onLeave}
-      onFocus={() => onEnter('neoIcon')}
-      onBlur={onLeave}
-    >
-      <Link
-        to="/neo/hacking"
-        className="menu-icon"
-        onClick={(e) => { if (isMobile) { e.preventDefault(); handleMobileIconClick('neoIcon'); } }}
-      >
-        <img src={neoIcon} alt="Neo" />
-        <span className="sweep" />
-        {/* אפקטים */}
-        <span className="fx-glitch" aria-hidden="true" />
-        <span className="fx-scan" aria-hidden="true" />
-        <span className="fx-ripple" aria-hidden="true" />
-      </Link>
-      {activeMenu === 'neoIcon' && !isMobile && (
-        <div className="dropdown-menu" onMouseEnter={onDropdownEnter} onMouseLeave={onDropdownLeave}>
-          <Link to="/neo/hacking/guides">מדריכי סייבר</Link>
-          <Link to="/neo/hacking/articles">מאמרי סייבר</Link>
-          <Link to="/neo/hacking/videos">סרטוני סייבר</Link>
+  /* ── Build item list — Logo always rightmost ────────────────────── */
+  const items = useMemo(() => {
+    const list = [];
+    if (mode === 'neo') {
+      // Logo on right (index 0 in RTL), Neo on left
+      list.push(renderIcon('logo', logoIcon, 'Logo', '/'));
+      if (showNeo) list.push(renderIcon('neoIcon', neoIcon, 'Neo', '/neo/hacking'));
+    } else if (mode === 'agent-smith') {
+      // Logo on right, Smith on left
+      list.push(renderIcon('logo', logoIcon, 'Logo', '/'));
+      if (showSmith) list.push(renderIcon('agentSmithIcon', agentSmithIcon, 'Agent Smith', '/agent-smith/agent-smith-department'));
+    } else {
+      // Both mode: Logo | Neo | Smith (Logo on far right in RTL)
+      list.push(renderIcon('logo', logoIcon, 'Logo', '/'));
+      if (showNeo) list.push(renderIcon('neoIcon', neoIcon, 'Neo', '/neo/hacking'));
+      if (showSmith) list.push(renderIcon('agentSmithIcon', agentSmithIcon, 'Agent Smith', '/agent-smith/agent-smith-department'));
+    }
+    return list;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode, showNeo, showSmith, activeSection, panelOpen, isMobile]);
+
+  /* ── Mobile bottom sheet ────────────────────────────────────────── */
+  const MobileSheet = () => {
+    if (!isMobile || !mobileMenu) return null;
+    const data = SECTIONS[mobileMenu];
+    return (
+      <>
+        <div className="mobile-overlay" onClick={closeMobileMenu} />
+        <div className={`mobile-sheet ${mobileClosing ? 'closing' : ''}`}
+          onTouchStart={handleTouchStart} onTouchMove={handleTouchMove}>
+          <div className="swipe-indicator" />
+          <button className="close-sheet-btn" onClick={closeMobileMenu} aria-label="סגור">✕</button>
+          <div className="sheet-header">
+            <span className="sheet-title">{data?.title}</span>
+            <span className="sheet-subtitle">{data?.subtitle}</span>
+          </div>
+          {data?.links.map((lk, i) => (
+            <Link key={lk.to} to={lk.to} className="sheet-link" onClick={closeMobileMenu}
+              style={{ animationDelay: `${i * 80}ms` }}>
+              <span className="sheet-link-bracket">[</span>
+              {lk.label}
+              <span className="sheet-link-bracket">]</span>
+            </Link>
+          ))}
         </div>
-      )}
-    </li>
-  );
+      </>
+    );
+  };
 
-  const renderLogo = () => (
-    <li
-      className={`drop-left ${isMobile && activeMenu === 'logo' ? 'active-mobile' : ''}`}
-      onMouseEnter={() => onEnter('logo')}
-      onMouseLeave={onLeave}
-      onFocus={() => onEnter('logo')}
-      onBlur={onLeave}
-    >
-      <Link
-        to="/"
-        className="menu-icon"
-        onClick={(e) => { if (isMobile) { e.preventDefault(); handleMobileIconClick('logo'); } }}
-      >
-        <img src={logoIcon} alt="Logo" />
-        <span className="sweep" />
-      </Link>
-      {activeMenu === 'logo' && !isMobile && (
-        <div className="dropdown-menu logo-menu" onMouseEnter={onDropdownEnter} onMouseLeave={onDropdownLeave}>
-          <Link to="/neo/works-with">ספקים וחברות</Link>
-          <Link to="/thanks">תודות</Link>
-          <Link to="/contact-us">צור קשר</Link>
-        </div>
-      )}
-    </li>
-  );
-
-  const renderSmith = () => (
-    <li
-      className={`agentSmithIcon drop-left ${(mode === 'agent-smith' && shiftLeftNeighbor) ? 'shift' : ''} ${isReturning ? 'is-returning' : ''} ${isMobile && activeMenu === 'agentSmithIcon' ? 'active-mobile' : ''}`}
-      onMouseEnter={() => onEnter('agentSmithIcon')}
-      onMouseLeave={onLeave}
-      onFocus={() => onEnter('agentSmithIcon')}
-      onBlur={onLeave}
-    >
-      <Link
-        to="/agent-smith/agent-smith-department"
-        className="menu-icon"
-        onClick={(e) => { if (isMobile) { e.preventDefault(); handleMobileIconClick('agentSmithIcon'); } }}
-      >
-        <img src={agentSmithIcon} alt="Agent Smith" />
-        <span className="sweep" />
-        {/* אפקטים */}
-        <span className="fx-glitch" aria-hidden="true" />
-        <span className="fx-scan" aria-hidden="true" />
-        <span className="fx-ripple" aria-hidden="true" />
-      </Link>
-      {activeMenu === 'agentSmithIcon' && !isMobile && (
-        <div className="dropdown-menu" onMouseEnter={onDropdownEnter} onMouseLeave={onDropdownLeave}>
-          <Link to="/agent-smith/agent-smith-department/troubleshooting-guides">מדריכי פתרון תקלות</Link>
-          <Link to="/agent-smith/agent-smith-department/technology-news">חדשות טכנולוגיה</Link>
-          <Link to="/agent-smith/agent-smith-department/building-computers">בניית מחשבים</Link>
-        </div>
-      )}
-    </li>
-  );
-
-  // Build order (logo במרכז)
-  let items = [];
-  const withKey = (node, key) => React.cloneElement(node, { key });
-  if (mode === 'neo') {
-    if (showNeo) items.push(withKey(renderNeo(), 'neo'));
-    if (showLogo) items.push(withKey(renderLogo(), 'logo'));
-  } else if (mode === 'agent-smith') {
-    if (showSmith) items.push(withKey(renderSmith(), 'smith'));
-    if (showLogo) items.push(withKey(renderLogo(), 'logo'));
-  } else {
-    if (showNeo) items.push(withKey(renderNeo(), 'neo'));
-    if (showLogo) items.push(withKey(renderLogo(), 'logo'));
-    if (showSmith) items.push(withKey(renderSmith(), 'smith'));
-  }
-
+  /* ── Render ─────────────────────────────────────────────────────── */
   return (
     <>
-      <div className={`sidebar ${showBar ? 'visible' : 'hidden'}`} ref={menuRef}>
-        {isMobile && activeMenu && <div className="mobile-overlay" onClick={closeMenuWithAnimation} />}
-        <MobileMenu />
-        <ul>{items}</ul>
+      <div
+        ref={barRef}
+        className={`sidebar ${showBar ? 'visible' : 'hidden'}`}
+      >
+        {/* Cyber-grid bar background elements */}
+        <div className="bar-grid" aria-hidden="true" />
+        <div className="bar-fog" aria-hidden="true" />
+        <div className="bar-horizon" aria-hidden="true" />
+        <div className="bar-scanlines" aria-hidden="true" />
+
+        {/* Icon strip */}
+        <ul className="icon-strip">{items}</ul>
+
+        {/* Full-width command panel (desktop) */}
+        {!isMobile && (
+          <CommandPanel
+            section={activeSection}
+            open={panelOpen}
+            onMouseEnter={cancelClose}
+            onMouseLeave={closePanel}
+          />
+        )}
+
+        {/* Mobile */}
+        <MobileSheet />
       </div>
-      <div ref={logoScrollTargetRef} style={{ height: 1 }} />
+      <div ref={logoScrollRef} style={{ height: 1 }} />
     </>
   );
 });

@@ -65,11 +65,13 @@ function AppContent() {
     setShowIntro(false);
   };
 
+  const isNavbarNeeded = location.pathname.startsWith("/neo") || location.pathname.startsWith("/agent-smith");
+
   return (
     <div className="App">
       <ConditionalSidebar />
 
-      <div className="content">
+      <div className={`content ${isNavbarNeeded ? "has-navbar" : "no-navbar"}`}>
         {/* התיקון: Fallback עם רקע שחור וגובה מלא למניעת הבהוב לבן */}
         <Suspense
           fallback={
