@@ -45,7 +45,7 @@ function ArticleModal({ article, t, onClose, restoreFocusTo }) {
     const q = 'button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])';
     const focusable = modal.querySelectorAll(q);
     const first = focusable[0];
-    const last  = focusable[focusable.length - 1];
+    const last = focusable[focusable.length - 1];
     function trap(e) {
       if (e.key !== "Tab") return;
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
@@ -71,38 +71,80 @@ function ArticleModal({ article, t, onClose, restoreFocusTo }) {
       onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }}
     >
       <div className="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-desc">
-        <div className="modal-hero" aria-hidden>
-          {article.image ? (
-            <img src={article.image} alt="" loading="lazy" decoding="async" />
-          ) : (
-            <div className="modal-hero-fallback" />
+        <div className="modal-content-area dossier-theme">
+          <div className="modal-scanline" aria-hidden="true" />
+
+          {article.image && (
+            <div className="modal-hero dossier-hero" aria-hidden="true">
+              <img src={article.image} alt="" loading="lazy" decoding="async" />
+              <div className="hero-overlay" />
+            </div>
           )}
+
+          <header className="modal-header">
+            <div className="dossier-status">
+              <span className="status-light pulse" />
+              <span className="status-text">DECRYPTED // DOSSIER_{article.id}</span>
+            </div>
+            <h3 id="modal-title" className="modal-title" dir={t.dir}>{article.title}</h3>
+          </header>
+
+          <div className="modal-meta dossier-meta">
+            <div className="meta-block">
+              <label>CLASSIFICATION</label>
+              <span className="modal-tag">{article.tag}</span>
+            </div>
+            <div className="meta-block">
+              <label>TIMESTAMP</label>
+              <time className="modal-date" dateTime={article.date}>
+                {new Date(article.date).toLocaleDateString(t.dateLocale, { year: "numeric", month: "short", day: "2-digit" })}
+              </time>
+            </div>
+            <div className="meta-block">
+              <label>READ_TIME</label>
+              <span className="modal-read">
+                {article.readTime} {t.ui.readTimeSuffix}
+              </span>
+            </div>
+          </div>
+
+          <div id="modal-desc" className="modal-body dossier-body" dir={t.dir}>
+            {article.body.split("\n").map((line, i) => {
+              const trimmed = line.trim();
+              if (!trimmed) return <div key={i} className="body-spacer" />;
+
+              if (trimmed.match(/^\d+\)/)) {
+                return (
+                  <div key={i} className="dossier-step">
+                    <span className="step-hex">0x0{trimmed.split(')')[0]}</span>
+                    <p>{trimmed.split(')')[1]}</p>
+                  </div>
+                );
+              }
+              if (trimmed.startsWith('•')) {
+                return <div key={i} className="dossier-prompt"><code>{trimmed}</code></div>;
+              }
+              if (trimmed.endsWith(':')) {
+                return <h4 key={i} className="dossier-section-head">{trimmed}</h4>;
+              }
+
+              return <p key={i} className="dossier-p">{trimmed}</p>;
+            })}
+          </div>
+
+          <footer className="modal-footer dossier-footer">
+            <div className="footer-bg-line" />
+            <button ref={closeCtaRef} className="btn-dossier-ghost" onClick={handleClose}>
+              <span className="btn-label">[ CLOSE ]</span>
+            </button>
+            <button className="btn-dossier-accent" onClick={() => {
+              const body = document.getElementById('modal-desc');
+              if (body) body.scrollTo({ top: body.scrollHeight, behavior: 'smooth' });
+            }}>
+              <span className="btn-label">DATA_ACCESS_SCROLL</span>
+            </button>
+          </footer>
         </div>
-
-        <header className="modal-header">
-          <h3 id="modal-title" className="modal-title" dir={t.dir}>{article.title}</h3>
-        </header>
-
-        <div className="modal-meta">
-          <span className="modal-tag">{article.tag}</span>
-          <span className="modal-dot" aria-hidden>•</span>
-          <time className="modal-date" dateTime={article.date}>
-            {new Date(article.date).toLocaleDateString(t.dateLocale, { year: "numeric", month: "short", day: "2-digit" })}
-          </time>
-          <span className="modal-dot" aria-hidden>•</span>
-          <span className="modal-read">
-            {article.readTime} {t.ui.readTimeSuffix}
-          </span>
-        </div>
-
-        <div id="modal-desc" className="modal-body" dir={t.dir}>
-          {article.body.split("\n").map((p, i) => <p key={i}>{p}</p>)}
-        </div>
-
-        <footer className="modal-footer">
-          <button ref={closeCtaRef} className="btn-ghost" onClick={handleClose}>{t.ui.closeCta}</button>
-          <a className="btn-accent" href="#" onClick={(e) => e.preventDefault()}>{t.ui.readCta}</a>
-        </footer>
       </div>
     </div>
   );
