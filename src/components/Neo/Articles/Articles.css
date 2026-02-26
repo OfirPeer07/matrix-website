@@ -204,16 +204,6 @@
   overflow-y: auto;
   position: relative;
   z-index: 1;
-  scrollbar-width: thin;
-  scrollbar-color: var(--accent) transparent;
-}
-
-.modal-content-area::-webkit-scrollbar {
-  width: 4px;
-}
-
-.modal-content-area::-webkit-scrollbar-thumb {
-  background: var(--accent);
 }
 
 /* Scanline Effect */

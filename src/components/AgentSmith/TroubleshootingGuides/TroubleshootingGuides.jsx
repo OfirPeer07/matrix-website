@@ -140,7 +140,7 @@ function useMockMetrics({ running, activeIdx, stepsCount }) {
   const latencyRef = useRef(120);
   const cpuRef = useRef(0.42);
   const loopRef = useRef(null);
-  
+
   useEffect(() => {
     const tick = () => {
       latencyRef.current = wobble(latencyRef.current, running ? 40 : 100, running ? 0.5 : 0.1);
@@ -169,7 +169,7 @@ function useDemoRunner({ steps, totalDurationSec = 6 }) {
     const elapsed = (ts - startRef.current) / 1000;
     const pct = clamp((elapsed / totalDurationSec) * 100, 0, 100);
     setProgress(pct);
-    
+
     const idx = Math.min(steps.length - 1, Math.floor((pct / 100) * steps.length));
     setActiveIdx(idx);
 
@@ -202,7 +202,7 @@ function useDemoRunner({ steps, totalDurationSec = 6 }) {
 
 /* ----------------------- Main Component ----------------------- */
 export default function TroubleshootingGuides() {
-  const [locale, setLocale] = useState("en");
+  const [locale, setLocale] = useState("he");
   const [topic, setTopic] = useState(null);
   const t = translations[locale];
 
@@ -218,10 +218,7 @@ export default function TroubleshootingGuides() {
 
   return (
     <div className="tg-page matrix-theme" dir={t.dir}>
-      {/* כפתור החלפת שפה בסגנון Pill */}
-      <button className="btn-locale-fixed" onClick={() => setLocale(locale === "en" ? "he" : "en")}>
-        {t.toggle}
-      </button>
+      {/* Locale switch button removed */}
 
       <header className="tg-hero">
         <h1 className="glitch-text">{t.title}</h1>
@@ -280,12 +277,12 @@ export default function TroubleshootingGuides() {
             <div className="tg-card-panel">
               <div className="tg-card-title">Latency (ms)</div>
               <Sparkline values={metrics.map(m => m.latency)} />
-              <div className="tg-meta"><span>{t.now}</span><strong>{Math.round(metrics[metrics.length-1]?.latency || 0)}ms</strong></div>
+              <div className="tg-meta"><span>{t.now}</span><strong>{Math.round(metrics[metrics.length - 1]?.latency || 0)}ms</strong></div>
             </div>
             <div className="tg-card-panel">
               <div className="tg-card-title">CPU (%)</div>
               <Sparkline values={metrics.map(m => m.cpu * 100)} stroke="#34d0a9" />
-              <div className="tg-meta"><span>{t.now}</span><strong>{Math.round((metrics[metrics.length-1]?.cpu || 0) * 100)}%</strong></div>
+              <div className="tg-meta"><span>{t.now}</span><strong>{Math.round((metrics[metrics.length - 1]?.cpu || 0) * 100)}%</strong></div>
             </div>
           </section>
         </div>

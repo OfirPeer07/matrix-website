@@ -8,7 +8,7 @@ function useLocale() {
     const saved = typeof window !== "undefined"
       ? window.localStorage.getItem("localeKey")
       : null;
-    return saved || "en";
+    return saved || "he";
   });
 
   useEffect(() => {
@@ -191,18 +191,7 @@ export default function Articles() {
 
   return (
     <div className="memory-page" dir={t.dir}>
-      <div className="locale-switch fixed">
-        <button
-          className="btn-locale"
-          disabled={isModalOpen}
-          aria-disabled={isModalOpen}
-          title={isModalOpen ? t.ui.closeCta : undefined}
-          onClick={() => { if (!isModalOpen) setLocaleKey(localeKey === "en" ? "he" : "en"); }}
-          aria-label="Toggle language"
-        >
-          {t.ui.toggleLabel}
-        </button>
-      </div>
+      {/* Language toggle removed */}
 
       <div className="freeze-layout" dir="ltr">
         <section className="memory-hero" aria-labelledby="hero-title">

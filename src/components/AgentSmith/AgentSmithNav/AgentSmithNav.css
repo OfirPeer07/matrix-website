@@ -10,11 +10,14 @@
 .sidenav {
   background-color: rgba(0, 0, 0, 0.633);
   width: 15.5vw;
-  height: calc(100vh - clamp(100px, 17vh, 150px)); /* גובה המסך פחות גובה ה-Sidebar */
+  height: calc(100vh - clamp(100px, 17vh, 150px));
+  /* גובה המסך פחות גובה ה-Sidebar */
   position: fixed;
-  top: clamp(100px, 17vh, 150px); /* Match sidebar height from SideBar.css */
+  top: clamp(100px, 17vh, 150px);
+  /* Match sidebar height from SideBar.css */
   right: 0;
-  bottom: 0; /* מבטיח שימתח עד סוף העמוד */
+  bottom: 0;
+  /* מבטיח שימתח עד סוף העמוד */
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1000;
   padding: 10px;
@@ -31,7 +34,8 @@
 /* כפתור התפריט */
 .toggle-nav-btn {
   position: fixed;
-  top: clamp(100px, 17vh, 150px); /* Match sidebar height */
+  top: clamp(100px, 17vh, 150px);
+  /* Match sidebar height */
   right: 9px;
   z-index: 1001;
   background: transparent;
@@ -43,7 +47,8 @@
 }
 
 .toggle-nav-btn:hover {
-  top: calc(clamp(100px, 17vh, 150px) + 0.2px); /* Match sidebar height + hover offset */
+  top: calc(clamp(100px, 17vh, 150px) + 0.2px);
+  /* Match sidebar height + hover offset */
   right: 10px;
   z-index: 1001;
   background: transparent;
@@ -129,25 +134,7 @@
   text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
 }
 
-/* סקרולבר מותאם */
-.sidenav::-webkit-scrollbar {
-  width: 10px;
-}
-
-.sidenav::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 5px;
-}
-
-.sidenav::-webkit-scrollbar-thumb {
-  background: var(--primary-color);
-  border-radius: 5px;
-  border: 2px solid var(--bg-color);
-}
-
-.sidenav::-webkit-scrollbar-thumb:hover {
-  background: #0f8005;
-}
+/* סקרולבר מותאם - הוסר לטובת הסתרה גלובלית */
 
 /* התאמה למסכים קטנים */
 @media (max-width: 768px) {
@@ -179,9 +166,11 @@
 
 @media screen and (max-width: 1024px) {
   .sidenav {
-    top: 3.2rem; /* Reset top position for mobile */
+    top: 3.2rem;
+    /* Reset top position for mobile */
     left: 0.4rem;
-    height: calc(100vh - clamp(50px, 12vh, 100px)); /* Adjust height for mobile */
+    height: calc(100vh - clamp(50px, 12vh, 100px));
+    /* Adjust height for mobile */
     background-color: black;
     opacity: 1;
     bottom: 0;
@@ -192,9 +181,9 @@
     pointer-events: none;
     transition: opacity 0.3s ease;
   }
-  
+
   .toggle-nav-btn {
     transition: opacity 0.3s ease;
   }
-  
+
 }

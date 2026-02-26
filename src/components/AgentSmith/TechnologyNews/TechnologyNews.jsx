@@ -150,10 +150,10 @@ const TechnologyCard = ({ title, subtitle, content, color, readMore }) => {
 };
 
 export default function TechnologyNews() {
-  const [locale, setLocale] = useState("en");
+  const [locale, setLocale] = useState("he");
   const t = translations[locale];
   const containerRef = useRef(null);
-  
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
@@ -165,13 +165,7 @@ export default function TechnologyNews() {
     <div className="modern-news-container" ref={containerRef} dir={t.dir}>
       <BackgroundParticles />
 
-      {/* 🔁 כפתור החלפת שפה ממוקם בפינה הימנית */}
-      <button
-        className="btn-locale-fixed"
-        onClick={() => setLocale(locale === "en" ? "he" : "en")}
-      >
-        {t.toggleLabel}
-      </button>
+      {/* Language toggle button removed */}
 
       <motion.div className="modern-news-header" style={{ y: headerY }}>
         <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
