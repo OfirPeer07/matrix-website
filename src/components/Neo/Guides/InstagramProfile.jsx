@@ -1,63 +1,77 @@
 import React, { useState } from "react";
+import { useLocaleContext } from "../../../context/LocaleContext";
 import "./InstagramProfile.css";
 
-const PROFILE = {
-  user: "junior.guides.il",
-  name: "Junior Guides",
-  bio: [
-    "Your go-to place for junior career tips and real project ideas.",
-    "CV | Portfolio | Interview prep | Networking",
-  ],
-  avatar:
-    "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=160",
-  stats: {
-    posts: 42,
-    followers: "8.4K",
-    following: 213,
+const translations = {
+  en: {
+    profile: {
+      user: "junior.guides.il",
+      name: "Junior Guides",
+      bio: [
+        "Your go-to place for junior career tips and real project ideas.",
+        "CV | Portfolio | Interview prep | Networking",
+      ],
+      stats: { posts: 42, followers: "8.4K", following: 213 }
+    },
+    highlights: [
+      { id: "new", label: "New", new: true },
+      { id: "cv", label: "CV tips", image: "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=120" },
+      { id: "portfolio", label: "Portfolio", image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=120" },
+      { id: "networking", label: "Networking", image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=120" },
+      { id: "interviews", label: "Interviews", image: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=120" },
+    ],
+    share: "Share your profile...",
+    posts: "Posts",
+    followers: "Followers",
+    following: "Following",
+    edit: "Edit Profile",
+    shareBtn: "Share Profile",
+    reelsLabel: "Reels",
+    taggedLabel: "Tagged"
   },
+  he: {
+    profile: {
+      user: "junior.guides.il",
+      name: "מדריכי ג'וניור",
+      bio: [
+        "המקום שלך לטיפים לקריירה ורעיונות לפרויקטים אמיתיים.",
+        "קו\"ח | פורטפוליו | הכנה לראיונות | נטוורקינג",
+      ],
+      stats: { posts: 42, followers: "8.4K", following: 213 }
+    },
+    highlights: [
+      { id: "new", label: "חדש", new: true },
+      { id: "cv", label: "טיפים לקו\"ח", image: "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=120" },
+      { id: "portfolio", label: "פורטפוליו", image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=120" },
+      { id: "networking", label: "נטוורקינג", image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=120" },
+      { id: "interviews", label: "ראיונות", image: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=120" },
+    ],
+    share: "שתף את הפרופיל שלך...",
+    posts: "פוסטים",
+    followers: "עוקבים",
+    following: "עוקבים אחרי",
+    edit: "ערוך פרופיל",
+    shareBtn: "שתף פרופיל",
+    reelsLabel: "רילס",
+    taggedLabel: "תיוגים"
+  }
 };
 
-const HIGHLIGHTS = [
-  { id: "new", label: "New", new: true },
-  {
-    id: "cv",
-    label: "CV tips",
-    image:
-      "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=120",
-  },
-  {
-    id: "portfolio",
-    label: "Portfolio",
-    image:
-      "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=120",
-  },
-  {
-    id: "networking",
-    label: "Networking",
-    image:
-      "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=120",
-  },
-  {
-    id: "interviews",
-    label: "Interviews",
-    image:
-      "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=120",
-  },
-];
-
 const GRID = [
-  "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600",
-  "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600",
-  "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=600",
-  "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=600",
-  "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600",
-  "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=600",
-  "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600",
-  "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600",
-  "https://images.unsplash.com/photo-1545239351-ef35f43d514b?w=600",
+  "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400",
+  "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400",
+  "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400",
+  "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400",
+  "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400",
+  "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400",
+  "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400",
+  "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400",
+  "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400",
 ];
 
 export default function InstagramProfile() {
+  const { locale } = useLocaleContext();
+  const t = translations[locale];
   const [activeTab, setActiveTab] = useState("posts");
 
   return (
@@ -74,7 +88,7 @@ export default function InstagramProfile() {
             <rect x="5" y="11" width="14" height="10" rx="2" />
             <path d="M8 11V8a4 4 0 1 1 8 0v3" />
           </svg>
-          <span className="handle">{PROFILE.user}</span>
+          <span className="handle">{t.profile.user}</span>
           <svg className="chevron-icon" viewBox="0 0 24 24" aria-hidden>
             <path d="M7 10l5 5 5-5" />
           </svg>
@@ -99,34 +113,34 @@ export default function InstagramProfile() {
 
       <section className="ig-profile-info">
         <div className="avatar-wrap">
-          <img src={PROFILE.avatar} className="profile-avatar" alt="" />
+          <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=160" className="profile-avatar" alt="" />
           <span className="avatar-plus">+</span>
-          <div className="share-pill">Share your profile...</div>
+          <div className="share-pill">{t.share}</div>
         </div>
 
         <div className="profile-meta">
-          <div className="profile-name">{PROFILE.name}</div>
+          <div className="profile-name">{t.profile.name}</div>
           <div className="profile-stats">
-            <Stat label="Posts" value={PROFILE.stats.posts} />
-            <Stat label="Followers" value={PROFILE.stats.followers} />
-            <Stat label="Following" value={PROFILE.stats.following} />
+            <Stat label={t.posts} value={t.profile.stats.posts} />
+            <Stat label={t.followers} value={t.profile.stats.followers} />
+            <Stat label={t.following} value={t.profile.stats.following} />
           </div>
         </div>
       </section>
 
       <section className="ig-profile-bio">
-        {PROFILE.bio.map((line, index) => (
+        {t.profile.bio.map((line, index) => (
           <div key={index}>{line}</div>
         ))}
       </section>
 
       <section className="ig-profile-actions">
-        <button>Edit Profile</button>
-        <button>Share Profile</button>
+        <button>{t.edit}</button>
+        <button>{t.shareBtn}</button>
       </section>
 
       <section className="ig-profile-highlights">
-        {HIGHLIGHTS.map(item => (
+        {t.highlights.map(item => (
           <div key={item.id} className="highlight">
             <div className="highlight-ring">
               {item.new ? (
@@ -144,7 +158,7 @@ export default function InstagramProfile() {
         <button
           className={activeTab === "posts" ? "active" : ""}
           onClick={() => setActiveTab("posts")}
-          aria-label="Posts"
+          aria-label={t.posts}
         >
           <svg viewBox="0 0 24 24">
             <path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z" />
@@ -153,7 +167,7 @@ export default function InstagramProfile() {
         <button
           className={activeTab === "reels" ? "active" : ""}
           onClick={() => setActiveTab("reels")}
-          aria-label="Reels"
+          aria-label={t.reelsLabel}
         >
           <svg viewBox="0 0 24 24">
             <rect x="4" y="4" width="16" height="16" rx="4" />
@@ -163,7 +177,7 @@ export default function InstagramProfile() {
         <button
           className={activeTab === "tagged" ? "active" : ""}
           onClick={() => setActiveTab("tagged")}
-          aria-label="Tagged"
+          aria-label={t.taggedLabel}
         >
           <svg viewBox="0 0 24 24">
             <path d="M8 7a4 4 0 1 1 8 0c0 4-4 5-4 9 0-4-4-5-4-9z" />

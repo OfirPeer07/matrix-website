@@ -1,4 +1,5 @@
 import React, { useMemo, useRef, Suspense, useState, useEffect } from "react";
+import { useLocaleContext } from "../../context/LocaleContext";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
@@ -199,13 +200,35 @@ function Scene({ freeCamera, heartColor, currentText }) {
 
 /* ================= MAIN ================= */
 export default function Thanks() {
+  const { locale } = useLocaleContext();
   const [freeCamera, setFreeCamera] = useState(false);
   const [heartColor, setHeartColor] = useState("#ff0000");
   const [showHint, setShowHint] = useState(false);
   const colorInputRef = useRef();
   const timeoutRef = useRef(null);
 
-  const messages = ["THANK YOU", "COME BACK SOON", "THANKS FOR VISITING", "GLAD YOU'RE HERE", "SEE YOU AGAIN"];
+  const translations = {
+    en: {
+      back: "Back_",
+      camera: "Camera_",
+      locked: "Locked_",
+      color: "Color_",
+      text: "Text_",
+      hint: "Right-click to lock flashlight",
+      messages: ["THANK YOU", "COME BACK SOON", "THANKS FOR VISITING", "GLAD YOU'RE HERE", "SEE YOU AGAIN"]
+    },
+    he: {
+      back: "חזור_",
+      camera: "מצלמה_",
+      locked: "נעול_",
+      color: "צבע_",
+      text: "טקסט_",
+      hint: "קליק ימני לנעילת הפנס",
+      messages: ["תודה רבה", "חזרו בקרוב", "תודה על הביקור", "שמחים שהייתם כאן", "נתראה שוב"]
+    }
+  };
+
+  const t = translations[locale];
   const [msgIndex, setMsgIndex] = useState(0);
 
   useEffect(() => {
@@ -225,22 +248,22 @@ export default function Thanks() {
   }, []);
 
   const goBack = () => window.history.back();
-  const nextMessage = () => setMsgIndex((prev) => (prev + 1) % messages.length);
+  const nextMessage = () => setMsgIndex((prev) => (prev + 1) % t.messages.length);
 
   return (
     <div className="thanks-container">
-      <button className="back-button" onClick={goBack}>Back_</button>
+      <button className="back-button" onClick={goBack}>{t.back}</button>
       <button
         className={`free-camera-btn ${freeCamera ? "active" : ""}`}
         onClick={() => setFreeCamera(!freeCamera)}
       >
-        {freeCamera ? "Locked_" : "Camera_"}
+        {freeCamera ? t.locked : t.camera}
       </button>
-      <button className="color-btn" onClick={() => colorInputRef.current.click()}>Color_</button>
-      <button className="text-btn" onClick={nextMessage}>Text_</button>
+      <button className="color-btn" onClick={() => colorInputRef.current.click()}>{t.color}</button>
+      <button className="text-btn" onClick={nextMessage}>{t.text}</button>
 
       <div className={`flashlight-hint ${showHint ? "visible" : ""}`}>
-        Right-click to lock flashlight
+        {t.hint}
       </div>
 
       <input
@@ -256,7 +279,7 @@ export default function Thanks() {
           <Scene
             freeCamera={freeCamera}
             heartColor={heartColor}
-            currentText={messages[msgIndex]}
+            currentText={t.messages[msgIndex]}
           />
         </Suspense>
       </Canvas>

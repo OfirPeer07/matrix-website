@@ -1,75 +1,145 @@
 // src/components/Neo/Guides/InstagramReels.jsx
 import React, { useState, useRef, useEffect } from "react";
+import { useLocaleContext } from "../../../context/LocaleContext";
 import { motion, AnimatePresence } from "framer-motion";
 import "./InstagramReels.css";
 
-const REELS = [
-  {
-    id: 1,
-    user: "junior.playbook",
-    avatar:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120",
-    caption: "From zero experience to a first interview: real project + one-page CV.",
-    likes: "48.3K",
-    comments: "1,204",
-    reposts: "742",
-    shares: "9.8K",
-    audio: "Junior Guides - First interview",
-    videoUrl: "/vids/high-tech-interview.mp4",
+const translations = {
+  en: {
+    reelsTab: "Reels",
+    friendsTab: "Friends",
+    follow: "Follow",
+    reels: [
+      {
+        id: 1,
+        user: "junior.playbook",
+        avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120",
+        caption: "From zero experience to a first interview: real project + one-page CV.",
+        likes: "48.3K",
+        comments: "1,204",
+        reposts: "742",
+        shares: "9.8K",
+        audio: "Junior Guides - First interview",
+        videoUrl: "/vids/high-tech-interview.mp4",
+      },
+      {
+        id: 2,
+        user: "cv.tips.il",
+        avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=120",
+        caption: "One-page CV in 30 minutes: role, flagship project, key technologies.",
+        likes: "31.6K",
+        comments: "842",
+        reposts: "516",
+        shares: "6.1K",
+        audio: "CV Guide - Quick checklist",
+        videoUrl: "/vids/typing.mp4",
+      },
+      {
+        id: 3,
+        user: "junior.network",
+        avatar: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=120",
+        caption: "Everything is possible: small daily consistency + a clear goal.",
+        likes: "62.2K",
+        comments: "1,877",
+        reposts: "1,103",
+        shares: "12.4K",
+        audio: "Mindset - Everything is possible",
+        videoUrl: "/vids/vsCode-project.mp4",
+      },
+      {
+        id: 4,
+        user: "junior.guides",
+        avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120",
+        caption: "If you were waiting for a sign — this is it. Stay focused and keep going.",
+        likes: "71.4K",
+        comments: "2,104",
+        reposts: "1,402",
+        shares: "15.7K",
+        audio: "Junior Guides - Keep going",
+        videoUrl: "/vids/waiting-for-you.mp4",
+      },
+      {
+        id: 5,
+        user: "junior.day1",
+        avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120",
+        caption: "First day at work: introduce yourself early, ask for a 30/60/90 plan, and take notes.",
+        likes: "54.9K",
+        comments: "1,532",
+        reposts: "902",
+        shares: "11.3K",
+        audio: "Junior Guides - First day at work",
+        videoUrl: "/vids/first-day-at-work.mp4",
+      },
+    ]
   },
-  {
-    id: 2,
-    user: "cv.tips.il",
-    avatar:
-      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=120",
-    caption: "One-page CV in 30 minutes: role, flagship project, key technologies.",
-    likes: "31.6K",
-    comments: "842",
-    reposts: "516",
-    shares: "6.1K",
-    audio: "CV Guide - Quick checklist",
-    videoUrl: "/vids/typing.mp4",
-  },
-  {
-    id: 3,
-    user: "junior.network",
-    avatar:
-      "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=120",
-    caption: "Everything is possible: small daily consistency + a clear goal.",
-    likes: "62.2K",
-    comments: "1,877",
-    reposts: "1,103",
-    shares: "12.4K",
-    audio: "Mindset - Everything is possible",
-    videoUrl: "/vids/vsCode-project.mp4",
-  },
-  {
-    id: 4,
-    user: "junior.guides",
-    avatar:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120",
-    caption: "If you were waiting for a sign — this is it. Stay focused and keep going.",
-    likes: "71.4K",
-    comments: "2,104",
-    reposts: "1,402",
-    shares: "15.7K",
-    audio: "Junior Guides - Keep going",
-    videoUrl: "/vids/waiting-for-you.mp4",
-  },
-  {
-    id: 5,
-    user: "junior.day1",
-    avatar:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120",
-    caption: "First day at work: introduce yourself early, ask for a 30/60/90 plan, and take notes.",
-    likes: "54.9K",
-    comments: "1,532",
-    reposts: "902",
-    shares: "11.3K",
-    audio: "Junior Guides - First day at work",
-    videoUrl: "/vids/first-day-at-work.mp4",
-  },
-];
+  he: {
+    reelsTab: "רילס",
+    friendsTab: "חברים",
+    follow: "עקוב",
+    reels: [
+      {
+        id: 1,
+        user: "junior.playbook",
+        avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120",
+        caption: "מאפס ניסיון לראיון ראשון: פרויקט אמיתי + קורות חיים בעמוד אחד.",
+        likes: "48.3K",
+        comments: "1,204",
+        reposts: "742",
+        shares: "9.8K",
+        audio: "מדריכי ג'וניור - ראיון ראשון",
+        videoUrl: "/vids/high-tech-interview.mp4",
+      },
+      {
+        id: 2,
+        user: "cv.tips.il",
+        avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=120",
+        caption: "קורות חיים בעמוד אחד ב-30 דקות: תפקיד, פרויקט דגל וטכנולוגיות.",
+        likes: "31.6K",
+        comments: "842",
+        reposts: "516",
+        shares: "6.1K",
+        audio: "מדריך קו\"ח - צ'קליסט מהיר",
+        videoUrl: "/vids/typing.mp4",
+      },
+      {
+        id: 3,
+        user: "junior.network",
+        avatar: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=120",
+        caption: "הכל אפשרי: עקביות יומית קטנה + יעד ברור.",
+        likes: "62.2K",
+        comments: "1,877",
+        reposts: "1,103",
+        shares: "12.4K",
+        audio: "מיינדסט - הכל אפשרי",
+        videoUrl: "/vids/vsCode-project.mp4",
+      },
+      {
+        id: 4,
+        user: "junior.guides",
+        avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120",
+        caption: "אם חיכית לסימן - זהו זה. הישאר ממוקד והמשך קדימה.",
+        likes: "71.4K",
+        comments: "2,104",
+        reposts: "1,402",
+        shares: "15.7K",
+        audio: "מדריכי ג'וניור - המשך קדימה",
+        videoUrl: "/vids/waiting-for-you.mp4",
+      },
+      {
+        id: 5,
+        user: "junior.day1",
+        avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120",
+        caption: "יום ראשון בעבודה: הצג את עצמך מוקדם, בקש תוכנית 30/60/90 ורשום הערות.",
+        likes: "54.9K",
+        comments: "1,532",
+        reposts: "902",
+        shares: "11.3K",
+        audio: "מדריכי ג'וניור - יום ראשון בעבודה",
+        videoUrl: "/vids/first-day-at-work.mp4",
+      },
+    ]
+  }
+};
 
 const FRIENDS = [
   "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60",
@@ -78,6 +148,9 @@ const FRIENDS = [
 ];
 
 export default function InstagramReels() {
+  const { locale } = useLocaleContext();
+  const t = translations[locale];
+
   const [isMuted, setIsMuted] = useState(true);
   const [isLiked, setIsLiked] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -147,8 +220,8 @@ export default function InstagramReels() {
     setProgress(0);
     startProgressTick();
   };
-  const activeReelData = REELS[activeReel % REELS.length];
-  const uiReelData = REELS[uiReelIndex % REELS.length];
+  const activeReelData = t.reels[activeReel % t.reels.length];
+  const uiReelData = t.reels[uiReelIndex % t.reels.length];
   const videoSrc = `${process.env.PUBLIC_URL || ""}${activeReelData.videoUrl}`;
 
   const changeReel = (dir) => {
@@ -161,7 +234,7 @@ export default function InstagramReels() {
     setProgress(0);
     setIsPaused(false);
     stopProgressTick();
-    setActiveReel((current) => (current + dir + REELS.length) % REELS.length);
+    setActiveReel((current) => (current + dir + t.reels.length) % t.reels.length);
   };
 
 
@@ -255,8 +328,8 @@ export default function InstagramReels() {
           </button>
 
           <div className="reels-title">
-            <span className="is-active">Reels</span>
-            <span className="is-muted">Friends</span>
+            <span className="is-active">{t.reelsTab}</span>
+            <span className="is-muted">{t.friendsTab}</span>
             <span className="friends-avatars">
               {FRIENDS.map((src, index) => (
                 <img key={index} src={src} alt="" />
@@ -395,7 +468,7 @@ export default function InstagramReels() {
         <div className="user-identity">
           <img src={uiReelData.avatar} className="user-avatar" alt="" />
           <span className="user-name">{uiReelData.user}</span>
-          <button className="follow-pill-2026">עקוב</button>
+          <button className="follow-pill-2026">{t.follow}</button>
         </div>
 
         <div className="reel-caption">{uiReelData.caption}</div>

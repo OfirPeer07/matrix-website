@@ -2,15 +2,20 @@ import React, { useEffect, useRef, useState } from "react";
 import "./AgentSmith.css";
 
 import PhotoCarousel from "../AgentSmith/PhotoCarousel/PhotoCarousel";
+import PhotoCarousel_he from "../AgentSmith/PhotoCarousel/PhotoCarousel_he";
 import IndicatorDots from "../AgentSmith/IndicatorDots/IndicatorDots";
 
 import experienceImage from "./Sections/Experience.png";
 import Experience from "./Sections/Experience";
+import Experience_he from "./Sections/Experience_he";
 
 import WhatCanBeDone from "./Sections/WhatCanBeDone";
+import WhatCanBeDone_he from "./Sections/WhatCanBeDone_he";
 import WhatCanBeDoneImage from "./Sections/WhatCanBeDone.png";
+import { useLocaleContext } from "../../context/LocaleContext";
 
 const AgentSmith = () => {
+  const { locale } = useLocaleContext();
   const experienceRef = useRef(null);
   const whatCanBeDoneRef = useRef(null);
   const photoCarouselRef = useRef(null);
@@ -139,7 +144,7 @@ const AgentSmith = () => {
           </div>
 
           {/* TEXT SIDE */}
-          <Experience />
+          {locale === 'en' ? <Experience /> : <Experience_he />}
         </div>
       </div>
 
@@ -161,7 +166,7 @@ const AgentSmith = () => {
           </div>
 
           {/* TEXT SIDE */}
-          <WhatCanBeDone />
+          {locale === 'en' ? <WhatCanBeDone /> : <WhatCanBeDone_he />}
         </div>
       </div>
 
@@ -171,7 +176,7 @@ const AgentSmith = () => {
       <div ref={photoCarouselRef} className="section">
         <div className="photoCarousel-box">
           <div className="photoCarousel-inner-box">
-            <PhotoCarousel />
+            {locale === 'en' ? <PhotoCarousel /> : <PhotoCarousel_he />}
           </div>
         </div>
       </div>

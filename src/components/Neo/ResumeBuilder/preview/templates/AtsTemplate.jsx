@@ -1,5 +1,25 @@
+import { useLocaleContext } from "../../../../../context/LocaleContext";
 import "./styles/base.css";
 import "./styles/ats.css";
+
+const translations = {
+  en: {
+    contact: "Contact",
+    summary: "Summary",
+    experience: "Experience",
+    projects: "Projects",
+    education: "Education",
+    skills: "Skills"
+  },
+  he: {
+    contact: "צור קשר",
+    summary: "תמצית",
+    experience: "ניסיון תעסוקתי",
+    projects: "פרויקטים",
+    education: "השכלה",
+    skills: "מיומנויות"
+  }
+};
 
 export default function AtsTemplate({
   profile = {},
@@ -10,6 +30,8 @@ export default function AtsTemplate({
   projects = [],
   education = []
 }) {
+  const { locale } = useLocaleContext();
+  const t = translations[locale];
   const hasContent = (arr) => Array.isArray(arr) && arr.length > 0;
 
   return (
@@ -25,7 +47,7 @@ export default function AtsTemplate({
       {/* ===== CONTACT ===== */}
       {Object.values(contact).some(Boolean) && (
         <section>
-          <h2>Contact</h2>
+          <h2>{t.contact}</h2>
           {contact.email && <p>{contact.email}</p>}
           {contact.phone && <p>{contact.phone}</p>}
           {contact.linkedin && <p>{contact.linkedin}</p>}
@@ -36,7 +58,7 @@ export default function AtsTemplate({
       {/* ===== SUMMARY ===== */}
       {hasContent(about) && (
         <section>
-          <h2>Summary</h2>
+          <h2>{t.summary}</h2>
           {about.map((p, i) => <p key={i}>{p}</p>)}
         </section>
       )}
@@ -44,7 +66,7 @@ export default function AtsTemplate({
       {/* ===== EXPERIENCE ===== */}
       {hasContent(experience) && (
         <section>
-          <h2>Experience</h2>
+          <h2>{t.experience}</h2>
 
           {experience.map((exp, i) => (
             <div key={i}>
@@ -75,7 +97,7 @@ export default function AtsTemplate({
       {/* ===== PROJECTS ===== */}
       {hasContent(projects) && (
         <section>
-          <h2>Projects</h2>
+          <h2>{t.projects}</h2>
 
           {projects.map((proj, i) => (
             <div key={i}>
@@ -103,7 +125,7 @@ export default function AtsTemplate({
       {/* ===== EDUCATION ===== */}
       {hasContent(education) && (
         <section>
-          <h2>Education</h2>
+          <h2>{t.education}</h2>
 
           {education.map((edu, i) => (
             <div key={i}>
@@ -134,7 +156,7 @@ export default function AtsTemplate({
       {/* ===== SKILLS ===== */}
       {hasContent(skills) && (
         <section>
-          <h2>Skills</h2>
+          <h2>{t.skills}</h2>
           <p>{skills.map((s) => s.name).join(", ")}</p>
         </section>
       )}

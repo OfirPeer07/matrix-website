@@ -1,89 +1,113 @@
 // src/components/Neo/Guides/InstagramFeed.jsx
 import React, { useState, useEffect } from "react";
+import { useLocaleContext } from "../../../context/LocaleContext";
 import { motion, AnimatePresence } from "framer-motion";
 import "./InstagramFeed.css";
 
 /* ===== Mock Data ===== */
-const STORIES = [
-  {
-    id: "own",
-    user: "Your story",
-    avatar:
-      "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=120",
-    own: true,
-  },
-  {
-    id: 1,
-    user: "cv.tips.il",
-    avatar:
-      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=120",
-  },
-  {
-    id: 2,
-    user: "portfolio.lab",
-    avatar:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120",
-  },
-  {
-    id: 3,
-    user: "junior.network",
-    avatar:
-      "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=120",
-  },
-];
-
-const POSTS = [
-  {
-    id: 1,
-    user: "junior.guides",
-    music: "Junior Guides - Soft skills",
-    avatar:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120",
-    images: [
-      "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200",
+const translations = {
+  en: {
+    yourStory: "Your story",
+    stories: [
+      { id: "own", user: "Your story", avatar: "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=120", own: true },
+      { id: 1, user: "cv.tips.il", avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=120" },
+      { id: 2, user: "portfolio.lab", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120" },
+      { id: 3, user: "junior.network", avatar: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=120" },
     ],
-    caption:
-      "Soft skills that help you stand out: show ownership, ask clear questions, and communicate progress.",
-    tags: ["#softskills", "#portfolio", "#interviews"],
-    likedBy: "ofirpeer7",
-    time: "2 hours ago",
-  },
-  {
-    id: 2,
-    user: "interview.playbook",
-    music: "Interview prep - Mock #3",
-    avatar:
-      "https://images.unsplash.com/photo-1544725176-7c40e5a2c9f9?w=120",
-    images: [
-      "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=1200",
+    posts: [
+      {
+        id: 1,
+        user: "junior.guides",
+        music: "Junior Guides - Soft skills",
+        avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120",
+        images: ["https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200"],
+        caption: "Soft skills that help you stand out: show ownership, ask clear questions, and communicate progress.",
+        tags: ["#softskills", "#portfolio", "#interviews"],
+        likedBy: "ofirpeer7",
+        time: "2 hours ago",
+      },
+      {
+        id: 2,
+        user: "interview.playbook",
+        music: "Interview prep - Mock #3",
+        avatar: "https://images.unsplash.com/photo-1544725176-7c40e5a2c9f9?w=120",
+        images: ["https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=1200"],
+        caption: "3 quick interview prep tips: clarify expectations, practice out loud, and review your highlights.",
+        tags: ["#interviews", "#tips", "#preparation"],
+        likedBy: "neta_dev",
+        time: "3 hours ago",
+      },
+      {
+        id: 3,
+        user: "portfolio.lab",
+        music: "Portfolio Lab - CV in 30 minutes",
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120",
+        images: ["https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=1200"],
+        caption: "A one-page CV in 30 minutes: role, flagship project, and key technologies.",
+        tags: ["#cv", "#jobsearch", "#career"],
+        likedBy: "roni_ui",
+        time: "1 hour ago",
+      },
     ],
-    caption:
-      "3 quick interview prep tips: clarify expectations, practice out loud, and review your highlights.",
-    tags: ["#interviews", "#tips", "#preparation"],
-    likedBy: "neta_dev",
-    time: "3 hours ago",
+    comments: "Comments",
+    noComments: "Be the first to comment.",
+    likedBy: (user) => (<span>Liked by <strong>{user}</strong> and others</span>)
   },
-  {
-    id: 3,
-    user: "portfolio.lab",
-    music: "Portfolio Lab - CV in 30 minutes",
-    avatar:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120",
-    images: [
-      "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=1200",
+  he: {
+    yourStory: "הסיפור שלך",
+    stories: [
+      { id: "own", user: "הסיפור שלך", avatar: "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=120", own: true },
+      { id: 1, user: "cv.tips.il", avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=120" },
+      { id: 2, user: "portfolio.lab", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120" },
+      { id: 3, user: "junior.network", avatar: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=120" },
     ],
-    caption:
-      "A one-page CV in 30 minutes: role, flagship project, and key technologies.",
-    tags: ["#cv", "#jobsearch", "#career"],
-    likedBy: "roni_ui",
-    time: "1 hour ago",
-  },
-];
+    posts: [
+      {
+        id: 1,
+        user: "junior.guides",
+        music: "Junior Guides - מיומנויות רכות",
+        avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120",
+        images: ["https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200"],
+        caption: "מיומנויות רכות שיעזרו לך לבלוט: הפגנת בעלות, שאלת שאלות ברורות ותקשורת על התקדמות.",
+        tags: ["#מיומנויות_רכות", "#פורטפוליו", "#ראיונות"],
+        likedBy: "ofirpeer7",
+        time: "לפני שעתיים",
+      },
+      {
+        id: 2,
+        user: "interview.playbook",
+        music: "הכנה לראיון - סימולציה #3",
+        avatar: "https://images.unsplash.com/photo-1544725176-7c40e5a2c9f9?w=120",
+        images: ["https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=1200"],
+        caption: "3 טיפים מהירים להכנה לראיון: חידוד ציפיות, תרגול בקול רם וסקירת נקודות השיא שלך.",
+        tags: ["#ראיונות", "#טיפים", "#הכנה"],
+        likedBy: "neta_dev",
+        time: "לפני 3 שעות",
+      },
+      {
+        id: 3,
+        user: "portfolio.lab",
+        music: "Portfolio Lab - קורות חיים ב-30 דקות",
+        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120",
+        images: ["https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=1200"],
+        caption: "קורות חיים של עמוד אחד ב-30 דקות: תפקיד, פרויקט דגל וטכנולוגיות מפתח.",
+        tags: ["#קורות_חיים", "#חיפוש_עבודה", "#קריירה"],
+        likedBy: "roni_ui",
+        time: "לפני שעה",
+      },
+    ],
+    comments: "תגובות",
+    noComments: "היה הראשון להגיב.",
+    likedBy: (user) => (<span>אהב על ידי <strong>{user}</strong> ואחרים</span>)
+  }
+};
 
 export default function InstagramFeed({
   showHeader = true,
   onOpenDM,
 }) {
+  const { locale } = useLocaleContext();
+  const t = translations[locale];
   const [commentsPost, setCommentsPost] = useState(null);
 
   return (
@@ -128,7 +152,7 @@ export default function InstagramFeed({
 
       {/* ===== Stories ===== */}
       <div className="ig-stories">
-        {STORIES.map(story => (
+        {t.stories.map(story => (
           <div key={story.id} className={`story ${story.own ? "own" : ""}`}>
             <div className="ring-wrap">
               <div className="ring">
@@ -142,11 +166,12 @@ export default function InstagramFeed({
       </div>
 
       {/* ===== Feed ===== */}
-      {POSTS.map(post => (
+      {t.posts.map(post => (
         <Post
           key={post.id}
           post={post}
           onOpenComments={() => setCommentsPost(post)}
+          t={t}
         />
       ))}
 
@@ -166,8 +191,8 @@ export default function InstagramFeed({
             }}
           >
             <div className="sheet-handle" />
-            <h3>Comments</h3>
-            <p>Be the first to comment.</p>
+            <h3>{t.comments}</h3>
+            <p>{t.noComments}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -176,7 +201,7 @@ export default function InstagramFeed({
 }
 
 /* ===== Single Post ===== */
-function Post({ post, onOpenComments }) {
+function Post({ post, onOpenComments, t }) {
   const [index, setIndex] = useState(0);
   const [liked, setLiked] = useState(false);
   const [showHeart, setShowHeart] = useState(false);
@@ -275,7 +300,7 @@ function Post({ post, onOpenComments }) {
 
       {/* Meta */}
       <div className="ig-likes">
-        Liked by <strong>{post.likedBy}</strong> and others
+        {t.likedBy(post.likedBy)}
       </div>
 
       <div className="ig-caption">

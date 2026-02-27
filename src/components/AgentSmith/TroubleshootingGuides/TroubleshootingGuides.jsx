@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useLocaleContext } from "../../../context/LocaleContext";
 import "./TroubleshootingGuides.css";
 
 /* ----------------------- תרגומים ותכנים ----------------------- */
@@ -200,9 +201,10 @@ function useDemoRunner({ steps, totalDurationSec = 6 }) {
   return { progress, activeIdx, running, start, reset, startedAt, endedAt, stepResults };
 }
 
+
 /* ----------------------- Main Component ----------------------- */
 export default function TroubleshootingGuides() {
-  const [locale, setLocale] = useState("he");
+  const { locale } = useLocaleContext();
   const [topic, setTopic] = useState(null);
   const t = translations[locale];
 

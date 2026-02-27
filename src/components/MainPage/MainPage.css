@@ -93,6 +93,17 @@
   filter: drop-shadow(0 0 6px rgba(0, 255, 0, 0.7));
 }
 
+/* Language Button (EN / HE) */
+.lang-toggle-btn {
+  top: 80px;
+  /* Positioned below the gear button */
+  right: 16px;
+  font-weight: 800;
+  font-family: inherit;
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
 /* Close button (X) */
 .close-drawer-btn {
   top: 16px;
@@ -129,6 +140,8 @@
   padding: clamp(1rem, 3vw, 2.5rem);
   place-items: center;
   z-index: 3;
+  direction: ltr !important;
+  /* Prevent Neo/Smith swap in RTL */
 }
 
 @media (max-width:820px) {

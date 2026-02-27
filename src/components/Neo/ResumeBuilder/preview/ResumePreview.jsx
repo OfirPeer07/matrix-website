@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useLocaleContext } from "../../../../context/LocaleContext";
 import PreviewToolbar from "./PreviewToolbar";
 import ClassicTemplate from "./templates/ClassicTemplate";
 import ModernTemplate from "./templates/ModernTemplate";
@@ -8,7 +9,22 @@ import A4Meter from "./A4Meter";
 
 const PREVIEW_KEY = "resume_template_preview";
 
+const translations = {
+  en: {
+    placeholder: "👈 Add your name to see resume preview",
+    atsHint: "ATS view – optimized for applicant tracking systems",
+    baseHint: "Raw layout – no styling, used for structure & page size checks"
+  },
+  he: {
+    placeholder: "👈 הוסף את שמך כדי לראות תצוגה מקדימה",
+    atsHint: "תצוגת ATS – מותאמת למערכות סינון קורות חיים",
+    baseHint: "פריסה גולמית – ללא עיצוב, משמש לבדיקת מבנה וגודל דף"
+  }
+};
+
 export default function ResumePreview({ resume }) {
+  const { locale } = useLocaleContext();
+  const t = translations[locale];
   /* ===== STATE ===== */
   const [template, setTemplate] = useState(
     () => localStorage.getItem(PREVIEW_KEY) || "classic"
@@ -28,7 +44,7 @@ export default function ResumePreview({ resume }) {
     return (
       <div className="resume-preview-wrapper">
         <div className="resume-placeholder">
-          <p>👈 Add your name to see resume preview</p>
+          <p>{t.placeholder}</p>
         </div>
       </div>
     );
@@ -46,8 +62,8 @@ export default function ResumePreview({ resume }) {
 
       {(template === "ats" || template === "base") && (
         <div className="preview-hint">
-          {template === "ats" && "ATS view – optimized for applicant tracking systems"}
-          {template === "base" && "Raw layout – no styling, used for structure & page size checks"}
+          {template === "ats" && t.atsHint}
+          {template === "base" && t.baseHint}
         </div>
       )}
 

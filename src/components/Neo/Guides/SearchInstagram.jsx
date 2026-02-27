@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocaleContext } from "../../../context/LocaleContext";
 import "./SearchInstagram.css";
 
 const GRID_ITEMS = [
@@ -52,12 +53,24 @@ const GRID_ITEMS = [
   },
 ];
 
+const translations = {
+  en: {
+    placeholder: "Search guides"
+  },
+  he: {
+    placeholder: "חיפוש מדריכים"
+  }
+};
+
 export default function SearchInstagram() {
+  const { locale } = useLocaleContext();
+  const t = translations[locale];
+
   return (
     <div className="ig-search-root">
       <div className="ig-search-bar">
         <span className="search-icon" aria-hidden />
-        <span className="search-placeholder">חיפוש מדריכים</span>
+        <span className="search-placeholder">{t.placeholder}</span>
       </div>
 
       <div className="ig-search-grid">

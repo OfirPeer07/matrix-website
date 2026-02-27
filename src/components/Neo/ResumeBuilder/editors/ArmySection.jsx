@@ -1,4 +1,29 @@
+import { useLocaleContext } from "../../../../context/LocaleContext";
+
+const translations = {
+  en: {
+    title: "Military Service",
+    addBtn: "+ Add Military Service (optional)",
+    removeBtn: "Remove military service",
+    rolePlaceholder: "Role / Unit",
+    startPlaceholder: "Start year",
+    endPlaceholder: "End year",
+    descriptionPlaceholder: "Describe your service using bullet points.\nExample:\n• Led a team of 8 soldiers\n• Managed logistics and operations"
+  },
+  he: {
+    title: "שירות צבאי / לאומי",
+    addBtn: "+ הוסף שירות צבאי/לאומי (אופציונלי)",
+    removeBtn: "הסר שירות צבאי",
+    rolePlaceholder: "תפקיד / יחידה",
+    startPlaceholder: "שנת התחלה",
+    endPlaceholder: "שנת סיום",
+    descriptionPlaceholder: "תאר את שירותך בנקודות.\nדוגמה:\n• פיקוד על צוות של 8 חיילים\n• ניהול לוגיסטיקה ומבצעים"
+  }
+};
+
 export default function ArmySection({ value = {}, onChange }) {
+  const { locale } = useLocaleContext();
+  const t = translations[locale];
   const {
     enabled = false,
     role = "",
@@ -20,13 +45,13 @@ export default function ArmySection({ value = {}, onChange }) {
   if (!enabled) {
     return (
       <section className="editor-section">
-        <h3>Military Service</h3>
+        <h3>{t.title}</h3>
         <button
           type="button"
           className="add-button"
           onClick={toggle}
         >
-          + Add Military Service (optional)
+          {t.addBtn}
         </button>
       </section>
     );
@@ -36,19 +61,19 @@ export default function ArmySection({ value = {}, onChange }) {
     <section className="editor-section">
       <div className="editor-card">
         <div className="editor-card-header">
-          <strong>Military Service</strong>
+          <strong>{t.title}</strong>
           <button
             type="button"
             className="icon-button danger"
             onClick={toggle}
-            title="Remove military service"
+            title={t.removeBtn}
           >
             🗑️
           </button>
         </div>
 
         <input
-          placeholder="Role / Unit"
+          placeholder={t.rolePlaceholder}
           value={role}
           onChange={(e) =>
             onChange({ ...value, role: e.target.value })
@@ -57,14 +82,14 @@ export default function ArmySection({ value = {}, onChange }) {
 
         <div className="editor-row">
           <input
-            placeholder="Start year"
+            placeholder={t.startPlaceholder}
             value={start}
             onChange={(e) =>
               onChange({ ...value, start: e.target.value })
             }
           />
           <input
-            placeholder="End year"
+            placeholder={t.endPlaceholder}
             value={end}
             onChange={(e) =>
               onChange({ ...value, end: e.target.value })
@@ -74,10 +99,7 @@ export default function ArmySection({ value = {}, onChange }) {
 
         <textarea
           rows={4}
-          placeholder={`Describe your service using bullet points.
-Example:
-• Led a team of 8 soldiers
-• Managed logistics and operations`}
+          placeholder={t.descriptionPlaceholder}
           value={description}
           onChange={(e) =>
             onChange({ ...value, description: e.target.value })

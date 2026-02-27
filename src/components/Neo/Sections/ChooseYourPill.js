@@ -6,7 +6,7 @@ export default function ChooseYourPill({ selected, onSelect }) {
   return (
     <div className="choose-your-pill-container">
 
-      {/* תמונה עם חצאי לחיצה */}
+      {/* Image with clickable halves */}
       <div className="pill-image-wrapper">
 
         <div
@@ -26,36 +26,36 @@ export default function ChooseYourPill({ selected, onSelect }) {
         />
       </div>
 
-      {/* טקסט נפתח מתחת לתמונה */}
+      {/* Expanding text below the image */}
       {selected && (
-        <div className={`pill-info ${selected}`} dir="rtl">
+        <div className={`pill-info ${selected}`} dir="ltr">
           {selected === "red" ? (
             <>
-              <h2>🟥 הכדור האדום – הבחירה הנכונה</h2>
+              <h2>🟥 The Red Pill – The Right Choice</h2>
               <p>
-                זו הבחירה של מי שמוכן להסתכל למציאות בעיניים.
-                להבין שהתואר לבדו לא מספיק, שהמערכת לא בנויה לג׳וניורים,
-                ושאם לא תיצור לעצמך ניסיון – אף אחד לא יעשה את זה בשבילך.
+                This is the choice for those ready to look reality in the eye.
+                Understanding that a degree alone isn't enough, that the system isn't built for juniors,
+                and if you don't create your own experience – no one will do it for you.
               </p>
               <p>
-                הכדור האדום הוא בחירה אקטיבית:
-                לקחת שליטה, לבנות ערך אמיתי,
-                ולהפסיק לחכות שמישהו “יגלה אותך”.
+                The Red Pill is an active choice:
+                Taking control, building real value,
+                and stopping waiting for someone to "discover you".
               </p>
             </>
           ) : (
             <>
-              <h2>🟦 הכדור הכחול – הבחירה הנוחה</h2>
+              <h2>🟦 The Blue Pill – The Comfortable Choice</h2>
               <p>
-                זו הבחירה שמרגישה בטוחה,
-                אבל משאירה אותך תלוי במערכת.
-                להמשיך לשלוח קו״ח, להאמין שמספיק זמן ומוטיבציה –
-                ולקוות שמישהו ייתן לך צ׳אנס.
+                This is the choice that feels safe,
+                but keeps you dependent on the system.
+                Continuing to send resumes, believing that enough time and motivation will suffice –
+                and hoping someone will give you a chance.
               </p>
               <p>
-                הכדור הכחול מרגיע,
-                אבל לא מקדם.
-                הוא שומר אותך באזור הנוחות – גם אם זה עולה בשנים של המתנה.
+                The Blue Pill is calming,
+                but it doesn't move you forward.
+                It keeps you in the comfort zone – even if it costs years of waiting.
               </p>
             </>
           )}

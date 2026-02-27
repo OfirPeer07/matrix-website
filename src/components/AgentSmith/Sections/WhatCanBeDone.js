@@ -1,24 +1,22 @@
 import React from 'react';
 import '../../../styles/sections/Sections.css';
-import wcbdImg from './Experience.png'; // ייבוא התמונה הרלוונטית
 
- 
 const WhatCanBeDone = () => {
   return (
     <div className="text-content">
       <div className="text-box">
-        <div className="inner-box" dir="rtl">
-        <h2>מה בכל זאת אפשר לעשות?</h2>
-        <p>
-          גם כשנדרש ניסיון תעסוקתי, יש דרכים להוכיח מוכנות – גם בלי תפקיד קודם. <br />
-          מועמדים שמציגים פרויקטים עצמאיים, תורמים לקוד פתוח, עובדים על מוצרים אמיתיים או מתנדבים – מאותתים למעסיקים על רצינות, מסוגלות ויוזמה. <br /><br />
-          תהליך הגיוס אמנם מתחיל בבדיקת ניסיון, אבל לעיתים קרובות הוא מסתיים בבחינה של אופי, התמדה ויכולת למידה. <br />
-          ג'וניור שמביא איתו תוצר אמיתי, סקרנות מקצועית וביטחון בעבודה שלו – יכול לגשר על הפער, ולפעמים אפילו לבלוט יותר ממועמד מנוסה.
-        </p>
+        <div className="inner-box" dir="ltr">
+          <h2>What Can Be Done Anyway?</h2>
+          <p>
+            Even when work experience is required, there are ways to prove readiness – even without a prior role. <br />
+            Candidates who present independent projects, contribute to open source, work on real products, or volunteer – signal seriousness, capability, and initiative to employers. <br /><br />
+            The recruitment process may start with an experience check, but it often ends with an assessment of character, persistence, and learning ability. <br />
+            A junior who brings a real product, professional curiosity, and confidence in their work – can bridge the gap, and sometimes even stand out more than an experienced candidate.
+          </p>
         </div>
       </div>
     </div>
-    
+
   );
 };
 

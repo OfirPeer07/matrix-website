@@ -10,7 +10,7 @@
   border-left: 1px solid rgba(0, 255, 120, 0.16);
   box-shadow: -6px 0 22px rgba(0, 255, 100, 0.12);
   transform: translateX(105%);
-  transition: transform 0.28s cubic-bezier(.2,.8,.2,1);
+  transition: transform 0.28s cubic-bezier(.2, .8, .2, 1);
   display: flex;
   flex-direction: column;
   z-index: 9999;
@@ -25,7 +25,8 @@
 
 /* Header */
 .neo-panel-header {
-  position: relative; /* חשוב! */
+  position: relative;
+  /* חשוב! */
   padding: 16px;
   border-bottom: 1px solid rgba(0, 255, 120, 0.14);
   display: flex;
@@ -34,6 +35,7 @@
 }
 
 .neo-title {
+  margin-right: 3.5rem;
   font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: 0.6px;
@@ -44,7 +46,7 @@
 .neo-bolt {
   margin-right: 6px;
   margin-left: 1.5rem;
-  filter: drop-shadow(0 0 4px rgba(255,140,0,0.6));
+  filter: drop-shadow(0 0 4px rgba(255, 140, 0, 0.6));
 }
 
 .neo-close-btn {
@@ -59,8 +61,8 @@
   align-items: center;
   justify-content: center;
 
-  background: rgba(0,255,140,0.08);
-  border: 1px solid rgba(0,255,140,0.25);
+  background: rgba(0, 255, 140, 0.08);
+  border: 1px solid rgba(0, 255, 140, 0.25);
 
   border-radius: 10px;
   cursor: pointer;
@@ -69,14 +71,15 @@
   font-size: 18px;
   line-height: 0;
 
-  z-index: 999999; /* לוחץ תמיד */
+  z-index: 999999;
+  /* לוחץ תמיד */
 
   transition: 0.2s ease;
 }
 
 .neo-close-btn:hover {
-  background: rgba(0,255,140,0.20);
-  box-shadow: 0 0 12px rgba(0,255,140,0.4);
+  background: rgba(0, 255, 140, 0.20);
+  box-shadow: 0 0 12px rgba(0, 255, 140, 0.4);
   transform: scale(1.08);
 }
 
@@ -88,7 +91,7 @@
 
 /* Section */
 .neo-section {
-  border-bottom: 1px solid rgba(0,255,120,0.1);
+  border-bottom: 1px solid rgba(0, 255, 120, 0.1);
 }
 
 .neo-section-toggle {
@@ -125,8 +128,15 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-4px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Rows */
@@ -151,7 +161,7 @@
   width: 100%;
   height: 36px;
   border-radius: 8px;
-  border: 1px solid rgba(0,255,120,0.2);
+  border: 1px solid rgba(0, 255, 120, 0.2);
   background: #000;
 }
 
@@ -176,8 +186,8 @@
 }
 
 .neo-preset {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(0,255,160,0.2);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(0, 255, 160, 0.2);
   padding: 6px 12px;
   border-radius: 8px;
   color: #d4ffe6;
@@ -187,19 +197,19 @@
 }
 
 .neo-preset:hover {
-  background: rgba(0,255,160,0.15);
-  box-shadow: 0 0 8px rgba(0,255,160,0.3);
+  background: rgba(0, 255, 160, 0.15);
+  box-shadow: 0 0 8px rgba(0, 255, 160, 0.3);
 }
 
 /* Reset Button */
 .neo-reset-btn {
   display: block;
   width: calc(100% - 32px);
-  margin: 24px auto 0;       
+  margin: 24px auto 0;
   padding: 8px;
   border-radius: 8px;
-  background: rgba(0,255,140,0.12);
-  border: 1px solid rgba(0,255,140,0.25);
+  background: rgba(0, 255, 140, 0.12);
+  border: 1px solid rgba(0, 255, 140, 0.25);
   color: #baffdd;
   cursor: pointer;
   transition: 0.2s ease;
@@ -208,6 +218,6 @@
 }
 
 .neo-reset-btn:hover {
-  background: rgba(0,255,140,0.2);
-  box-shadow: 0 0 12px rgba(0,255,140,0.4);
+  background: rgba(0, 255, 140, 0.2);
+  box-shadow: 0 0 12px rgba(0, 255, 140, 0.4);
 }

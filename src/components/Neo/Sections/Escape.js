@@ -5,19 +5,19 @@ const Escape = () => {
   return (
     <div className="text-content">
       <div className="text-box">
-        <div className="inner-box" dir="rtl">
-          <h2>ESC לא יעזור כאן!</h2>
+        <div className="inner-box" dir="ltr">
+          <h2>ESC won't help here!</h2>
           <p>
-            ניאו נלחץ.<br />
-            הוא לחץ על ESC. שוב. ושוב.<br />
-            אבל שום דבר לא השתנה.<br /><br />
-            כמו אלפי סטודנטים בישראל שמסיימים לימודים, שולחים קורות חיים,
-            ומרגישים תקועים במטריקס של "אין לך ניסיון".<br /><br />
-            בעולם שבו כולם דורשים ניסיון – <br></br>אבל אף אחד לא נותן אותו –<br />
-            קל להרגיש חסרי אונים. קל לרצות לברוח.<br /><br />
-            אבל לפעמים, ברגע שבו הכי מתחשק לברוח – מתחיל השינוי.<br /><br />
-            לא כל ESC עובד.<br />
-            זה לא כישלון, זה חלק מהדרך שלך לפרוץ את המטריקס.<br /><br />
+            Neo panicked.<br />
+            He pressed ESC. Again. And again.<br />
+            But nothing changed.<br /><br />
+            Like thousands of students in Israel who finish their studies, send resumes,
+            and feel stuck in a matrix of "you have no experience".<br /><br />
+            In a world where everyone demands experience – <br></br>but no one gives it –<br />
+            it's easy to feel helpless. Easy to want to escape.<br /><br />
+            But sometimes, at the moment when you most want to escape – the change begins.<br /><br />
+            Not every ESC works.<br />
+            It's not failure, it's part of your way to break out of the matrix.<br /><br />
           </p>
         </div>
       </div>

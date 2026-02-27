@@ -7,6 +7,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import "./App.css";
+import { LocaleProvider } from "../../context/LocaleContext";
 
 // ===== AGENT SMITH =====
 import AgentSmith from "../AgentSmith/AgentSmith";
@@ -172,8 +173,10 @@ function ConditionalSidebar() {
 
 export default function App() {
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <LocaleProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </LocaleProvider>
   );
 }

@@ -1,16 +1,35 @@
 import React from "react";
+import { useLocaleContext } from "../../../context/LocaleContext";
 import "./Videos.css";
 
+const translations = {
+  en: {
+    alert: "SYSTEM ALERT: DEMO MODE",
+    preview: "This construct is a limited preview.",
+    fullAccess: "For full access, visit:",
+    status: "DEMO"
+  },
+  he: {
+    alert: "התרעת מערכת: מצב דמו",
+    preview: "מבנה זה הוא תצוגה מקדימה מוגבלת.",
+    fullAccess: "לגישה מלאה, בקר ב:",
+    status: "דמו"
+  }
+};
+
 const Videos = () => {
+  const { locale } = useLocaleContext();
+  const t = translations[locale];
+
   return (
     <div className="matrix-video-container">
       <div className="matrix-frame">
         <div className="matrix-screen">
           <div className="matrix-text">
-            SYSTEM ALERT: DEMO MODE<br />
-            This construct is a limited preview.
+            {t.alert}<br />
+            {t.preview}
             <br />
-            For full access, visit:<br />
+            {t.fullAccess}<br />
             <a href="https://iez-computers.com/" target="_blank" rel="noopener noreferrer">
               iez-computers.com
             </a>
@@ -21,7 +40,7 @@ const Videos = () => {
           <div className="matrix-bar">
             <div className="matrix-fill"></div>
           </div>
-          <span className="matrix-status">DEMO</span>
+          <span className="matrix-status">{t.status}</span>
         </div>
       </div>
     </div>

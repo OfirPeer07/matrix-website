@@ -1,30 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Articles.css";
 import OrbitalSphere3D from "./OrbitalSphere3D";
-import { locales } from "./Articles_he";
+import { locales as localesEn } from "./Articles_en";
+import { locales as localesHe } from "./Articles_he";
+import { useLocaleContext } from "../../../context/LocaleContext";
 
-function useLocale() {
-  const [localeKey, setLocaleKey] = useState(() => {
-    const saved = typeof window !== "undefined"
-      ? window.localStorage.getItem("localeKey")
-      : null;
-    return saved || "he";
-  });
+const locales = { ...localesEn, ...localesHe };
 
-  useEffect(() => {
-    if (typeof document !== "undefined") {
-      const l = locales[localeKey];
-      document.documentElement.setAttribute("lang", l.lang);
-      document.documentElement.setAttribute("dir", l.dir);
-    }
-    if (typeof window !== "undefined") {
-      window.localStorage.setItem("localeKey", localeKey);
-    }
-  }, [localeKey]);
-
-  const t = locales[localeKey];
-  return { t, localeKey, setLocaleKey };
-}
 
 /** --- Modal --- **/
 function ArticleModal({ article, t, onClose, restoreFocusTo }) {
@@ -151,7 +133,8 @@ function ArticleModal({ article, t, onClose, restoreFocusTo }) {
 }
 
 export default function Articles() {
-  const { t, localeKey, setLocaleKey } = useLocale();
+  const { locale: localeKey } = useLocaleContext();
+  const t = locales[localeKey];
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // NEW: toggle class on <html> to hide .sidebar while modal is open

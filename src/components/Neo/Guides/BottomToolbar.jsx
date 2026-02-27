@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocaleContext } from "../../../context/LocaleContext";
 import "./BottomToolbar.css";
 
 import {
@@ -10,14 +11,34 @@ import {
   ProfileIcon,
 } from "./InstagramIcons";
 
+const translations = {
+  en: {
+    feed: "Feed",
+    reels: "Reels",
+    dm: "Direct Messages",
+    search: "Search",
+    profile: "Profile"
+  },
+  he: {
+    feed: "פיד",
+    reels: "רילס",
+    dm: "הודעות",
+    search: "חיפוש",
+    profile: "פרופיל"
+  }
+};
+
 export default function BottomToolbar({ active, onChange }) {
+  const { locale } = useLocaleContext();
+  const t = translations[locale];
+
   return (
     <nav className="ig-bottom-nav">
 
       <button
         className={active === "feed" ? "active" : ""}
         onClick={() => onChange("feed")}
-        aria-label="Feed"
+        aria-label={t.feed}
       >
         {active === "feed" ? <HomeFilled /> : <HomeOutline />}
       </button>
@@ -25,7 +46,7 @@ export default function BottomToolbar({ active, onChange }) {
       <button
         className={`reels ${active === "reels" ? "active" : ""}`}
         onClick={() => onChange("reels")}
-        aria-label="Reels"
+        aria-label={t.reels}
       >
         <ReelsIcon />
       </button>
@@ -33,7 +54,7 @@ export default function BottomToolbar({ active, onChange }) {
       <button
         className={`dm ${active === "activity" ? "active" : ""}`}
         onClick={() => onChange("activity")}
-        aria-label="Direct Messages"
+        aria-label={t.dm}
       >
         <SendIcon />
       </button>
@@ -41,15 +62,15 @@ export default function BottomToolbar({ active, onChange }) {
       <button
         className={active === "search" ? "active" : ""}
         onClick={() => onChange("search")}
-        aria-label="Search"
+        aria-label={t.search}
       >
         <SearchIcon />
       </button>
-      
+
       <button
         className={`profile ${active === "profile" ? "active" : ""}`}
         onClick={() => onChange("profile")}
-        aria-label="Profile"
+        aria-label={t.profile}
       >
         <ProfileIcon />
       </button>

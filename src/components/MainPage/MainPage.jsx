@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect, useId } from "react";
+import { useLocaleContext } from "../../context/LocaleContext";
 import { useNavigate } from "react-router-dom";
 import "./MainPage.css";
 
@@ -38,6 +39,25 @@ const DEFAULT_SETTINGS = {
   rainFps: 32,
 };
 
+const translations = {
+  en: {
+    agentSmithTitle: "Agent Smith",
+    agentSmithSub: "Innovate with cutting-edge agentSmith solutions.",
+    neoTitle: "Neo",
+    neoSub: "Secure the future with advanced cybersecurity.",
+    drawerOpen: "Open customization panel (Ctrl+,)",
+    drawerClose: "Close customization panel (Esc)",
+  },
+  he: {
+    agentSmithTitle: "סוכן סמית'",
+    agentSmithSub: "חדשנות עם פתרונות Agent Smith מתקדמים.",
+    neoTitle: "ניאו",
+    neoSub: "אבטח את העתיד עם סייבר התקפי והגנתי.",
+    drawerOpen: "פתח פאנל הגדרות (Ctrl+,)",
+    drawerClose: "סגור פאנל הגדרות (Esc)",
+  }
+};
+
 /* Persistent settings (localStorage) */
 function usePersistentSettings(key, initial) {
   const [state, setState] = useState(() => {
@@ -70,6 +90,9 @@ function usePersistentSettings(key, initial) {
 /* ================= MAIN PAGE ================= */
 
 const MainPage = ({ hideMatrix = false }) => {
+  const { locale, toggleLocale } = useLocaleContext();
+  const t = translations[locale];
+
   const [busy, setBusy] = useState(false);
   const [open, setOpen] = useState(false);
   const [settings, setSettings] = usePersistentSettings(
@@ -122,7 +145,7 @@ const MainPage = ({ hideMatrix = false }) => {
       <button
         className="fab open-drawer-btn"
         onClick={() => setOpen(true)}
-        aria-label="Open customization panel (Ctrl+,)"
+        aria-label={t.drawerOpen}
       >
         ⚙️
       </button>
@@ -130,9 +153,18 @@ const MainPage = ({ hideMatrix = false }) => {
       <button
         className={`fab close-drawer-btn ${open ? "show" : ""}`}
         onClick={() => setOpen(false)}
-        aria-label="Close customization panel (Esc)"
+        aria-label={t.drawerClose}
       >
         ✕
+      </button>
+
+      {/* Language Toggle */}
+      <button
+        className="fab lang-toggle-btn"
+        onClick={toggleLocale}
+        aria-label="Toggle Language"
+      >
+        {locale === "en" ? "HE" : "EN"}
       </button>
 
       {/* Backdrop */}
@@ -193,9 +225,9 @@ const MainPage = ({ hideMatrix = false }) => {
             </div>
           </button>
           <div id="agent-smith-caption" className="title-box">
-            <h2 className="photo-title">Agent Smith</h2>
+            <h2 className="photo-title">{t.agentSmithTitle}</h2>
             <p className="photo-subtitle">
-              Innovate with cutting-edge agentSmith solutions.
+              {t.agentSmithSub}
             </p>
           </div>
         </section>
@@ -218,9 +250,9 @@ const MainPage = ({ hideMatrix = false }) => {
             </div>
           </button>
           <div id="neo-caption" className="title-box">
-            <h2 className="photo-title">Neo</h2>
+            <h2 className="photo-title">{t.neoTitle}</h2>
             <p className="photo-subtitle">
-              Secure the future with advanced cybersecurity.
+              {t.neoSub}
             </p>
           </div>
         </section>

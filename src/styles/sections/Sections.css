@@ -37,6 +37,8 @@
   gap: 5rem;
   /* גורם לתמונה ולטקסט להיות באותו גובה בשורה שלהם */
   align-items: stretch;
+  /* Force visual order: Image left, Text right regardless of language */
+  direction: ltr !important;
 }
 
 /* =====================================================
@@ -47,6 +49,7 @@
 .image-content {
   display: flex;
   width: 100%;
+  direction: ltr !important;
 }
 
 /* =====================================================
@@ -91,10 +94,9 @@
   border-radius: 12px;
   border: 2px solid rgba(0, 255, 0, 0.45);
   box-shadow: 0 0 22px rgba(0, 255, 0, 0.45);
-
-  direction: rtl;
-  text-align: right;
   box-sizing: border-box;
+
+  /* No hardcoded direction here - controlled by dir="rtl/ltr" in JSX */
 
   /* עיצוב טקסט */
   font-size: 16px;

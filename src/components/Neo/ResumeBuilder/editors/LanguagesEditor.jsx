@@ -1,13 +1,22 @@
+import { useLocaleContext } from "../../../../context/LocaleContext";
+
+const translations = {
+  en: { title: "Languages", placeholder: "Language", addBtn: "Add" },
+  he: { title: "שפות", placeholder: "שפה", addBtn: "הוסף" }
+};
+
 export default function LanguagesEditor({ languages = [], setLanguages }) {
+  const { locale } = useLocaleContext();
+  const t = translations[locale];
   const add = () => setLanguages([...languages, { name: "" }]);
 
   return (
     <section>
-      <h3>Languages</h3>
+      <h3>{t.title}</h3>
       {languages.map((l, i) => (
         <input
           key={i}
-          placeholder="Language"
+          placeholder={t.placeholder}
           value={l.name}
           onChange={e => {
             const copy = [...languages];
@@ -16,7 +25,7 @@ export default function LanguagesEditor({ languages = [], setLanguages }) {
           }}
         />
       ))}
-      <button type="button" onClick={add}>Add</button>
+      <button type="button" onClick={add}>{t.addBtn}</button>
     </section>
   );
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import * as THREE from "three";
 import "./TechnologyNews.css";
+import { useLocaleContext } from "../../../context/LocaleContext";
 
 const translations = {
   en: {
@@ -149,8 +150,9 @@ const TechnologyCard = ({ title, subtitle, content, color, readMore }) => {
   );
 };
 
+
 export default function TechnologyNews() {
-  const [locale, setLocale] = useState("he");
+  const { locale } = useLocaleContext();
   const t = translations[locale];
   const containerRef = useRef(null);
 

@@ -6,16 +6,15 @@ import '../../../styles/sections/Sections.css';
 import Story1 from './Story1.png';
 import Story2 from './Story2.png';
 
-// Array of images with English names
 const images = [
-    { src: Story1, name: '“Entry-level position with 3 years of experience”' },
-    { src: Story2, name: '“Junior Competition kicks off”' },
+    { src: Story1, name: '“משרת Entry-level עם 3 שנות ניסיון”' },
+    { src: Story2, name: '\”תחרות  ג\'וניורים יוצאת לדרך”' },
 ];
 
 const PHOTO_INTERVAL = 5000;
 const PROGRESS_UPDATE_INTERVAL = 50;
 
-const PhotoCarousel = () => {
+const PhotoCarousel_he = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(true);
     const [progress, setProgress] = useState(0);
@@ -58,35 +57,15 @@ const PhotoCarousel = () => {
 
     return (
         <div className="photo-carousel">
-            <img
-                src={images[currentIndex].src}
-                alt={images[currentIndex].name}
-                className="carousel-image"
-            />
-
-            <button
-                className="control-button"
-                onClick={isPlaying ? pause : play}
-                aria-label={isPlaying ? 'Pause' : 'Play'}
-            >
+            <img src={images[currentIndex].src} alt={images[currentIndex].name} className="carousel-image" />
+            <button className="control-button" onClick={isPlaying ? pause : play}>
                 {isPlaying ? '❚❚' : '►'}
             </button>
-
-            <div className="image-name">
-                {images[currentIndex].name}
-            </div>
-
+            <div className="image-name">{images[currentIndex].name}</div>
             <div className="progress-bar-container">
                 {images.map((_, index) => (
-                    <div
-                        key={index}
-                        className={`progress-bar ${index === currentIndex ? 'active' : ''}`}
-                        onClick={() => selectImage(index)}
-                    >
-                        <div
-                            className="progress-bar-background"
-                            style={{ width: index === currentIndex ? `${progress}%` : '0%' }}
-                        />
+                    <div key={index} className={`progress-bar ${index === currentIndex ? 'active' : ''}`} onClick={() => selectImage(index)}>
+                        <div className="progress-bar-background" style={{ width: index === currentIndex ? `${progress}%` : '0%' }} />
                     </div>
                 ))}
             </div>
@@ -94,4 +73,4 @@ const PhotoCarousel = () => {
     );
 };
 
-export default PhotoCarousel;
+export default PhotoCarousel_he;

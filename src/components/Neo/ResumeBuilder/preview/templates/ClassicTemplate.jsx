@@ -1,5 +1,29 @@
+import { useLocaleContext } from "../../../../../context/LocaleContext";
 import "../templates/styles/base.css";
 import "../templates/styles/classic.css";
+
+const translations = {
+  en: {
+    contact: "Contact",
+    skills: "Skills",
+    languages: "Languages",
+    about: "About Me",
+    experience: "Experience",
+    projects: "Projects",
+    education: "Education",
+    army: "Military Service"
+  },
+  he: {
+    contact: "צור קשר",
+    skills: "מיומנויות",
+    languages: "שפות",
+    about: "אודות",
+    experience: "ניסיון תעסוקתי",
+    projects: "פרויקטים",
+    education: "השכלה",
+    army: "שירות צבאי / לאומי"
+  }
+};
 
 export default function ClassicTemplate({
   profile = {},
@@ -12,6 +36,8 @@ export default function ClassicTemplate({
   education = [],
   army = {}
 }) {
+  const { locale } = useLocaleContext();
+  const t = translations[locale];
   const hasContent = (arr) => Array.isArray(arr) && arr.length > 0;
 
   const isArmyFilled =
@@ -31,7 +57,7 @@ export default function ClassicTemplate({
 
         {Object.values(contact).some(Boolean) && (
           <section>
-            <h2>Contact</h2>
+            <h2>{t.contact}</h2>
             {contact.email && <p>{contact.email}</p>}
             {contact.phone && <p>{contact.phone}</p>}
             {contact.linkedin && <p>{contact.linkedin}</p>}
@@ -41,7 +67,7 @@ export default function ClassicTemplate({
 
         {hasContent(skills) && (
           <section>
-            <h2>Skills</h2>
+            <h2>{t.skills}</h2>
             {skills.map((s, i) => (
               <p key={i}>
                 {s.name}{s.level && ` (${s.level}/5)`}
@@ -52,7 +78,7 @@ export default function ClassicTemplate({
 
         {hasContent(languages) && (
           <section>
-            <h2>Languages</h2>
+            <h2>{t.languages}</h2>
             {languages.map((l, i) => (
               <p key={i}>
                 {l.name}{l.level && ` (${l.level}/5)`}
@@ -68,14 +94,14 @@ export default function ClassicTemplate({
       <main className="resume-left">
         {hasContent(about) && (
           <section>
-            <h2>About Me</h2>
+            <h2>{t.about}</h2>
             {about.map((p, i) => <p key={i}>{p}</p>)}
           </section>
         )}
 
         {hasContent(experience) && (
           <section>
-            <h2>Experience</h2>
+            <h2>{t.experience}</h2>
             {experience.map((exp, i) => (
               <div key={i} className="entry">
                 <div className="entry-header">
@@ -104,7 +130,7 @@ export default function ClassicTemplate({
 
         {hasContent(projects) && (
           <section>
-            <h2>Projects</h2>
+            <h2>{t.projects}</h2>
             {projects.map((proj, i) => (
               <div key={i} className="entry">
                 <div className="entry-header">
@@ -127,7 +153,7 @@ export default function ClassicTemplate({
 
         {hasContent(education) && (
           <section>
-            <h2>Education</h2>
+            <h2>{t.education}</h2>
             {education.map((edu, i) => (
               <div key={i} className="entry">
                 <div className="entry-header">
@@ -156,7 +182,7 @@ export default function ClassicTemplate({
 
         {isArmyFilled && (
           <section>
-            <h2>Military Service</h2>
+            <h2>{t.army}</h2>
             <div className="entry">
               <div className="entry-header">
                 <span className="entry-title">{army.role}</span>

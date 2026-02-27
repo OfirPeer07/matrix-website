@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import neoIcon from '../../assets/images/neoIcon.png';
 import logoIcon from '../../assets/images/logo.png';
 import agentSmithIcon from '../../assets/images/agentSmithIcon.png';
+import { useLocaleContext } from '../../context/LocaleContext';
 import './MatrixBar.css';
 
 /* ─── Utilities ─────────────────────────────────────────────────────── */
@@ -133,38 +134,38 @@ function DecodedLink({ to, label, delay = 0, panelOpen }) {
 const SECTIONS = {
   neoIcon: {
     id: 'neoIcon',
-    title: 'NEO //',
-    subtitle: 'CYBER DIVISION',
+    title: { he: 'NEO //', en: 'NEO //' },
+    subtitle: { he: 'CYBER DIVISION', en: 'CYBER DIVISION' },
     links: [
-      { to: '/neo/hacking/guides', label: 'מדריכי סייבר' },
-      { to: '/neo/hacking/articles', label: 'מאמרי סייבר' },
-      { to: '/neo/hacking/videos', label: 'סרטוני סייבר' },
+      { to: '/neo/hacking/guides', label: { he: 'מדריכי סייבר', en: 'Hacking Guides' } },
+      { to: '/neo/hacking/articles', label: { he: 'מאמרי סייבר', en: 'Hacking Articles' } },
+      { to: '/neo/hacking/videos', label: { he: 'סרטוני סייבר', en: 'Hacking Videos' } },
     ],
   },
   logo: {
     id: 'logo',
-    title: 'MATRIX //',
-    subtitle: 'MAIN SYSTEM',
+    title: { he: 'MATRIX //', en: 'MATRIX //' },
+    subtitle: { he: 'MAIN SYSTEM', en: 'MAIN SYSTEM' },
     links: [
-      { to: '/neo/works-with', label: 'ספקים וחברות' },
-      { to: '/thanks', label: 'תודות' },
-      { to: '/contact-us', label: 'צור קשר' },
+      { to: '/neo/works-with', label: { he: 'ספקים וחברות', en: 'Partners & Orgs' } },
+      { to: '/thanks', label: { he: 'תודות', en: 'Thanks' } },
+      { to: '/contact-us', label: { he: 'צור קשר', en: 'Contact Us' } },
     ],
   },
   agentSmithIcon: {
     id: 'agentSmithIcon',
-    title: 'SMITH //',
-    subtitle: 'CONTROL DIVISION',
+    title: { he: 'SMITH //', en: 'SMITH //' },
+    subtitle: { he: 'CONTROL DIVISION', en: 'CONTROL DIVISION' },
     links: [
-      { to: '/agent-smith/agent-smith-department/troubleshooting-guides', label: 'פתרון תקלות' },
-      { to: '/agent-smith/agent-smith-department/technology-news', label: 'חדשות טכנולוגיה' },
-      { to: '/agent-smith/agent-smith-department/building-computers', label: 'בניית מחשבים' },
+      { to: '/agent-smith/agent-smith-department/troubleshooting-guides', label: { he: 'פתרון תקלות', en: 'Troubleshooting' } },
+      { to: '/agent-smith/agent-smith-department/technology-news', label: { he: 'חדשות טכנולוגיה', en: 'Tech News' } },
+      { to: '/agent-smith/agent-smith-department/building-computers', label: { he: 'בניית מחשבים', en: 'Build PC' } },
     ],
   },
 };
 
 /* ─── Command Panel ──────────────────────────────────────────────────── */
-function CommandPanel({ section, open, onMouseEnter, onMouseLeave }) {
+function CommandPanel({ section, open, onMouseEnter, onMouseLeave, locale }) {
   const data = SECTIONS[section];
   return (
     <div
@@ -178,15 +179,15 @@ function CommandPanel({ section, open, onMouseEnter, onMouseLeave }) {
       {data && (
         <div className="panel-inner">
           <div className="panel-header">
-            <span className="panel-title">{data.title}</span>
-            <span className="panel-subtitle">{data.subtitle}</span>
+            <span className="panel-title">{data.title[locale]}</span>
+            <span className="panel-subtitle">{data.subtitle[locale]}</span>
           </div>
           <div className="panel-links">
             {data.links.map((lk, i) => (
               <DecodedLink
                 key={lk.to}
                 to={lk.to}
-                label={lk.label}
+                label={lk.label[locale]}
                 delay={i * 90}
                 panelOpen={open}
               />
@@ -203,6 +204,7 @@ const MatrixBar = forwardRef(function MatrixBar({ mode = 'both' }, ref) {
   const showNeo = mode === 'neo' || mode === 'both';
   const showSmith = mode === 'agent-smith' || mode === 'both';
 
+  const { locale, toggleLocale } = useLocaleContext();
   const [activeSection, setActiveSection] = useState(null); // which panel is open
   const [panelOpen, setPanelOpen] = useState(false); // animation state
   const [isMobile, setIsMobile] = useState(false);
@@ -356,12 +358,28 @@ const MatrixBar = forwardRef(function MatrixBar({ mode = 'both' }, ref) {
     } else {
       // Both mode: Logo | Neo | Smith (Logo on far right in RTL)
       list.push(renderIcon('logo', logoIcon, 'Logo', '/'));
+
+      // Global Language Toggle
+      list.push(
+        <li key="lang-toggle" className="bar-icon lang-toggle-item">
+          <button
+            className="menu-icon lang-btn"
+            onClick={toggleLocale}
+            title={locale === 'he' ? 'Switch to English' : 'החלף לעברית'}
+          >
+            <span className="icon-ring" />
+            <span className="lang-text">{locale === 'he' ? 'EN' : 'HE'}</span>
+            <span className="icon-glow" />
+          </button>
+        </li>
+      );
+
       if (showNeo) list.push(renderIcon('neoIcon', neoIcon, 'Neo', '/neo/hacking'));
       if (showSmith) list.push(renderIcon('agentSmithIcon', agentSmithIcon, 'Agent Smith', '/agent-smith/agent-smith-department'));
     }
     return list;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode, showNeo, showSmith, activeSection, panelOpen, isMobile]);
+  }, [mode, showNeo, showSmith, activeSection, panelOpen, isMobile, locale, toggleLocale]);
 
   /* ── Mobile bottom sheet ────────────────────────────────────────── */
   const MobileSheet = () => {
@@ -375,14 +393,14 @@ const MatrixBar = forwardRef(function MatrixBar({ mode = 'both' }, ref) {
           <div className="swipe-indicator" />
           <button className="close-sheet-btn" onClick={closeMobileMenu} aria-label="סגור">✕</button>
           <div className="sheet-header">
-            <span className="sheet-title">{data?.title}</span>
-            <span className="sheet-subtitle">{data?.subtitle}</span>
+            <span className="sheet-title">{data?.title[locale]}</span>
+            <span className="sheet-subtitle">{data?.subtitle[locale]}</span>
           </div>
           {data?.links.map((lk, i) => (
             <Link key={lk.to} to={lk.to} className="sheet-link" onClick={closeMobileMenu}
               style={{ animationDelay: `${i * 80}ms` }}>
               <span className="sheet-link-bracket">[</span>
-              {lk.label}
+              {lk.label[locale]}
               <span className="sheet-link-bracket">]</span>
             </Link>
           ))}
@@ -414,6 +432,7 @@ const MatrixBar = forwardRef(function MatrixBar({ mode = 'both' }, ref) {
             open={panelOpen}
             onMouseEnter={cancelClose}
             onMouseLeave={closePanel}
+            locale={locale}
           />
         )}
 

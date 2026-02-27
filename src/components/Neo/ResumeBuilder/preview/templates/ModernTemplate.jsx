@@ -1,5 +1,29 @@
+import { useLocaleContext } from "../../../../../context/LocaleContext";
 import "../templates/styles/base.css";
 import "../templates/styles/modern.css";
+
+const translations = {
+  en: {
+    profile: "Profile",
+    experience: "Experience",
+    projects: "Projects",
+    education: "Education",
+    army: "Military Service",
+    contact: "Contact",
+    skills: "Skills",
+    languages: "Languages"
+  },
+  he: {
+    profile: "אודות",
+    experience: "ניסיון תעסוקתי",
+    projects: "פרויקטים",
+    education: "השכלה",
+    army: "שירות צבאי / לאומי",
+    contact: "צור קשר",
+    skills: "מיומנויות",
+    languages: "שפות"
+  }
+};
 
 export default function ModernTemplate({
   profile = {},
@@ -12,6 +36,8 @@ export default function ModernTemplate({
   education = [],
   army = {}
 }) {
+  const { locale } = useLocaleContext();
+  const t = translations[locale];
   const hasContent = (arr) => Array.isArray(arr) && arr.length > 0;
 
   const isArmyFilled =
@@ -35,7 +61,7 @@ export default function ModernTemplate({
         <div className="modern-main">
           {hasContent(about) && (
             <section>
-              <h2>Profile</h2>
+              <h2>{t.profile}</h2>
               {about.map((p, i) => (
                 <p key={i}>{p}</p>
               ))}
@@ -44,7 +70,7 @@ export default function ModernTemplate({
 
           {hasContent(experience) && (
             <section>
-              <h2>Experience</h2>
+              <h2>{t.experience}</h2>
 
               {experience.map((exp, i) => (
                 <div key={i} className="entry">
@@ -87,7 +113,7 @@ export default function ModernTemplate({
 
           {hasContent(projects) && (
             <section>
-              <h2>Projects</h2>
+              <h2>{t.projects}</h2>
 
               {projects.map((proj, i) => (
                 <div key={i} className="entry">
@@ -118,7 +144,7 @@ export default function ModernTemplate({
 
           {hasContent(education) && (
             <section>
-              <h2>Education</h2>
+              <h2>{t.education}</h2>
 
               {education.map((edu, i) => (
                 <div key={i} className="entry">
@@ -159,7 +185,7 @@ export default function ModernTemplate({
 
           {isArmyFilled && (
             <section>
-              <h2>Military Service</h2>
+              <h2>{t.army}</h2>
 
               <div className="entry">
                 <div className="entry-header">
@@ -194,7 +220,7 @@ export default function ModernTemplate({
         <aside className="modern-side">
           {Object.values(contact).some(Boolean) && (
             <section>
-              <h2>Contact</h2>
+              <h2>{t.contact}</h2>
               {contact.email && <p>{contact.email}</p>}
               {contact.phone && <p>{contact.phone}</p>}
               {contact.linkedin && <p>{contact.linkedin}</p>}
@@ -204,7 +230,7 @@ export default function ModernTemplate({
 
           {hasContent(skills) && (
             <section>
-              <h2>Skills</h2>
+              <h2>{t.skills}</h2>
               <div className="badge-list">
                 {skills.map((s, i) => (
                   <span key={i} className="badge">
@@ -217,7 +243,7 @@ export default function ModernTemplate({
 
           {hasContent(languages) && (
             <section>
-              <h2>Languages</h2>
+              <h2>{t.languages}</h2>
               {languages.map((l, i) => (
                 <p key={i}>
                   {l.name}

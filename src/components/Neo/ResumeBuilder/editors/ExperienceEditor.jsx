@@ -1,7 +1,34 @@
 import { useState } from "react";
 import "../../../../styles/editors/Editors.css";
 
+import { useLocaleContext } from "../../../../context/LocaleContext";
+
+const translations = {
+  en: {
+    title: "Experience",
+    newRole: "New Role",
+    rolePlaceholder: "Role / Title",
+    companyPlaceholder: "Company",
+    startPlaceholder: "Start",
+    endPlaceholder: "End",
+    descriptionPlaceholder: "Describe your work using bullet points.\nExample:\n• Built React components\n• Improved performance by 30%",
+    addBtn: "+ Add Experience"
+  },
+  he: {
+    title: "ניסיון תעסוקתי",
+    newRole: "תפקיד חדש",
+    rolePlaceholder: "תפקיד / כותרת",
+    companyPlaceholder: "חברה / ארגון",
+    startPlaceholder: "התחלה",
+    endPlaceholder: "סיום",
+    descriptionPlaceholder: "תאר את עבודתך בנקודות.\nדוגמה:\n• פיתוח רכיבי React\n• שיפור ביצועים ב-30%",
+    addBtn: "+ הוסף ניסיון"
+  }
+};
+
 export default function ExperienceEditor({ experience = [], setExperience }) {
+  const { locale } = useLocaleContext();
+  const t = translations[locale];
   const [editingId, setEditingId] = useState(null);
 
   const emptyItem = {
@@ -32,7 +59,7 @@ export default function ExperienceEditor({ experience = [], setExperience }) {
 
   return (
     <section className="editor-section">
-      <h3>Experience</h3>
+      <h3>{t.title}</h3>
 
       {experience.map(item => {
         const isEditing = editingId === item.id;
@@ -42,7 +69,7 @@ export default function ExperienceEditor({ experience = [], setExperience }) {
             {/* HEADER */}
             <div className="experience-header">
               <strong>
-                {item.title || "New Role"}{" "}
+                {item.title || t.newRole}{" "}
                 {item.company && `– ${item.company}`}
               </strong>
 
@@ -58,7 +85,7 @@ export default function ExperienceEditor({ experience = [], setExperience }) {
             {isEditing && (
               <div className="experience-form">
                 <input
-                  placeholder="Role / Title"
+                  placeholder={t.rolePlaceholder}
                   value={item.title}
                   onChange={e =>
                     updateItem(item.id, "title", e.target.value)
@@ -66,7 +93,7 @@ export default function ExperienceEditor({ experience = [], setExperience }) {
                 />
 
                 <input
-                  placeholder="Company"
+                  placeholder={t.companyPlaceholder}
                   value={item.company}
                   onChange={e =>
                     updateItem(item.id, "company", e.target.value)
@@ -75,14 +102,14 @@ export default function ExperienceEditor({ experience = [], setExperience }) {
 
                 <div className="row">
                   <input
-                    placeholder="Start"
+                    placeholder={t.startPlaceholder}
                     value={item.start}
                     onChange={e =>
                       updateItem(item.id, "start", e.target.value)
                     }
                   />
                   <input
-                    placeholder="End"
+                    placeholder={t.endPlaceholder}
                     value={item.end}
                     onChange={e =>
                       updateItem(item.id, "end", e.target.value)
@@ -91,12 +118,7 @@ export default function ExperienceEditor({ experience = [], setExperience }) {
                 </div>
 
                 <textarea
-                  placeholder={
-                    "Describe your work using bullet points.\n" +
-                    "Example:\n" +
-                    "• Built React components\n" +
-                    "• Improved performance by 30%"
-                  }
+                  placeholder={t.descriptionPlaceholder}
                   value={item.description}
                   onChange={e =>
                     updateItem(item.id, "description", e.target.value)
@@ -109,7 +131,7 @@ export default function ExperienceEditor({ experience = [], setExperience }) {
       })}
 
       <button className="add-btn" onClick={addExperience}>
-        + Add Experience
+        {t.addBtn}
       </button>
     </section>
   );

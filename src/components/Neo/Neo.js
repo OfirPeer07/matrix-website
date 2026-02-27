@@ -1,10 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Neo.css";
-import IndicatorDots from "../Neo/IndicatorDots/IndicatorDots";
+import indicatorDots from "../Neo/IndicatorDots/IndicatorDots";
 import neoVideo from "./Sections/neoVideo.mp4";
 import RedOrBluePill from "./Sections/RedOrBluePill";
+import RedOrBluePill_he from "./Sections/RedOrBluePill_he";
 import Escape from "./Sections/Escape";
+import Escape_he from "./Sections/Escape_he";
 import ChooseYourPill from "./Sections/ChooseYourPill";
+import ChooseYourPill_he from "./Sections/ChooseYourPill_he";
+import { useLocaleContext } from "../../context/LocaleContext";
+import IndicatorDots from "../Neo/IndicatorDots/IndicatorDots";
 
 const BottomBlock = () => (
   <div className="bottom-block hidden">
@@ -15,6 +20,7 @@ const BottomBlock = () => (
 );
 
 const Neo = () => {
+  const { locale } = useLocaleContext();
   const escapeRef = useRef(null);
   const redOrBluePillRef = useRef(null);
   const chooseYourPillRef = useRef(null);
@@ -153,7 +159,7 @@ const Neo = () => {
 
             {/* TEXT SIDE */}
             <div>
-              <Escape />
+              {locale === 'en' ? <Escape /> : <Escape_he />}
             </div>
           </div>
         </div>
@@ -164,12 +170,16 @@ const Neo = () => {
           <div className="text-image-container">
             <div className="image-content">
               <div className="inner-box">
-                <ChooseYourPill selected={selectedPill} onSelect={setSelectedPill} />
+                {locale === 'en' ? (
+                  <ChooseYourPill selected={selectedPill} onSelect={setSelectedPill} />
+                ) : (
+                  <ChooseYourPill_he selected={selectedPill} onSelect={setSelectedPill} />
+                )}
               </div>
             </div>
 
             <div className="text-content">
-              <RedOrBluePill />
+              {locale === 'en' ? <RedOrBluePill /> : <RedOrBluePill_he />}
             </div>
           </div>
         </div>

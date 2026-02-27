@@ -137,6 +137,47 @@
       rgba(0, 0, 0, .9) 100%);
 }
 
+/* Language Toggle */
+.lang-toggle-item {
+  margin: 0 5px;
+}
+
+.lang-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 45px;
+  height: 45px;
+  color: var(--neon);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.lang-text {
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 0 8px var(--neon);
+}
+
+.lang-btn:hover {
+  color: var(--neon-bright);
+  transform: scale(1.1);
+}
+
+.lang-btn:hover .icon-glow {
+  opacity: 1;
+}
+
+.lang-btn .icon-ring {
+  inset: 2px !important;
+  border-width: 1px !important;
+}
+
 /* Glow bloom at horizon (bottom of bar) */
 .bar-horizon {
   position: absolute;
