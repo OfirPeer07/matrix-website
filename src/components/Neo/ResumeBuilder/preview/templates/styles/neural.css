@@ -1,0 +1,208 @@
+/* ============================= */
+/* ===== NEURAL TEMPLATE ===== */
+/* ============================= */
+
+.live-resume.neural {
+    --neural-accent: #00ff41;
+    --neural-bg: #ffffff;
+    --neural-text: #000000;
+    --neural-muted: #666666;
+    --neural-border: #eeeeee;
+
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    background: var(--neural-bg);
+    color: var(--neural-text);
+    font-family: 'Inter', sans-serif;
+}
+
+/* Screen-only tech decorations */
+@media screen {
+    .live-resume.neural::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, transparent, var(--neural-accent), transparent);
+        animation: neural-scan 3s infinite linear;
+    }
+}
+
+@keyframes neural-scan {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.neural-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 3px solid var(--neural-text);
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.neural-header h1 {
+    font-family: 'Orbitron', 'Inter', sans-serif;
+    /* Fallback to Inter if Orbitron not loaded */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 36px;
+    margin: 0;
+    color: var(--neural-text);
+}
+
+.neural-role {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    color: var(--neural-accent);
+    background: #000;
+    padding: 2px 10px;
+    margin: 0;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.neural-grid {
+    display: grid;
+    grid-template-columns: 2.5fr 1fr;
+    gap: 40px;
+}
+
+.neural-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    border-left: 4px solid var(--neural-accent);
+    padding-left: 10px;
+    border-bottom: none;
+    /* Override base */
+}
+
+.neural-entry {
+    margin-bottom: 20px;
+}
+
+.neural-entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 5px;
+}
+
+.neural-entry-title {
+    font-weight: 800;
+    font-size: 15px;
+}
+
+.neural-entry-company {
+    color: var(--neural-muted);
+    font-weight: normal;
+    font-style: italic;
+}
+
+.neural-entry-dates {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 12px;
+    background: #f0f0f0;
+    padding: 2px 6px;
+}
+
+.neural-bullets {
+    list-style-type: square;
+    padding-left: 20px;
+    margin: 5px 0;
+}
+
+.neural-bullets li {
+    margin-bottom: 4px;
+}
+
+/* Sidebar */
+.neural-side {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.neural-contact-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.neural-contact-label {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--neural-muted);
+}
+
+.neural-contact-value {
+    font-size: 13px;
+    word-break: break-all;
+}
+
+.neural-badge-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.neural-badge {
+    background: var(--neural-text);
+    color: #fff;
+    padding: 3px 8px;
+    font-size: 11px;
+    font-family: 'Courier New', Courier, monospace;
+    border-left: 2px solid var(--neural-accent);
+}
+
+.neural-lang-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 13px;
+}
+
+.neural-lang-dots {
+    display: flex;
+    gap: 3px;
+}
+
+.neural-dot {
+    width: 8px;
+    height: 8px;
+    border: 1px solid var(--neural-text);
+}
+
+.neural-dot.filled {
+    background: var(--neural-accent);
+}
+
+/* Print Overrides */
+@media print {
+    .live-resume.neural {
+        --neural-accent: #00c832;
+        /* Slightly darker for better printing */
+        box-shadow: none;
+        padding: 0;
+    }
+
+    .neural-role {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}

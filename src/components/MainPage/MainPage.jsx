@@ -42,17 +42,17 @@ const DEFAULT_SETTINGS = {
 const translations = {
   en: {
     agentSmithTitle: "Agent Smith",
-    agentSmithSub: "Innovate with cutting-edge agentSmith solutions.",
+    agentSmithSub: "The high-tech companies are looking for you",
     neoTitle: "Neo",
-    neoSub: "Secure the future with advanced cybersecurity.",
+    neoSub: "Let's discover the world of Juniors",
     drawerOpen: "Open customization panel (Ctrl+,)",
     drawerClose: "Close customization panel (Esc)",
   },
   he: {
-    agentSmithTitle: "סוכן סמית'",
-    agentSmithSub: "חדשנות עם פתרונות Agent Smith מתקדמים.",
+    agentSmithTitle: "'סוכן סמית",
+    agentSmithSub: "חברות ההייטק המובילות מחפשות אותך",
     neoTitle: "ניאו",
-    neoSub: "אבטח את העתיד עם סייבר התקפי והגנתי.",
+    neoSub: "בואו לגלות את העולם של הג'וניורים",
     drawerOpen: "פתח פאנל הגדרות (Ctrl+,)",
     drawerClose: "סגור פאנל הגדרות (Esc)",
   }

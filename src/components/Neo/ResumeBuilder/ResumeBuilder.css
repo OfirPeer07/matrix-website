@@ -1,92 +1,378 @@
-/* ============================= */
-/* ===== RESUME BUILDER UI ===== */
-/* ============================= */
+/* ======================================= */
+/* ===== RESUME BUILDER – PREMIUM UI ===== */
+/* ======================================= */
 
+/* ===== ROOT LAYOUT ===== */
 .resume-builder-layout {
   display: grid;
   grid-template-columns: 420px 1fr;
   height: 100vh;
-  background: #000;
+  background: #060606;
   color: #eee;
+  overflow: hidden;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
 }
 
-/* ===== LEFT: EDITORS ===== */
-.resume-editors {
-  background: radial-gradient(circle at top, #0b0b0b, #000 75%);
-  padding: 24px 20px;
-  overflow-y: auto;
-  border-right: 1px solid rgba(255,255,255,0.08);
+/* ===== LEFT: FORM PANEL ===== */
+.resume-form-panel {
+  background: #080808;
+  border-right: 1px solid #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 }
 
-.resume-editors section {
-  margin-bottom: 28px;
+.resume-form-header {
+  padding: 20px 22px 14px;
+  border-bottom: 1px solid #1a1a1a;
+  flex-shrink: 0;
 }
 
-.resume-editors h3 {
+.resume-form-header h2 {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
   color: #3aff3a;
-  font-size: 13px;
-  letter-spacing: 1px;
+  margin: 0 0 2px;
+  font-family: 'Courier New', monospace;
+}
+
+.resume-form-header p {
+  font-size: 11px;
+  color: #444;
+  margin: 0;
+  font-family: 'Courier New', monospace;
+}
+
+.resume-form-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 22px;
+  scrollbar-width: thin;
+  scrollbar-color: #222 transparent;
+}
+
+.resume-form-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.resume-form-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.resume-form-scroll::-webkit-scrollbar-thumb {
+  background: #222;
+  border-radius: 2px;
+}
+
+/* ===== FORM SECTIONS ===== */
+.resume-form-scroll section {
+  margin-bottom: 24px;
+}
+
+.resume-form-scroll h3 {
+  color: #3aff3a;
+  font-size: 10px;
+  letter-spacing: 2px;
   margin-bottom: 10px;
   text-transform: uppercase;
+  font-family: 'Courier New', monospace;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.resume-editors input,
-.resume-editors textarea {
+.resume-form-scroll h3::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, #1a1a1a, transparent);
+}
+
+.resume-form-scroll input,
+.resume-form-scroll textarea,
+.resume-form-scroll select {
   width: 100%;
-  background: #111;
-  border: 1px solid #222;
-  color: #eee;
+  background: #0d0d0d;
+  border: 1px solid #1e1e1e;
+  color: #e0e0e0;
   padding: 8px 10px;
   border-radius: 4px;
-  margin-bottom: 8px;
-  font-size: 14px;
+  margin-bottom: 7px;
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
 }
 
-.resume-editors textarea {
+.resume-form-scroll textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 72px;
+  line-height: 1.5;
 }
 
-.resume-editors input:focus,
-.resume-editors textarea:focus {
+.resume-form-scroll input:focus,
+.resume-form-scroll textarea:focus,
+.resume-form-scroll select:focus {
   outline: none;
-  border-color: #3aff3a;
+  border-color: #2aaa2a;
 }
 
-.resume-editors button {
-  background: #111;
-  border: 1px solid #333;
-  color: #eee;
-  padding: 6px 12px;
+.resume-form-scroll input::placeholder,
+.resume-form-scroll textarea::placeholder {
+  color: #333;
+}
+
+/* Row helper */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+/* Add/remove row buttons */
+.resume-form-scroll button {
+  background: transparent;
+  border: 1px solid #222;
+  color: #666;
+  padding: 5px 10px;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 12px;
+  font-family: 'Courier New', monospace;
+  transition: border-color 0.2s, color 0.2s;
 }
 
-.resume-editors button:hover {
+.resume-form-scroll button:hover {
   border-color: #3aff3a;
   color: #3aff3a;
 }
 
-/* ===== ACTIONS ===== */
-.resume-actions {
-  margin-top: 32px;
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+/* Section divider / card */
+.entry-card {
+  border: 1px solid #181818;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 10px;
+  background: #0a0a0a;
+  position: relative;
 }
 
-/* ===== RIGHT: PREVIEW ===== */
-.resume-preview-area {
-  background: linear-gradient(180deg, #1a1a1a, #111);
-  padding: 40px 0;
+.entry-card .remove-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  color: #444;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+  line-height: 1;
+}
+
+.entry-card .remove-btn:hover {
+  color: #ff4444;
+  border: none;
+}
+
+/* ===== STICKY ACTIONS BAR ===== */
+.resume-actions-bar {
+  padding: 14px 22px;
+  border-top: 1px solid #1a1a1a;
+  background: #080808;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.export-pdf-button {
+  flex: 1;
+  background: linear-gradient(135deg, #0c280c, #093209);
+  border: 1px solid #2a7a2a;
+  color: #3aff3a;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.export-pdf-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #0f370f, #0c440c);
+  border-color: #3aff3a;
+  box-shadow: 0 0 16px rgba(58, 255, 58, 0.2);
+}
+
+.export-pdf-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.overflow-warning {
+  font-size: 11px;
+  color: #ff6b6b;
+  font-family: 'Courier New', monospace;
+}
+
+/* ===== RIGHT: PREVIEW PANEL ===== */
+.resume-preview-panel {
+  background: #111;
+  background-image:
+    radial-gradient(circle at 20% 20%, #0f1a0f 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, #0a0f0a 0%, transparent 50%);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.resume-preview-panel-header {
+  padding: 14px 24px;
+  border-bottom: 1px solid #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.resume-preview-panel-header span {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #444;
+  font-family: 'Courier New', monospace;
+}
+
+.preview-scroll {
+  flex: 1;
   overflow-y: auto;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 24px;
+  scrollbar-width: thin;
+  scrollbar-color: #1e1e1e transparent;
 }
 
+.preview-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.preview-scroll::-webkit-scrollbar-thumb {
+  background: #1e1e1e;
+  border-radius: 2px;
+}
+
+/* Placeholder before name entry */
+.resume-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 16px;
+  color: #333;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  text-align: center;
+}
+
+.resume-placeholder p {
+  margin: 0;
+}
+
+/* A4 hint indicator */
+.a4-hint {
+  font-size: 10px;
+  color: #333;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border: 1px solid #1e1e1e;
+  border-radius: 4px;
+}
+
+/* ===== A4 METER (Preview) ===== */
+.a4-meter {
+  width: 100%;
+  max-width: 210mm;
+  margin-bottom: 12px;
+}
+
+.a4-meter-bar {
+  height: 3px;
+  background: #1a1a1a;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.a4-meter-fill {
+  height: 100%;
+  background: #3aff3a;
+  border-radius: 2px;
+  transition: width 0.4s ease, background 0.3s;
+}
+
+.a4-meter.overflow .a4-meter-fill {
+  background: #ff4444;
+}
+
+.a4-meter-label {
+  font-size: 10px;
+  color: #555;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.5px;
+}
+
+.a4-meter.overflow .a4-meter-label {
+  color: #ff6b6b;
+}
+
+/* ===== A4 SCALE WRAPPER ===== */
+.a4-scale-wrapper {
+  transform-origin: top center;
+  will-change: transform;
+}
+
+/* ===== PREVIEW ACTIONS (in header) ===== */
 .preview-hint {
-  font-size: 12px;
+  font-size: 11px;
   color: #dfd400;
   margin-bottom: 8px;
   font-style: italic;
+  font-family: 'Courier New', monospace;
+}
+
+/* ===== PDF TEMPLATE SELECTOR (Actions bar) ===== */
+.pdf-template-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pdf-template-selector label {
+  font-size: 10px;
+  color: #555;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.pdf-template-selector select {
+  background: #0d0d0d;
+  border: 1px solid #222;
+  color: #888;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
 }

@@ -5,6 +5,7 @@ export default function PreviewToolbar({ template, onChange }) {
   const buttons = [
     { id: "classic", label: "Classic" },
     { id: "modern", label: "Modern" },
+    { id: "neural", label: "Neural Link" },
     { id: "ats", label: "ATS" },
     { id: "base", label: "Raw" },
   ];

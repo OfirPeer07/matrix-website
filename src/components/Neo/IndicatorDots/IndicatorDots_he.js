@@ -82,13 +82,13 @@ const IndicatorDots = ({ RedOrBluePill, Escape }) => {
         <button
           className={`indicator__item ${activeSection === 'Escape' ? 'indicator__item--active' : ''}`}
           onClick={() => scrollToSection(Escape, 'Escape')}
-          aria-label="Scroll to Escape"
+          aria-label="גלול לבריחה"
         >
           <span className="indicator__dot-wrap">
             <span className="indicator__dot">
               <span className="indicator__dot-inner"></span>
             </span>
-            <span className="indicator__label">Escape</span>
+            <span className="indicator__label">הבריחה</span>
           </span>
         </button>
 
@@ -96,13 +96,13 @@ const IndicatorDots = ({ RedOrBluePill, Escape }) => {
         <button
           className={`indicator__item ${activeSection === 'RedOrBluePill' ? 'indicator__item--active' : ''}`}
           onClick={() => scrollToSection(RedOrBluePill, 'RedOrBluePill')}
-          aria-label="Scroll to the Pill"
+          aria-label="גלול לכדור"
         >
           <span className="indicator__dot-wrap">
             <span className="indicator__dot">
               <span className="indicator__dot-inner"></span>
             </span>
-            <span className="indicator__label">The Pill</span>
+            <span className="indicator__label">הכדור</span>
           </span>
         </button>
 

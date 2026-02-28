@@ -4,6 +4,7 @@ import "./AgentSmith.css";
 import PhotoCarousel from "../AgentSmith/PhotoCarousel/PhotoCarousel";
 import PhotoCarousel_he from "../AgentSmith/PhotoCarousel/PhotoCarousel_he";
 import IndicatorDots from "../AgentSmith/IndicatorDots/IndicatorDots";
+import IndicatorDots_he from "../AgentSmith/IndicatorDots/IndicatorDots_he";
 
 import experienceImage from "./Sections/Experience.png";
 import Experience from "./Sections/Experience";
@@ -120,13 +121,23 @@ const AgentSmith = () => {
   return (
     <div className="sectional-layout">
 
-      <IndicatorDots
-        activeSection={activeSection}
-        scrollToSection={scrollToSection}
-        experienceRef={experienceRef}
-        whatCanBeDoneRef={whatCanBeDoneRef}
-        photoCarouselRef={photoCarouselRef}
-      />
+      {locale === 'en' ? (
+        <IndicatorDots
+          activeSection={activeSection}
+          scrollToSection={scrollToSection}
+          experienceRef={experienceRef}
+          whatCanBeDoneRef={whatCanBeDoneRef}
+          photoCarouselRef={photoCarouselRef}
+        />
+      ) : (
+        <IndicatorDots_he
+          activeSection={activeSection}
+          scrollToSection={scrollToSection}
+          experienceRef={experienceRef}
+          whatCanBeDoneRef={whatCanBeDoneRef}
+          photoCarouselRef={photoCarouselRef}
+        />
+      )}
 
       {/*EXPERIENCE SECTION*/}
       <div ref={experienceRef} className="section">

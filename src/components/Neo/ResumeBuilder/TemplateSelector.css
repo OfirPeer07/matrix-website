@@ -1,0 +1,252 @@
+/* =============================== */
+/* ===== TEMPLATE SELECTOR ===== */
+/* =============================== */
+
+.template-selector {
+    margin-bottom: 28px;
+}
+
+.template-selector-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #3aff3a;
+    margin-bottom: 12px;
+    display: block;
+    font-family: 'Courier New', monospace;
+}
+
+.template-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.template-card {
+    position: relative;
+    border: 1px solid #262626;
+    border-radius: 6px;
+    cursor: pointer;
+    overflow: hidden;
+    background: #0d0d0d;
+    transition: border-color 0.2s, transform 0.15s;
+    padding: 12px 10px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.template-card:hover {
+    border-color: #444;
+    transform: translateY(-1px);
+}
+
+.template-card.selected {
+    border-color: #3aff3a;
+    background: #0a1a0a;
+    box-shadow: 0 0 12px rgba(58, 255, 58, 0.12);
+}
+
+.template-card-thumb {
+    width: 100%;
+    height: 80px;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 6px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* Classic thumb */
+.thumb-classic {
+    background: #fff;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4px;
+    padding: 5px;
+}
+
+.thumb-classic .thumb-col-left {
+    background: #1a1a40;
+    border-radius: 1px;
+}
+
+.thumb-classic .thumb-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 4px;
+}
+
+.thumb-line {
+    height: 3px;
+    border-radius: 1px;
+    background: #ccc;
+}
+
+.thumb-line.w80 {
+    width: 80%;
+}
+
+.thumb-line.w60 {
+    width: 60%;
+}
+
+.thumb-line.w40 {
+    width: 40%;
+}
+
+.thumb-line.header {
+    background: #333;
+    height: 4px;
+    margin-bottom: 2px;
+}
+
+/* Modern thumb */
+.thumb-modern {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 5px;
+}
+
+.thumb-modern-header {
+    background: #0d6efd;
+    height: 14px;
+    border-radius: 1px;
+    margin-bottom: 3px;
+}
+
+.thumb-modern-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3px;
+    flex: 1;
+}
+
+.thumb-modern-main {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.thumb-modern-side {
+    background: #f0f4ff;
+    border-radius: 1px;
+}
+
+/* Neural thumb */
+.thumb-neural {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 5px;
+}
+
+.thumb-neural-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #000;
+    padding-bottom: 3px;
+    margin-bottom: 3px;
+}
+
+.thumb-neural-title {
+    background: #000;
+    height: 6px;
+    width: 50%;
+    border-radius: 1px;
+}
+
+.thumb-neural-badge {
+    background: #000;
+    color: #00ff41;
+    height: 8px;
+    width: 28%;
+    font-size: 4px;
+    border-radius: 1px;
+}
+
+.thumb-neural-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3px;
+    flex: 1;
+}
+
+/* ATS thumb */
+.thumb-ats {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 6px;
+}
+
+.thumb-ats-header {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 2px;
+}
+
+.thumb-ats-name {
+    background: #111;
+    height: 5px;
+    width: 55%;
+    border-radius: 1px;
+}
+
+.thumb-ats-role {
+    background: #888;
+    height: 3px;
+    width: 40%;
+    border-radius: 1px;
+}
+
+.thumb-hr {
+    background: #bbb;
+    height: 1px;
+    margin: 2px 0;
+}
+
+.template-card-name {
+    font-size: 11px;
+    color: #aaa;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.5px;
+}
+
+.template-card.selected .template-card-name {
+    color: #3aff3a;
+}
+
+.template-card-check {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #3aff3a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    color: #000;
+    font-weight: bold;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.template-card.selected .template-card-check {
+    opacity: 1;
+    transform: scale(1);
+}

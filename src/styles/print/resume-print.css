@@ -1,97 +1,120 @@
 /* ========= PRINT MODE ========= */
-@media print {
 
-  /* 1️⃣ הסתרת הכל */
+/* ===== PAGE SIZE ===== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+
+  /* 1️⃣ Hide everything */
   body * {
     visibility: hidden;
   }
 
-  /* 2️⃣ הצגת אזור ה-resume בלבד */
-  .resume-preview-wrapper,
-  .resume-preview-wrapper * {
+  /* 2️⃣ Show only the resume area */
+  .resume-preview-panel,
+  .resume-preview-panel * {
     visibility: visible;
   }
 
-  .resume-preview-wrapper {
-    position: absolute;
+  /* Hide the scale wrapper — we'll use the pdf-only versions */
+  .a4-scale-wrapper,
+  .a4-scale-wrapper * {
+    visibility: hidden;
+    display: none !important;
+  }
+
+  .resume-preview-panel {
+    position: fixed;
     top: 0;
     left: 0;
     width: 210mm;
-    padding: 0;
-  }
-
-  /* 3️⃣ בסיס A4 */
-  .live-resume {
-    width: 210mm;
-    box-shadow: none;
-    margin: 0;
-    padding: 20mm;
-  }
-
-  /* ============================= */
-  /* ===== PAGE COUNT CONTROL ===== */
-  /* ============================= */
-
-  /* 🔒 ברירת מחדל – עמוד אחד בלבד */
-  body:not([data-multipage="true"]) .live-resume {
     height: 297mm;
+    background: #fff;
     overflow: hidden;
   }
 
-  /* 🔓 מצב מתקדם – ריבוי עמודים */
+  /* 3️⃣ A4 base */
+  .live-resume {
+    width: 210mm;
+    max-height: 297mm;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 16mm !important;
+    box-sizing: border-box;
+    /* No overflow:hidden — ExportPdfButton auto-scales to fit */
+  }
+
+  /* PDF-only div scale is set inline by ExportPdfButton.jsx before window.print() */
+  body:not([data-multipage="true"]) .pdf-only {
+    max-height: 297mm;
+  }
+
   body[data-multipage="true"] .live-resume {
     height: auto;
     overflow: visible;
   }
 
-  body[data-multipage="true"] .entry {
+  body[data-multipage="true"] .entry,
+  body[data-multipage="true"] .neural-entry {
     page-break-inside: avoid;
   }
 
-  /* ============================= */
   /* ===== CLEAN PRINT ===== */
-  /* ============================= */
+  h1,
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
 
-  /* ביטול צבעים */
-  * {
+  button,
+  .preview-toolbar,
+  .a4-meter,
+  .preview-hint,
+  .resume-form-panel,
+  .resume-actions-bar,
+  .template-selector {
+    display: none !important;
+  }
+
+  /* Default: strip backgrounds */
+  body:not([data-pdf-template="neural"]) * {
     background: transparent !important;
     color: #000 !important;
   }
 
-  /* כותרות לא נשברות */
-  h1, h2, h3 {
-    page-break-after: avoid;
+  /* Neural: preserve brand accents */
+  body[data-pdf-template="neural"] {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
-  /* הסתרת כפתורים */
-  button {
-    display: none !important;
-  }
-
-  /* ============================= */
   /* ===== TEMPLATE SELECTION ===== */
-  /* ============================= */
-
-  /* הסתרת Preview רגיל */
-  .screen-only {
-    display: none !important;
-  }
-
-  /* הסתרת כל ה-PDF templates */
+  /* Hide all pdf-only by default */
   .pdf-only {
     display: none !important;
+    visibility: hidden !important;
   }
 
-  /* הצגת Template לפי בחירה */
+  /* Show selected template */
   body[data-pdf-template="classic"] .pdf-only.classic {
     display: block !important;
+    visibility: visible !important;
   }
 
   body[data-pdf-template="modern"] .pdf-only.modern {
     display: block !important;
+    visibility: visible !important;
+  }
+
+  body[data-pdf-template="neural"] .pdf-only.neural {
+    display: block !important;
+    visibility: visible !important;
   }
 
   body[data-pdf-template="ats"] .pdf-only.ats {
     display: block !important;
+    visibility: visible !important;
   }
 }

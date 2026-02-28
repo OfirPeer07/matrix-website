@@ -1,26 +1,36 @@
-export default function ExportPdfButton() {
-  const handlePrint = () => {
-    // 1️⃣ קריאה ל-template שנבחר ל-PDF
-    const pdfTemplate =
-      localStorage.getItem("resume_template_pdf") || "classic";
+import { useState, useEffect } from "react";
 
-    // 2️⃣ עדכון ה-body כדי שה-CSS ידע מה להציג
-    document.body.setAttribute(
-      "data-pdf-template",
-      pdfTemplate
-    );
+const PDF_KEY = "resume_template_pdf";
 
-    // 3️⃣ הדפסה אמיתית
-    window.print();
-  };
+export default function PdfTemplateSelector() {
+  const [selected, setSelected] = useState(
+    () => localStorage.getItem(PDF_KEY) || "classic"
+  );
+
+  useEffect(() => {
+    localStorage.setItem(PDF_KEY, selected);
+  }, [selected]);
+
+  const options = [
+    { id: "classic", label: "Classic" },
+    { id: "modern", label: "Modern" },
+    { id: "neural", label: "Neural Link" },
+    { id: "ats", label: "ATS" },
+  ];
 
   return (
-    <button
-      type="button"
-      onClick={handlePrint}
-      className="export-pdf-button"
-    >
-      Export PDF
-    </button>
+    <div className="pdf-template-selector">
+      <label>PDF Template:</label>
+      <select
+        value={selected}
+        onChange={(e) => setSelected(e.target.value)}
+      >
+        {options.map(opt => (
+          <option key={opt.id} value={opt.id}>
+            {opt.label}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 }

@@ -1,75 +1,101 @@
-.carousel-image {
-  margin-right: -31.7rem;
-  margin-top: 0;
-  width: 95vw;
-  height: auto;
-  max-height: 95vh;
-  object-fit: contain;
+/* PhotoCarousel.css – CLEAN & RESPONSIVE VERSION */
+
+.photo-carousel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
+.carousel-image {
+  width: 100%;
+  height: auto;
+  max-height: 80vh;
+  /* Ensure it fits on screen */
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Controls Overlay */
 .control-button {
-  position: relative;
-  top: 1.65rem;
-  right: 21rem;
-  background: rgba(255, 255, 255, 0.5);
-  border: none;
+  background: rgba(0, 255, 0, 0.2);
+  border: 1px solid rgba(0, 255, 0, 0.5);
+  color: #0f0;
   cursor: pointer;
-  font-size: 15px;
-  padding: 5px;
-  border-radius: 75%;
-  width: 1.5rem;
-  height: 1.5rem;
+  font-size: 14px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1; 
-  transform: translateX(calc(50% - 200px));
+  margin-top: 1rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+
+.control-button:hover {
+  background: rgba(0, 255, 0, 0.4);
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
 }
 
 .image-name {
-  position: relative;
-  bottom: 1.25rem;
-  right: 9.5rem;
-  font-size: 18px;
-  color: rgba(255, 255, 255, 0.5);
-  padding: 2px 5px;
-  border-radius: 5px;
-  white-space: nowrap;
+  margin-top: 1rem;
+  font-size: 16px;
+  color: #0f0;
+  font-family: 'Orbitron', sans-serif;
+  text-align: center;
+  opacity: 0.8;
+  letter-spacing: 1px;
 }
 
+/* Progress Bar - Minimal & Techy */
 .progress-bar-container {
-  position: relative;
-  bottom: 2.5rem;
-  right: 52.5%;
-  transform: translateX(50%);
-  width: 25.5rem;
-  height: 0.5rem;
   display: flex;
-  gap: 2px;
+  gap: 8px;
+  width: 100%;
+  max-width: 400px;
+  height: 4px;
+  margin-top: 1.5rem;
   direction: ltr;
+  /* Always LTR for progress flow */
 }
 
 .progress-bar {
-  position: relative;
   flex: 1;
-  top: 1.5rem;
-  height: 10.5px;
-  background: rgba(120, 120, 120, 0.5);
-  border-radius: 5px;
+  height: 100%;
+  background: rgba(0, 255, 0, 0.1);
+  border-radius: 2px;
   overflow: hidden;
+  cursor: pointer;
+  position: relative;
 }
 
 .progress-bar-background {
-  position: relative;
+  position: absolute;
   top: 0;
   left: 0;
-  height: 100rem;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 3px;
+  height: 100%;
+  background: #0f0;
+  box-shadow: 0 0 10px #0f0;
   transition: width 0.1s linear;
 }
 
-.progress-bar.active .progress-bar-background {
-  position: relative;
-  width: 100rem;
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+  .carousel-image {
+    max-height: 50vh;
+  }
+
+  .image-name {
+    font-size: 14px;
+  }
 }

@@ -1,3 +1,4 @@
+import { useState, useEffect, useCallback } from "react";
 import useResumeStore from "./store/useResumeStore";
 
 /* ===== EDITORS ===== */
@@ -11,81 +12,114 @@ import ProjectsEditor from "./editors/ProjectsEditor";
 import ArmySection from "./editors/ArmySection";
 import ContactLinks from "./editors/ContactLinks";
 
+/* ===== TEMPLATE SELECTOR ===== */
+import TemplateSelector from "./TemplateSelector";
+
 /* ===== PREVIEW & ACTIONS ===== */
 import ResumePreview from "./preview/ResumePreview";
-import PdfTemplateSelector from "./actions/PdfTemplateSelector";
 import ExportPdfButton from "./actions/ExportPdfButton";
 
 /* ===== STYLES ===== */
 import "./ResumeBuilder.css";
 
+const TEMPLATE_KEY = "resume_template";
+
 export default function ResumeBuilder() {
   const { resume, updateSection } = useResumeStore();
 
+  /* Unified template state — drives BOTH preview and PDF export */
+  const [template, setTemplate] = useState(
+    () => localStorage.getItem(TEMPLATE_KEY) || "classic"
+  );
+
+  const handleTemplateChange = useCallback((id) => {
+    setTemplate(id);
+    localStorage.setItem(TEMPLATE_KEY, id);
+  }, []);
+
   return (
     <div className="resume-builder-layout">
-      {/* ============================= */}
-      {/* ===== LEFT: EDITORS ===== */}
-      {/* ============================= */}
-      <aside className="resume-editors">
-        <ProfileHeader
-          value={resume.profile}
-          onChange={(v) => updateSection("profile", v)}
-        />
 
-        <AboutMeEditor
-          value={resume.about}
-          onChange={(v) => updateSection("about", v)}
-        />
+      {/* ======================== */}
+      {/* ===== LEFT: FORM ===== */}
+      {/* ======================== */}
+      <aside className="resume-form-panel">
+        <div className="resume-form-header">
+          <h2>// CV Builder</h2>
+          <p>Fill in your data → see preview live →  export A4 PDF</p>
+        </div>
 
-        <SkillsEditor
-          skills={resume.skills}
-          setSkills={(v) => updateSection("skills", v)}
-        />
+        <div className="resume-form-scroll">
 
-        <ExperienceEditor
-          experience={resume.experience}
-          setExperience={(v) => updateSection("experience", v)}
-        />
+          {/* Template selector at the top of the form */}
+          <TemplateSelector selected={template} onChange={handleTemplateChange} />
 
-        <EducationEditor
-          education={resume.education}
-          setEducation={(v) => updateSection("education", v)}
-        />
+          <ProfileHeader
+            value={resume.profile}
+            onChange={(v) => updateSection("profile", v)}
+          />
 
-        <LanguagesEditor
-          languages={resume.languages}
-          setLanguages={(v) => updateSection("languages", v)}
-        />
+          <ContactLinks
+            value={resume.contact}
+            onChange={(v) => updateSection("contact", v)}
+          />
 
-        <ProjectsEditor
-          projects={resume.projects}
-          setProjects={(v) => updateSection("projects", v)}
-        />
+          <AboutMeEditor
+            value={resume.about}
+            onChange={(v) => updateSection("about", v)}
+          />
 
-        <ArmySection
-          value={resume.army}
-          onChange={(v) => updateSection("army", v)}
-        />
+          <SkillsEditor
+            skills={resume.skills}
+            setSkills={(v) => updateSection("skills", v)}
+          />
 
-        <ContactLinks
-          value={resume.contact}
-          onChange={(v) => updateSection("contact", v)}
-        />
+          <ExperienceEditor
+            experience={resume.experience}
+            setExperience={(v) => updateSection("experience", v)}
+          />
 
-        {/* ===== ACTIONS ===== */}
-        <div className="resume-actions">
-          <PdfTemplateSelector />
-          <ExportPdfButton />
+          <EducationEditor
+            education={resume.education}
+            setEducation={(v) => updateSection("education", v)}
+          />
+
+          <ProjectsEditor
+            projects={resume.projects}
+            setProjects={(v) => updateSection("projects", v)}
+          />
+
+          <LanguagesEditor
+            languages={resume.languages}
+            setLanguages={(v) => updateSection("languages", v)}
+          />
+
+          <ArmySection
+            value={resume.army}
+            onChange={(v) => updateSection("army", v)}
+          />
+        </div>
+
+        {/* ===== STICKY ACTIONS BAR ===== */}
+        <div className="resume-actions-bar">
+          <ExportPdfButton template={template} resume={resume} />
         </div>
       </aside>
 
-      {/* ============================= */}
+      {/* ========================== */}
       {/* ===== RIGHT: PREVIEW ===== */}
-      {/* ============================= */}
-      <main className="resume-preview-area">
-        <ResumePreview resume={resume} />
+      {/* ========================== */}
+      <main className="resume-preview-panel">
+        <div className="resume-preview-panel-header">
+          <span>▶ Live Preview</span>
+          <span className="a4-hint">A4 · 210 × 297 mm</span>
+        </div>
+
+        <div className="preview-scroll">
+          <ResumePreview resume={resume} template={template} />
+        </div>
       </main>
+
     </div>
   );
 }

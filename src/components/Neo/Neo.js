@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Neo.css";
-import indicatorDots from "../Neo/IndicatorDots/IndicatorDots";
+import IndicatorDots from "../Neo/IndicatorDots/IndicatorDots";
+import IndicatorDots_he from "../Neo/IndicatorDots/IndicatorDots_he";
 import neoVideo from "./Sections/neoVideo.mp4";
 import RedOrBluePill from "./Sections/RedOrBluePill";
 import RedOrBluePill_he from "./Sections/RedOrBluePill_he";
@@ -9,7 +10,6 @@ import Escape_he from "./Sections/Escape_he";
 import ChooseYourPill from "./Sections/ChooseYourPill";
 import ChooseYourPill_he from "./Sections/ChooseYourPill_he";
 import { useLocaleContext } from "../../context/LocaleContext";
-import IndicatorDots from "../Neo/IndicatorDots/IndicatorDots";
 
 const BottomBlock = () => (
   <div className="bottom-block hidden">
@@ -116,13 +116,23 @@ const Neo = () => {
   return (
     <div className="neo-wrapper">
       <div className="sectional-layout">
-        <IndicatorDots
-          activeSection={activeSection}
-          scrollToSection={scrollToSection}
-          RedOrBluePill={redOrBluePillRef}
-          Escape={escapeRef}
-          ChooseYourPill={chooseYourPillRef}
-        />
+        {locale === 'en' ? (
+          <IndicatorDots
+            activeSection={activeSection}
+            scrollToSection={scrollToSection}
+            RedOrBluePill={redOrBluePillRef}
+            Escape={escapeRef}
+            ChooseYourPill={chooseYourPillRef}
+          />
+        ) : (
+          <IndicatorDots_he
+            activeSection={activeSection}
+            scrollToSection={scrollToSection}
+            RedOrBluePill={redOrBluePillRef}
+            Escape={escapeRef}
+            ChooseYourPill={chooseYourPillRef}
+          />
+        )}
 
         {/* ESCAPE SECTION */}
         <div ref={escapeRef} className="section">

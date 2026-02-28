@@ -72,13 +72,13 @@ const IndicatorDots = ({ experienceRef, whatCanBeDoneRef, photoCarouselRef, scro
         <button
           className={`indicator__item ${activeSection === 'experience' ? 'indicator__item--active' : ''}`}
           onClick={() => scrollToSection(experienceRef, 'experience')}
-          aria-label="Scroll to Experience"
+          aria-label="גלול לניסיון שלי"
         >
           <span className="indicator__dot-wrap">
             <span className="indicator__dot">
               <span className="indicator__dot-inner"></span>
             </span>
-            <span className="indicator__label">Experience</span>
+            <span className="indicator__label">ניסיון</span>
           </span>
         </button>
 
@@ -86,13 +86,13 @@ const IndicatorDots = ({ experienceRef, whatCanBeDoneRef, photoCarouselRef, scro
         <button
           className={`indicator__item ${activeSection === 'whatCanBeDone' ? 'indicator__item--active' : ''}`}
           onClick={() => scrollToSection(whatCanBeDoneRef, 'whatCanBeDone')}
-          aria-label="Scroll to Instructions"
+          aria-label="גלול למה אפשר לעשות"
         >
           <span className="indicator__dot-wrap">
             <span className="indicator__dot">
               <span className="indicator__dot-inner"></span>
             </span>
-            <span className="indicator__label">Instruction</span>
+            <span className="indicator__label">מה לעשות</span>
           </span>
         </button>
 
@@ -100,13 +100,13 @@ const IndicatorDots = ({ experienceRef, whatCanBeDoneRef, photoCarouselRef, scro
         <button
           className={`indicator__item ${activeSection === 'carousel' ? 'indicator__item--active' : ''}`}
           onClick={() => scrollToSection(photoCarouselRef, 'carousel')}
-          aria-label="Scroll to Insights"
+          aria-label="גלול להרכבות"
         >
           <span className="indicator__dot-wrap">
             <span className="indicator__dot">
               <span className="indicator__dot-inner"></span>
             </span>
-            <span className="indicator__label">Insights</span>
+            <span className="indicator__label">צחוקים</span>
           </span>
         </button>
 

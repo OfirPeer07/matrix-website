@@ -1,149 +1,192 @@
-/* IndicatorDots.css – STABLE VERSION */
+/* IndicatorDots.css – "THE NEURAL LINK" REDESIGN (STABLE V2) */
 
-/* Wrapper for the indicators */
+/* Wrapper for the indicators - Glassmorphism Spine */
 .indicator__list-wrap {
   position: fixed;
   top: 50vh;
-  right: 0.75rem; /* ← Replaces margin-left calc() to prevent layout shift */
+  right: 1.2rem;
   transform: translateY(-50%);
   z-index: 1000;
 
-  padding: 10px 5.5px;
-  background: rgba(15, 15, 15, 0.9);
-  border-radius: 20px;
-  box-shadow: 0 0 25px rgba(0, 255, 0, 0.7);
-  border: 1px solid rgba(0, 255, 0, 0.7);
+  padding: 20px 8px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border-radius: 30px;
+  box-shadow:
+    0 0 20px rgba(0, 255, 120, 0.1),
+    inset 0 0 10px rgba(0, 255, 120, 0.05);
+  border: 1px solid rgba(0, 255, 120, 0.15);
 
-  direction: rtl;
+  direction: ltr;
+  /* Internal LTR for coordinate stability */
 
-  /* Prevents unwanted layout shifts */
-  contain: layout paint;  
+  contain: layout paint;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Removed mobile/tablet styles for stability */
+/* Vertical Spine Line */
+.indicator__list::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  bottom: 15px;
+  left: 50%;
+  width: 1px;
+  background: linear-gradient(to bottom,
+      transparent,
+      rgba(0, 255, 120, 0.2) 20%,
+      rgba(0, 255, 120, 0.2) 80%,
+      transparent);
+  transform: translateX(-50%);
+  z-index: -1;
+}
 
-/* Indicator list */
 .indicator__list {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: 32px;
 }
 
-/* Individual indicator item */
 .indicator__item {
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
   outline: none;
-
   display: flex;
   align-items: center;
   flex-direction: column;
-
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              opacity 0.3s ease;
-
-  opacity: 0.8;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.5;
 }
 
 .indicator__item:hover {
-  transform: scale(1.2);
   opacity: 1;
+  transform: scale(1.1);
 }
 
-/* Dot wrapper */
 .indicator__dot-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 
-/* Main dot */
 .indicator__dot {
-  width: 12px;
-  height: 12px;
-
-  border: 2px solid rgba(0, 255, 0, 0.7);
-  border-radius: 50%;
+  width: 14px;
+  height: 24px;
+  background: rgba(0, 20, 10, 0.8);
+  border: 1px solid rgba(0, 255, 120, 0.3);
+  border-radius: 4px;
   display: flex;
   justify-content: center;
   align-items: center;
-
   margin-bottom: 8px;
-
-  transition: border-color 0.3s ease,
-              box-shadow 0.3s ease,
-              transform 0.3s ease;
-
-  box-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
 }
 
-/* Inner dot */
 .indicator__dot-inner {
-  width: 12px;
-  height: 12px;
-
-  background-color: transparent;
-  border-radius: 50%;
-  transition: background-color 0.3s ease,
-              transform 0.3s ease;
+  width: 6px;
+  height: 6px;
+  background-color: rgba(0, 255, 120, 0.4);
+  border-radius: 1px;
+  transition: all 0.4s ease;
 }
 
-/* Active dot styling */
-.indicator__item--active .indicator__dot {
-  border-color: rgba(0, 255, 0, 0.7);
-  box-shadow: 
-    0 0 15px rgba(0, 255, 0, 0.7),
-    0 0 30px rgba(0, 255, 0, 0.7);
+.indicator__dot::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, rgba(0, 255, 120, 0.4), transparent);
+  animation: scanTech 3s infinite linear;
+}
 
-  animation: neonPulse 1.5s infinite;
+.indicator__item--active {
+  opacity: 1;
+}
+
+.indicator__item--active .indicator__dot {
+  height: 32px;
+  width: 18px;
+  border-color: rgba(0, 255, 120, 0.8);
+  background: rgba(0, 40, 20, 0.9);
+  box-shadow: 0 0 15px rgba(0, 255, 120, 0.4);
 }
 
 .indicator__item--active .indicator__dot-inner {
-  background-color: rgba(0, 255, 0, 0.7);
-  transform: scale(1.3);
+  background-color: #00ff78;
+  height: 12px;
+  transform: scaleY(1.5);
 }
 
 /* Label styling */
 .indicator__label {
-  font-size: 11px;
-  color: rgba(0, 255, 0, 0.7);
-  font-family: 'Orbitron', sans-serif;
-
+  font-size: 12px;
+  /* Slightly larger for visibility */
+  color: #00ff78;
+  /* Brighter color */
+  font-family: 'Courier New', Courier, monospace;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  max-width: 70px;
-  text-align: center;
+  letter-spacing: 1.5px;
+  white-space: nowrap;
 
-  word-wrap: break-word;
-  overflow-wrap: break-word;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 
-  transition: color 0.3s ease,
-              transform 0.3s ease;
+  /* POSITION TO THE LEFT OF THE DOTS */
+  right: 100%;
+  margin-right: 15px;
+
+  opacity: 0;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.85);
+  /* Darker background for contrast */
+  padding: 4px 12px;
+  border-left: 2px solid #00ff78;
+  border-radius: 4px 0 0 4px;
+  /* Rounded left edge */
+
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
 }
 
-.indicator__item:hover .indicator__label {
-  transform: translateY(-3px);
-  color: rgba(0, 255, 0, 0.7);
+.indicator__item:hover .indicator__label,
+.indicator__item--active .indicator__label {
+  opacity: 1;
+  margin-right: 20px;
+  /* Slight slide outward */
 }
 
 .indicator__item--active .indicator__label {
-  color: rgba(0, 255, 0, 0.7);
+  background: rgba(0, 40, 20, 0.9);
+  text-shadow: 0 0 8px rgba(0, 255, 120, 0.8);
   font-weight: bold;
 }
 
-/* Neon pulse animation */
-@keyframes neonPulse {
-  0%, 100% {
-    box-shadow:
-      0 0 10px rgba(0, 255, 0, 0.7),
-      0 0 20px rgba(0, 255, 0, 0.7);
+/* Hebrew specific override - text alignment only */
+[dir="rtl"] .indicator__label {
+  text-align: right;
+  font-family: 'Orbitron', sans-serif;
+  /* Matrix style for Hebrew */
+}
+
+@keyframes scanTech {
+  0% {
+    top: -100%;
   }
-  50% {
-    box-shadow:
-      0 0 15px rgba(0, 255, 0, 0.7),
-      0 0 30px rgba(0, 255, 0, 0.7);
+
+  100% {
+    top: 100%;
   }
 }

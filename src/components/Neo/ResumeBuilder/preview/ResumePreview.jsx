@@ -1,51 +1,71 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useLocaleContext } from "../../../../context/LocaleContext";
-import PreviewToolbar from "./PreviewToolbar";
 import ClassicTemplate from "./templates/ClassicTemplate";
 import ModernTemplate from "./templates/ModernTemplate";
+import NeuralTemplate from "./templates/NeuralTemplate";
 import AtsTemplate from "./templates/AtsTemplate";
 import useA4Overflow from "./useA4Overflow";
 import A4Meter from "./A4Meter";
 
-const PREVIEW_KEY = "resume_template_preview";
+const A4_WIDTH_PX = 793.7; // 210mm @ 96dpi
+const A4_HEIGHT_PX = 1122;  // 297mm @ 96dpi
 
 const translations = {
   en: {
-    placeholder: "👈 Add your name to see resume preview",
-    atsHint: "ATS view – optimized for applicant tracking systems",
-    baseHint: "Raw layout – no styling, used for structure & page size checks"
+    placeholder: "Add your name to see the live preview →",
+    atsHint: "ATS view – plain text, optimised for applicant tracking systems",
   },
   he: {
-    placeholder: "👈 הוסף את שמך כדי לראות תצוגה מקדימה",
-    atsHint: "תצוגת ATS – מותאמת למערכות סינון קורות חיים",
-    baseHint: "פריסה גולמית – ללא עיצוב, משמש לבדיקת מבנה וגודל דף"
-  }
+    placeholder: "→ הוסף שם כדי לראות תצוגה מקדימה",
+    atsHint: "תצוגת ATS – טקסט נקי, מותאם למערכות סינון קורות חיים",
+  },
 };
 
-export default function ResumePreview({ resume }) {
+function TemplateRenderer({ template, ...props }) {
+  switch (template) {
+    case "modern": return <ModernTemplate  {...props} />;
+    case "neural": return <NeuralTemplate  {...props} />;
+    case "ats": return <AtsTemplate     {...props} />;
+    case "classic":
+    default: return <ClassicTemplate {...props} />;
+  }
+}
+
+export default function ResumePreview({ resume, template = "classic" }) {
   const { locale } = useLocaleContext();
-  const t = translations[locale];
-  /* ===== STATE ===== */
-  const [template, setTemplate] = useState(
-    () => localStorage.getItem(PREVIEW_KEY) || "classic"
-  );
+  const t = translations[locale] ?? translations.en;
 
   /* ===== A4 MEASURE ===== */
   const previewRef = useRef(null);
+  const wrapperRef = useRef(null);
   const { height, overflow, max } = useA4Overflow(previewRef);
 
-  /* ===== PERSIST PREVIEW TEMPLATE ===== */
+  /* ===== SCALE TO FIT ===== */
   useEffect(() => {
-    localStorage.setItem(PREVIEW_KEY, template);
-  }, [template]);
+    const scaleToFit = () => {
+      const wrapper = wrapperRef.current;
+      if (!wrapper) return;
+
+      const parent = wrapper.parentElement;
+      if (!parent) return;
+
+      const availableW = parent.clientWidth - 48; // 24px padding each side
+      const scale = Math.min(1, availableW / A4_WIDTH_PX);
+      wrapper.style.transform = `scale(${scale})`;
+      // Since transform doesn't affect layout flow, manually set the container height
+      wrapper.style.marginBottom = `${(A4_HEIGHT_PX * scale) - A4_HEIGHT_PX}px`;
+    };
+
+    scaleToFit();
+    window.addEventListener("resize", scaleToFit);
+    return () => window.removeEventListener("resize", scaleToFit);
+  }, []);
 
   /* ===== GUARD: NO PROFILE YET ===== */
   if (!resume?.profile?.firstName) {
     return (
-      <div className="resume-preview-wrapper">
-        <div className="resume-placeholder">
-          <p>{t.placeholder}</p>
-        </div>
+      <div className="resume-placeholder">
+        <p>{t.placeholder}</p>
       </div>
     );
   }
@@ -53,45 +73,26 @@ export default function ResumePreview({ resume }) {
   const props = { ...resume };
 
   return (
-    <div className="resume-preview-wrapper">
-      {/* ===== TOOLBAR (PREVIEW ONLY) ===== */}
-      <PreviewToolbar template={template} onChange={setTemplate} />
-
+    <>
       {/* ===== A4 HEIGHT INDICATOR ===== */}
       <A4Meter height={height} max={max} overflow={overflow} />
 
-      {(template === "ats" || template === "base") && (
-        <div className="preview-hint">
-          {template === "ats" && t.atsHint}
-          {template === "base" && t.baseHint}
-        </div>
+      {template === "ats" && (
+        <p className="preview-hint">{t.atsHint}</p>
       )}
 
-      {/* ===== SCREEN PREVIEW ===== */}
-      <div ref={previewRef} className="screen-only">
-        {template === "classic" && <ClassicTemplate {...props} />}
-        {template === "modern" && <ModernTemplate {...props} />}
-        {template === "ats" && <AtsTemplate {...props} />}
-        {template === "base" && (
-          <div className="live-resume">
-            {/* Base = ATS content בלי ats.css */}
-            <AtsTemplate {...props} />
-          </div>
-        )}
+      {/* ===== SCREEN PREVIEW (scaled A4) ===== */}
+      <div ref={wrapperRef} className="a4-scale-wrapper">
+        <div ref={previewRef}>
+          <TemplateRenderer template={template} {...props} />
+        </div>
       </div>
 
-      {/* ===== PDF-ONLY TEMPLATES ===== */}
-      <div className="pdf-only classic">
-        <ClassicTemplate {...props} />
-      </div>
-
-      <div className="pdf-only modern">
-        <ModernTemplate {...props} />
-      </div>
-
-      <div className="pdf-only ats">
-        <AtsTemplate {...props} />
-      </div>
-    </div>
+      {/* ===== PDF-ONLY TEMPLATES (hidden on screen, printed based on data-pdf-template) ===== */}
+      <div className="pdf-only classic"><ClassicTemplate {...props} /></div>
+      <div className="pdf-only modern"><ModernTemplate  {...props} /></div>
+      <div className="pdf-only neural"><NeuralTemplate  {...props} /></div>
+      <div className="pdf-only ats">   <AtsTemplate     {...props} /></div>
+    </>
   );
 }
