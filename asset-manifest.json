@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/matrix-website/static/css/main.a5945394.css",
-    "main.js": "/matrix-website/static/js/main.917ab154.js",
+    "main.css": "/matrix-website/static/css/main.ef47b05e.css",
+    "main.js": "/matrix-website/static/js/main.d8563008.js",
     "static/css/113.90a1870e.chunk.css": "/matrix-website/static/css/113.90a1870e.chunk.css",
     "static/js/113.8e8d38e6.chunk.js": "/matrix-website/static/js/113.8e8d38e6.chunk.js",
     "static/css/212.b72bccfc.chunk.css": "/matrix-website/static/css/212.b72bccfc.chunk.css",
@@ -13,6 +13,7 @@
     "static/media/Neo-dodges-bullets.mp4": "/matrix-website/static/media/Neo-dodges-bullets.acd64a282738fc03368f.mp4",
     "static/media/Fight.mp4": "/matrix-website/static/media/Fight.5698a7637f143797f010.mp4",
     "static/media/Agent-smith-dodges-bullets.mp4": "/matrix-website/static/media/Agent-smith-dodges-bullets.3cd97499bcda355aed27.mp4",
+    "static/media/vidHacker.mp4": "/matrix-website/static/media/vidHacker.b78378ecc27658e08ef7.mp4",
     "static/media/Story2.png": "/matrix-website/static/media/Story2.d54feb7e4194aa2bbf5d.png",
     "static/media/Story1.png": "/matrix-website/static/media/Story1.54c9a0ed9521e340257b.png",
     "static/media/TroubleshootingGuides.png": "/matrix-website/static/media/TroubleshootingGuides.64b88f8a20ea2f70633d.png",
@@ -39,7 +40,7 @@
     "index.html": "/matrix-website/index.html"
   },
   "entrypoints": [
-    "static/css/main.a5945394.css",
-    "static/js/main.917ab154.js"
+    "static/css/main.ef47b05e.css",
+    "static/js/main.d8563008.js"
   ]
 }
