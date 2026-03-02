@@ -95,6 +95,7 @@ const MainPage = ({ hideMatrix = false }) => {
 
   const [busy, setBusy] = useState(false);
   const [open, setOpen] = useState(false);
+  const [cinematicMode, setCinematicMode] = useState(false);
   const [settings, setSettings] = usePersistentSettings(
     "matrix-demo-settings",
     DEFAULT_SETTINGS
@@ -175,7 +176,7 @@ const MainPage = ({ hideMatrix = false }) => {
       />
 
       {/* ================= MATRIX RAIN ================= */}
-      {!hideMatrix && (
+      {!hideMatrix && !cinematicMode && (
         <MatrixRainCanvas
           color={settings.accent}
           glow={settings.rainGlow}
@@ -265,6 +266,8 @@ const MainPage = ({ hideMatrix = false }) => {
         settings={settings}
         setSettings={setSettings}
         onReset={reset}
+        cinematicMode={cinematicMode}
+        setCinematicMode={setCinematicMode}
       />
     </div>
   );
