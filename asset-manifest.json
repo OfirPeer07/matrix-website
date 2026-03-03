@@ -1,11 +1,11 @@
 {
   "files": {
     "main.css": "./static/css/main.0d017875.css",
-    "main.js": "./static/js/main.4beb2a85.js",
+    "main.js": "./static/js/main.c5eb8e34.js",
     "static/css/113.e26daa4b.chunk.css": "./static/css/113.e26daa4b.chunk.css",
     "static/js/113.0c6f5288.chunk.js": "./static/js/113.0c6f5288.chunk.js",
     "static/css/212.b72bccfc.chunk.css": "./static/css/212.b72bccfc.chunk.css",
-    "static/js/212.d06af597.chunk.js": "./static/js/212.d06af597.chunk.js",
+    "static/js/212.9c40280c.chunk.js": "./static/js/212.9c40280c.chunk.js",
     "static/js/82.37091a99.chunk.js": "./static/js/82.37091a99.chunk.js",
     "static/js/239.f88449b5.chunk.js": "./static/js/239.f88449b5.chunk.js",
     "static/js/206.a27bf86f.chunk.js": "./static/js/206.a27bf86f.chunk.js",
@@ -14,14 +14,17 @@
     "static/media/TechnologyNews.png": "./static/media/TechnologyNews.fc63a8e8edb5d598568f.png",
     "static/media/BuildingComputers.png": "./static/media/BuildingComputers.21405033efa1027b4245.png",
     "static/media/Fight.mp4": "./static/media/Fight.5698a7637f143797f010.mp4",
+    "static/media/BuildingComputers_he.png": "./static/media/BuildingComputers_he.dcadfbee79f188ac8a0a.png",
     "static/media/TroubleshootingGuides.png": "./static/media/TroubleshootingGuides.8fd98bad5594af2305f2.png",
     "static/media/Agent-smith-dodges-bullets.mp4": "./static/media/Agent-smith-dodges-bullets.3cd97499bcda355aed27.mp4",
     "static/media/vidHacker.mp4": "./static/media/vidHacker.b78378ecc27658e08ef7.mp4",
     "static/media/Story2.png": "./static/media/Story2.d54feb7e4194aa2bbf5d.png",
     "static/media/Story1.png": "./static/media/Story1.54c9a0ed9521e340257b.png",
     "static/media/WhatCanBeDone.png": "./static/media/WhatCanBeDone.ab28eac29f829d0633a4.png",
+    "static/media/TechnologyNews_he.png": "./static/media/TechnologyNews_he.91847bbc1349d156032c.png",
     "static/media/agent-mode.jpg": "./static/media/agent-mode.a1130b1d9281d22e8a21.jpg",
     "static/media/Experience.png": "./static/media/Experience.871be6ab5ab7baf2962f.png",
+    "static/media/TroubleshootingGuides_he.png": "./static/media/TroubleshootingGuides_he.a51227c2996694407092.png",
     "static/media/ChooseYourPill.png": "./static/media/ChooseYourPill.ee779607bb964f3a2cf5.png",
     "static/media/project-ai.jpg": "./static/media/project-ai.1d12159b1d11fe581239.jpg",
     "static/media/OFAiR.png": "./static/media/OFAiR.eede61723213d8a1bff0.png",
@@ -40,6 +43,6 @@
   },
   "entrypoints": [
     "static/css/main.0d017875.css",
-    "static/js/main.4beb2a85.js"
+    "static/js/main.c5eb8e34.js"
   ]
 }
