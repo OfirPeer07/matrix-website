@@ -1,8 +1,15 @@
 import { useState, useEffect, useRef } from "react";
+import { useLocaleContext } from "../../context/LocaleContext";
 import "./Title.css";
 
 const Title = () => {
-  const texts = ["Welcome to the Matrix World"];
+  const { locale } = useLocaleContext();
+  const translations = {
+    en: ["Welcome to the Matrix World"],
+    he: ["ברוכים הבאים לעולם המטריקס"]
+  };
+
+  const texts = translations[locale] || translations.en;
   const [currentText, setCurrentText] = useState("");
   const [textIndex, setTextIndex] = useState(0);
   const [charIndex, setCharIndex] = useState(0);
@@ -19,7 +26,7 @@ const Title = () => {
 
   useEffect(() => {
     if (isMobile) {
-      setCurrentText("Welcome to The Matrix World");
+      setCurrentText(translations[locale][0]);
       return;
     }
 
@@ -39,7 +46,7 @@ const Title = () => {
     }, done ? 1000 : 90);
 
     return () => clearTimeout(typingTimeout.current);
-  }, [charIndex, isDeleting, textIndex, isMobile]);
+  }, [charIndex, isDeleting, textIndex, isMobile, locale, texts]);
 
   return (
     <h1 className="typing-title">

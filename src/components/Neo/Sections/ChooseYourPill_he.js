@@ -21,7 +21,7 @@ export default function ChooseYourPill_he({ selected, onSelect }) {
 
                 <img
                     src={pillImage}
-                    alt="Choose your pill"
+                    alt="בחר את הגלולה שלך"
                     className="full-image"
                 />
             </div>

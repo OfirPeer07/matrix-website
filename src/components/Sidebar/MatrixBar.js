@@ -134,8 +134,8 @@ function DecodedLink({ to, label, delay = 0, panelOpen }) {
 const SECTIONS = {
   neoIcon: {
     id: 'neoIcon',
-    title: { he: 'NEO //', en: 'NEO //' },
-    subtitle: { he: 'CYBER DIVISION', en: 'CYBER DIVISION' },
+    title: { he: 'ניאו //', en: 'NEO //' },
+    subtitle: { he: 'מחלקת סייבר', en: 'CYBER DIVISION' },
     links: [
       { to: '/neo/hacking/guides', label: { he: 'מדריכי סייבר', en: 'Hacking Guides' } },
       { to: '/neo/hacking/articles', label: { he: 'מאמרי סייבר', en: 'Hacking Articles' } },
@@ -144,8 +144,8 @@ const SECTIONS = {
   },
   logo: {
     id: 'logo',
-    title: { he: 'MATRIX //', en: 'MATRIX //' },
-    subtitle: { he: 'MAIN SYSTEM', en: 'MAIN SYSTEM' },
+    title: { he: 'מטריקס //', en: 'MATRIX //' },
+    subtitle: { he: 'מערכת ראשית', en: 'MAIN SYSTEM' },
     links: [
       { to: '/neo/works-with', label: { he: 'ספקים וחברות', en: 'Partners & Orgs' } },
       { to: '/thanks', label: { he: 'תודות', en: 'Thanks' } },
@@ -154,8 +154,8 @@ const SECTIONS = {
   },
   agentSmithIcon: {
     id: 'agentSmithIcon',
-    title: { he: 'SMITH //', en: 'SMITH //' },
-    subtitle: { he: 'CONTROL DIVISION', en: 'CONTROL DIVISION' },
+    title: { he: 'סמית\' //', en: 'SMITH //' },
+    subtitle: { he: 'מחלקת בקרה', en: 'CONTROL DIVISION' },
     links: [
       { to: '/agent-smith/agent-smith-department/troubleshooting-guides', label: { he: 'פתרון תקלות', en: 'Troubleshooting' } },
       { to: '/agent-smith/agent-smith-department/technology-news', label: { he: 'חדשות טכנולוגיה', en: 'Tech News' } },
@@ -349,15 +349,15 @@ const MatrixBar = forwardRef(function MatrixBar({ mode = 'both' }, ref) {
     const list = [];
     if (mode === 'neo') {
       // Logo on right (index 0 in RTL), Neo on left
-      list.push(renderIcon('logo', logoIcon, 'Logo', '/'));
-      if (showNeo) list.push(renderIcon('neoIcon', neoIcon, 'Neo', '/neo/hacking'));
+      list.push(renderIcon('logo', logoIcon, locale === 'he' ? 'לוגו' : 'Logo', '/'));
+      if (showNeo) list.push(renderIcon('neoIcon', neoIcon, locale === 'he' ? 'ניאו' : 'Neo', '/neo/hacking'));
     } else if (mode === 'agent-smith') {
       // Logo on right, Smith on left
-      list.push(renderIcon('logo', logoIcon, 'Logo', '/'));
-      if (showSmith) list.push(renderIcon('agentSmithIcon', agentSmithIcon, 'Agent Smith', '/agent-smith/agent-smith-department'));
+      list.push(renderIcon('logo', logoIcon, locale === 'he' ? 'לוגו' : 'Logo', '/'));
+      if (showSmith) list.push(renderIcon('agentSmithIcon', agentSmithIcon, locale === 'he' ? 'סוכן סמית\'' : 'Agent Smith', '/agent-smith/agent-smith-department'));
     } else {
       // Both mode: Logo | Neo | Smith (Logo on far right in RTL)
-      list.push(renderIcon('logo', logoIcon, 'Logo', '/'));
+      list.push(renderIcon('logo', logoIcon, locale === 'he' ? 'לוגו' : 'Logo', '/'));
 
       // Global Language Toggle
       list.push(
@@ -374,8 +374,8 @@ const MatrixBar = forwardRef(function MatrixBar({ mode = 'both' }, ref) {
         </li>
       );
 
-      if (showNeo) list.push(renderIcon('neoIcon', neoIcon, 'Neo', '/neo/hacking'));
-      if (showSmith) list.push(renderIcon('agentSmithIcon', agentSmithIcon, 'Agent Smith', '/agent-smith/agent-smith-department'));
+      if (showNeo) list.push(renderIcon('neoIcon', neoIcon, locale === 'he' ? 'ניאו' : 'Neo', '/neo/hacking'));
+      if (showSmith) list.push(renderIcon('agentSmithIcon', agentSmithIcon, locale === 'he' ? 'סוכן סמית\'' : 'Agent Smith', '/agent-smith/agent-smith-department'));
     }
     return list;
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -391,7 +391,7 @@ const MatrixBar = forwardRef(function MatrixBar({ mode = 'both' }, ref) {
         <div className={`mobile-sheet ${mobileClosing ? 'closing' : ''}`}
           onTouchStart={handleTouchStart} onTouchMove={handleTouchMove}>
           <div className="swipe-indicator" />
-          <button className="close-sheet-btn" onClick={closeMobileMenu} aria-label="סגור">✕</button>
+          <button className="close-sheet-btn" onClick={closeMobileMenu} aria-label={locale === 'he' ? 'סגור' : 'Close'}>✕</button>
           <div className="sheet-header">
             <span className="sheet-title">{data?.title[locale]}</span>
             <span className="sheet-subtitle">{data?.subtitle[locale]}</span>

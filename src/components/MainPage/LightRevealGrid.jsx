@@ -4,6 +4,7 @@ import React, {
   useImperativeHandle,
   useRef,
   useState,
+  memo,
 } from "react";
 
 /**
@@ -11,7 +12,7 @@ import React, {
  * Transparent overlay canvas with interactive lighting.
  * SAFE for multi-canvas layering (Matrix Rain, etc).
  */
-const LightRevealGrid = forwardRef(function LightRevealGrid(
+const LightRevealGrid = memo(forwardRef(function LightRevealGrid(
   {
     cell = 88,
     gap = 14,
@@ -221,6 +222,16 @@ const LightRevealGrid = forwardRef(function LightRevealGrid(
     const resize = () => {
       const W = window.innerWidth;
       const H = window.innerHeight;
+
+      const step = cell + gap;
+      const cols = Math.ceil(W / step) + 2;
+      const rows = Math.ceil(H / step) + 2;
+
+      // 🔑 Threshold check: only reset if the grid dimensions change
+      if (gridRef.current.cols === cols && gridRef.current.rows === rows && Math.abs(canvas.height / clampDpr(dpr) - H) < 10) {
+        return;
+      }
+
       ctxRef.current = setSize(canvas, W, H, clampDpr(dpr));
       offCtxRef.current = setSize(offscreenRef.current, W, H, clampDpr(dpr));
       computeGrid(W, H);
@@ -292,7 +303,7 @@ const LightRevealGrid = forwardRef(function LightRevealGrid(
       aria-hidden="true"
     />
   );
-});
+}));
 
 /* ---------- hooks ---------- */
 

@@ -158,7 +158,7 @@ const Neo = () => {
                   <button
                     className="close-video-btn"
                     onClick={() => setVideoOpen(false)}
-                    aria-label="Close video"
+                    aria-label={locale === 'he' ? 'סגור וידאו' : 'Close video'}
                   >
                     ✕
                   </button>

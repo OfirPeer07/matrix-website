@@ -148,7 +148,7 @@ const AgentSmith = () => {
             <div className="text-box">
               <img
                 src={experienceImage}
-                alt="Experience"
+                alt={locale === 'he' ? 'ניסיון' : 'Experience'}
                 className="experience-image"
               />
             </div>
@@ -170,7 +170,7 @@ const AgentSmith = () => {
             <div className="text-box">
               <img
                 src={WhatCanBeDoneImage}
-                alt="WhatCanBeDone"
+                alt={locale === 'he' ? 'מה ניתן לעשות' : 'WhatCanBeDone'}
                 className="whatCanBeDone-image"
               />
             </div>

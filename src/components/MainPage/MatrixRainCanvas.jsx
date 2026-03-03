@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, memo } from "react";
 
 /* ===== Calm preset (polished) ===== */
 const PRESET = {
@@ -20,7 +20,7 @@ function hexToRgb(hex) {
   };
 }
 
-export default function MatrixRainCanvas({
+const MatrixRainCanvas = memo(function MatrixRainCanvas({
   color = "#22c55e",
   fontSize = 16,
   fps = 30,
@@ -30,6 +30,7 @@ export default function MatrixRainCanvas({
 
   const streamsRef = useRef([]);
   const lastTimeRef = useRef(0);
+  const layoutRef = useRef({ cols: 0, h: 0 }); // 🔑 Track columns and height
   const frameInterval = 1000 / fps;
 
   const rgb = hexToRgb(color);
@@ -48,11 +49,17 @@ export default function MatrixRainCanvas({
     const resize = () => {
       const w = window.innerWidth;
       const h = window.innerHeight;
+      const cols = Math.floor(w / fontSize);
 
+      // 🔑 Threshold check: only reset if the number of columns changes
+      // This ignores minor shifts (like scrollbars appearing or direction changes).
+      if (layoutRef.current.cols === cols && Math.abs(layoutRef.current.h - h) < fontSize) {
+        return;
+      }
+
+      layoutRef.current = { cols, h };
       canvas.width = w;
       canvas.height = h;
-
-      const cols = Math.floor(w / fontSize);
 
       streamsRef.current = Array.from({ length: cols }, () => {
         const pool = chars.split("");
@@ -65,7 +72,7 @@ export default function MatrixRainCanvas({
           trail:
             PRESET.trailMin +
             Math.random() *
-              (PRESET.trailMax - PRESET.trailMin),
+            (PRESET.trailMax - PRESET.trailMin),
           chars: Array.from({ length: 48 }, () =>
             pool[(Math.random() * pool.length) | 0]
           ),
@@ -90,7 +97,7 @@ export default function MatrixRainCanvas({
       const w = canvas.width;
       const h = canvas.height;
 
-      // 🔑 slightly adaptive background clearing
+      // 🔑 Slightly adaptive background clearing
       ctx.fillStyle = `rgba(0, 0, 0, ${0.45 + dt * 0.4})`;
       ctx.fillRect(0, 0, w, h);
 
@@ -113,7 +120,7 @@ export default function MatrixRainCanvas({
           s.chars.pop();
           s.chars.unshift(
             s.charPool[
-              (Math.random() * s.charPool.length) | 0
+            (Math.random() * s.charPool.length) | 0
             ]
           );
         }
@@ -167,4 +174,6 @@ export default function MatrixRainCanvas({
       aria-hidden="true"
     />
   );
-}
+});
+
+export default MatrixRainCanvas;

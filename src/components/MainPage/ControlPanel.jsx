@@ -1,5 +1,76 @@
 import React, { useState, memo, useCallback, useRef } from "react";
+import { useLocaleContext } from "../../context/LocaleContext";
 import "./ControlPanel.css";
+
+/* ─────────────────────────────────────────── */
+/*  Translations                               */
+/* ─────────────────────────────────────────── */
+const translations = {
+  en: {
+    visual: "Visual",
+    rain: "Rain",
+    grid: "Grid",
+    presets: "Presets",
+    colors: "Colors",
+    experience: "Experience",
+    matrixRain: "Matrix Rain",
+    lightGrid: "Light Grid",
+    builtIn: "Built-in",
+    saveCurrent: "Save Current",
+    custom: "Custom",
+    accent: "Accent",
+    background: "Background",
+    cinematicMode: "Cinematic Mode",
+    cinematicDesc: "Hides Matrix rain for a clean view",
+    speed: "Speed",
+    density: "Density",
+    glow: "Glyph Glow",
+    fontSize: "Font Size",
+    cellColor: "Cell Color",
+    cellSize: "Cell Size",
+    falloff: "Falloff",
+    baseAlpha: "Base Alpha",
+    save: "Save",
+    reset: "Reset to Default",
+    placeholder: "Preset name…",
+    headerTitle: "MATRIX",
+    headerSub: " CONTROL",
+    close: "Close panel",
+    deletePreset: "Delete preset"
+  },
+  he: {
+    visual: "חזותי",
+    rain: "גשם",
+    grid: "רשת",
+    presets: "ערכות",
+    colors: "צבעים",
+    experience: "חוויה",
+    matrixRain: "גשם מטריקס",
+    lightGrid: "רשת אור",
+    builtIn: "מובנה",
+    saveCurrent: "שמור נוכחי",
+    custom: "מותאם אישית",
+    accent: "צבע דגש",
+    background: "רקע",
+    cinematicMode: "מצב קולנועי",
+    cinematicDesc: "מסתיר את גשם המטריקס לתצוגה נקייה",
+    speed: "מהירות",
+    density: "צפיפות",
+    glow: "זוהר תווים",
+    fontSize: "גודל גופן",
+    cellColor: "צבע תא",
+    cellSize: "גודל תא",
+    falloff: "דעיכה",
+    baseAlpha: "שקיפות בסיס",
+    save: "שמור",
+    reset: "אפס לברירת מחדל",
+    placeholder: "שם ערכה…",
+    headerTitle: "מטריקס",
+    headerSub: " בקרה",
+    close: "סגור פאנל",
+    deletePreset: "מחק ערכה"
+  }
+};
 
 /* ─────────────────────────────────────────── */
 /*  Built-in presets — full settings snapshots */
@@ -139,27 +210,27 @@ const ToggleRow = ({ label, description, checked, onChange }) => (
 /*  Tab Contents                               */
 /* ─────────────────────────────────────────── */
 
-const VisualTab = ({ settings, update, cinematicMode, setCinematicMode }) => (
+const VisualTab = ({ settings, update, cinematicMode, setCinematicMode, t }) => (
   <div className="cp-tab-content">
     <div className="cp-group">
-      <div className="cp-group-label">Colors</div>
+      <div className="cp-group-label">{t.colors}</div>
       <ColorRow
-        label="Accent"
+        label={t.accent}
         value={settings.accent}
         onChange={e => update("accent", e.target.value)}
       />
       <ColorRow
-        label="Background"
+        label={t.background}
         value={settings.bg}
         onChange={e => update("bg", e.target.value)}
       />
     </div>
 
     <div className="cp-group">
-      <div className="cp-group-label">Experience</div>
+      <div className="cp-group-label">{t.experience}</div>
       <ToggleRow
-        label="Cinematic Mode"
-        description="Hides Matrix rain for a clean view"
+        label={t.cinematicMode}
+        description={t.cinematicDesc}
         checked={cinematicMode}
         onChange={e => setCinematicMode(e.target.checked)}
       />
@@ -167,32 +238,32 @@ const VisualTab = ({ settings, update, cinematicMode, setCinematicMode }) => (
   </div>
 );
 
-const RainTab = ({ settings, update }) => (
+const RainTab = ({ settings, update, t }) => (
   <div className="cp-tab-content">
     <div className="cp-group">
-      <div className="cp-group-label">Matrix Rain</div>
+      <div className="cp-group-label">{t.matrixRain}</div>
       <SliderRow
-        label="Speed"
+        label={t.speed}
         value={settings.rainSpeed}
         min={5} max={60} step={1}
         onChange={e => update("rainSpeed", +e.target.value)}
       />
       <SliderRow
-        label="Density"
+        label={t.density}
         value={settings.rainDensity}
         min={0.1} max={1} step={0.01}
         display={settings.rainDensity.toFixed(2)}
         onChange={e => update("rainDensity", +e.target.value)}
       />
       <SliderRow
-        label="Glyph Glow"
+        label={t.glow}
         value={settings.rainGlow}
         min={0} max={1} step={0.01}
         display={settings.rainGlow.toFixed(2)}
         onChange={e => update("rainGlow", +e.target.value)}
       />
       <SliderRow
-        label="Font Size"
+        label={t.fontSize}
         value={settings.rainFont}
         min={10} max={32} step={1}
         display={`${settings.rainFont}px`}
@@ -202,30 +273,30 @@ const RainTab = ({ settings, update }) => (
   </div>
 );
 
-const GridTab = ({ settings, update }) => (
+const GridTab = ({ settings, update, t }) => (
   <div className="cp-tab-content">
     <div className="cp-group">
-      <div className="cp-group-label">Light Grid</div>
+      <div className="cp-group-label">{t.lightGrid}</div>
       <ColorRow
-        label="Cell Color"
+        label={t.cellColor}
         value={settings.cellColor}
         onChange={e => update("cellColor", e.target.value)}
       />
       <SliderRow
-        label="Cell Size"
+        label={t.cellSize}
         value={settings.cell}
         min={40} max={140} step={2}
         display={`${settings.cell}px`}
         onChange={e => update("cell", +e.target.value)}
       />
       <SliderRow
-        label="Falloff"
+        label={t.falloff}
         value={settings.falloff}
         min={80} max={400} step={10}
         onChange={e => update("falloff", +e.target.value)}
       />
       <SliderRow
-        label="Base Alpha"
+        label={t.baseAlpha}
         value={settings.baseAlpha}
         min={0} max={1} step={0.01}
         display={settings.baseAlpha.toFixed(2)}
@@ -235,7 +306,7 @@ const GridTab = ({ settings, update }) => (
   </div>
 );
 
-const PresetsTab = ({ settings, setSettings, onReset }) => {
+const PresetsTab = ({ settings, setSettings, onReset, t }) => {
   const [customPresets, setCustomPresets] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem("matrix-custom-presets") || "[]");
@@ -271,7 +342,7 @@ const PresetsTab = ({ settings, setSettings, onReset }) => {
     <div className="cp-tab-content">
       {/* Built-in presets */}
       <div className="cp-group">
-        <div className="cp-group-label">Built-in</div>
+        <div className="cp-group-label">{t.builtIn}</div>
         <div className="cp-preset-grid">
           {BUILT_IN_PRESETS.map(p => (
             <button
@@ -289,13 +360,13 @@ const PresetsTab = ({ settings, setSettings, onReset }) => {
 
       {/* Save new preset */}
       <div className="cp-group">
-        <div className="cp-group-label">Save Current</div>
+        <div className="cp-group-label">{t.saveCurrent}</div>
         <div className="cp-save-row">
           <input
             ref={inputRef}
             className="cp-name-input"
             type="text"
-            placeholder="Preset name…"
+            placeholder={t.placeholder}
             value={newName}
             maxLength={24}
             onChange={e => setNewName(e.target.value)}
@@ -306,7 +377,7 @@ const PresetsTab = ({ settings, setSettings, onReset }) => {
             onClick={savePreset}
             disabled={!newName.trim()}
           >
-            Save
+            {t.save}
           </button>
         </div>
       </div>
@@ -314,7 +385,7 @@ const PresetsTab = ({ settings, setSettings, onReset }) => {
       {/* Custom presets */}
       {customPresets.length > 0 && (
         <div className="cp-group">
-          <div className="cp-group-label">Custom</div>
+          <div className="cp-group-label">{t.custom}</div>
           <div className="cp-custom-list">
             {customPresets.map(p => (
               <div key={p.name} className="cp-custom-pill">
@@ -327,7 +398,7 @@ const PresetsTab = ({ settings, setSettings, onReset }) => {
                 <button
                   className="cp-custom-delete"
                   onClick={() => deletePreset(p.name)}
-                  aria-label={`Delete preset ${p.name}`}
+                  aria-label={`${t.deletePreset} ${p.name}`}
                 >
                   ×
                 </button>
@@ -338,7 +409,7 @@ const PresetsTab = ({ settings, setSettings, onReset }) => {
       )}
 
       <button className="cp-reset-btn" onClick={onReset}>
-        ↺ Reset to Default
+        ↺ {t.reset}
       </button>
     </div>
   );
@@ -347,8 +418,6 @@ const PresetsTab = ({ settings, setSettings, onReset }) => {
 /* ─────────────────────────────────────────── */
 /*  Main ControlPanel                          */
 /* ─────────────────────────────────────────── */
-
-const TABS = ["Visual", "Rain", "Grid", "Presets"];
 
 const ControlPanel = ({
   open,
@@ -360,22 +429,26 @@ const ControlPanel = ({
   setCinematicMode,
 }) => {
   const [activeTab, setActiveTab] = useState(0);
+  const { locale } = useLocaleContext();
+  const t = translations[locale] || translations.en;
+
+  const TABS_LABELS = [t.visual, t.rain, t.grid, t.presets];
 
   const update = useCallback((k, v) => {
     setSettings(s => ({ ...s, [k]: v }));
   }, [setSettings]);
 
   return (
-    <aside className={`cp-panel ${open ? "cp-panel--open" : ""}`} aria-label="Control Panel">
+    <aside className={`cp-panel ${open ? "cp-panel--open" : ""}`} aria-label={t.headerTitle + t.headerSub}>
       {/* ── Header ── */}
       <header className="cp-header">
         <div className="cp-header-scanlines" aria-hidden="true" />
         <div className="cp-header-inner">
           <div className="cp-header-title">
             <span className="cp-header-icon">⬡</span>
-            MATRIX<span className="cp-header-dim"> CONTROL</span>
+            {t.headerTitle}<span className="cp-header-dim">{t.headerSub}</span>
           </div>
-          <button className="cp-close-btn" onClick={() => setOpen(false)} aria-label="Close panel">
+          <button className="cp-close-btn" onClick={() => setOpen(false)} aria-label={t.close}>
             <span>✕</span>
           </button>
         </div>
@@ -383,7 +456,7 @@ const ControlPanel = ({
 
       {/* ── Tab Bar ── */}
       <nav className="cp-tabs" role="tablist">
-        {TABS.map((tab, i) => (
+        {TABS_LABELS.map((tab, i) => (
           <button
             key={tab}
             role="tab"
@@ -404,15 +477,17 @@ const ControlPanel = ({
             update={update}
             cinematicMode={cinematicMode}
             setCinematicMode={setCinematicMode}
+            t={t}
           />
         )}
-        {activeTab === 1 && <RainTab settings={settings} update={update} />}
-        {activeTab === 2 && <GridTab settings={settings} update={update} />}
+        {activeTab === 1 && <RainTab settings={settings} update={update} t={t} />}
+        {activeTab === 2 && <GridTab settings={settings} update={update} t={t} />}
         {activeTab === 3 && (
           <PresetsTab
             settings={settings}
             setSettings={setSettings}
             onReset={onReset}
+            t={t}
           />
         )}
       </div>

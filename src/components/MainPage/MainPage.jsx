@@ -47,6 +47,7 @@ const translations = {
     neoSub: "Let's discover the world of Juniors",
     drawerOpen: "Open customization panel (Ctrl+,)",
     drawerClose: "Close customization panel (Esc)",
+    toggleLang: "Switch to Hebrew",
   },
   he: {
     agentSmithTitle: "'סוכן סמית",
@@ -55,6 +56,7 @@ const translations = {
     neoSub: "בואו לגלות את העולם של הג'וניורים",
     drawerOpen: "פתח פאנל הגדרות (Ctrl+,)",
     drawerClose: "סגור פאנל הגדרות (Esc)",
+    toggleLang: "החלף לאנגלית",
   }
 };
 
@@ -141,7 +143,10 @@ const MainPage = ({ hideMatrix = false }) => {
   const reset = () => setSettings(DEFAULT_SETTINGS);
 
   return (
-    <div className="hero-landing-container" aria-labelledby={headingId}>
+    <div
+      className="hero-landing-container"
+      aria-labelledby={headingId}
+    >
       {/* Floating open/close buttons */}
       <button
         className="fab open-drawer-btn"
@@ -163,7 +168,7 @@ const MainPage = ({ hideMatrix = false }) => {
       <button
         className="fab lang-toggle-btn"
         onClick={toggleLocale}
-        aria-label="Toggle Language"
+        aria-label={t.toggleLang}
       >
         {locale === "en" ? "HE" : "EN"}
       </button>
@@ -175,40 +180,41 @@ const MainPage = ({ hideMatrix = false }) => {
         aria-hidden={!open}
       />
 
-      {/* ================= MATRIX RAIN ================= */}
-      {!hideMatrix && !cinematicMode && (
-        <MatrixRainCanvas
-          color={settings.accent}
-          glow={settings.rainGlow}
-          fontSize={settings.rainFont}
-          speed={settings.rainSpeed}
-          density={settings.rainDensity}
-          fps={settings.rainFps}
-        />
-      )}
+      {/* ================= BACKGROUND LAYERS (Isolated from RTL) ================= */}
+      <div className="matrix-bg-wrapper" style={{ direction: "ltr" }}>
+        {!hideMatrix && !cinematicMode && (
+          <MatrixRainCanvas
+            color={settings.accent}
+            glow={settings.rainGlow}
+            fontSize={settings.rainFont}
+            speed={settings.rainSpeed}
+            density={settings.rainDensity}
+            fps={settings.rainFps}
+          />
+        )}
 
-      {/* ================= LIGHT GRID ================= */}
-      <LightRevealGrid
-        cell={settings.cell}
-        gap={settings.gap}
-        radius={settings.radius}
-        baseAlpha={settings.baseAlpha}
-        falloff={settings.falloff}
-        beams={settings.beams}
-        rimColor={settings.accent}
-        lightStyle={settings.lightStyle}
-        beamStrength={settings.beamStrength}
-        beamSoft={settings.beamSoft}
-        edgeBoost={settings.edgeBoost}
-        pointerLerp={0.18}
-        cellColor={settings.cellColor}
-      />
+        <LightRevealGrid
+          cell={settings.cell}
+          gap={settings.gap}
+          radius={settings.radius}
+          baseAlpha={settings.baseAlpha}
+          falloff={settings.falloff}
+          beams={settings.beams}
+          rimColor={settings.accent}
+          lightStyle={settings.lightStyle}
+          beamStrength={settings.beamStrength}
+          beamSoft={settings.beamSoft}
+          edgeBoost={settings.edgeBoost}
+          pointerLerp={0.18}
+          cellColor={settings.cellColor}
+        />
+      </div>
 
       <Title id={headingId} />
 
       {/* ================= CARDS ================= */}
       <main className="cards">
-        <section className="card-wrap" aria-label="Agent Smith card">
+        <section className="card-wrap" aria-label={t.agentSmithTitle + " card"}>
           <button
             type="button"
             className="image-button"
@@ -220,7 +226,7 @@ const MainPage = ({ hideMatrix = false }) => {
               <img
                 className="media"
                 src={agentSmithClick}
-                alt="Agent Smith"
+                alt={t.agentSmithTitle}
                 loading="lazy"
               />
             </div>
@@ -233,7 +239,7 @@ const MainPage = ({ hideMatrix = false }) => {
           </div>
         </section>
 
-        <section className="card-wrap" aria-label="Neo card">
+        <section className="card-wrap" aria-label={t.neoTitle + " card"}>
           <button
             type="button"
             className="image-button"
@@ -245,7 +251,7 @@ const MainPage = ({ hideMatrix = false }) => {
               <img
                 className="media"
                 src={neoClick}
-                alt="Neo"
+                alt={t.neoTitle}
                 loading="lazy"
               />
             </div>

@@ -1,6 +1,6 @@
-// OFAiR.jsx
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import PropTypes from "prop-types";
+import { useLocaleContext } from "../../../context/LocaleContext";
 import "./OFAiR.css";
 import ofairImage from "./OFAiR.png";
 
@@ -11,9 +11,9 @@ function Message({ msg }) {
       <span className="timestamp">
         {msg.timestamp
           ? new Date(msg.timestamp).toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })
+            hour: "2-digit",
+            minute: "2-digit",
+          })
           : ""}
       </span>
     </div>
@@ -29,7 +29,31 @@ Message.propTypes = {
   }).isRequired,
 };
 
-export default function OFAiR({ messages = [], onSend = () => {} }) {
+export default function OFAiR({ messages = [], onSend = () => { } }) {
+  const { locale } = useLocaleContext();
+  const t = {
+    en: {
+      systemHeader: "OFAiR SYSTEM",
+      outputLabel: "Terminal output",
+      placeholder: "> Ask something...",
+      inputLabel: "Terminal command input",
+      computerAlt: "OFAiR Computer"
+    },
+    he: {
+      systemHeader: "מערכת אופיר",
+      outputLabel: "פלט טרמינל",
+      placeholder: "> שאל משהו...",
+      inputLabel: "קלט פקודות טרמינל",
+      computerAlt: "מחשב אופיר"
+    }
+  }[locale] || {
+    systemHeader: "OFAiR SYSTEM",
+    outputLabel: "Terminal output",
+    placeholder: "> Ask something...",
+    inputLabel: "Terminal command input",
+    computerAlt: "OFAiR Computer"
+  };
+
   const terminalRef = useRef(null);
   const inputRef = useRef(null);
   const [inputValue, setInputValue] = useState("");
@@ -74,16 +98,16 @@ export default function OFAiR({ messages = [], onSend = () => {} }) {
   return (
     <div className="ofair-wrapper ofair-relative">
       <div className="computer-container">
-        <img src={ofairImage} alt="OFAiR Computer" className="computer-image" />
+        <img src={ofairImage} alt={t.computerAlt} className="computer-image" />
         <div className="terminal-overlay">
-          <div className="terminal-header">OFAiR SYSTEM</div>
+          <div className="terminal-header">{t.systemHeader}</div>
 
           <div
             className="terminal-display terminal-display-frame"
             ref={terminalRef}
             role="log"
             aria-live="polite"
-            aria-label="Terminal output"
+            aria-label={t.outputLabel}
           >
             {Array.isArray(messages) &&
               messages.map((msg) => (
@@ -99,8 +123,8 @@ export default function OFAiR({ messages = [], onSend = () => {} }) {
           <input
             ref={inputRef}
             className="terminal-input"
-            placeholder="> Ask something..."
-            aria-label="Terminal command input"
+            placeholder={t.placeholder}
+            aria-label={t.inputLabel}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={handleKeyDown}

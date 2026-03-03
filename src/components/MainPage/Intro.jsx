@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Intro.css";
+import { useLocaleContext } from "../../context/LocaleContext";
 
 /* ================= CONFIG ================= */
 const DPR = window.devicePixelRatio || 1;
 const FONT_SIZE = 16;
 const TEXT_FONT_SIZE = 140;
-const TEXT = "WELCOME TO \n THE MATRIX WORLD";
+const EN_TEXT = "WELCOME TO \n THE MATRIX WORLD";
+const HE_TEXT = "ברוכים הבאים \n לעולם המטריקס";
 
 const MATRIX_CHARS =
   "アイウエオカキクケコサシスセソタチツテトナニヌネノ" +
@@ -34,6 +36,9 @@ const BUILD_INTERVAL = 0.025;
 const FIXED_STEP = 1 / 120;
 
 export default function Intro({ onFinish }) {
+  const { locale } = useLocaleContext();
+  const INTRO_TEXT = locale === 'he' ? HE_TEXT : EN_TEXT;
+
   const canvasRef = useRef(null);
   const rafRef = useRef(null);
   const mounted = useRef(true);
@@ -271,7 +276,7 @@ export default function Intro({ onFinish }) {
     mctx.textAlign = "center";
     mctx.textBaseline = "middle";
 
-    const lines = TEXT.split("\n");
+    const lines = INTRO_TEXT.split("\n");
     const lh = TEXT_FONT_SIZE * 1.1;
     const startY = h / 2 - ((lines.length - 1) * lh) / 2;
     lines.forEach((line, i) =>
@@ -328,13 +333,13 @@ export default function Intro({ onFinish }) {
 
       {!canProceed && !finished && (
         <button className="intro-skip" onClick={skipIntro}>
-          SKIP_
+          {locale === 'he' ? 'דלג_' : 'SKIP_'}
         </button>
       )}
 
       {canProceed && !finished && (
         <div className="continue-prompt">
-          ENTER THE SYSTEM_
+          {locale === 'he' ? 'כניסה למערכת_' : 'ENTER THE SYSTEM_'}
         </div>
       )}
     </div>

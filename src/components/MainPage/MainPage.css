@@ -232,26 +232,26 @@
 }
 
 /* ===== Canvas layers ===== */
-.matrix-rain-canvas {
-  position: fixed;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-}
-
-.light-grid-canvas {
+.matrix-bg-wrapper {
   position: fixed;
   inset: 0;
   z-index: 1;
   pointer-events: none;
+  direction: ltr !important;
 }
 
 .matrix-rain-canvas {
+  position: absolute;
+  inset: 0;
   z-index: 2;
+  pointer-events: none;
 }
 
 .light-grid-canvas {
+  position: absolute;
+  inset: 0;
   z-index: 3;
+  pointer-events: none;
 }
 
 body::before {
