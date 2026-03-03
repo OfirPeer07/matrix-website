@@ -6,6 +6,9 @@ import { useLocaleContext } from '../../../context/LocaleContext';
 import TechnologyNews from './TechnologyNews.png';
 import BuildingComputers from './BuildingComputers.png';
 import TroubleshootingGuides from './TroubleshootingGuides.png';
+import TechnologyNewsHe from './TechnologyNews_he.png';
+import BuildingComputersHe from './BuildingComputers_he.png';
+import TroubleshootingGuidesHe from './TroubleshootingGuides_he.png';
 
 const content = {
   en: {
@@ -52,7 +55,7 @@ const content = {
     enterCta: 'כניסה >>',
     items: [
       {
-        src: TroubleshootingGuides,
+        src: TroubleshootingGuidesHe,
         alt: 'מדריכי פתרון תקלות',
         path: '/agent-smith/agent-smith-department/troubleshooting-guides',
         classification: 'מסווג',
@@ -61,7 +64,7 @@ const content = {
         description: 'אבחון וחיסול אנומליות מערכת',
       },
       {
-        src: TechnologyNews,
+        src: TechnologyNewsHe,
         alt: 'חדשות טכנולוגיה',
         path: '/agent-smith/agent-smith-department/technology-news',
         classification: 'מוגבל',
@@ -70,7 +73,7 @@ const content = {
         description: 'יירוט מודיעין טכנולוגי עדכני',
       },
       {
-        src: BuildingComputers,
+        src: BuildingComputersHe,
         alt: 'בניית מחשבים',
         path: '/agent-smith/agent-smith-department/building-computers',
         classification: 'סודי_ביותר',

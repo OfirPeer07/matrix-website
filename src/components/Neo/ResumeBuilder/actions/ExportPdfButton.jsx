@@ -1,11 +1,33 @@
 import { useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { useLocaleContext } from "../../../../context/LocaleContext";
 
 const A4_WIDTH_MM = 210;
 const A4_HEIGHT_MM = 297;
 
+const translations = {
+  en: {
+    export: "EXPORT PDF ↓",
+    generating: "⏳ GENERATING...",
+    noName: "Add your name first",
+    exportAs: "Export as {template} PDF",
+    previewNotFound: "Preview not found. Make sure your name is filled in.",
+    failed: "PDF export failed. Please try again."
+  },
+  he: {
+    export: "ייצוא PDF ↓",
+    generating: "⏳ מייצר...",
+    noName: "יש להזין שם תחילה",
+    exportAs: "ייצוא כ- {template} PDF",
+    previewNotFound: "לא נמצאה תצוגה מקדימה. וודא שהשם מלא.",
+    failed: "ייצוא PDF נכשל. נסה שוב."
+  }
+};
+
 export default function ExportPdfButton({ template, resume }) {
+  const { locale } = useLocaleContext();
+  const t = translations[locale] || translations.en; // Default to English if locale not found
   const [loading, setLoading] = useState(false);
   const hasName = resume?.profile?.firstName;
 
@@ -65,7 +87,7 @@ export default function ExportPdfButton({ template, resume }) {
 
     } catch (err) {
       console.error("PDF export failed:", err);
-      alert("PDF export failed. Please try again.");
+      alert(t.failed);
     } finally {
       setLoading(false);
     }
@@ -77,9 +99,9 @@ export default function ExportPdfButton({ template, resume }) {
       onClick={handleExport}
       disabled={!hasName || loading}
       className="export-pdf-button"
-      title={!hasName ? "Add your name first" : `Export as ${template} PDF`}
+      title={!hasName ? t.noName : t.exportAs.replace("{template}", template)}
     >
-      {loading ? "⏳ Generating..." : "⬇ Export PDF"}
+      {loading ? t.generating : t.export}
     </button>
   );
 }

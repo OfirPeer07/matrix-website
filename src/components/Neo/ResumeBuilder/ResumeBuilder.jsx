@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import useResumeStore from "./store/useResumeStore";
+import { useLocaleContext } from "../../../context/LocaleContext";
 
 /* ===== EDITORS ===== */
 import ProfileHeader from "./editors/ProfileHeader";
@@ -22,9 +23,26 @@ import ExportPdfButton from "./actions/ExportPdfButton";
 /* ===== STYLES ===== */
 import "./ResumeBuilder.css";
 
+const translations = {
+  en: {
+    title: "// CV Builder",
+    sub: "Fill in your data → see preview live → export A4 PDF",
+    preview: "▶ Live Preview",
+    a4: "A4 · 210 × 297 mm"
+  },
+  he: {
+    title: "// בונה קורות חיים",
+    sub: "מלא את הפרטים ← ראה תצוגה מקדימה ← ייצוא ל-PDF (A4)",
+    preview: "▶ תצוגה מקדימה",
+    a4: "A4 · 210 × 297 מ\"מ"
+  }
+};
+
 const TEMPLATE_KEY = "resume_template";
 
 export default function ResumeBuilder() {
+  const { locale } = useLocaleContext();
+  const t = translations[locale] || translations.he;
   const { resume, updateSection } = useResumeStore();
 
   /* Unified template state — drives BOTH preview and PDF export */
@@ -45,8 +63,8 @@ export default function ResumeBuilder() {
       {/* ======================== */}
       <aside className="resume-form-panel">
         <div className="resume-form-header">
-          <h2>// CV Builder</h2>
-          <p>Fill in your data → see preview live →  export A4 PDF</p>
+          <h2>{t.title}</h2>
+          <p>{t.sub}</p>
         </div>
 
         <div className="resume-form-scroll">
@@ -111,8 +129,8 @@ export default function ResumeBuilder() {
       {/* ========================== */}
       <main className="resume-preview-panel">
         <div className="resume-preview-panel-header">
-          <span>▶ Live Preview</span>
-          <span className="a4-hint">A4 · 210 × 297 mm</span>
+          <span>{t.preview}</span>
+          <span className="a4-hint">{t.a4}</span>
         </div>
 
         <div className="preview-scroll">

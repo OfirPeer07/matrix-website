@@ -1,13 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Hacking.css";
+import { useLocaleContext } from "../../../context/LocaleContext";
 
 import ofairImage from "./OFAiR.png";
 import fight from "./Fight.mp4";
 import agentSmith from "./Agent-smith-dodges-bullets.mp4";
 import neo from "./Neo-dodges-bullets.mp4";
 
+const translations = {
+  en: {
+    articles: "Articles",
+    guides: "Guides",
+    videos: "Videos",
+  },
+  he: {
+    articles: "מאמרים",
+    guides: "מדריכים",
+    videos: "סרטונים",
+  },
+};
+
 function Hacking() {
+  const { locale } = useLocaleContext();
+  const t = translations[locale] || translations.he;
   const navigate = useNavigate();
   const [rectanglesVisible] = useState(true);
 
@@ -74,21 +90,21 @@ function Hacking() {
             <video autoPlay loop muted playsInline className="background-video">
               <source src={agentSmith} type="video/mp4" />
             </video>
-            <div className="hackingTitle">Articles</div>
+            <div className="hackingTitle">{t.articles}</div>
           </div>
 
           <div className="rectangle second" onClick={() => navigate("/neo/hacking/guides")}>
             <video autoPlay loop muted playsInline className="background-video">
               <source src={neo} type="video/mp4" />
             </video>
-            <div className="hackingTitle">Guides</div>
+            <div className="hackingTitle">{t.guides}</div>
           </div>
 
           <div className="rectangle third" onClick={() => navigate("/neo/hacking/videos")}>
             <video autoPlay loop muted playsInline className="background-video">
               <source src={fight} type="video/mp4" />
             </video>
-            <div className="hackingTitle">Videos</div>
+            <div className="hackingTitle">{t.videos}</div>
           </div>
         </>
       )}
