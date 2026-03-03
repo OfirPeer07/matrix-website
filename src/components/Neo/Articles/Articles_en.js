@@ -14,8 +14,8 @@ export const locales = {
         dir: "ltr",
         dateLocale: "en-GB",
         ui: {
-            heroTitleTop: "Effortless AI integration",
-            heroTitleAccent: "for business",
+            heroTitleTop: "The Decrypted Playbook",
+            heroTitleAccent: "Actionable AI Intels",
             heroSub: "No extra setup, just smart automation when you need it.",
             sectionTitle: "Featured AI Articles",
             sectionSub: "Short, practical reads for juniors and students working with AI.",

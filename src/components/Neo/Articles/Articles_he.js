@@ -14,9 +14,9 @@ export const locales = {
     dir: "rtl",
     dateLocale: "he-IL",
     ui: {
-      heroTitleTop: "אינטגרציית AI ללא מאמץ",
-      heroTitleAccent: "לעסקים",
-      heroSub: "בלי הגדרות מיותרות — אוטומציה חכמה כשבאמת צריך.",
+      heroTitleTop: "ספר ההדרכה המפוענח",
+      heroTitleAccent: "אינטליגנציות AI מעשיות",
+      heroSub: "בלי הגדרות מיותרות — אוטומציה חכמה שבאמת צריך.",
       sectionTitle: "מאמרי AI מומלצים",
       sectionSub: "קריאות קצרות ומעשיות לג׳וניורים וסטודנטים שעובדים עם AI.",
       openCta: "פתח →",
