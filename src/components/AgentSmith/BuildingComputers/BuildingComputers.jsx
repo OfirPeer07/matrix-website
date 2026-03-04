@@ -3,6 +3,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, Html, ContactShadows } from "@react-three/drei";
 import * as THREE from "three";
 import "./BuildingComputers.css";
+import { useLocaleContext } from "../../../context/LocaleContext";
 import {
   O11CaseModel,
   MotherboardPart,
@@ -15,6 +16,108 @@ import {
   FanPart,
 } from "./PCParts";
 
+const translations = {
+  en: {
+    loading: "Loading…",
+    components: "Components",
+    subHeader: "Click to install · click again to remove",
+    requires: "Requires",
+    blocked: "Blocked",
+    installFirst: "install {0} first",
+    connected: "connected",
+    detached: "detached",
+    setTo: "set to",
+    installAll: "Install All",
+    reset: "Reset",
+    toggleParts: "Toggle Parts (P)",
+    parts: {
+      motherboard: {
+        label: "Motherboard",
+        desc: "Backbone for every connection and bus lane.",
+        atx: "ATX",
+        matx: "mATX",
+        itx: "ITX",
+      },
+      cpu: {
+        label: "CPU",
+        desc: "Compute core with high-frequency control.",
+      },
+      ram: {
+        label: "RAM Kit",
+        desc: "Low-latency memory stack.",
+      },
+      psu: {
+        label: "Power Supply",
+        desc: "Stable power rails for every component.",
+      },
+      storage: {
+        label: "Storage",
+        desc: "Primary system drive bay.",
+        ssd: "NVMe SSD",
+        hdd: "HDD 3.5in",
+      },
+      gpu: {
+        label: "Graphics Card",
+        desc: "Visual processing powerhouse.",
+      },
+      fan: {
+        label: "120mm Fan",
+        desc: "Airflow and thermal management.",
+      },
+      removeFirst: "Remove {0} first",
+    },
+  },
+  he: {
+    loading: "טוען...",
+    components: "רכיבים",
+    subHeader: "לחץ להתקנה · לחץ שוב להסרה",
+    requires: "דרישות",
+    blocked: "חסום",
+    installFirst: "התקן את {0} קודם",
+    connected: "חובר",
+    detached: "נותק",
+    setTo: "הוגדר כ-",
+    installAll: "התקן הכל",
+    reset: "אפס",
+    toggleParts: "הצג רכיבים (P)",
+    parts: {
+      motherboard: {
+        label: "לוח אם",
+        desc: "עמוד השדרה לכל חיבור ונתיב נתונים.",
+        atx: "ATX",
+        matx: "mATX",
+        itx: "ITX",
+      },
+      cpu: {
+        label: "מעבד",
+        desc: "מרכז העיבוד עם שליטה בתדר גבוה.",
+      },
+      ram: {
+        label: "זיכרון RAM",
+        desc: "מערך זיכרון עם שיהוי נמוך.",
+      },
+      psu: {
+        label: "ספק כוח",
+        desc: "מסילות כוח יציבות לכל רכיב.",
+      },
+      storage: {
+        label: "אחסון",
+        desc: "מפרץ כונן המערכת הראשי.",
+        ssd: "כונן NVMe SSD",
+        hdd: "כונן HDD 3.5",
+      },
+      gpu: {
+        label: "כרטיס מסך",
+        desc: "תחנת כוח לעיבוד ויזואלי.",
+      },
+      fan: {
+        label: "מאוורר 120 מ\"מ",
+        desc: "ניהול זרימת אוויר ותרמי.",
+      },
+      removeFirst: "הסר את {0} קודם",
+    },
+  },
+};
 
 // All models are now procedural — no GLB files needed.
 
@@ -33,33 +136,33 @@ const CONNECTION_REQUIREMENTS = {
 
 const CONNECTION_ORDER = ["motherboard", "cpu", "ram", "storage", "psu", "fan", "gpu", "panel"];
 
-const PARTS = [
+const getParts = (t) => [
   {
     id: "motherboard",
-    label: "Motherboard",
+    label: t.parts.motherboard.label,
     icon: "🖥️",
     slot: "motherboard",
-    description: "Backbone for every connection and bus lane.",
+    description: t.parts.motherboard.desc,
     options: [
-      { id: "mb-atx", label: "ATX" },
-      { id: "mb-matx", label: "mATX" },
-      { id: "mb-itx", label: "ITX" },
+      { id: "mb-atx", label: t.parts.motherboard.atx },
+      { id: "mb-matx", label: t.parts.motherboard.matx },
+      { id: "mb-itx", label: t.parts.motherboard.itx },
     ],
     defaultOption: "mb-atx",
   },
   {
     id: "cpu",
-    label: "CPU",
+    label: t.parts.cpu.label,
     icon: "⚡",
     slot: "cpu",
-    description: "Compute core with high-frequency control.",
+    description: t.parts.cpu.desc,
   },
   {
     id: "ram",
-    label: "RAM Kit",
+    label: t.parts.ram.label,
     icon: "💾",
     slot: "ram",
-    description: "Low-latency memory stack.",
+    description: t.parts.ram.desc,
     options: [
       { id: "ddr5-32", label: "DDR5 32GB" },
       { id: "ddr5-64", label: "DDR5 64GB" },
@@ -68,36 +171,36 @@ const PARTS = [
   },
   {
     id: "psu",
-    label: "Power Supply",
+    label: t.parts.psu.label,
     icon: "🔋",
     slot: "psu",
-    description: "Stable power rails for every component.",
+    description: t.parts.psu.desc,
   },
   {
     id: "storage",
-    label: "Storage",
+    label: t.parts.storage.label,
     icon: "💿",
     slot: "storage",
-    description: "Primary system drive bay.",
+    description: t.parts.storage.desc,
     options: [
-      { id: "ssd", label: "NVMe SSD" },
-      { id: "hdd", label: "HDD 3.5in" },
+      { id: "ssd", label: t.parts.storage.ssd },
+      { id: "hdd", label: t.parts.storage.hdd },
     ],
     defaultOption: "ssd",
   },
   {
     id: "gpu",
-    label: "Graphics Card",
+    label: t.parts.gpu.label,
     icon: "🎮",
     slot: "gpu",
-    description: "Visual processing powerhouse.",
+    description: t.parts.gpu.desc,
   },
   {
     id: "fan",
-    label: "120mm Fan",
+    label: t.parts.fan.label,
     icon: "🌀",
     slot: "fan",
-    description: "Airflow and thermal management.",
+    description: t.parts.fan.desc,
   },
 ];
 
@@ -165,16 +268,17 @@ const DRAG_ACTIVATION_DISTANCE = 0.08;
 const HAS_DOCUMENT = typeof document !== "undefined";
 
 
-const buildState = (value) =>
-  PARTS.reduce((acc, part) => {
+const buildState = (parts, value) =>
+  parts.reduce((acc, part) => {
     acc[part.id] = value;
     return acc;
   }, {});
 
-const defaultSelections = PARTS.reduce((acc, part) => {
-  if (part.options) acc[part.id] = part.defaultOption || part.options[0]?.id;
-  return acc;
-}, {});
+const getDefaultSelections = (parts) =>
+  parts.reduce((acc, part) => {
+    if (part.options) acc[part.id] = part.defaultOption || part.options[0]?.id;
+    return acc;
+  }, {});
 
 // ─── LOADER ──────────────────────────────────────────────────────────────────
 
@@ -484,8 +588,8 @@ function AutoFrameCamera({ caseSize, controlsRef, enabled = true }) {
   useEffect(() => {
     if (!caseSize || !enabled) return;
     const maxDim = Math.max(caseSize.x, caseSize.y, caseSize.z) || 1;
-    const distance = maxDim * 1.25;
-    camera.position.set(distance, maxDim * 0.45, distance);
+    const distance = maxDim * 1.6;
+    camera.position.set(distance, maxDim * 0.55, distance);
     camera.near = Math.max(0.05, maxDim * 0.02);
     camera.far = Math.max(60, maxDim * 12);
     camera.updateProjectionMatrix();
@@ -507,6 +611,7 @@ function CaseModel({ onReady, xray }) {
 
 
 function PCScene({
+  PARTS,
   installed,
   selections,
   focusedSlot,
@@ -549,7 +654,7 @@ function PCScene({
       const installedState = installed[part.id];
       return { part, slot, staging, installedState, index };
     });
-  }, [installed, selections, sizeVec, explodeFactor]);
+  }, [installed, selections, sizeVec, explodeFactor, PARTS]);
 
   const motionEnabled = qualityMode && !REDUCE_MOTION;
 
@@ -558,14 +663,14 @@ function PCScene({
       acc[part.slot] = installed[part.id];
       return acc;
     }, {});
-  }, [installed]);
+  }, [installed, PARTS]);
 
   const slotToPart = useMemo(() => {
     return PARTS.reduce((acc, part) => {
       acc[part.slot] = part.id;
       return acc;
     }, {});
-  }, []);
+  }, [PARTS]);
 
   const activePart = useMemo(() => {
     if (!dragId) return null;
@@ -772,8 +877,12 @@ function PCScene({
 }
 
 export default function BuildingComputers() {
-  const [installed, setInstalled] = useState(() => buildState(false));
-  const [selections, setSelections] = useState(() => ({ ...defaultSelections }));
+  const { locale } = useLocaleContext();
+  const t = translations[locale] || translations.en;
+  const PARTS = useMemo(() => getParts(t), [t]);
+
+  const [installed, setInstalled] = useState(() => buildState(PARTS, false));
+  const [selections, setSelections] = useState(() => getDefaultSelections(PARTS));
   const [focusedSlot, setFocusedSlot] = useState(null);
   const [buildMode, setBuildMode] = useState("assembly");
   const [panelOpen, setPanelOpen] = useState(false);
@@ -825,7 +934,7 @@ export default function BuildingComputers() {
       acc[part.id] = part;
       return acc;
     }, {});
-  }, []);
+  }, [PARTS]);
 
   const getMissingDeps = useCallback(
     (partId, state) => {
@@ -841,11 +950,11 @@ export default function BuildingComputers() {
       acc[part.id] = resolveSlot(part.slot, sizeVec, explodeFactor);
       return acc;
     }, {});
-  }, [caseSize.x, caseSize.y, caseSize.z, explodeFactor]);
+  }, [caseSize.x, caseSize.y, caseSize.z, explodeFactor, PARTS]);
 
   const connectedCount = useMemo(() => {
     return PARTS.reduce((sum, part) => sum + (installed[part.id] ? 1 : 0), 0);
-  }, [installed]);
+  }, [installed, PARTS]);
 
   const progress = Math.round((connectedCount / PARTS.length) * 100);
 
@@ -854,7 +963,7 @@ export default function BuildingComputers() {
   const activeSlotId = useMemo(() => {
     if (!activePart) return null;
     return PARTS.find((part) => part.id === activePart)?.slot || null;
-  }, [activePart]);
+  }, [activePart, PARTS]);
   const activeMissing = useMemo(() => {
     if (!activePart) return [];
     return getMissingDeps(activePart, installed);
@@ -920,10 +1029,10 @@ export default function BuildingComputers() {
           const missing = getMissingDeps(partId, installedRef.current);
           if (missing.length > 0) {
             const missingLabels = missing.map((id) => partLookup[id]?.label || id).join(", ");
-            pushLog(`Blocked: install ${missingLabels} first`);
+            pushLog(`${t.blocked}: ${t.installFirst.replace("{0}", missingLabels)}`);
           } else {
             setInstalled((prev) => ({ ...prev, [partId]: true }));
-            pushLog(`${part.label} connected`);
+            pushLog(`${part.label} ${t.connected}`);
             setRecentlyInstalled(part.id);
             setActivePartId(null);
           }
@@ -933,7 +1042,7 @@ export default function BuildingComputers() {
       setDraggingId(null);
       setFocusedSlot(null);
     },
-    [partLookup, slotLookup, pushLog, getMissingDeps]
+    [partLookup, slotLookup, pushLog, getMissingDeps, t]
   );
 
   const handleHoverSlot = useCallback(
@@ -955,7 +1064,7 @@ export default function BuildingComputers() {
         const missing = getMissingDeps(part.id, installedRef.current);
         if (missing.length > 0) {
           const nextRequired = partLookup[missing[0]]?.label || missing[0];
-          pushLog(`Blocked: Install ${nextRequired} first`);
+          pushLog(`${t.blocked}: ${t.installFirst.replace("{0}", nextRequired)}`);
           return;
         }
 
@@ -963,7 +1072,7 @@ export default function BuildingComputers() {
         setRecentlyInstalled(part.id);
         setActivePartId(null);
         setFocusedSlot(null);
-        pushLog(`${part.label} connected`);
+        pushLog(`${part.label} ${t.connected}`);
       } else {
         // Try to Remove
         // Check if any installed part depends on this one
@@ -974,44 +1083,44 @@ export default function BuildingComputers() {
 
         if (dependents.length > 0) {
           const depLabel = dependents[0].label;
-          pushLog(`Blocked: Remove ${depLabel} first`);
+          pushLog(`${t.blocked}: ${t.parts.removeFirst.replace("{0}", depLabel)}`); // Added removeFirst to t
           return;
         }
 
         setInstalled((prev) => ({ ...prev, [part.id]: false }));
         setActivePartId(part.id);
         setFocusedSlot(part.slot);
-        pushLog(`${part.label} disconnected`);
+        pushLog(`${part.label} ${t.detached}`);
       }
     },
-    [pushLog, getMissingDeps, partLookup]
+    [pushLog, getMissingDeps, partLookup, PARTS, t]
   );
 
   const updateSelection = (partId, optionId) => {
     setSelections((prev) => ({ ...prev, [partId]: optionId }));
     const part = PARTS.find((entry) => entry.id === partId);
     const label = part?.options?.find((opt) => opt.id === optionId)?.label;
-    if (part && label) pushLog(`${part.label} set to ${label}`);
+    if (part && label) pushLog(`${part.label} ${t.setTo} ${label}`);
   };
 
   const installAll = useCallback(() => {
     const ordered = CONNECTION_ORDER.reduce((acc, partId) => {
       acc[partId] = true;
       return acc;
-    }, buildState(false));
+    }, buildState(PARTS, false));
     setInstalled(ordered);
     setDraggingId(null);
     dragStateRef.current.id = null;
     pushLog("Auto-connect initiated (ordered)");
-  }, [pushLog]);
+  }, [pushLog, PARTS]);
 
   const resetAll = useCallback(() => {
-    setInstalled(buildState(false));
+    setInstalled(buildState(PARTS, false));
     setDraggingId(null);
     dragStateRef.current.id = null;
     setFocusedSlot(null);
     pushLog("Assembly reset");
-  }, [pushLog]);
+  }, [pushLog, PARTS]);
 
   const handleCaseReady = useCallback((sizeVec) => {
     setCaseSize((prev) => {
@@ -1168,10 +1277,11 @@ export default function BuildingComputers() {
             alpha: false,
             powerPreference: qualityMode ? "high-performance" : "low-power",
           }}
-          camera={{ position: [5.2, 2.4, 6.4], fov: 42, near: 0.1, far: 60 }}
+          camera={{ position: [6.5, 3.2, 8.0], fov: 40, near: 0.1, far: 60 }}
         >
           <RendererSettings qualityMode={qualityMode} />
           <PCScene
+            PARTS={PARTS}
             installed={installed}
             selections={selections}
             focusedSlot={focusedSlot}
@@ -1213,8 +1323,8 @@ export default function BuildingComputers() {
         <aside className="parts-tray">
           <div className="tray-header">
             <div>
-              <h2>Components</h2>
-              <p>Click to install · click again to remove</p>
+              <h2>{t.components}</h2>
+              <p>{t.subHeader}</p>
             </div>
           </div>
 
@@ -1281,7 +1391,7 @@ export default function BuildingComputers() {
 
                   {isBlocked && (
                     <span className="part-blocked">
-                      Requires: {missingDeps.map((id) => partLookup[id]?.label || id).join(", ")}
+                      {t.requires}: {missingDeps.map((id) => partLookup[id]?.label || id).join(", ")}
                     </span>
                   )}
                 </div>
@@ -1291,7 +1401,7 @@ export default function BuildingComputers() {
 
           <div className="tray-bottom-actions">
             {progress < 100 && (
-              <button className="build-btn primary full" onClick={installAll} title="Install all (A)">
+              <button className="build-btn primary full" onClick={installAll} title={`${t.installAll} (A)`}>
                 <svg
                   width="14"
                   height="14"
@@ -1306,11 +1416,11 @@ export default function BuildingComputers() {
                   <circle cx="12" cy="12" r="3" />
                   <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
                 </svg>
-                Install All
+                {t.installAll}
               </button>
             )}
-            <button className="build-btn danger full" onClick={resetAll} title="Reset (X)">
-              ↺ Reset
+            <button className="build-btn danger full" onClick={resetAll} title={`${t.reset} (X)`}>
+              ↺ {t.reset}
             </button>
           </div>
         </aside>
@@ -1318,8 +1428,3 @@ export default function BuildingComputers() {
     </div>
   );
 }
-
-
-
-
-

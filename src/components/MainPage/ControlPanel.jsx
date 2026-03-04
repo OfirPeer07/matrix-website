@@ -36,7 +36,17 @@ const translations = {
     headerTitle: "MATRIX",
     headerSub: " CONTROL",
     close: "Close panel",
-    deletePreset: "Delete preset"
+    deletePreset: "Delete preset",
+    presetNames: {
+      Classic: "Classic",
+      Emerald: "Emerald",
+      "Blue Matrix": "Blue Matrix",
+      "Red Pill": "Red Pill",
+      "Cyber Purple": "Cyber Purple",
+      Synthwave: "Synthwave",
+      "Gold Rush": "Gold Rush",
+      Midnight: "Midnight"
+    }
   },
   he: {
     visual: "חזותי",
@@ -68,7 +78,17 @@ const translations = {
     headerTitle: "מטריקס",
     headerSub: " בקרה",
     close: "סגור פאנל",
-    deletePreset: "מחק ערכה"
+    deletePreset: "מחק ערכה",
+    presetNames: {
+      Classic: "קלאסי",
+      Emerald: "אמרלד",
+      "Blue Matrix": "מטריקס כחול",
+      "Red Pill": "הגלולה האדומה",
+      "Cyber Purple": "סייבר סגול",
+      Synthwave: "סינת'ווייב",
+      "Gold Rush": "זהב יוקרתי",
+      Midnight: "חצות"
+    }
   }
 };
 
@@ -154,6 +174,54 @@ const BUILT_IN_PRESETS = [
       rainFont: 16,
       falloff: 200,
       baseAlpha: 0.5,
+    },
+  },
+  {
+    name: "Synthwave",
+    color: "#ff00ff",
+    settings: {
+      accent: "#ff00ff",
+      bg: "#0a0014",
+      cellColor: "#140028",
+      cell: 72,
+      rainSpeed: 32,
+      rainDensity: 0.6,
+      rainGlow: 0.7,
+      rainFont: 18,
+      falloff: 180,
+      baseAlpha: 0.4,
+    },
+  },
+  {
+    name: "Gold Rush",
+    color: "#eab308",
+    settings: {
+      accent: "#eab308",
+      bg: "#0c0a00",
+      cellColor: "#1a1600",
+      cell: 88,
+      rainSpeed: 15,
+      rainDensity: 0.5,
+      rainGlow: 0.8,
+      rainFont: 17,
+      falloff: 300,
+      baseAlpha: 0.6,
+    },
+  },
+  {
+    name: "Midnight",
+    color: "#94a3b8",
+    settings: {
+      accent: "#ffffff",
+      bg: "#020617",
+      cellColor: "#0f172a",
+      cell: 100,
+      rainSpeed: 10,
+      rainDensity: 0.4,
+      rainGlow: 0.2,
+      rainFont: 22,
+      falloff: 400,
+      baseAlpha: 0.3,
     },
   },
 ];
@@ -352,7 +420,7 @@ const PresetsTab = ({ settings, setSettings, onReset, t }) => {
               onClick={() => applyPreset(p.settings)}
             >
               <span className="cp-preset-dot" style={{ background: p.color }} />
-              {p.name}
+              {t.presetNames?.[p.name] || p.name}
             </button>
           ))}
         </div>
@@ -361,7 +429,17 @@ const PresetsTab = ({ settings, setSettings, onReset, t }) => {
       {/* Save new preset */}
       <div className="cp-group">
         <div className="cp-group-label">{t.saveCurrent}</div>
-        <div className="cp-save-row">
+        <ColorRow
+          label={t.accent}
+          value={settings.accent}
+          onChange={e => setSettings(s => ({ ...s, accent: e.target.value }))}
+        />
+        <ColorRow
+          label={t.bg}
+          value={settings.bg}
+          onChange={e => setSettings(s => ({ ...s, bg: e.target.value }))}
+        />
+        <div className="cp-save-row" style={{ marginTop: "12px" }}>
           <input
             ref={inputRef}
             className="cp-name-input"

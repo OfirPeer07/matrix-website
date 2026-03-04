@@ -59,6 +59,12 @@ const LightRevealGrid = memo(forwardRef(function LightRevealGrid(
   const dpr = useDevicePixelRatio();
   const rgb = parseColor(rimColor);
 
+  // 🔑 Reactive props Ref to avoid effect restarts and stale closures
+  const propsRef = useRef({ rimColor, beamStrength, falloff, beams, lightStyle, cellColor, baseAlpha, rgb });
+  useEffect(() => {
+    propsRef.current = { rimColor, beamStrength, falloff, beams, lightStyle, cellColor, baseAlpha, rgb: parseColor(rimColor) };
+  }, [rimColor, beamStrength, falloff, beams, lightStyle, cellColor, baseAlpha]);
+
   /* ---------- utils ---------- */
 
   const setSize = (canvas, w, h, scale) => {
@@ -105,8 +111,8 @@ const LightRevealGrid = memo(forwardRef(function LightRevealGrid(
 
     // base cells
     octx.save();
-    octx.fillStyle = cellColor;
-    octx.globalAlpha = baseAlpha;
+    octx.fillStyle = propsRef.current.cellColor;
+    octx.globalAlpha = propsRef.current.baseAlpha;
 
     for (let r = 0, y = startY; r < rows; r++, y += step) {
       for (let c = 0, x = startX; c < cols; c++, x += step) {
@@ -119,7 +125,7 @@ const LightRevealGrid = memo(forwardRef(function LightRevealGrid(
     // subtle outlines
     octx.save();
     octx.globalAlpha = 0.08;
-    octx.strokeStyle = `rgba(${rgb.str},1)`;
+    octx.strokeStyle = `rgba(${propsRef.current.rgb.str},1)`;
     octx.lineJoin = "round";
     octx.lineWidth = Math.max(1, Math.floor(cell * 0.08));
 
@@ -146,11 +152,12 @@ const LightRevealGrid = memo(forwardRef(function LightRevealGrid(
     const mx = mouse.current.x;
     const my = mouse.current.y;
     const { startX, startY, step } = gridRef.current;
+    const { falloff: fo, beamStrength: bs, rgb: c, lightStyle: ls, beams: bms } = propsRef.current;
 
-    if (lightStyle === "lamp") {
-      const halo = ctx.createRadialGradient(mx, my, 0, mx, my, falloff);
-      halo.addColorStop(0, `rgba(${rgb.str},${0.22 * beamStrength})`);
-      halo.addColorStop(1, `rgba(${rgb.str},0)`);
+    if (ls === "lamp") {
+      const halo = ctx.createRadialGradient(mx, my, 0, mx, my, fo);
+      halo.addColorStop(0, `rgba(${c.str},${0.22 * bs})`);
+      halo.addColorStop(1, `rgba(${c.str},0)`);
 
       ctx.save();
       ctx.globalCompositeOperation = "lighter";
@@ -168,15 +175,15 @@ const LightRevealGrid = memo(forwardRef(function LightRevealGrid(
     ctx.save();
     ctx.globalCompositeOperation = "lighter";
 
-    for (let k = -beams; k <= beams; k++) {
+    for (let k = -bms; k <= bms; k++) {
       const x = startX + (idxCol + k) * step + cell;
       const y = startY + (idxRow + k) * step + cell;
 
-      const wx = gaussian(Math.abs(mx - x), falloff * 0.45);
-      const wy = gaussian(Math.abs(my - y), falloff * 0.45);
+      const wx = gaussian(Math.abs(mx - x), fo * 0.45);
+      const wy = gaussian(Math.abs(my - y), fo * 0.45);
 
       if (wx > 0.01) {
-        ctx.fillStyle = `rgba(${rgb.str},${beamStrength * wx})`;
+        ctx.fillStyle = `rgba(${c.str},${bs * wx})`;
         ctx.fillRect(x - gap, 0, gap * 2, H);
       }
       if (wy > 0.01) {
@@ -219,7 +226,7 @@ const LightRevealGrid = memo(forwardRef(function LightRevealGrid(
 
     offscreenRef.current = document.createElement("canvas");
 
-    const resize = () => {
+    const resize = (force = false) => {
       const W = window.innerWidth;
       const H = window.innerHeight;
 
@@ -227,21 +234,24 @@ const LightRevealGrid = memo(forwardRef(function LightRevealGrid(
       const cols = Math.ceil(W / step) + 2;
       const rows = Math.ceil(H / step) + 2;
 
-      // 🔑 Threshold check: only reset if the grid dimensions change
-      if (gridRef.current.cols === cols && gridRef.current.rows === rows && Math.abs(canvas.height / clampDpr(dpr) - H) < 10) {
-        return;
+      // 🔑 Threshold check: only skip dimension-heavy reset if dimensions are same
+      const dimChanged = gridRef.current.cols !== cols || gridRef.current.rows !== rows || Math.abs(canvas.height / clampDpr(dpr) - H) >= 10;
+
+      if (!dimChanged && !force) return;
+
+      if (dimChanged) {
+        ctxRef.current = setSize(canvas, W, H, clampDpr(dpr));
+        offCtxRef.current = setSize(offscreenRef.current, W, H, clampDpr(dpr));
+        computeGrid(W, H);
       }
 
-      ctxRef.current = setSize(canvas, W, H, clampDpr(dpr));
-      offCtxRef.current = setSize(offscreenRef.current, W, H, clampDpr(dpr));
-      computeGrid(W, H);
       renderStaticGrid(W, H);
       blitGrid(ctxRef.current, W, H);
     };
 
-    resize();
-    window.addEventListener("resize", resize);
-    window.addEventListener("orientationchange", resize);
+    resize(true); // 🔥 Force re-render of static grid whenever useEffect runs (props changed)
+    window.addEventListener("resize", () => resize(false));
+    window.addEventListener("orientationchange", () => resize(false));
 
     return () => {
       window.removeEventListener("resize", resize);
@@ -251,17 +261,8 @@ const LightRevealGrid = memo(forwardRef(function LightRevealGrid(
     cell,
     gap,
     radius,
-    baseAlpha,
-    falloff,
-    beams,
-    rimColor,
-    beamStrength,
-    beamSoft,
-    edgeBoost,
-    cellColor,
     dpr,
-    lightStyle,
-  ]);
+  ]); // 🔥 Decoupled: only restart if grid dimensions change
 
   useEffect(() => {
     const onMove = (e) => {

@@ -245,6 +245,8 @@
   color: rgba(154, 255, 200, 0.6);
   font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
+  direction: ltr;
+  display: inline-block;
 }
 
 /* ── Slider ── */
