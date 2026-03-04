@@ -134,25 +134,44 @@ const MatrixRainCanvas = memo(function MatrixRainCanvas({
           const y = s.y - i * fontSize;
           if (y < 0 || y > h) continue;
 
+          const alpha = Math.pow(1 - i / s.trail, 1.6);
           const x = col * fontSize;
           const char = s.chars[i];
 
-          const alpha = Math.pow(
-            1 - i / s.trail,
-            1.6
-          );
-
-          ctx.fillStyle = `rgba(${c.r}, ${c.g}, ${c.b}, ${alpha})`;
-          ctx.fillText(char, x, y);
-
-          // dynamic glow
+          // 🌟 DYNAMIC BLOOM (The "Glow" slider impact)
           if (i === 0 && g > 0) {
-            ctx.globalAlpha = alpha * (BASE_GLOW * g);
-            ctx.fillText(char, x + 1, y);
-            ctx.fillText(char, x - 1, y);
-            ctx.fillText(char, x, y + 1);
-            ctx.fillText(char, x, y - 1);
-            ctx.globalAlpha = 1;
+            ctx.save();
+            // Head is always white for contrast
+            ctx.fillStyle = "#fff";
+
+            // Apply a powerful shadow blur that scales with g
+            // g=0.01 -> blur=0.1, g=1.0 -> blur=fontSize*2
+            ctx.shadowBlur = g * fontSize * 1.2;
+            ctx.shadowColor = `rgba(${c.r}, ${c.g}, ${c.b}, ${0.8 + g * 0.2})`;
+
+            ctx.fillText(char, x, y);
+
+            // Optional: for very high glow, add a secondary additive pass
+            if (g > 0.7) {
+              ctx.globalCompositeOperation = "lighter";
+              ctx.fillStyle = `rgba(${c.r}, ${c.g}, ${c.b}, ${(g - 0.7) * 2})`;
+              ctx.fillText(char, x, y);
+            }
+            ctx.restore();
+          } else {
+            // Rest of the trail
+            ctx.fillStyle = `rgba(${c.r}, ${c.g}, ${c.b}, ${alpha})`;
+            ctx.fillText(char, x, y);
+
+            // Subtle trail glow for high settings
+            if (i < 3 && g > 0.8) {
+              ctx.save();
+              ctx.globalAlpha = (3 - i) / 3 * (g - 0.8);
+              ctx.shadowBlur = g * 5;
+              ctx.shadowColor = `rgba(${c.r}, ${c.g}, ${c.b}, 1)`;
+              ctx.fillText(char, x, y);
+              ctx.restore();
+            }
           }
         }
 
