@@ -1,6 +1,7 @@
 import { useLocaleContext } from "../../../../../context/LocaleContext";
 import "../templates/styles/base.css";
 import "../templates/styles/modern.css";
+import { groupBulletLines, stripMarker } from "../../utils/resumeUtils";
 
 const translations = {
   en: {
@@ -63,7 +64,7 @@ export default function ModernTemplate({
             <section>
               <h2>{t.profile}</h2>
               {about.map((p, i) => (
-                <p key={i}>{p}</p>
+                <p key={i} style={{ whiteSpace: "pre-line" }}>{p}</p>
               ))}
             </section>
           )}
@@ -96,14 +97,11 @@ export default function ModernTemplate({
                   {/* BULLETS */}
                   {exp.description && (
                     <ul className="entry-bullets">
-                      {exp.description
-                        .split("\n")
-                        .filter(Boolean)
-                        .map((line, idx) => (
-                          <li key={idx}>
-                            {line.replace(/^•\s*/, "")}
-                          </li>
-                        ))}
+                      {groupBulletLines(exp.description).map((bullet, idx) => (
+                        <li key={idx} style={{ whiteSpace: "pre-line" }}>
+                          {stripMarker(bullet)}
+                        </li>
+                      ))}
                     </ul>
                   )}
                 </div>
@@ -123,14 +121,11 @@ export default function ModernTemplate({
 
                   {proj.description && (
                     <ul className="entry-bullets">
-                      {proj.description
-                        .split("\n")
-                        .filter(Boolean)
-                        .map((line, idx) => (
-                          <li key={idx}>
-                            {line.replace(/^•\s*/, "")}
-                          </li>
-                        ))}
+                      {groupBulletLines(proj.description).map((bullet, idx) => (
+                        <li key={idx} style={{ whiteSpace: "pre-line" }}>
+                          {stripMarker(bullet)}
+                        </li>
+                      ))}
                     </ul>
                   )}
 
@@ -168,14 +163,11 @@ export default function ModernTemplate({
 
                   {edu.description && (
                     <ul className="entry-bullets">
-                      {edu.description
-                        .split("\n")
-                        .filter(Boolean)
-                        .map((line, idx) => (
-                          <li key={idx}>
-                            {line.replace(/^•\s*/, "")}
-                          </li>
-                        ))}
+                      {groupBulletLines(edu.description).map((bullet, idx) => (
+                        <li key={idx} style={{ whiteSpace: "pre-line" }}>
+                          {stripMarker(bullet)}
+                        </li>
+                      ))}
                     </ul>
                   )}
                 </div>
@@ -201,14 +193,11 @@ export default function ModernTemplate({
 
                 {army.description && (
                   <ul className="entry-bullets">
-                    {army.description
-                      .split("\n")
-                      .filter(Boolean)
-                      .map((line, idx) => (
-                        <li key={idx}>
-                          {line.replace(/^•\s*/, "")}
-                        </li>
-                      ))}
+                    {groupBulletLines(army.description).map((bullet, idx) => (
+                      <li key={idx} style={{ whiteSpace: "pre-line" }}>
+                        {stripMarker(bullet)}
+                      </li>
+                    ))}
                   </ul>
                 )}
               </div>

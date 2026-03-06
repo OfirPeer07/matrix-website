@@ -47,11 +47,11 @@
 
     0%,
     100% {
-      filter: drop-shadow(0 0 6px #2adef2);
+      filter: drop-shadow(0 0 6px #17ca07);
     }
 
     50% {
-      filter: drop-shadow 0 0 24px #2adef2, 0 0 48px #2adef2;
+      filter: drop-shadow 0 0 24px #17ca07, 0 0 48px #17ca07;
     }
   }
 

@@ -12,8 +12,8 @@ export default function AboutMeEditor({ value = [], onChange }) {
     <section>
       <h3>{t.title}</h3>
       <textarea
-        value={value.join("\n")}
-        onChange={e => onChange(e.target.value.split("\n"))}
+        value={value.join("\n\n")}
+        onChange={e => onChange(e.target.value.split("\n\n").filter(Boolean))}
       />
     </section>
   );

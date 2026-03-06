@@ -117,13 +117,13 @@ function ArticleModal({ article, t, onClose, restoreFocusTo }) {
           <footer className="modal-footer dossier-footer">
             <div className="footer-bg-line" />
             <button ref={closeCtaRef} className="btn-dossier-ghost" onClick={handleClose}>
-              <span className="btn-label">[ CLOSE ]</span>
+              <span className="btn-label">{t.ui.closeCta}</span>
             </button>
             <button className="btn-dossier-accent" onClick={() => {
               const body = document.getElementById('modal-desc');
               if (body) body.scrollTo({ top: body.scrollHeight, behavior: 'smooth' });
             }}>
-              <span className="btn-label">DATA_ACCESS_SCROLL</span>
+              <span className="btn-label">{t.ui.scrollCta}</span>
             </button>
           </footer>
         </div>

@@ -1,6 +1,7 @@
 import { useLocaleContext } from "../../../../../context/LocaleContext";
 import "../templates/styles/base.css";
 import "../templates/styles/neural.css";
+import { groupBulletLines, stripMarker } from "../../utils/resumeUtils";
 
 const translations = {
     en: {
@@ -71,7 +72,7 @@ export default function NeuralTemplate({
                         <section>
                             <h2 className="neural-section-title">{t.profile}</h2>
                             {about.map((p, i) => (
-                                <p key={i}>{p}</p>
+                                <p key={i} style={{ whiteSpace: "pre-line" }}>{p}</p>
                             ))}
                         </section>
                     )}
@@ -102,14 +103,11 @@ export default function NeuralTemplate({
 
                                     {exp.description && (
                                         <ul className="neural-bullets">
-                                            {exp.description
-                                                .split("\n")
-                                                .filter(Boolean)
-                                                .map((line, idx) => (
-                                                    <li key={idx}>
-                                                        {line.replace(/^•\s*/, "")}
-                                                    </li>
-                                                ))}
+                                            {groupBulletLines(exp.description).map((bullet, idx) => (
+                                                <li key={idx} style={{ whiteSpace: "pre-line" }}>
+                                                    {stripMarker(bullet)}
+                                                </li>
+                                            ))}
                                         </ul>
                                     )}
                                 </div>
@@ -129,14 +127,11 @@ export default function NeuralTemplate({
 
                                     {proj.description && (
                                         <ul className="neural-bullets">
-                                            {proj.description
-                                                .split("\n")
-                                                .filter(Boolean)
-                                                .map((line, idx) => (
-                                                    <li key={idx}>
-                                                        {line.replace(/^•\s*/, "")}
-                                                    </li>
-                                                ))}
+                                            {groupBulletLines(proj.description).map((bullet, idx) => (
+                                                <li key={idx} style={{ whiteSpace: "pre-line" }}>
+                                                    {stripMarker(bullet)}
+                                                </li>
+                                            ))}
                                         </ul>
                                     )}
 
@@ -191,7 +186,9 @@ export default function NeuralTemplate({
                                         </span>
                                     )}
                                 </div>
-                                {army.description && <p>{army.description}</p>}
+                                {army.description && (
+                                    <p style={{ whiteSpace: "pre-line" }}>{army.description}</p>
+                                )}
                             </div>
                         </section>
                     )}

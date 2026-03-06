@@ -1,6 +1,7 @@
 import { useLocaleContext } from "../../../../../context/LocaleContext";
 import "../templates/styles/base.css";
 import "../templates/styles/classic.css";
+import { groupBulletLines, stripMarker } from "../../utils/resumeUtils";
 
 const translations = {
   en: {
@@ -95,7 +96,9 @@ export default function ClassicTemplate({
         {hasContent(about) && (
           <section>
             <h2>{t.about}</h2>
-            {about.map((p, i) => <p key={i}>{p}</p>)}
+            {about.map((p, i) => (
+              <p key={i} style={{ whiteSpace: "pre-line" }}>{p}</p>
+            ))}
           </section>
         )}
 
@@ -118,8 +121,10 @@ export default function ClassicTemplate({
 
                 {exp.description && (
                   <ul className="entry-bullets">
-                    {exp.description.split("\n").filter(Boolean).map((line, idx) => (
-                      <li key={idx}>{line.replace(/^•\s*/, "")}</li>
+                    {groupBulletLines(exp.description).map((bullet, idx) => (
+                      <li key={idx} style={{ whiteSpace: "pre-line" }}>
+                        {stripMarker(bullet)}
+                      </li>
                     ))}
                   </ul>
                 )}
@@ -139,8 +144,10 @@ export default function ClassicTemplate({
 
                 {proj.description && (
                   <ul className="entry-bullets">
-                    {proj.description.split("\n").filter(Boolean).map((line, idx) => (
-                      <li key={idx}>{line.replace(/^•\s*/, "")}</li>
+                    {groupBulletLines(proj.description).map((bullet, idx) => (
+                      <li key={idx} style={{ whiteSpace: "pre-line" }}>
+                        {stripMarker(bullet)}
+                      </li>
                     ))}
                   </ul>
                 )}
@@ -170,8 +177,10 @@ export default function ClassicTemplate({
 
                 {edu.description && (
                   <ul className="entry-bullets">
-                    {edu.description.split("\n").filter(Boolean).map((line, idx) => (
-                      <li key={idx}>{line.replace(/^•\s*/, "")}</li>
+                    {groupBulletLines(edu.description).map((bullet, idx) => (
+                      <li key={idx} style={{ whiteSpace: "pre-line" }}>
+                        {stripMarker(bullet)}
+                      </li>
                     ))}
                   </ul>
                 )}
@@ -195,8 +204,10 @@ export default function ClassicTemplate({
 
               {army.description && (
                 <ul className="entry-bullets">
-                  {army.description.split("\n").filter(Boolean).map((line, idx) => (
-                    <li key={idx}>{line.replace(/^•\s*/, "")}</li>
+                  {groupBulletLines(army.description).map((bullet, idx) => (
+                    <li key={idx} style={{ whiteSpace: "pre-line" }}>
+                      {stripMarker(bullet)}
+                    </li>
                   ))}
                 </ul>
               )}

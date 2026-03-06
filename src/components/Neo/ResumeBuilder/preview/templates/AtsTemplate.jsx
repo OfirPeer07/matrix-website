@@ -1,6 +1,7 @@
 import { useLocaleContext } from "../../../../../context/LocaleContext";
 import "./styles/base.css";
 import "./styles/ats.css";
+import { groupBulletLines, stripMarker } from "../../utils/resumeUtils";
 
 const translations = {
   en: {
@@ -59,7 +60,9 @@ export default function AtsTemplate({
       {hasContent(about) && (
         <section>
           <h2>{t.summary}</h2>
-          {about.map((p, i) => <p key={i}>{p}</p>)}
+          {about.map((p, i) => (
+            <p key={i} style={{ whiteSpace: "pre-line" }}>{p}</p>
+          ))}
         </section>
       )}
 
@@ -79,14 +82,11 @@ export default function AtsTemplate({
 
               {exp.description && (
                 <ul>
-                  {exp.description
-                    .split("\n")
-                    .filter(Boolean)
-                    .map((line, idx) => (
-                      <li key={idx}>
-                        {line.replace(/^•\s*/, "")}
-                      </li>
-                    ))}
+                  {groupBulletLines(exp.description).map((bullet, idx) => (
+                    <li key={idx} style={{ whiteSpace: "pre-line" }}>
+                      {stripMarker(bullet)}
+                    </li>
+                  ))}
                 </ul>
               )}
             </div>
@@ -105,14 +105,11 @@ export default function AtsTemplate({
 
               {proj.description && (
                 <ul>
-                  {proj.description
-                    .split("\n")
-                    .filter(Boolean)
-                    .map((line, idx) => (
-                      <li key={idx}>
-                        {line.replace(/^•\s*/, "")}
-                      </li>
-                    ))}
+                  {groupBulletLines(proj.description).map((bullet, idx) => (
+                    <li key={idx} style={{ whiteSpace: "pre-line" }}>
+                      {stripMarker(bullet)}
+                    </li>
+                  ))}
                 </ul>
               )}
 
@@ -138,14 +135,11 @@ export default function AtsTemplate({
 
               {edu.description && (
                 <ul>
-                  {edu.description
-                    .split("\n")
-                    .filter(Boolean)
-                    .map((line, idx) => (
-                      <li key={idx}>
-                        {line.replace(/^•\s*/, "")}
-                      </li>
-                    ))}
+                  {groupBulletLines(edu.description).map((bullet, idx) => (
+                    <li key={idx} style={{ whiteSpace: "pre-line" }}>
+                      {stripMarker(bullet)}
+                    </li>
+                  ))}
                 </ul>
               )}
             </div>
