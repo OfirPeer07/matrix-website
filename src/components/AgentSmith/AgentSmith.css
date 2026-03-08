@@ -51,11 +51,3 @@
    OPTIONAL – WIDE IMAGE TWEAK (CONTENT-ONLY)
    (Safe: does not affect layout grid)
 ===================================================== */
-
-@media (min-aspect-ratio: 21/9) {
-
-  .experience-image,
-  .whatCanBeDone-image {
-    width: 40%;
-  }
-}

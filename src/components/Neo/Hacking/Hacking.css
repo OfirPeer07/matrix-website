@@ -187,37 +187,3 @@
   }
 
   /* Responsive adjustments for smaller screens */
-  @media (max-width: 768px) {
-    .rectangle {
-      width: 35vw;
-      /* Adjusting for smaller screens */
-      height: 25vh;
-      /* Keeping the aspect ratio */
-    }
-  }
-
-  @media (max-width: 480px) {
-    .rectangle {
-      width: 45vw;
-      height: 20vh;
-    }
-
-    .hackingTitle {
-      font-size: 1rem;
-    }
-  }
-
-  @media (min-aspect-ratio: 21/9) {
-    .ofair {
-      width: 33vw;
-      height: 60vh;
-      left: 50%;
-    }
-  }
-
-  @media (min-aspect-ratio: 16/9) and (max-aspect-ratio: 21/9) {
-    .ofair {
-      width: 33vw;
-      height: 60vh;
-    }
-  }

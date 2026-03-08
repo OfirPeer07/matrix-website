@@ -90,12 +90,3 @@
 }
 
 /* Responsive Tweaks */
-@media (max-width: 768px) {
-  .carousel-image {
-    max-height: 50vh;
-  }
-
-  .image-name {
-    font-size: 14px;
-  }
-}

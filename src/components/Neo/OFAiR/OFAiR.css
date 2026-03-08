@@ -37,10 +37,18 @@
   --sky: 2.9deg;
 
   /* === Elliptical Border Radius Vars (per corner) === */
-  --tlx: 13%;  --tly: 12%;  /* top-left  */
-  --trx: 11%;  --try: 12%;  /* top-right */
-  --brx: 9.5%; --bry: 12%;  /* bottom-right */
-  --blx: 16%;  --bly: 14%;  /* bottom-left */
+  --tlx: 13%;
+  --tly: 12%;
+  /* top-left  */
+  --trx: 11%;
+  --try: 12%;
+  /* top-right */
+  --brx: 9.5%;
+  --bry: 12%;
+  /* bottom-right */
+  --blx: 16%;
+  --bly: 14%;
+  /* bottom-left */
 }
 
 .computer-image {
@@ -57,17 +65,14 @@
   width: var(--screen-width);
   height: var(--screen-height);
 
-  transform: perspective(900px)
-    rotateX(var(--rx)) rotateY(var(--ry))
-    skewX(var(--skx)) skewY(var(--sky));
+  transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) skewX(var(--skx)) skewY(var(--sky));
   transform-origin: top right;
 
   background: rgba(0, 0, 0, 0.94);
   border: 1px solid #2adef2;
 
   /* Elliptical corners */
-  border-radius: var(--tlx) var(--trx) var(--brx) var(--blx)
-                 / var(--tly) var(--try) var(--bry) var(--bly);
+  border-radius: var(--tlx) var(--trx) var(--brx) var(--blx) / var(--tly) var(--try) var(--bry) var(--bly);
 
   padding: 7.5px;
   display: flex;
@@ -82,10 +87,10 @@
 /* Optional calibration mode */
 .computer-container.calibrate .terminal-overlay {
   background:
-    repeating-linear-gradient(0deg, rgba(42,222,242,.08) 0 10px, transparent 10px 20px),
-    repeating-linear-gradient(90deg, rgba(42,222,242,.08) 0 10px, transparent 10px 20px);
+    repeating-linear-gradient(0deg, rgba(42, 222, 242, .08) 0 10px, transparent 10px 20px),
+    repeating-linear-gradient(90deg, rgba(42, 222, 242, .08) 0 10px, transparent 10px 20px);
   outline: 2px dashed #2adef2;
-  box-shadow: 0 0 0 2px rgba(0,255,255,.25) inset;
+  box-shadow: 0 0 0 2px rgba(0, 255, 255, .25) inset;
 }
 
 .terminal-header {
@@ -132,11 +137,13 @@
 }
 
 .line.user {
-  color: #2adef2; /* or #7befff if you want the lighter fallback */
+  color: #2adef2;
+  /* or #7befff if you want the lighter fallback */
 }
 
 .line.ofair {
-  color: #17ca07; /* or #8cff7b if you want the lighter fallback */
+  color: #17ca07;
+  /* or #8cff7b if you want the lighter fallback */
 }
 
 .timestamp {
@@ -163,10 +170,3 @@
 }
 
 /* Responsive adjustment */
-@media (max-width: 1200px) {
-  .computer-container {
-    --screen-left: 19.4%;
-    --screen-width: 26.2%;
-    --ry: 17.5deg;
-  }
-}

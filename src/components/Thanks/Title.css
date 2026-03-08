@@ -56,8 +56,3 @@
 }
 
 /* Responsive */
-@media (max-width: 768px) {
-  .title {
-    font-size: 2.2rem;
-  }
-}

@@ -3,15 +3,16 @@
 /* ================= VARIABLES ================= */
 :root {
   --matrix-green: #00ff9c;
-  --matrix-green-dim: rgba(0,255,156,0.55);
-  --matrix-green-soft: rgba(0,255,156,0.18);
+  --matrix-green-dim: rgba(0, 255, 156, 0.55);
+  --matrix-green-soft: rgba(0, 255, 156, 0.18);
   --matrix-bg-deep: #000;
   --matrix-bg-soft: #0b1f14;
   --matrix-red: #ff2a2a;
 }
 
 /* ================= RESET ================= */
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   overflow: hidden !important;
@@ -19,8 +20,8 @@ html, body {
   width: 100vw;
   position: fixed;
   background:
-    radial-gradient(circle at 72% 50%, rgba(11,31,20,0.95) 0%, #000 55%),
-    linear-gradient(180deg, rgba(0,255,156,0.04), rgba(0,0,0,0.95));
+    radial-gradient(circle at 72% 50%, rgba(11, 31, 20, 0.95) 0%, #000 55%),
+    linear-gradient(180deg, rgba(0, 255, 156, 0.04), rgba(0, 0, 0, 0.95));
   color: var(--matrix-green);
   font-family: 'Share Tech Mono', monospace;
 }
@@ -30,8 +31,8 @@ body::before {
   position: fixed;
   inset: -2px;
   background:
-    radial-gradient(circle at 72% 50%, rgba(11,31,20,0.95) 0%, #000 55%),
-    linear-gradient(180deg, rgba(0,255,156,0.04), rgba(0,0,0,0.95));
+    radial-gradient(circle at 72% 50%, rgba(11, 31, 20, 0.95) 0%, #000 55%),
+    linear-gradient(180deg, rgba(0, 255, 156, 0.04), rgba(0, 0, 0, 0.95));
   z-index: -1;
 }
 
@@ -59,16 +60,14 @@ body::before {
   cursor: pointer;
 
   filter:
-    drop-shadow(0 0 24px var(--matrix-green-soft))
-    drop-shadow(0 0 90px rgba(0,0,0,0.95));
+    drop-shadow(0 0 24px var(--matrix-green-soft)) drop-shadow(0 0 90px rgba(0, 0, 0, 0.95));
 
   transition: filter 0.5s ease;
 }
 
 .OFAiR:hover {
   filter:
-    drop-shadow(0 0 36px rgba(0,255,156,0.4))
-    drop-shadow(0 0 120px rgba(0,0,0,1));
+    drop-shadow(0 0 36px rgba(0, 255, 156, 0.4)) drop-shadow(0 0 120px rgba(0, 0, 0, 1));
 }
 
 /* ================= TOOLTIP ================= */
@@ -83,10 +82,10 @@ body::before {
   text-transform: uppercase;
   color: var(--matrix-green);
   background: rgba(0, 18, 10, 0.92);
-  border: 1px solid rgba(0,255,156,0.35);
+  border: 1px solid rgba(0, 255, 156, 0.35);
   box-shadow:
-    0 0 22px rgba(0,255,156,0.25),
-    inset 0 0 12px rgba(0,255,156,0.08);
+    0 0 22px rgba(0, 255, 156, 0.25),
+    inset 0 0 12px rgba(0, 255, 156, 0.08);
   opacity: 0;
   pointer-events: none;
 }
@@ -136,8 +135,8 @@ body::before {
   letter-spacing: 0.08em;
   color: var(--matrix-red);
   text-shadow:
-    0 0 14px rgba(255,42,42,0.55),
-    0 0 36px rgba(0,0,0,0.95);
+    0 0 14px rgba(255, 42, 42, 0.55),
+    0 0 36px rgba(0, 0, 0, 0.95);
 
   animation: errorSignalFlicker 13.7s infinite;
 }
@@ -153,8 +152,8 @@ body::before {
   letter-spacing: 0.06em;
   color: var(--matrix-red);
   text-shadow:
-    0 0 14px rgba(255,42,42,0.55),
-    0 0 44px rgba(0,0,0,0.95);
+    0 0 14px rgba(255, 42, 42, 0.55),
+    0 0 44px rgba(0, 0, 0, 0.95);
 
   animation: errorSignalFlicker 16.9s infinite;
 }
@@ -169,47 +168,108 @@ body::before {
 
 /* System text: subtle signal instability */
 @keyframes matrixSignalFlicker {
-  0%   { opacity: 0.92; }
-  7%   { opacity: 0.85; }
-  9%   { opacity: 0.35; }
-  10%  { opacity: 0.9; }
-  23%  { opacity: 0.88; }
-  24%  { opacity: 0.4; }
-  25%  { opacity: 0.9; }
-  47%  { opacity: 0.86; }
-  48%  { opacity: 0.25; }
-  49%  { opacity: 0.92; }
-  71%  { opacity: 0.9; }
-  72%  { opacity: 0.55; }
-  73%  { opacity: 0.92; }
-  100% { opacity: 0.95; }
+  0% {
+    opacity: 0.92;
+  }
+
+  7% {
+    opacity: 0.85;
+  }
+
+  9% {
+    opacity: 0.35;
+  }
+
+  10% {
+    opacity: 0.9;
+  }
+
+  23% {
+    opacity: 0.88;
+  }
+
+  24% {
+    opacity: 0.4;
+  }
+
+  25% {
+    opacity: 0.9;
+  }
+
+  47% {
+    opacity: 0.86;
+  }
+
+  48% {
+    opacity: 0.25;
+  }
+
+  49% {
+    opacity: 0.92;
+  }
+
+  71% {
+    opacity: 0.9;
+  }
+
+  72% {
+    opacity: 0.55;
+  }
+
+  73% {
+    opacity: 0.92;
+  }
+
+  100% {
+    opacity: 0.95;
+  }
 }
 
 /* Error elements: harsher, rarer drops */
 @keyframes errorSignalFlicker {
-  0%   { opacity: 1; }
-  18%  { opacity: 0.95; }
-  19%  { opacity: 0.35; }
-  20%  { opacity: 1; }
-  46%  { opacity: 0.9; }
-  47%  { opacity: 0.2; }
-  48%  { opacity: 1; }
-  74%  { opacity: 0.92; }
-  75%  { opacity: 0.4; }
-  76%  { opacity: 1; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+
+  18% {
+    opacity: 0.95;
+  }
+
+  19% {
+    opacity: 0.35;
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  46% {
+    opacity: 0.9;
+  }
+
+  47% {
+    opacity: 0.2;
+  }
+
+  48% {
+    opacity: 1;
+  }
+
+  74% {
+    opacity: 0.92;
+  }
+
+  75% {
+    opacity: 0.4;
+  }
+
+  76% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 /* ================= ULTRAWIDE ================= */
-@media screen and (min-aspect-ratio: 21/9) {
-  .OFAiR {
-    width: 44vmax;
-    height: 44vmax;
-    right: 5%;
-  }
-
-  .text {
-    width: 42vw;
-    left: 5vw;
-  }
-}

@@ -424,25 +424,3 @@
 }
 
 /* ─── Responsive ─────────────────────────────────────────────────────────── */
-@media (max-width: 600px) {
-  .vids-hero {
-    flex-direction: column;
-    padding: 2.5rem 1.25rem 2rem;
-  }
-
-  .vids-hero__decoration {
-    display: none;
-  }
-
-  .vids-stage {
-    padding: 0 0.75rem;
-  }
-
-  .vids-big-play span {
-    font-size: 2.5rem;
-  }
-
-  .vids-time {
-    display: none;
-  }
-}

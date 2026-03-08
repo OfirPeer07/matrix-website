@@ -632,19 +632,7 @@ body.build-no-scrollbar::-webkit-scrollbar,
 /* ============================================================
    RESPONSIVE
    ============================================================ */
-@media (max-width: 768px) {
-  .parts-tray {
-    width: calc(100% - 20px);
-    right: 10px;
-    top: 6rem;
-    max-height: calc(100vh - 8rem);
-  }
 
-  .tray-toggle-btn {
-    right: 10px;
-    top: 10px;
-  }
-}
 
 .build-spacer {
   display: none;

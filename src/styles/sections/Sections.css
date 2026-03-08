@@ -127,24 +127,3 @@
 /* =====================================================
    RESPONSIVE
 ===================================================== */
-
-@media (max-width: 1024px) {
-  .text-image-container {
-    gap: 2rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .text-image-container {
-    grid-template-columns: 1fr;
-    /* מעבר לטור אחד במובייל */
-  }
-
-  .text-box {
-    padding: 15px;
-  }
-
-  .inner-box {
-    padding: 1.2rem;
-  }
-}

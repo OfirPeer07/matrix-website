@@ -26,7 +26,8 @@
 .btn-locale-fixed {
   position: fixed;
   top: 30px;
-  right: 30px !important; /* כוח כפייה כדי שלא יזוז ב-RTL */
+  right: 30px !important;
+  /* כוח כפייה כדי שלא יזוז ב-RTL */
   left: auto !important;
   z-index: 9999;
   background: var(--panel-bg);
@@ -48,7 +49,11 @@
 }
 
 /* Header */
-.tg-hero { text-align: center; margin-bottom: 60px; }
+.tg-hero {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
 .glitch-text {
   font-size: 3rem;
   font-weight: 900;
@@ -89,7 +94,8 @@
   font-weight: 600;
 }
 
-.tg-card:hover, .tg-card.is-active {
+.tg-card:hover,
+.tg-card.is-active {
   border-color: var(--neon-green);
   background: rgba(0, 255, 65, 0.05);
   transform: translateY(-5px);
@@ -238,11 +244,10 @@
   grid-template-columns: 320px 1fr;
 }
 
-[dir="rtl"] .tg-panels { order: 2; }
-[dir="rtl"] .tg-dock { order: 1; }
+[dir="rtl"] .tg-panels {
+  order: 2;
+}
 
-@media (max-width: 900px) {
-  .runner-container {
-    grid-template-columns: 1fr;
-  }
+[dir="rtl"] .tg-dock {
+  order: 1;
 }

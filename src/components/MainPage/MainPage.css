@@ -146,11 +146,7 @@
   /* Prevent Neo/Smith swap in RTL */
 }
 
-@media (max-width:820px) {
-  .cards {
-    grid-template-columns: 1fr;
-  }
-}
+
 
 .card-wrap {
   height: 50rem;
@@ -205,11 +201,7 @@
   margin: 0;
 }
 
-@media (max-width:820px) {
-  .media-holder {
-    width: 90vw;
-  }
-}
+
 
 .media {
   position: absolute;

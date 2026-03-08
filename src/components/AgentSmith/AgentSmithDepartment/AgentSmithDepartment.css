@@ -362,25 +362,3 @@
 }
 
 /* ===================== RESPONSIVE ===================== */
-@media (max-width: 768px) {
-  .asd-header-inner {
-    flex-direction: column;
-    text-align: center;
-    padding: 24px;
-    gap: 12px;
-  }
-
-  .asd-grid {
-    padding: 24px;
-    gap: 20px;
-    grid-template-columns: 1fr;
-  }
-
-  .asd-card-media {
-    height: 180px;
-  }
-
-  .asd-main-title {
-    font-size: 28px;
-  }
-}

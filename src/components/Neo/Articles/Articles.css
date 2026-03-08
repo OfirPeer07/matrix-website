@@ -467,24 +467,7 @@
 }
 
 /* Responsive */
-@media (max-width: 768px) {
 
-  .modal-header,
-  .dossier-meta,
-  .dossier-body,
-  .dossier-footer {
-    padding-inline: 24px;
-  }
-
-  .dossier-meta {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .modal-title {
-    font-size: 28px;
-  }
-}
 
 .hide-sidebar .sidebar {
   display: none !important;
