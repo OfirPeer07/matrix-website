@@ -161,13 +161,7 @@ const Neo = () => {
                     className="neo-video-fullscreen"
                     onClick={() => setVideoOpen(false)}
                   />
-                  <button
-                    className="close-video-btn"
-                    onClick={() => setVideoOpen(false)}
-                    aria-label={locale === 'he' ? 'סגור וידאו' : 'Close video'}
-                  >
-                    ✕
-                  </button>
+
                   <BottomBlock />
                 </div>
               )}

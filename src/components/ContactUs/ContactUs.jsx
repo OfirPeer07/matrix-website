@@ -78,7 +78,7 @@ const translations = {
     whatsapp: "וואטסאפ",
     linkedin: "לינקדאין",
     github: "גיטהוב",
-    whatsappVal: "הודעות WhatsApp"
+    whatsappVal: "WhatsApp שלחו"
   }
 };
 
@@ -124,7 +124,7 @@ const ContactUs = () => {
   }, []);
 
   return (
-    <div className="matrix-viewport">
+    <div className="matrix-viewport" dir="ltr">
       <button className="cyber-back-btn" onClick={() => window.history.back()}>
         {t.back}
       </button>
