@@ -1,0 +1,29 @@
+/* IndicatorDots.mobile.css - Mobile Overrides for Navigation Hubs */
+@media (max-width: 768px) {
+    .indicator__list-wrap {
+        right: 0.5rem !important;
+        padding: 12px 6px !important;
+        background: rgba(0, 0, 0, 0.6) !important;
+        border-radius: 20px !important;
+        transform: translateY(-50%) scale(0.9) !important;
+    }
+
+    .indicator__list {
+        gap: 20px !important;
+    }
+
+    .indicator__dot {
+        width: 10px !important;
+        height: 18px !important;
+    }
+
+    .indicator__item--active .indicator__dot {
+        height: 24px !important;
+        width: 14px !important;
+    }
+
+    /* Hide labels on mobile by default to avoid clutter */
+    .indicator__label {
+        display: none !important;
+    }
+}

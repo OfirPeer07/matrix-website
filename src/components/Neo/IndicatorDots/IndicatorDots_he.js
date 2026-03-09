@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import '../../../styles/indicators/IndicatorDots.css';
+import '../../../styles/indicators/IndicatorDots.mobile.css';
+
 
 /**
  * CLEAN + STABLE VERSION

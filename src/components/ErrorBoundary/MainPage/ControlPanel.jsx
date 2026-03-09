@@ -1,6 +1,8 @@
 import React, { useState, memo, useCallback, useRef } from "react";
-import { useLocaleContext } from "../../context/LocaleContext";
+import { useLocaleContext } from "../../../context/LocaleContext";
 import "./ControlPanel.css";
+import "./ControlPanel.mobile.css";
+
 
 /* ─────────────────────────────────────────── */
 /*  Translations                               */

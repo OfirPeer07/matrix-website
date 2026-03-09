@@ -1,0 +1,56 @@
+/* ContactUs.mobile.css - Optimization for small screens */
+
+@media (max-width: 768px) {
+    .glass-panel {
+        width: 92%;
+        padding: 30px 20px;
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+
+    .cyber-title {
+        font-size: 1.8rem;
+        margin-bottom: 25px;
+    }
+
+    .interaction-list {
+        gap: 10px;
+    }
+
+    .interactive-row {
+        padding: 14px 16px;
+    }
+
+    .info-value {
+        font-size: 0.9rem;
+        word-break: break-all;
+    }
+
+    .icon-container svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .row-main-content {
+        gap: 15px;
+    }
+
+    .panel-footer {
+        margin-top: 25px;
+        padding-top: 15px;
+    }
+
+    .footer-status {
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+        text-align: center;
+    }
+
+    .cyber-back-btn {
+        top: 10px;
+        left: 10px;
+        padding: 4px 10px;
+        font-size: 12px;
+    }
+}

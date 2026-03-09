@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Intro.css";
-import { useLocaleContext } from "../../context/LocaleContext";
+import { useLocaleContext } from "../../../context/LocaleContext";
 
 /* ================= CONFIG ================= */
 const DPR = window.devicePixelRatio || 1;

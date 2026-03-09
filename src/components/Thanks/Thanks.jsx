@@ -5,6 +5,7 @@ import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import Title from "./Title";
 import "./Thanks.css";
+import "./Thanks.mobile.css";
 
 /* ================= HEART POINTS ================= */
 function useHeartPoints(count = 320) {
@@ -274,7 +275,7 @@ export default function Thanks() {
         style={{ display: "none" }}
       />
 
-      <Canvas camera={{ position: [3.8, 0, -8], fov: 50 }}>
+      <Canvas camera={{ position: [3.8, 0, -8], fov: (typeof window !== 'undefined' && window.innerWidth <= 768) ? 75 : 50 }}>
         <Suspense fallback={null}>
           <Scene
             freeCamera={freeCamera}

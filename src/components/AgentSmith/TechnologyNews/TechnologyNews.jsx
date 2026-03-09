@@ -2,7 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import * as THREE from "three";
 import "./TechnologyNews.css";
+import "./TechnologyNews.mobile.css";
 import { useLocaleContext } from "../../../context/LocaleContext";
+import MatrixRainCanvas from "../../ErrorBoundary/MainPage/MatrixRainCanvas";
+
+
 
 const translations = {
   en: {
@@ -54,11 +58,13 @@ const BackgroundParticles = () => {
     camera.position.z = 30;
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
     renderer.setSize(mount.clientWidth, mount.clientHeight);
     mount.appendChild(renderer.domElement);
 
-    const PARTICLE_COUNT = 25000;
+    const PARTICLE_COUNT = typeof window !== 'undefined' && window.innerWidth <= 768 ? 8000 : 25000;
+
     const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(PARTICLE_COUNT * 3);
     const seeds = new Float32Array(PARTICLE_COUNT);
@@ -164,8 +170,18 @@ export default function TechnologyNews() {
   const headerY = useTransform(scrollYProgress, [0, 1], [0, -100]);
 
   return (
-    <div className="modern-news-container" ref={containerRef} dir={t.dir}>
+    <div className="modern-news-container modern-news-container-moblie" ref={containerRef} dir={t.dir}>
+      <div className="news-background-matrix">
+        <MatrixRainCanvas
+          color="#00ff41"
+          density={0.4}
+          speed={15}
+          glow={0.2}
+          fontSize={14}
+        />
+      </div>
       <BackgroundParticles />
+
 
       {/* Language toggle button removed */}
 

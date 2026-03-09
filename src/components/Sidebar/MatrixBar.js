@@ -8,6 +8,8 @@ import logoIcon from '../../assets/images/logo.png';
 import agentSmithIcon from '../../assets/images/agentSmithIcon.png';
 import { useLocaleContext } from '../../context/LocaleContext';
 import './MatrixBar.css';
+import './MatrixBar.mobile.css';
+
 
 /* ─── Utilities ─────────────────────────────────────────────────────── */
 const isMobileDevice = () =>
@@ -210,7 +212,10 @@ const MatrixBar = forwardRef(function MatrixBar({ mode = 'both' }, ref) {
   const [isMobile, setIsMobile] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(null);
   const [mobileClosing, setMobileClosing] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
   const [showBar, setShowBar] = useState(true);
+
 
   const timers = useRef({});
   const barRef = useRef(null);
@@ -409,13 +414,124 @@ const MatrixBar = forwardRef(function MatrixBar({ mode = 'both' }, ref) {
     );
   };
 
+  /* ── Intelligent Mobile Menu Logic ──────────────────────────────── */
+  const mobileContent = useMemo(() => {
+    if (!isMobile) return null;
+
+    // Determine current priority section based on mode
+    let currentSectionKey = 'logo';
+    if (mode === 'neo') currentSectionKey = 'neoIcon';
+    if (mode === 'agent-smith') currentSectionKey = 'agentSmithIcon';
+
+    const primaryLinks = SECTIONS[currentSectionKey]?.links || [];
+
+    // Other top-level destinations
+    const otherDestinations = [];
+    if (mode !== 'neo' && showNeo) otherDestinations.push({ to: '/neo/hacking', label: { he: 'ניאו', en: 'NEO' }, icon: neoIcon });
+    if (mode !== 'agent-smith' && showSmith) otherDestinations.push({ to: '/agent-smith/agent-smith-department', label: { he: 'סמית\'', en: 'SMITH' }, icon: agentSmithIcon });
+    if (mode !== 'both') otherDestinations.push({ to: '/', label: { he: 'ראשי', en: 'HOME' }, icon: logoIcon });
+
+    return {
+      primaryLinks,
+      otherDestinations,
+      title: SECTIONS[currentSectionKey]?.title[locale] || 'SYSTEM',
+      subtitle: SECTIONS[currentSectionKey]?.subtitle[locale] || 'NEURAL LINK'
+    };
+  }, [isMobile, mode, locale, showNeo, showSmith]);
+
   /* ── Render ─────────────────────────────────────────────────────── */
+
   return (
     <>
+      {/* Mobile Hamburger Trigger */}
+      {isMobile && (
+        <button
+          className={`mobile-hamburger ${mobileMenuOpen ? 'active' : ''}`}
+          onClick={toggleMobileMenu}
+          aria-label="Toggle Menu"
+        >
+          <span className="ham-line" />
+          <span className="ham-line" />
+          <span className="ham-line" />
+        </button>
+      )}
+
+      {/* Neural Link Overlay (Full Screen Mobile Nav) */}
+      {isMobile && (
+        <div className={`neural-link-overlay ${mobileMenuOpen ? 'open' : ''}`}>
+          <div className="neural-link-rain">
+            <MatrixRainCanvas />
+          </div>
+
+          <div className="neural-link-content">
+            <div className="neural-header">
+              <span className="neural-title">{mobileContent?.title}</span>
+              <div className="neural-status-line">
+                <span className="status-dot pulsing" />
+                <span className="status-text">{mobileContent?.subtitle?.toUpperCase()} // ACTIVE</span>
+              </div>
+            </div>
+
+            {/* Primary Context Links */}
+            <div className="neural-section">
+              <div className="section-label">{locale === 'he' ? 'גישה לטרמינל //' : 'TERMINAL ACCESS //'}</div>
+              <div className="neural-grid">
+                {mobileContent?.primaryLinks.map((lk, i) => (
+                  <Link key={lk.to} to={lk.to} className="neural-terminal-link" onClick={toggleMobileMenu}>
+                    <span className="bracket">[</span>
+                    <span className="label">{lk.label[locale]}</span>
+                    <span className="bracket">]</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Global Destinations */}
+            <div className="neural-section">
+              <div className="section-label">{locale === 'he' ? 'ניווט מערכת //' : 'SYSTEM NAVIGATION //'}</div>
+              <div className="neural-nav-group">
+                {mobileContent?.otherDestinations.map(dest => (
+                  <Link key={dest.to} to={dest.to} className="neural-nav-item" onClick={toggleMobileMenu}>
+                    <img src={dest.icon} alt="" className="nav-icon" />
+                    <span className="nav-label">{dest.label[locale]}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Global System Links (Contact Us, Thanks) */}
+            <div className="neural-section">
+              <div className="section-label">{locale === 'he' ? 'גישה גלובלית //' : 'GLOBAL ACCESS //'}</div>
+              <div className="neural-grid">
+                <Link to="/contact-us" className="neural-terminal-link" onClick={toggleMobileMenu}>
+                  <span className="bracket">[</span>
+                  <span className="label">{locale === 'he' ? 'צור קשר' : 'Contact Us'}</span>
+                  <span className="bracket">]</span>
+                </Link>
+                <Link to="/thanks" className="neural-terminal-link" onClick={toggleMobileMenu}>
+                  <span className="bracket">[</span>
+                  <span className="label">{locale === 'he' ? 'תודות' : 'Thanks'}</span>
+                  <span className="bracket">]</span>
+                </Link>
+              </div>
+            </div>
+
+            <div className="neural-footer">
+              <button className="neural-action-btn" onClick={() => { toggleLocale(); }}>
+                <span className="icon">🌐</span>
+                <span>{locale === 'he' ? 'Switch to English' : 'החלף לעברית'}</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      )}
+
       <div
         ref={barRef}
-        className={`sidebar ${showBar ? 'visible' : 'hidden'}`}
+        className={`sidebar ${showBar && !isMobile ? 'visible' : 'hidden'}`}
       >
+
         {/* Cyber-grid bar background elements */}
         <div className="bar-grid" aria-hidden="true" />
         <div className="bar-fog" aria-hidden="true" />

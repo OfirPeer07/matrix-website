@@ -7,22 +7,22 @@ import "./iPhoneMockup.css";
 export default function IPhoneMockup({
   /** גודל המכשיר */
   width = 300,                   // ברירת מחדל מוקטנת כפי שביקשת
-  ratio = 9 / 19,                
+  ratio = 9 / 19,
   className = "",
 
   /** תוכן המסך */
-  screen,                        
-  children,                      
+  screen,
+  children,
 
   /** הגדרות יד (כבוי כברירת מחדל) */
-  showHand = false,              
+  showHand = false,
   handImageBack = "/assets/hand-back.png",
   handImageFront = "/assets/hand-front.png",
-  handSide = "right",            
+  handSide = "right",
   handScale = 0.58,
-  handOffsetX,                   
-  handOffsetY = 110,             
-  handRotate,                    
+  handOffsetX,
+  handOffsetY = 110,
+  handRotate,
 
   /** מראה ותחושה */
   color = "titanium-black",
@@ -31,13 +31,13 @@ export default function IPhoneMockup({
   ambient = 0.88,
 
   /** אינטראקציה */
-  tiltEnabled = false,           
+  tiltEnabled = false,
 }) {
   const wrapRef = useRef(null);
   const [tilt, setTilt] = useState({ rx: 0, ry: 0, tz: 0 });
 
-  const defaultX  = handSide === "right" ? 180 : -140;
-  const defaultRot= handSide === "right" ? 12  : -12;
+  const defaultX = handSide === "right" ? 180 : -140;
+  const defaultRot = handSide === "right" ? 12 : -12;
 
   /** חישובי הטיה (Tilt) */
   const onPointerMove = (e) => {
@@ -70,10 +70,10 @@ export default function IPhoneMockup({
     scale(${handScale})
   `;
   const tilt3D = `translateZ(${tilt.tz}px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg))`;
-  const handTransform  = tiltEnabled ? `${tilt3D} ${baseHandTransform}` : baseHandTransform;
+  const handTransform = tiltEnabled ? `${tilt3D} ${baseHandTransform}` : baseHandTransform;
   const phoneTransform = tiltEnabled ? tilt3D : "none";
 
-  const [backErr,  setBackErr]  = useState(false);
+  const [backErr, setBackErr] = useState(false);
   const [frontErr, setFrontErr] = useState(false);
 
   /** Fallbacks ל-SVG של היד */
@@ -91,8 +91,8 @@ export default function IPhoneMockup({
 
   const FallbackFront = useMemo(() => (
     <svg viewBox="0 0 800 900" className="hand-svg" aria-hidden>
-      <ellipse cx="625" cy="565" rx="24" ry="54" fill="#202328" opacity="0.6"/>
-      <ellipse cx="665" cy="585" rx="22" ry="50" fill="#202328" opacity="0.6"/>
+      <ellipse cx="625" cy="565" rx="24" ry="54" fill="#202328" opacity="0.6" />
+      <ellipse cx="665" cy="585" rx="22" ry="50" fill="#202328" opacity="0.6" />
     </svg>
   ), []);
 
@@ -100,13 +100,13 @@ export default function IPhoneMockup({
     <section className={`iphone17-section ${className}`}>
       {/* ambient כאן משפיע על התאורה הכללית */}
       <div className="iphone17-scene" style={{ "--ambient": ambient }}>
-        
+
         {/* ה-bg-grid הוסר ויזואלית ב-CSS שסיפקתי קודם */}
         <div className="bg-grid" aria-hidden />
 
         <div
           ref={wrapRef}
-          className="persp"
+          className="persp persp-moblie"
           onPointerMove={tiltEnabled ? onPointerMove : undefined}
           onPointerLeave={tiltEnabled ? onPointerLeave : undefined}
         >

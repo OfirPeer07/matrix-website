@@ -1,6 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useLocaleContext } from "../../../context/LocaleContext";
 import "./TroubleshootingGuides.css";
+import "./TroubleshootingGuides.mobile.css";
+import MatrixRainCanvas from "../../ErrorBoundary/MainPage/MatrixRainCanvas";
+
+
 
 /* ----------------------- תרגומים ותכנים ----------------------- */
 const translations = {
@@ -219,8 +223,17 @@ export default function TroubleshootingGuides() {
   const isDone = runner.progress >= 100;
 
   return (
-    <div className="tg-page matrix-theme" dir={t.dir}>
-      {/* Locale switch button removed */}
+    <div className="tg-page matrix-theme matrix-theme-mobile" dir={t.dir}>
+      <div className="tg-background-overlay">
+        <MatrixRainCanvas
+          color="#00ff41"
+          density={0.4}
+          speed={15}
+          glow={0.2}
+          fontSize={14}
+        />
+      </div>
+
 
       <header className="tg-hero">
         <h1 className="glitch-text">{t.title}</h1>

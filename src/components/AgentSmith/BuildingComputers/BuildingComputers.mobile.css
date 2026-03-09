@@ -1,0 +1,70 @@
+/* BuildingComputers.mobile.css - Mobile optimization for PC Builder */
+
+@media (max-width: 768px) {
+
+    /* 1. Move tray toggle to the left to avoid MatrixBar global menu (top-right) */
+    .tray-toggle-btn {
+        top: 20px;
+        left: 20px;
+        right: auto;
+    }
+
+    /* 2. Parts Tray Optimization */
+    .parts-tray {
+        top: 75px;
+        right: 15px;
+        left: 15px;
+        width: auto;
+        max-height: calc(100vh - 120px);
+        padding: 12px;
+        background: rgba(8, 4, 20, 0.9);
+        /* Slightly more opaque for readability over canvas */
+    }
+
+    .tray-header {
+        gap: 12px;
+    }
+
+    .tray-header h2 {
+        font-size: 0.9rem;
+    }
+
+    .tray-header p {
+        font-size: 0.65rem;
+    }
+
+    /* 3. Stage Hint Optimization - Ensure it doesn't block the tray or main interaction */
+    .stage-hint {
+        bottom: 80px;
+        /* Leave space for mobile-ios style bottom bars if any */
+        font-size: 0.6rem;
+        padding: 6px 10px;
+    }
+
+    /* 4. Increase touch targets for part buttons */
+    .part-button {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .part-label {
+        font-size: 0.85rem;
+    }
+
+    .part-desc {
+        font-size: 0.7rem;
+        white-space: normal;
+        /* Allow wrapping on small screens */
+    }
+
+    .option-btn {
+        padding: 5px 12px;
+        font-size: 0.75rem;
+    }
+
+    /* 5. Building buttons */
+    .build-btn {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+    }
+}

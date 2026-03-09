@@ -59,6 +59,15 @@ body,
   /* מונע גלילה בדף הבית */
 }
 
+/* 6. התאמות מובייל גלובליות */
+@media (max-width: 768px) {
+  .content.has-navbar-mobile {
+    padding-top: 70px !important;
+    /* מרווח מופחת למובייל כדי לחסוך נדל"ן מסך */
+  }
+}
+
+
 /* ================= GLOBAL SCROLLBAR HIDING ================= */
 
 /* Hide scrollbar for Chrome, Safari and Opera */

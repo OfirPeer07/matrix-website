@@ -27,12 +27,12 @@ import ResumeBuilder from "../Neo/ResumeBuilder/ResumeBuilder";
 import MatrixBar from "../Sidebar/MatrixBar";
 import PageNotFound from "../PageNotFound/PageNotFound";
 import ContactUs from "../ContactUs/ContactUs";
-import Intro from "../MainPage/Intro";
+import Intro from "../ErrorBoundary/MainPage/Intro";
 import Thanks from "../Thanks/Thanks";
 import "../../styles/print/resume-print.css";
 
 // ===== LAZY =====
-const MainPage = lazy(() => import("../MainPage/MainPage"));
+const MainPage = lazy(() => import("../ErrorBoundary/MainPage/MainPage"));
 const Hacking = lazy(() => import("../Neo/Hacking/Hacking"));
 
 function isMobileSafari() {
@@ -44,6 +44,11 @@ function isMobileSafari() {
     !/FxiOS/.test(ua)
   );
 }
+
+const isMobileDevice = () =>
+  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent || navigator.vendor || window.opera
+  );
 
 function AppContent() {
   const location = useLocation();
@@ -57,8 +62,16 @@ function AppContent() {
 
   useEffect(() => {
     if (location.pathname !== "/") return;
+
+    // Skip intro if mobile or already seen
     const seen = sessionStorage.getItem("introSeen");
-    setShowIntro(!seen);
+    const mobile = isMobileDevice();
+
+    if (mobile || seen) {
+      setShowIntro(false);
+    } else {
+      setShowIntro(true);
+    }
   }, [location.pathname]);
 
   const handleIntroFinish = () => {
@@ -72,7 +85,7 @@ function AppContent() {
     <div className="App">
       <ConditionalSidebar />
 
-      <div className={`content ${isNavbarNeeded ? "has-navbar" : "no-navbar"}`}>
+      <div className={`content ${isNavbarNeeded ? "has-navbar has-navbar-mobile" : "no-navbar"}`}>
         {/* התיקון: Fallback עם רקע שחור וגובה מלא למניעת הבהוב לבן */}
         <Suspense
           fallback={

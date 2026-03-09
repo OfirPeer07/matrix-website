@@ -1,0 +1,82 @@
+/* ControlPanel.mobile.css - Isolated Mobile Bottom Sheet */
+@media (max-width: 768px) {
+    .cp-panel {
+        width: 100%;
+        height: 75dvh;
+        bottom: 0;
+        top: auto;
+        right: 0;
+        left: 0;
+        transform: translateY(105%);
+        border-left: none;
+        border-top: 1px solid rgba(0, 255, 120, 0.3);
+        border-radius: 25px 25px 0 0;
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
+    }
+
+    .cp-panel--open {
+        transform: translateY(0);
+    }
+
+    /* Mobile Handle Bar */
+    .cp-header::before {
+        content: '';
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 4px;
+        background: rgba(0, 255, 120, 0.3);
+        border-radius: 2px;
+    }
+
+    .cp-header-inner {
+        padding: 24px 20px 16px;
+    }
+
+    .cp-header-title {
+
+        font-size: 1rem;
+    }
+
+    .cp-tab {
+        padding: 15px 0 12px;
+        font-size: 0.85rem;
+    }
+
+    .cp-body {
+        padding-bottom: 40px;
+    }
+
+    .cp-group {
+        padding: 20px;
+    }
+
+    .cp-label {
+        font-size: 0.95rem;
+    }
+
+    /* Larger touch targets for sliders */
+    .cp-slider::-webkit-slider-thumb {
+        width: 24px;
+        height: 24px;
+    }
+
+    .cp-preset-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .cp-preset-btn {
+        padding: 14px;
+        font-size: 0.95rem;
+    }
+
+    .cp-reset-btn {
+        margin-top: 30px;
+        padding: 14px;
+        font-size: 0.95rem;
+    }
+}

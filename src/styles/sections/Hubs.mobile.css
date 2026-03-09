@@ -1,0 +1,49 @@
+/* Hubs.mobile.css - Global Mobile Overrides for Section Layouts */
+@media (max-width: 768px) {
+
+    .section,
+    .carousel-section {
+        width: 100% !important;
+        padding: 1.5rem 0 !important;
+    }
+
+    .text-image-container,
+    .text-content {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 2rem !important;
+        padding: 0 1rem !important;
+        align-items: center !important;
+    }
+
+    .text-content,
+    .image-content {
+        width: 100% !important;
+        padding: 0 !important;
+    }
+
+    .text-box {
+        padding: 20px !important;
+        border-radius: 15px !important;
+    }
+
+    .inner-box {
+        padding: 1.2rem !important;
+        border-radius: 10px !important;
+    }
+
+    /* Text scaling for mobile readability */
+    .text-box h2,
+    .inner-box h2 {
+        font-size: 1.5rem !important;
+        line-height: 1.2 !important;
+    }
+
+    .text-box p,
+    .inner-box p,
+    .text-box li,
+    .inner-box li {
+        font-size: 1rem !important;
+        line-height: 1.5 !important;
+    }
+}

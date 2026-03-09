@@ -89,7 +89,17 @@ function BootScreen({ lines, onDone }) {
   }, [currentLine, currentChar, lines, onDone]);
 
   return (
-    <div className={`vids-boot ${done ? "vids-boot--exit" : ""}`} aria-live="polite">
+    <div
+      className={`vids-boot ${done ? "vids-boot--exit" : ""}`}
+      aria-live="polite"
+      onClick={() => {
+        if (!done) {
+          setDone(true);
+          onDone();
+        }
+      }}
+      style={{ cursor: "pointer" }}
+    >
       <div className="vids-boot__inner">
         {displayed.map((l, i) => (
           <p key={i} className={`vids-boot__line ${l.includes("ESTABLISHED") || l.includes("הושלם") || l.includes("root") ? "vids-boot__line--success" : ""}`}>{l}</p>

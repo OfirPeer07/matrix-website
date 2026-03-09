@@ -1,0 +1,134 @@
+/* MainPage.mobile.css - Isolated Mobile Overrides */
+@media (max-width: 768px) {
+    .hero-landing-container {
+        padding-top: 2rem;
+        row-gap: 2rem;
+        height: auto;
+        min-height: 100dvh;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-bottom: 80px;
+        /* Space for mobile nav if it exists */
+    }
+
+    /* Adjust background grid for performance on mobile */
+    .matrix-bg-wrapper {
+        opacity: 0.8;
+    }
+
+    .cards {
+        display: flex;
+        flex-direction: column-reverse;
+        /* Put Neo (second in JSX) on top */
+        gap: 2rem;
+        padding: 1.5rem;
+        width: 100%;
+        box-sizing: border-box;
+        z-index: 2;
+    }
+
+    .card-wrap {
+        width: 100%;
+        height: auto;
+        max-width: 420px;
+        display: flex;
+        flex-direction: column;
+        background: rgba(0, 20, 10, 0.4);
+        border-radius: 20px;
+        border: 1px solid rgba(0, 255, 120, 0.1);
+        padding: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .media-holder {
+        width: 100%;
+        max-width: 100%;
+        aspect-ratio: 1/1;
+        /* Taller ratio to prevent head cropping */
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 0px;
+        /* Removed margin to fix the gap shown in user screenshot */
+        box-shadow: none;
+        /* Shadow is now handled by the .card-wrap */
+        transform: none !important;
+        /* Disable any hover floating effects from desktop */
+    }
+
+    .media {
+        display: block;
+        /* Ensure it's block to avoid baseline gaps */
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
+        /* Prioritize the head area */
+    }
+
+    .image-button {
+        width: 100%;
+        background: none;
+        border: none;
+        padding: 0;
+    }
+
+    .image-button:active .media {
+        transform: scale(0.98);
+    }
+
+    .title-box {
+        text-align: center;
+        padding: 15px 5px 5px;
+        /* Added top padding here instead of margin on image */
+    }
+
+    .photo-title {
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 0 10px rgba(0, 255, 120, 0.5);
+    }
+
+    .photo-subtitle {
+        font-size: 0.95rem;
+        color: rgba(184, 255, 218, 0.7);
+        line-height: 1.4;
+    }
+
+    /* FAB Adjustments */
+    .fab {
+        width: 45px;
+        height: 45px;
+        font-size: 1.2rem;
+    }
+
+    .lang-toggle-btn {
+        top: 20px !important;
+        left: 20px !important;
+        right: auto !important;
+    }
+
+    .open-drawer-btn {
+        top: 20px !important;
+        right: 20px !important;
+        left: auto !important;
+    }
+
+    /* Hide the redundant 'X' close button on mobile as it's a bottom sheet now */
+    .close-drawer-btn {
+        display: none !important;
+    }
+}
+
+
+/* Optimization for very small screens */
+@media (max-width: 480px) {
+    .hero-landing-container {
+        padding-top: 2.5rem;
+    }
+
+    .photo-title {
+        font-size: 1.4rem;
+    }
+}

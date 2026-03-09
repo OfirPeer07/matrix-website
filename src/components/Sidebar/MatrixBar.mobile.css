@@ -1,0 +1,285 @@
+/* MatrixBar.mobile.css - Intelligent Neural Link Optimization */
+@media (max-width: 768px) {
+
+    /* Hide desktop icon strip */
+    .sidebar .icon-strip {
+        display: none !important;
+    }
+
+    /* Fixed Hamburger Button - Premium Glassmorphism */
+    .mobile-hamburger {
+        position: fixed;
+        top: 15px;
+        right: 15px;
+        width: 54px;
+        height: 54px;
+        z-index: 10000;
+        background: rgba(0, 10, 0, 0.7);
+        border: 1px solid rgba(23, 202, 7, 0.3);
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        backdrop-filter: blur(10px);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 0 20px rgba(23, 202, 7, 0.1);
+    }
+
+    .mobile-hamburger .ham-line {
+        width: 26px;
+        height: 2px;
+        background: var(--neon);
+        transition: all 0.3s ease;
+        border-radius: 2px;
+    }
+
+    .mobile-hamburger.active {
+        background: rgba(23, 202, 7, 0.15);
+        border-color: var(--neon);
+        transform: rotate(90deg);
+    }
+
+    .mobile-hamburger.active .ham-line {
+        background: var(--neon-bright);
+    }
+
+    .mobile-hamburger.active .ham-line:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 6px);
+    }
+
+    .mobile-hamburger.active .ham-line:nth-child(2) {
+        opacity: 0;
+    }
+
+    .mobile-hamburger.active .ham-line:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -6px);
+    }
+
+    /* Full Screen Neural Link Overlay */
+    .neural-link-overlay {
+        position: fixed;
+        inset: 0;
+        background: #000;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s ease;
+        overflow: hidden;
+    }
+
+    .neural-link-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .neural-link-rain {
+        position: absolute;
+        inset: 0;
+        opacity: 0.25;
+        z-index: 0;
+    }
+
+    .neural-link-content {
+        position: relative;
+        z-index: 1;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 80px 30px 40px;
+        overflow-y: auto;
+    }
+
+    /* Header Section */
+    .neural-header {
+        margin-bottom: 3rem;
+        border-bottom: 1px solid rgba(23, 202, 7, 0.2);
+        padding-bottom: 1rem;
+        animation: fadeInDown 0.6s ease forwards;
+    }
+
+    .neural-title {
+        font-family: 'Courier New', monospace;
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: var(--neon-bright);
+        letter-spacing: 4px;
+        display: block;
+        text-shadow: 0 0 15px rgba(23, 202, 7, 0.6);
+    }
+
+    .neural-status-line {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 5px;
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--neon);
+        border-radius: 50%;
+    }
+
+    .status-dot.pulsing {
+        animation: pulse 1.5s infinite;
+    }
+
+    .status-text {
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.7rem;
+        color: rgba(23, 202, 7, 0.5);
+        letter-spacing: 2px;
+    }
+
+    /* Sections */
+    .neural-section {
+        margin-bottom: 2.5rem;
+        animation: fadeInUp 0.5s ease forwards;
+    }
+
+    .section-label {
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.75rem;
+        color: rgba(23, 202, 7, 0.4);
+        letter-spacing: 2px;
+        margin-bottom: 1rem;
+    }
+
+    /* Grid of terminal links */
+    .neural-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .neural-terminal-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        font-family: 'Courier New', monospace;
+        color: var(--neon);
+        font-size: 1rem;
+        font-weight: bold;
+        padding: 12px 15px;
+        background: rgba(23, 202, 7, 0.03);
+        border: 1px solid rgba(23, 202, 7, 0.1);
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+
+    .neural-terminal-link:active {
+        background: rgba(23, 202, 7, 0.1);
+        border-color: var(--neon);
+        transform: scale(0.97);
+    }
+
+    .neural-terminal-link .bracket {
+        color: var(--neon-bright);
+        opacity: 0.5;
+    }
+
+    /* Destination Nav Group */
+    .neural-nav-group {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .neural-nav-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        text-decoration: none;
+        padding: 15px;
+        background: rgba(23, 202, 7, 0.05);
+        border-radius: 12px;
+        border: 1px solid rgba(23, 202, 7, 0.15);
+    }
+
+    .nav-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 1px solid var(--neon-dim);
+        box-shadow: 0 0 10px rgba(23, 202, 7, 0.2);
+    }
+
+    .nav-label {
+        font-family: 'Share Tech Mono', monospace;
+        color: #fff;
+        font-size: 1.1rem;
+        letter-spacing: 2px;
+    }
+
+    /* Footer Actions */
+    .neural-footer {
+        margin-top: auto;
+        padding-top: 2rem;
+        display: flex;
+        justify-content: center;
+    }
+
+    .neural-action-btn {
+        background: rgba(23, 202, 7, 0.08);
+        border: 1px solid var(--neon-dim);
+        border-radius: 10px;
+        color: var(--neon);
+        padding: 12px 20px;
+        font-family: 'Share Tech Mono', monospace;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Animations */
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+            box-shadow: 0 0 0 0 rgba(23, 202, 7, 0.7);
+        }
+
+        70% {
+            transform: scale(1.1);
+            opacity: 0.8;
+            box-shadow: 0 0 0 6px rgba(23, 202, 7, 0);
+        }
+
+        100% {
+            transform: scale(1);
+            opacity: 1;
+            box-shadow: 0 0 0 0 rgba(23, 202, 7, 0);
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}

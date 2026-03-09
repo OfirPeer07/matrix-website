@@ -2,8 +2,7 @@
 
 /* ===== Section wrapper ===== */
 .iphone17-section {
-
-  padding: 5px;
+  padding: 0;
   background: transparent;
 }
 
@@ -29,6 +28,18 @@
   position: relative;
 }
 
+/* User-requested class for mobile control */
+@media (max-width: 768px) {
+  .persp-moblie {
+    bottom: 4.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    touch-action: pan-y;
+    /* Prevent stray horizontal pulling of the component */
+  }
+}
+
 /* ===== Hand layers ===== */
 .hand-layer {
   position: absolute;
@@ -38,7 +49,7 @@
   pointer-events: none;
   z-index: 1;
   /* הסתרת היד ב-CSS כביטחון נוסף */
-  display: none; 
+  display: none;
 }
 
 /* ===== Device ===== */
@@ -53,35 +64,61 @@
   position: relative;
   transform-style: preserve-3d;
   /* הוספת צל ריאליסטי כשהוא על רקע שקוף */
-  filter: drop-shadow(0 20px 40px rgba(0,0,0,0.25));
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.25));
 }
 
 .iphone17 .frame {
   position: absolute;
   inset: 0;
   border-radius: var(--r-frame);
-  background: linear-gradient(180deg, rgba(255,255,255,0.1), transparent 22%),
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent 22%),
     linear-gradient(180deg, #2e2f31 0%, #0c0c0d 100%);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 /* Colors */
 .iphone17.titanium-black .frame {
-  background: linear-gradient(180deg, rgba(255,255,255,0.1), transparent 22%),
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent 22%),
     linear-gradient(180deg, #2c2d2f, #0a0a0b);
 }
 
 /* Antenna lines */
 .ant {
   position: absolute;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
   pointer-events: none;
   opacity: 0.35;
 }
-.a-top { height: 1px; left: 20%; right: 20%; top: 1px; }
-.a-bottom { height: 1px; left: 28%; right: 28%; bottom: 1px; }
-.a-left { width: 1px; top: 24%; bottom: 24%; left: 1px; background: linear-gradient(180deg, transparent, rgba(255,255,255,0.22), transparent); }
-.a-right { width: 1px; top: 28%; bottom: 28%; right: 1px; background: linear-gradient(180deg, transparent, rgba(255,255,255,0.22), transparent); }
+
+.a-top {
+  height: 1px;
+  left: 20%;
+  right: 20%;
+  top: 1px;
+}
+
+.a-bottom {
+  height: 1px;
+  left: 28%;
+  right: 28%;
+  bottom: 1px;
+}
+
+.a-left {
+  width: 1px;
+  top: 24%;
+  bottom: 24%;
+  left: 1px;
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+}
+
+.a-right {
+  width: 1px;
+  top: 28%;
+  bottom: 28%;
+  right: 1px;
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+}
 
 /* Buttons */
 .btn {
@@ -90,11 +127,29 @@
   height: 6px;
   border-radius: 10px;
   background: rgba(0, 0, 0, 0.5);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
-.power { right: -2px; top: 38%; height: 60px; width: 6px; }
-.vol-up { left: -2px; top: 32%; height: 54px; width: 6px; }
-.vol-down { left: -2px; top: 42%; height: 54px; width: 6px; }
+
+.power {
+  right: -2px;
+  top: 38%;
+  height: 60px;
+  width: 6px;
+}
+
+.vol-up {
+  left: -2px;
+  top: 32%;
+  height: 54px;
+  width: 6px;
+}
+
+.vol-down {
+  left: -2px;
+  top: 42%;
+  height: 54px;
+  width: 6px;
+}
 
 /* Panel + Bezel */
 .bezel {
@@ -102,7 +157,7 @@
   inset: var(--lip);
   border-radius: calc(var(--r-panel) + var(--lip));
   background: #000;
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.05), inset 0 0 0 1px rgba(255,255,255,0.06);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
 .screen-clip {
@@ -123,7 +178,10 @@
   padding: 0;
   scrollbar-width: none;
 }
-.screen-ui::-webkit-scrollbar { display: none; }
+
+.screen-ui::-webkit-scrollbar {
+  display: none;
+}
 
 /* Speaker + Island */
 .speaker {
@@ -162,18 +220,21 @@
 }
 
 /* Glass reflections */
-.glass-top, .glass-arc {
+.glass-top,
+.glass-arc {
   position: absolute;
   inset: 0;
   pointer-events: none;
   mix-blend-mode: screen;
 }
+
 .glass-top {
-  background: linear-gradient(170deg, rgba(255,255,255,calc(var(--shine, 0.9)*0.15)), rgba(255,255,255,0) 42%);
+  background: linear-gradient(170deg, rgba(255, 255, 255, calc(var(--shine, 0.9)*0.15)), rgba(255, 255, 255, 0) 42%);
 }
+
 .glass-arc {
   opacity: calc(var(--shine, 0.9)*0.6);
-  background: radial-gradient(160% 95% at 110% -10%, rgba(255,255,255,0.1), rgba(255,255,255,0) 45%);
+  background: radial-gradient(160% 95% at 110% -10%, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0) 45%);
 }
 
 /* Bottom I/O */
@@ -188,8 +249,20 @@
   justify-content: space-between;
   opacity: 0.3;
 }
-.iphone17 .io .dot { width: 4px; height: 4px; border-radius: 50%; background: #70767f; }
-.iphone17 .io .usb { width: 36px; height: 6px; border-radius: 3px; background: #141519; }
+
+.iphone17 .io .dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #70767f;
+}
+
+.iphone17 .io .usb {
+  width: 36px;
+  height: 6px;
+  border-radius: 3px;
+  background: #141519;
+}
 
 /* Device shadow (מעודכן למראה צף) */
 .floor-shadow {
@@ -199,6 +272,6 @@
   transform: translateX(-50%);
   width: 80%;
   height: 20px;
-  background: radial-gradient(50% 50% at 50% 50%, rgba(0,0,0,0.2), transparent 80%);
+  background: radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0.2), transparent 80%);
   filter: blur(10px);
 }

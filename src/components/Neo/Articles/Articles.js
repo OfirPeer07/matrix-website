@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Articles.css";
+import "./Articles.mobile.css";
+
 import OrbitalSphere3D from "./OrbitalSphere3D";
 import { locales as localesEn } from "./Articles_en";
 import { locales as localesHe } from "./Articles_he";
@@ -188,10 +190,11 @@ export default function Articles() {
           <div className="hero-visual" aria-hidden>
             <div className="canvas-safe sphere-hero">
               <OrbitalSphere3D
-                width={700}
-                height={700}
-                pointCount={2000}
-                sphereRadius={1.25}
+                width={typeof window !== 'undefined' && window.innerWidth <= 768 ? 320 : 700}
+                height={typeof window !== 'undefined' && window.innerWidth <= 768 ? 320 : 700}
+                pointCount={typeof window !== 'undefined' && window.innerWidth <= 768 ? 1000 : 2000}
+                sphereRadius={typeof window !== 'undefined' && window.innerWidth <= 768 ? 1.0 : 1.25}
+
                 autoSize
                 dotScale={0.75}
                 baseColor="#010101ff"

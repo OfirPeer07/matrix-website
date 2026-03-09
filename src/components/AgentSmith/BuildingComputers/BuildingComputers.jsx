@@ -3,6 +3,8 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, Html, ContactShadows } from "@react-three/drei";
 import * as THREE from "three";
 import "./BuildingComputers.css";
+import "./BuildingComputers.mobile.css";
+
 import { useLocaleContext } from "../../../context/LocaleContext";
 import {
   O11CaseModel,
@@ -588,7 +590,9 @@ function AutoFrameCamera({ caseSize, controlsRef, enabled = true }) {
   useEffect(() => {
     if (!caseSize || !enabled) return;
     const maxDim = Math.max(caseSize.x, caseSize.y, caseSize.z) || 1;
-    const distance = maxDim * 1.6;
+    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+    const distance = maxDim * (isMobile ? 2.4 : 1.6);
+
     camera.position.set(distance, maxDim * 0.55, distance);
     camera.near = Math.max(0.05, maxDim * 0.02);
     camera.far = Math.max(60, maxDim * 12);
@@ -886,7 +890,7 @@ export default function BuildingComputers() {
   const [focusedSlot, setFocusedSlot] = useState(null);
   const [buildMode, setBuildMode] = useState("assembly");
   const [panelOpen, setPanelOpen] = useState(false);
-  const [showTray, setShowTray] = useState(true);
+  const [showTray, setShowTray] = useState(false);
   const [cableExplode, setCableExplode] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [activePartId, setActivePartId] = useState(null);

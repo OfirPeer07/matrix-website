@@ -6,6 +6,8 @@ import {
   Clock, ExternalLink, MapPin, Cpu
 } from "lucide-react";
 import "./ContactUs.css";
+import "./ContactUs.mobile.css";
+
 
 // רכיב הגשם הדיגיטלי
 const MatrixDrop = ({ IconComponent, delay, columnX, scale, opacity, speed }) => {
@@ -57,25 +59,25 @@ const translations = {
     contactCore: "CORE",
     location: "LOCATION: ISRAEL",
     status: "STATUS: 09:00 - 19:00",
-    phone: "COMMUNICATION_VOICE",
-    email: "COMMUNICATION_MAIL",
-    whatsapp: "INSTANT_MESSAGING",
-    linkedin: "PROFESSIONAL_NET",
-    github: "REPOSITORIES",
+    phone: "Phone",
+    email: "Email",
+    whatsapp: "WhatsApp",
+    linkedin: "LinkedIn",
+    github: "GitHub",
     whatsappVal: "WhatsApp Messages"
   },
   he: {
     back: "חזור_",
     established: "חיבור_מאובטח_נוצר",
-    contactTitle: "צור_קשר_",
-    contactCore: "ליבה",
+    contactTitle: "צור_",
+    contactCore: "קשר",
     location: "מיקום: ישראל",
     status: "סטטוס: 09:00 - 19:00",
-    phone: "תקשורת_קולית",
-    email: "תקשורת_מייל",
-    whatsapp: "מסרים_מיידיים",
-    linkedin: "רשת_מקצועית",
-    github: "מאגרי_קוד",
+    phone: "טלפון",
+    email: "מייל",
+    whatsapp: "וואטסאפ",
+    linkedin: "לינקדאין",
+    github: "גיטהוב",
     whatsappVal: "הודעות WhatsApp"
   }
 };

@@ -1,0 +1,67 @@
+/* TechnologyNews.mobile.css - Isolated mobile optimization */
+
+@media (max-width: 768px) {
+    .modern-news-container {
+        padding: 60px 16px 80px;
+        /* Reduced side padding, space for header/footer */
+    }
+
+    .modern-news-header h1 {
+        font-size: 2.8rem;
+        /* Scaled down from clamp(3rem, 7vw, 5.5rem) */
+        letter-spacing: 3px;
+        margin-bottom: 0.5rem;
+    }
+
+    .modern-news-header p {
+        font-size: 1.1rem;
+        margin-top: 0.8rem;
+        padding: 0 10px;
+    }
+
+    .modern-card {
+        will-change: auto;
+        /* Remove to avoid rendering bugs on mobile */
+    }
+
+    .card-background {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: rgba(0, 20, 10, 0.9);
+        /* More opaque background for readability */
+        border: 1px solid rgba(0, 255, 65, 0.2);
+    }
+
+    .modern-news-grid {
+        grid-template-columns: 1fr;
+        /* Force single column */
+        gap: 1.25rem;
+    }
+
+    .card-content {
+        background: none;
+        /* Let card-background handle the fill */
+        height: auto;
+        min-height: 16rem;
+        padding: 1.5rem;
+    }
+
+    .card-title {
+        font-size: 1.3rem;
+    }
+
+    .card-subtitle {
+        font-size: 0.8rem;
+        letter-spacing: 1.5px;
+    }
+
+    .card-description {
+        font-size: 0.85rem;
+        line-height: 1.4;
+    }
+
+    .card-action {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+}

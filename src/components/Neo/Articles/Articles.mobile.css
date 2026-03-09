@@ -1,0 +1,77 @@
+/* Articles.mobile.css - Mobile optimization for Neo Articles */
+
+@media (max-width: 768px) {
+    .memory-hero {
+        grid-template-columns: 1fr;
+        padding: 60px 16px 20px;
+        gap: 1.5rem;
+        text-align: center;
+    }
+
+    .hero-title {
+        font-size: 38px;
+        margin-bottom: 8px;
+    }
+
+    .hero-copy {
+        order: 1;
+    }
+
+    .hero-visual {
+        display: none;
+    }
+
+    .sphere-hero {
+        width: 280px !important;
+        height: 280px !important;
+    }
+
+    .articles-preview {
+        padding: 16px;
+    }
+
+    .articles-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        order: 3;
+    }
+
+    /* Dossier Modal Mobile Refinement */
+    .modal-backdrop {
+        padding: 8px;
+    }
+
+    .modal {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+
+    .modal-header {
+        padding: 24px 20px 16px;
+    }
+
+    .dossier-meta {
+        padding: 20px;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .dossier-body {
+        padding: 24px 20px 80px;
+    }
+
+    .dossier-p {
+        font-size: 16px;
+    }
+
+    .dossier-footer {
+        padding: 16px 20px;
+        gap: 12px;
+    }
+
+    .btn-label {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+}

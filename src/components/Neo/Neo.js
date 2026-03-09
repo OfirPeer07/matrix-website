@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Neo.css";
+import "./Neo.mobile.css";
+import "../../styles/sections/Hubs.mobile.css";
+
 import IndicatorDots from "../Neo/IndicatorDots/IndicatorDots";
 import IndicatorDots_he from "../Neo/IndicatorDots/IndicatorDots_he";
 import neoVideo from "./Sections/neoVideo.mp4";
@@ -26,7 +29,10 @@ const Neo = () => {
   const chooseYourPillRef = useRef(null);
 
   const [activeSection, setActiveSection] = useState("Escape");
-  const [selectedPill, setSelectedPill] = useState(null);
+  const [selectedPill, _setSelectedPill] = useState(null);
+  const setSelectedPill = (pill) => {
+    _setSelectedPill((prev) => (prev === pill ? null : pill));
+  };
   const [videoOpen, setVideoOpen] = useState(false);
   const [ready, setReady] = useState(false);
 
@@ -173,7 +179,6 @@ const Neo = () => {
             </div>
           </div>
         </div>
-
 
         {/* PILL SECTION */}
         <div ref={redOrBluePillRef} className="section">

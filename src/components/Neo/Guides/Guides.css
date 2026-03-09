@@ -2,17 +2,17 @@
    Guides – Design Tokens 2026
    ========================= */
 
-:root{
+:root {
   /* Surfaces */
   --surface-app: #0b0c0e;
-  --surface-base: rgba(255,255,255,.02);
-  --surface-elevated: rgba(255,255,255,.045);
-  --surface-glass: rgba(20,22,28,.72);
+  --surface-base: rgba(255, 255, 255, .02);
+  --surface-elevated: rgba(255, 255, 255, .045);
+  --surface-glass: rgba(20, 22, 28, .72);
 
   /* Text */
   --text-primary: #f5f7fa;
-  --text-secondary: rgba(245,247,250,.72);
-  --text-muted: rgba(245,247,250,.52);
+  --text-secondary: rgba(245, 247, 250, .72);
+  --text-muted: rgba(245, 247, 250, .52);
 
   /* Radius */
   --radius-md: 14px;
@@ -20,20 +20,20 @@
   --radius-xl: 22px;
 
   /* Motion */
-  --motion-fast: cubic-bezier(.2,.8,.2,1);
-  --motion-soft: cubic-bezier(.4,0,.2,1);
+  --motion-fast: cubic-bezier(.2, .8, .2, 1);
+  --motion-soft: cubic-bezier(.4, 0, .2, 1);
 
   /* Shadow */
   --shadow-soft:
-    0 1px 1px rgba(0,0,0,.35),
-    0 8px 24px rgba(0,0,0,.45);
+    0 1px 1px rgba(0, 0, 0, .35),
+    0 8px 24px rgba(0, 0, 0, .45);
 }
 
 /* =========================
    Page container
    ========================= */
 
-.guides-page{
+.guides-page {
   font-family:
     system-ui,
     -apple-system,
@@ -46,11 +46,9 @@
 
   color: var(--text-primary);
   background:
-    radial-gradient(
-      1200px 600px at 50% -200px,
-      rgba(255,255,255,.04),
-      transparent 60%
-    ),
+    radial-gradient(1200px 600px at 50% -200px,
+      rgba(255, 255, 255, .04),
+      transparent 60%),
     var(--surface-app);
 
   min-height: 100svh;
@@ -64,19 +62,19 @@
    Header
    ========================= */
 
-.guides-header{
+.guides-header {
   text-align: center;
   padding: 20px 16px 10px;
 }
 
-.guides-header h1{
+.guides-header h1 {
   margin: 0 0 6px;
   font-size: clamp(22px, 2.8vw, 30px);
   font-weight: 700;
   letter-spacing: -0.015em;
 }
 
-.guides-header p{
+.guides-header p {
   margin: 0;
   font-size: .95rem;
   color: var(--text-secondary);
@@ -86,7 +84,7 @@
    Body container
    ========================= */
 
-.guides-body{
+.guides-body {
   max-width: 1120px;
   margin: 0 auto;
   padding: 6px 14px 48px;
@@ -109,12 +107,12 @@
    Phone app shell
    ========================= */
 
-.app-shell{
+.app-shell {
   position: relative;
   height: 100%;
 }
 
-.screen-area{
+.screen-area {
   height: 100%;
   overflow: auto;
 }
@@ -123,27 +121,25 @@
    Demo UI (inside phone)
    ========================= */
 
-.demo-ui{
+.demo-ui {
   display: grid;
   gap: 14px;
 }
 
-.demo-ui h2{
+.demo-ui h2 {
   margin: 0 0 6px;
   font-size: 22px;
   font-weight: 700;
   letter-spacing: -0.01em;
 }
 
-.demo-ui .card{
+.demo-ui .card {
   position: relative;
 
   background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,.06),
-      rgba(255,255,255,.015)
-    ),
+    linear-gradient(180deg,
+      rgba(255, 255, 255, .06),
+      rgba(255, 255, 255, .015)),
     var(--surface-elevated);
 
   border-radius: var(--radius-lg);
@@ -156,20 +152,20 @@
     box-shadow .25s var(--motion-soft);
 }
 
-.demo-ui .card:hover{
+.demo-ui .card:hover {
   transform: translateY(-1px);
   box-shadow:
-    0 2px 6px rgba(0,0,0,.4),
-    0 14px 32px rgba(0,0,0,.55);
+    0 2px 6px rgba(0, 0, 0, .4),
+    0 14px 32px rgba(0, 0, 0, .55);
 }
 
-.demo-ui .sub{
+.demo-ui .sub {
   margin-top: 6px;
   font-size: .9rem;
   color: var(--text-muted);
 }
 
-.demo-ui .link{
+.demo-ui .link {
   margin-top: 10px;
   font-size: .9rem;
   color: var(--text-secondary);
@@ -178,6 +174,6 @@
   transition: opacity .2s var(--motion-fast);
 }
 
-.demo-ui .link:hover{
+.demo-ui .link:hover {
   opacity: .9;
 }

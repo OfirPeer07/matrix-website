@@ -110,13 +110,56 @@ export default function InstagramFeed({
   const t = translations[locale];
   const [commentsPost, setCommentsPost] = useState(null);
 
+  // --- Clock logic ---
+  const [currentTime, setCurrentTime] = useState("");
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2, "0");
+      const mm = String(now.getMinutes()).padStart(2, "0");
+      setCurrentTime(`${hh}:${mm}`);
+    };
+    updateTime();
+    const timer = setInterval(updateTime, 1000 * 30); // update every 30s
+    return () => clearInterval(timer);
+  }, []);
+
+  // --- Battery logic ---
+  const [battery, setBattery] = useState({ level: 0.5, charging: false });
+  useEffect(() => {
+    let batteryObj = null;
+
+    const updateBatteryStatus = (batt) => {
+      setBattery({
+        level: batt.level,
+        charging: batt.charging
+      });
+    };
+
+    if (navigator.getBattery) {
+      navigator.getBattery().then((batt) => {
+        batteryObj = batt;
+        updateBatteryStatus(batt);
+        batt.addEventListener("levelchange", () => updateBatteryStatus(batt));
+        batt.addEventListener("chargingchange", () => updateBatteryStatus(batt));
+      });
+    }
+
+    return () => {
+      if (batteryObj) {
+        batteryObj.removeEventListener("levelchange", () => updateBatteryStatus(batteryObj));
+        batteryObj.removeEventListener("chargingchange", () => updateBatteryStatus(batteryObj));
+      }
+    };
+  }, []);
+
   return (
-    <div className="ig-root">
+    <div className="ig-root" style={{ "--battery-level": battery.level }}>
       {showHeader && (
         <div className="ig-top">
           <div className="ig-status">
             <div className="ig-status-left">
-              <span className="ig-time">19:24</span>
+              <span className="ig-time">{currentTime}</span>
               <span className="ig-signal">
                 <span />
                 <span />
@@ -127,8 +170,8 @@ export default function InstagramFeed({
             <div className="ig-status-right">
               <span>LTE</span>
               <span className="ig-battery">
-                <span>56</span>
-                <span className="cell" />
+                <span>{Math.round(battery.level * 100)}</span>
+                <span className={`cell ${battery.charging ? "charging" : ""}`} />
                 <span className="cap" />
               </span>
             </div>
@@ -241,7 +284,7 @@ function Post({ post, onOpenComments, t }) {
         <motion.img
           key={index}
           src={post.images[index]}
-          drag="x"
+          drag={post.images.length > 1 ? "x" : false}
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.15}
           onDragEnd={(_, info) => {

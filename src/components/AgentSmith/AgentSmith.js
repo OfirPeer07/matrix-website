@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./AgentSmith.css";
+import "./AgentSmith.mobile.css";
+import "../../styles/sections/Hubs.mobile.css";
+
 
 import PhotoCarousel from "../AgentSmith/PhotoCarousel/PhotoCarousel";
 import PhotoCarousel_he from "../AgentSmith/PhotoCarousel/PhotoCarousel_he";
