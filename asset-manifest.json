@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "./static/css/main.4b0f59c9.css",
-    "main.js": "./static/js/main.789dc0da.js",
-    "static/css/113.d94cb6ce.chunk.css": "./static/css/113.d94cb6ce.chunk.css",
-    "static/js/113.06bdb816.chunk.js": "./static/js/113.06bdb816.chunk.js",
-    "static/css/212.4609f079.chunk.css": "./static/css/212.4609f079.chunk.css",
+    "main.css": "./static/css/main.4d2dad63.css",
+    "main.js": "./static/js/main.cf89961c.js",
+    "static/css/881.496bf044.chunk.css": "./static/css/881.496bf044.chunk.css",
+    "static/js/881.a7f3190d.chunk.js": "./static/js/881.a7f3190d.chunk.js",
+    "static/css/212.9b79b69f.chunk.css": "./static/css/212.9b79b69f.chunk.css",
     "static/js/212.9c40280c.chunk.js": "./static/js/212.9c40280c.chunk.js",
     "static/js/82.37091a99.chunk.js": "./static/js/82.37091a99.chunk.js",
-    "static/js/239.f88449b5.chunk.js": "./static/js/239.f88449b5.chunk.js",
+    "static/js/239.14395e89.chunk.js": "./static/js/239.14395e89.chunk.js",
     "static/js/206.a27bf86f.chunk.js": "./static/js/206.a27bf86f.chunk.js",
     "static/media/neoVideo.mp4": "./static/media/neoVideo.ed7a1ea95d3e84ea3e48.mp4",
     "static/media/Neo-dodges-bullets.mp4": "./static/media/Neo-dodges-bullets.acd64a282738fc03368f.mp4",
@@ -42,7 +42,7 @@
     "index.html": "./index.html"
   },
   "entrypoints": [
-    "static/css/main.4b0f59c9.css",
-    "static/js/main.789dc0da.js"
+    "static/css/main.4d2dad63.css",
+    "static/js/main.cf89961c.js"
   ]
 }
