@@ -14,9 +14,9 @@
   -webkit-backdrop-filter: blur(12px) saturate(180%);
   border-radius: 30px;
   box-shadow:
-    0 0 20px rgba(0, 255, 120, 0.1),
-    inset 0 0 10px rgba(0, 255, 120, 0.05);
-  border: 1px solid rgba(0, 255, 120, 0.15);
+    0 0 20px rgba(17, 255, 0, 0.785),
+    inset 0 0 10px #00ff78;
+  border: 1px solid #00ff78;
 
   direction: ltr;
   /* Internal LTR for coordinate stability */
@@ -35,8 +35,8 @@
   width: 1px;
   background: linear-gradient(to bottom,
       transparent,
-      rgba(0, 255, 120, 0.2) 20%,
-      rgba(0, 255, 120, 0.2) 80%,
+      #15ff0015 20%,
+      #48ff00 80%,
       transparent);
   transform: translateX(-50%);
   z-index: -1;
@@ -117,8 +117,8 @@
 .indicator__item--active .indicator__dot {
   height: 32px;
   width: 18px;
-  border-color: rgba(0, 255, 120, 0.8);
-  background: rgba(0, 40, 20, 0.9);
+  border-color: #00ff78 0.8;
+  background: rgba(1, 40, 0, 0.9);
   box-shadow: 0 0 15px rgba(0, 255, 120, 0.4);
 }
 
@@ -152,7 +152,7 @@
   background: rgba(0, 0, 0, 0.85);
   /* Darker background for contrast */
   padding: 4px 12px;
-  border-left: 2px solid #00ff78;
+  border-left: 2px solid #00FF00;
   border-radius: 4px 0 0 4px;
   /* Rounded left edge */
 
@@ -170,7 +170,7 @@
 
 .indicator__item--active .indicator__label {
   background: rgba(0, 40, 20, 0.9);
-  text-shadow: 0 0 8px rgba(0, 255, 120, 0.8);
+  text-shadow: 0 0 8px #00ff78;
   font-weight: bold;
 }
 
