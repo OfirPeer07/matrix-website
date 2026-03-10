@@ -14,50 +14,326 @@
   position: fixed;
   inset: 0;
   z-index: 100;
-  background: #000;
+  background: radial-gradient(ellipse at 50% 40%, #001a00 0%, #000 70%);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.7s ease;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* subtle noise grain overlay on the whole backdrop */
+.vids-boot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
 }
 
 .vids-boot--exit {
   opacity: 0;
+  transform: scale(1.04);
   pointer-events: none;
 }
 
-.vids-boot__inner {
-  max-width: 560px;
+/* ── Terminal window base ── */
+.vids-boot__window {
+  position: absolute;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px #00ff4120,
+    0 20px 50px rgba(0, 0, 0, 0.8);
+  background: #020e02;
+  transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+  animation: boot-appear 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.vids-boot__window--exit {
+  opacity: 0;
+  transform: scale(1.05) translateY(-20px) !important;
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+@keyframes boot-appear {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── Main terminal ── */
+.vids-boot__win--main {
+  z-index: 10;
+  max-width: 720px;
   width: 90%;
-  padding: 2rem;
-  border: 1px solid #00ff4133;
-  border-radius: 4px;
-  background: rgba(0, 15, 0, 0.9);
-  box-shadow: 0 0 60px #00ff4122, inset 0 0 30px #001a0011;
+  box-shadow: 0 0 60px #00ff4115, 0 30px 80px rgba(0, 0, 0, 0.9);
+  animation-delay: 0.2s;
 }
 
+/* ── Scan terminal (top-left) ── */
+.vids-boot__win--scan {
+  z-index: 5;
+  width: 380px;
+  height: 240px;
+  top: 10%;
+  left: 5%;
+  opacity: 0.6;
+  transform: rotate(-1deg);
+  font-size: 0.8rem;
+  animation-delay: 0s;
+}
+
+.vids-boot__win--scan:hover {
+  opacity: 0.9;
+  z-index: 15;
+  transform: rotate(0);
+}
+
+/* ── Monitor terminal (bottom-right) ── */
+.vids-boot__win--monitor {
+  z-index: 5;
+  width: 320px;
+  height: 220px;
+  bottom: 12%;
+  right: 8%;
+  opacity: 0.5;
+  transform: rotate(1deg);
+  font-size: 0.75rem;
+  animation-delay: 0.4s;
+}
+
+.vids-boot__win--monitor:hover {
+  opacity: 0.9;
+  z-index: 15;
+  transform: rotate(0);
+}
+
+@media (max-width: 900px) {
+
+  .vids-boot__win--scan,
+  .vids-boot__win--monitor {
+    display: none;
+    /* Hide sub-windows on mobile for clarity */
+  }
+}
+
+/* ── Title bar ── */
+.vids-boot__titlebar {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0 14px;
+  height: 38px;
+  background: linear-gradient(180deg, #1a2a1a 0%, #121c12 100%);
+  border-bottom: 1px solid #00ff4122;
+  user-select: none;
+}
+
+.vids-boot__trafficlights {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-right: 14px;
+  flex-shrink: 0;
+}
+
+.vids-boot__dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.vids-boot__dot--close {
+  background: #ff5f57;
+  box-shadow: 0 0 6px #ff5f5788;
+}
+
+.vids-boot__dot--min {
+  background: #ffbd2e;
+  box-shadow: 0 0 6px #ffbd2e88;
+}
+
+.vids-boot__dot--max {
+  background: #28ca41;
+  box-shadow: 0 0 6px #28ca4188;
+}
+
+.vids-boot__title {
+  flex: 1;
+  text-align: center;
+  font-size: 0.72rem;
+  color: #4dff7c99;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+.vids-boot__host {
+  font-size: 0.65rem;
+  color: #00ff4155;
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+
+/* ── Terminal body ── */
+.vids-boot__inner {
+  position: relative;
+  padding: 1.4rem 1.6rem 1.4rem;
+  background: #020e02;
+  overflow: hidden;
+  min-height: 200px;
+}
+
+/* CRT scanlines over the terminal body */
+.vids-boot__inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(to bottom,
+      transparent 0px,
+      transparent 3px,
+      rgba(0, 0, 0, 0.22) 3px,
+      rgba(0, 0, 0, 0.22) 4px);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* subtle phosphor vignette */
+.vids-boot__inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ── Prompt prefix line ── */
+.vids-boot__prompt-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
+  position: relative;
+  z-index: 3;
+}
+
+.vids-boot__prompt-user {
+  color: #28ca41;
+  font-weight: bold;
+}
+
+.vids-boot__prompt-at {
+  color: #4dff7c80;
+}
+
+.vids-boot__prompt-host {
+  color: #00bfff;
+  font-weight: bold;
+}
+
+.vids-boot__prompt-dir {
+  color: #4dff7caa;
+}
+
+.vids-boot__prompt-dollar {
+  color: #ffffff99;
+  margin-left: 2px;
+}
+
+/* ── Log lines ── */
 .vids-boot__line {
-  margin: 0 0 0.35rem;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: #00ff41;
+  margin: 0 0 0.28rem;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: #a8ffb8;
   white-space: pre-wrap;
+  position: relative;
+  z-index: 3;
+  opacity: 0;
+  animation: line-appear 0.12s ease forwards;
 }
 
-.vids-boot__line:last-of-type {
-  color: #7dffaa;
+@keyframes line-appear {
+  from {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* tag colouring */
+.vids-boot__line--ok {
+  color: #28ca41;
+}
+
+.vids-boot__line--exploit {
+  color: #ff9500;
+}
+
+.vids-boot__line--wait {
+  color: #ffbd2e;
+}
+
+.vids-boot__line--info {
+  color: #00bfff;
+}
+
+.vids-boot__line--success {
+  color: #00ff41;
+  text-shadow: 0 0 8px #00ff4166;
+}
+
+.vids-boot__line--command {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.vids-boot__line--progress {
+  color: #ffbd2e;
+  text-shadow: 0 0 5px #ffbd2e44;
 }
 
 .vids-boot__cursor {
   display: inline-block;
   color: #00ff41;
-  animation: blink 0.7s step-end infinite;
+  font-size: 0.88rem;
+  position: relative;
+  z-index: 3;
+  animation: blink 0.65s step-end infinite;
 }
 
 @keyframes blink {
   50% {
     opacity: 0;
   }
+}
+
+/* ── Skip hint ── */
+.vids-boot__skip {
+  position: absolute;
+  bottom: 10px;
+  right: 14px;
+  font-size: 0.6rem;
+  color: #00ff4133;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  z-index: 5;
+  pointer-events: none;
 }
 
 /* ─── Content fade-in ────────────────────────────────────────────────────── */

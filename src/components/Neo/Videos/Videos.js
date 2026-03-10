@@ -9,13 +9,25 @@ const translations = {
   en: {
     dir: "ltr",
     boot: [
-      "[ INFO ] Resolving target node... IP: 10.45.2.118",
-      "[ OK ] Port 443 open. Initiating SSL/TLS handshake...",
-      "[ EXPLOIT ] Delivering zero-day payload via buffer overflow...",
-      "[ WAIT ] Spawning reverse TCP shell on local port 4444...",
-      "[ OK ] Meterpreter session opened. Bypassing AV/EDR...",
-      "[ OK ] Privilege escalation successful. UID=0(root).",
-      "> C2 CONNECTION ESTABLISHED. EXFILTRATING DATA STREAM."
+      "$ nmap -sV -T4 10.45.2.118",
+      "[ INFO ] Scanning target: 10.45.2.118 (8 ports open)",
+      "[ OK ] Service found: Apache/2.4.41 (Ubuntu) on Port 80",
+      "[ INFO ] Searching for known vulnerabilities... [CVE-2021-41773]",
+      "$ use exploit/multi/http/apache_normalize_path",
+      "$ set RHOSTS 10.45.2.118",
+      "$ run",
+      "[ EXPLOIT ] Sending malicious payload...",
+      "[ WAIT ] Waiting for reverse shell on 4444...",
+      "[ SUCCESS ] Command shell session 1 opened (10.0.0.1:4444 -> 10.45.2.118:48212)",
+      "$ whoami",
+      "www-data",
+      "$ sudo -l",
+      "(ALL : ALL) NOPASSWD: /usr/bin/python3",
+      "$ sudo python3 -c 'import os; os.setuid(0); os.system(\"/bin/bash\")'",
+      "[ SUCCESS ] Privilege escalation successful. UID: 0 (root)",
+      "[ PROGRESS ] Exfiltrating secure data: [##########----------] 50%",
+      "[ PROGRESS ] Exfiltrating secure data: [####################] 100%",
+      "> SYSTEM COMPROMISED. DATA STREAM ACTIVE."
     ],
     heroTitle: "ROOT",
     heroAccent: "ACCESS",
@@ -28,19 +40,31 @@ const translations = {
   he: {
     dir: "ltr",
     boot: [
-      "[ INFO ] מאתר צומת מטרה... כתובת IP: 10.45.2.118",
-      "[ OK ] פורט 443 פתוח. מבצע לחיצת יד SSL/TLS...",
-      "[ EXPLOIT ] משגר מטען (Payload) מבוסס Zero-Day דרך גלישת חוצץ...",
-      "[ WAIT ] פותח מעטפת TCP הפוכה (Reverse Shell) בפורט 4444...",
-      "[ OK ] סשן Meterpreter נפתח. עוקף מערכות אנטי-וירוס...",
-      "[ OK ] הסלמת הרשאות בוצעה בהצלחה. סיווג UID=0(root).",
-      "> חיבור לשרת שליטה ובקרה (C2) הושלם. זליגת נתונים פעילה."
+      "$ nmap -sV -T4 10.45.2.118",
+      "[INFO] סורק מטרה: 10.45.2.118 (8 פורטים פתוחים)",
+      "[OK] שירות נמצא: Apache/2.4.41 (Ubuntu) בפורט 80",
+      "[INFO] מחפש פרצות אבטחה ידועות... [CVE-2021-41773]",
+      "$ use exploit/multi/http/apache_normalize_path",
+      "$ set RHOSTS 10.45.2.118",
+      "$ run",
+      "[EXPLOIT] שולח מטען זדוני...",
+      "[WAIT] ממתין לחיבור הפוך (Reverse Shell) בפורט 4444...",
+      "[SUCCESS] סשן פקודה 1 נפתח (10.0.0.1:4444 -> 10.45.2.118:48212)",
+      "$ whoami",
+      "www-data",
+      "$ sudo -l",
+      "(ALL : ALL) NOPASSWD: /usr/bin/python3",
+      "$ sudo python3 -c 'import os; os.setuid(0); os.system(\"/bin/bash\")'",
+      "[SUCCESS] העלאת הרשאות הצליחה. UID: 0 (root)",
+      "[PROGRESS] מוציא נתונים מאובטחים: [##########----------] 50%",
+      "[PROGRESS] מוציא נתונים מאובטחים: [####################] 100%",
+      "> המערכת נפרצה. הזרמת נתונים פעילה."
     ],
-    heroTitle: "גישת",
-    heroAccent: "ROOT",
-    heroSub: "זליגת נתונים מוצפנת. נוכחות לא מורשית מתועדת בזמן אמת.",
+    heroTitle: "ROOT",
+    heroAccent: "גישה",
+    heroSub: ".זליגת נתונים מוצפנת. נוכחות לא מורשית מתועדת בזמן אמת",
     videoTitle: "מבצע: ZERO-DAY",
-    videoSub: "מטרה ננעלה // הצפנת AES-256 // ערוץ C2 פעיל",
+    videoSub: "מטרה ננעלה // הצפנת \u202AAES-256\u202C // ערוץ \u202AC2\u202C פעיל",
     statusLive: "ערוץ תקשורת פעיל",
     statusLabel: "סטטוס מעקב"
   }
@@ -62,13 +86,17 @@ function BootScreen({ lines, onDone }) {
     const line = lines[currentLine];
 
     if (currentChar < line.length) {
-      // Create realistic hacking typing effect (variable speed, bursts)
-      const isBurst = Math.random() > 0.8;
-      const delay = isBurst ? 5 : Math.random() * 30 + 10;
+      // Logic for typing speed based on content
+      const isCommand = line.startsWith("$");
+      const isStatus = line.startsWith("[");
+      const isBurst = isStatus && Math.random() > 0.4; // Real statuses appear in bursts
 
-      // Artificial pause when "WAIT" or "EXPLOIT" is on screen
-      const isProcessingWait = (line.includes("WAIT") || line.includes("EXPLOIT")) && currentChar === 10;
-      const finalDelay = isProcessingWait ? 900 : delay;
+      const delay = isCommand
+        ? (Math.random() * 80 + 50) // Commands look like human typing
+        : (isBurst ? 5 : Math.random() * 30 + 10); // Outputs are fast
+
+      const isProcessingWait = (line.includes("WAIT") || line.includes("EXPLOIT") || line.includes("Scanning")) && currentChar === 10;
+      const finalDelay = isProcessingWait ? 1200 : delay;
 
       const t = setTimeout(() => {
         setDisplayed(prev => {
@@ -80,13 +108,27 @@ function BootScreen({ lines, onDone }) {
       }, finalDelay);
       return () => clearTimeout(t);
     } else {
+      const isCommand = line.startsWith("$");
+      const nextDelay = isCommand ? 600 : 200; // Pause after entering a command
+
       const t = setTimeout(() => {
         setCurrentLine(l => l + 1);
         setCurrentChar(0);
-      }, 300); // Pause between lines
+      }, nextDelay);
       return () => clearTimeout(t);
     }
   }, [currentLine, currentChar, lines, onDone]);
+
+  const getLineClass = (l) => {
+    if (l.includes("SUCCESS") || l.includes("הצליחה") || l.includes("root") || l.startsWith(">")) return "vids-boot__line--success";
+    if (l.includes("[ OK ]") || l.includes("[OK]")) return "vids-boot__line--ok";
+    if (l.includes("[ EXPLOIT ]") || l.includes("[EXPLOIT]")) return "vids-boot__line--exploit";
+    if (l.includes("[ WAIT ]") || l.includes("[WAIT]")) return "vids-boot__line--wait";
+    if (l.includes("[ INFO ]") || l.includes("[INFO]")) return "vids-boot__line--info";
+    if (l.includes("[ PROGRESS ]") || l.includes("[PROGRESS]")) return "vids-boot__line--progress";
+    if (l.startsWith("$")) return "vids-boot__line--command";
+    return "";
+  };
 
   return (
     <div
@@ -100,11 +142,44 @@ function BootScreen({ lines, onDone }) {
       }}
       style={{ cursor: "pointer" }}
     >
-      <div className="vids-boot__inner">
-        {displayed.map((l, i) => (
-          <p key={i} className={`vids-boot__line ${l.includes("ESTABLISHED") || l.includes("הושלם") || l.includes("root") ? "vids-boot__line--success" : ""}`}>{l}</p>
-        ))}
-        {!done && <span className="vids-boot__cursor" aria-hidden>█</span>}
+      {/* Terminal window chrome */}
+      <div className="vids-boot__window">
+        {/* Title bar */}
+        <div className="vids-boot__titlebar">
+          <div className="vids-boot__trafficlights" aria-hidden>
+            <span className="vids-boot__dot vids-boot__dot--close" />
+            <span className="vids-boot__dot vids-boot__dot--min" />
+            <span className="vids-boot__dot vids-boot__dot--max" />
+          </div>
+          <span className="vids-boot__title">bash — 80×24</span>
+          <span className="vids-boot__host" aria-hidden>root@c2-server</span>
+        </div>
+
+        {/* Terminal body */}
+        <div className="vids-boot__inner">
+          {/* Shell prompt header */}
+          <div className="vids-boot__prompt-header" aria-hidden>
+            <span className="vids-boot__prompt-user">root</span>
+            <span className="vids-boot__prompt-at">@</span>
+            <span className="vids-boot__prompt-host">c2-server</span>
+            <span className="vids-boot__prompt-dir">:~/exploit</span>
+            <span className="vids-boot__prompt-dollar">$</span>
+            <span style={{ color: "#a8ffb8", fontSize: "0.88rem" }}>./run_payload.sh</span>
+          </div>
+
+          {displayed.map((l, i) => (
+            <p
+              key={i}
+              dir="auto"
+              className={`vids-boot__line ${getLineClass(l)}`}
+            >
+              {l}
+            </p>
+          ))}
+          {!done && <span className="vids-boot__cursor" aria-hidden>█</span>}
+
+          <span className="vids-boot__skip">click to skip</span>
+        </div>
       </div>
     </div>
   );
@@ -130,14 +205,12 @@ function VideoPlayer({ t }) {
   const [fullscreen, setFullscreen] = useState(false);
   const [glitching, setGlitching] = useState(false);
 
-  // HUD Data States
   const [hexCode, setHexCode] = useState("0x000000");
   const [latency, setLatency] = useState(14);
   const [packetLoss, setPacketLoss] = useState(0.01);
   const [bandwidth, setBandwidth] = useState(1045);
   const playerRef = useRef(null);
 
-  // Periodic visual glitch
   useEffect(() => {
     const interval = setInterval(() => {
       setGlitching(true);
@@ -146,7 +219,6 @@ function VideoPlayer({ t }) {
     return () => clearInterval(interval);
   }, []);
 
-  // Live HUD Data generator (simulating network traffic)
   useEffect(() => {
     if (!playing) return;
     const interval = setInterval(() => {
@@ -182,7 +254,6 @@ function VideoPlayer({ t }) {
     }
   }, []);
 
-  // Keyboard Shortcuts
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.code === 'Space') {
@@ -218,10 +289,7 @@ function VideoPlayer({ t }) {
 
   return (
     <div ref={playerRef} className={`vids-player ${glitching ? "vids-player--glitch" : ""}`}>
-      {/* Scanline overlay */}
       <div className="vids-scanlines" aria-hidden />
-
-      {/* Dynamic Network HUD Overlay */}
       <div className="vids-hud-network" aria-hidden>
         <div>MEM: {hexCode}</div>
         <div>LATENCY: {latency.toFixed(1)}ms</div>
@@ -229,13 +297,11 @@ function VideoPlayer({ t }) {
         <div>RX: {Math.round(bandwidth)} kbps</div>
       </div>
 
-      {/* Corner decorations */}
       <span className="vids-corner vids-corner--tl" aria-hidden />
       <span className="vids-corner vids-corner--tr" aria-hidden />
       <span className="vids-corner vids-corner--bl" aria-hidden />
       <span className="vids-corner vids-corner--br" aria-hidden />
 
-      {/* Video */}
       <video
         ref={videoRef}
         src={vidHacker}
@@ -248,14 +314,12 @@ function VideoPlayer({ t }) {
         onClick={togglePlay}
       />
 
-      {/* HUD header */}
       <div className="vids-hud-top" aria-hidden>
         <span className="vids-hud-label">[{t.videoTitle}]</span>
         <span className="vids-hud-sub">{t.videoSub}</span>
         <span className={`vids-status-dot ${playing ? "active" : ""}`} />
       </div>
 
-      {/* Controls */}
       <div className="vids-controls">
         <button className="vids-ctrl-btn" onClick={togglePlay} aria-label={playing ? "Pause" : "Play"}>
           {playing ? "[ PAUSE ]" : "[ PLAY ]"}
