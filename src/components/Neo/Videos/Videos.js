@@ -26,7 +26,7 @@ const translations = {
     statusLabel: "TRACE STATUS"
   },
   he: {
-    dir: "rtl",
+    dir: "ltr",
     boot: [
       "[ INFO ] מאתר צומת מטרה... כתובת IP: 10.45.2.118",
       "[ OK ] פורט 443 פתוח. מבצע לחיצת יד SSL/TLS...",

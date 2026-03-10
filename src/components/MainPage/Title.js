@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useLocaleContext } from "../../../context/LocaleContext";
+import { useLocaleContext } from "../../context/LocaleContext";
 import "./Title.css";
 
 const Title = () => {

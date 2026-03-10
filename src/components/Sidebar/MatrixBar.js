@@ -349,17 +349,15 @@ const MatrixBar = forwardRef(function MatrixBar({ mode = 'both' }, ref) {
     );
   };
 
-  /* ── Build item list — Logo always rightmost ────────────────────── */
+  /* ── Build item list — Character always leftmost ────────────────────── */
   const items = useMemo(() => {
     const list = [];
     if (mode === 'neo') {
-      // Logo on right (index 0 in RTL), Neo on left
-      list.push(renderIcon('logo', logoIcon, locale === 'he' ? 'לוגו' : 'Logo', '/'));
       if (showNeo) list.push(renderIcon('neoIcon', neoIcon, locale === 'he' ? 'ניאו' : 'Neo', '/neo/hacking'));
-    } else if (mode === 'agent-smith') {
-      // Logo on right, Smith on left
       list.push(renderIcon('logo', logoIcon, locale === 'he' ? 'לוגו' : 'Logo', '/'));
+    } else if (mode === 'agent-smith') {
       if (showSmith) list.push(renderIcon('agentSmithIcon', agentSmithIcon, locale === 'he' ? 'סוכן סמית\'' : 'Agent Smith', '/agent-smith/agent-smith-department'));
+      list.push(renderIcon('logo', logoIcon, locale === 'he' ? 'לוגו' : 'Logo', '/'));
     } else {
       // Both mode: Logo | Neo | Smith (Logo on far right in RTL)
       list.push(renderIcon('logo', logoIcon, locale === 'he' ? 'לוגו' : 'Logo', '/'));

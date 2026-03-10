@@ -68,15 +68,15 @@ const PageNotFound = () => {
         <span className="line flickerCompany">{t.companyCommitted}</span><br />
         <span className="line flickerPage">{t.pageOmitted}</span><br /><br />
 
-        <span className="_4_4">4</span>
-        <span className="_0">0</span>
-        <span className="_4_4">4</span>
-
-        <span className="spacer" aria-hidden="true">&nbsp;&nbsp;&nbsp;</span>
-
         <span className="blink err_r">{t.error.substring(0, 3)}</span>
         <span className="_0">{t.error.includes('0') ? '0' : t.error.substring(3, 4)}</span>
         <span className="blink err_r">{t.error.substring(t.error.includes('0') ? 4 : 4)}</span>
+
+        <span className="spacer" aria-hidden="true">&nbsp;&nbsp;&nbsp;</span>
+
+        <span className="_4_4">4</span>
+        <span className="_0">0</span>
+        <span className="_4_4">4</span>
       </div>
 
       <div className="text text-front" aria-hidden="true">
@@ -84,15 +84,15 @@ const PageNotFound = () => {
         <span className="line flickerCompany">{t.companyCommitted}</span><br />
         <span className="line flickerPage">{t.pageOmitted}</span><br /><br />
 
-        <span className="_4_4">4</span>
-        <span className="_0">0</span>
-        <span className="_4_4">4</span>
-
-        <span className="spacer" aria-hidden="true">&nbsp;&nbsp;&nbsp;</span>
-
         <span className="blink err_r">{t.error.substring(0, 3)}</span>
         <span className="_0">{t.error.includes('0') ? '0' : t.error.substring(3, 4)}</span>
         <span className="blink err_r">{t.error.substring(t.error.includes('0') ? 4 : 4)}</span>
+
+        <span className="spacer" aria-hidden="true">&nbsp;&nbsp;&nbsp;</span>
+
+        <span className="_4_4">4</span>
+        <span className="_0">0</span>
+        <span className="_4_4">4</span>
       </div>
     </div>
   );

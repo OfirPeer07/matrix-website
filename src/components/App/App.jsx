@@ -7,7 +7,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import "./App.css";
-import { LocaleProvider } from "../../context/LocaleContext";
+import { LocaleProvider, useLocaleContext } from "../../context/LocaleContext";
 
 // ===== AGENT SMITH =====
 import AgentSmith from "../AgentSmith/AgentSmith";
@@ -27,12 +27,12 @@ import ResumeBuilder from "../Neo/ResumeBuilder/ResumeBuilder";
 import MatrixBar from "../Sidebar/MatrixBar";
 import PageNotFound from "../PageNotFound/PageNotFound";
 import ContactUs from "../ContactUs/ContactUs";
-import Intro from "../ErrorBoundary/MainPage/Intro";
+import Intro from "../MainPage/Intro";
 import Thanks from "../Thanks/Thanks";
 import "../../styles/print/resume-print.css";
 
 // ===== LAZY =====
-const MainPage = lazy(() => import("../ErrorBoundary/MainPage/MainPage"));
+const MainPage = lazy(() => import("../MainPage/MainPage"));
 const Hacking = lazy(() => import("../Neo/Hacking/Hacking"));
 
 function isMobileSafari() {
@@ -52,6 +52,7 @@ const isMobileDevice = () =>
 
 function AppContent() {
   const location = useLocation();
+  const { locale, toggleLocale } = useLocaleContext();
 
   const [showIntro, setShowIntro] = useState(false);
   const [isSafariMobile, setIsSafariMobile] = useState(false);
@@ -84,6 +85,15 @@ function AppContent() {
   return (
     <div className="App">
       <ConditionalSidebar />
+
+      {/* Language Toggle (Desktop Only) */}
+      <button
+        className="global-fab lang-toggle-btn"
+        onClick={toggleLocale}
+        aria-label="Toggle Language"
+      >
+        {locale === "en" ? "HE" : "EN"}
+      </button>
 
       <div className={`content ${isNavbarNeeded ? "has-navbar has-navbar-mobile" : "no-navbar"}`}>
         {/* התיקון: Fallback עם רקע שחור וגובה מלא למניעת הבהוב לבן */}
@@ -167,7 +177,7 @@ function ConditionalSidebar() {
 
   if (location.pathname.startsWith("/neo")) {
     return (
-      <div dir="rtl">
+      <div dir="ltr">
         <MatrixBar mode="neo" showLogo />
       </div>
     );
@@ -175,7 +185,7 @@ function ConditionalSidebar() {
 
   if (location.pathname.startsWith("/agent-smith")) {
     return (
-      <div dir="rtl">
+      <div dir="ltr">
         <MatrixBar mode="agent-smith" showLogo />
       </div>
     );

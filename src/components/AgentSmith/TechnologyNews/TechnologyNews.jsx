@@ -4,7 +4,7 @@ import * as THREE from "three";
 import "./TechnologyNews.css";
 import "./TechnologyNews.mobile.css";
 import { useLocaleContext } from "../../../context/LocaleContext";
-import MatrixRainCanvas from "../../ErrorBoundary/MainPage/MatrixRainCanvas";
+import MatrixRainCanvas from "../../MainPage/MatrixRainCanvas";
 
 
 
@@ -24,7 +24,7 @@ const translations = {
     ],
   },
   he: {
-    dir: "rtl",
+    dir: "ltr",
     header: "חדשות טכנולוגיה",
     subHeader: "ההתפתחויות האחרונות בחזית הדיגיטלית",
     readMore: "קרא עוד",

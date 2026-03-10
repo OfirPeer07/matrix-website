@@ -48,7 +48,7 @@ const content = {
     ],
   },
   he: {
-    dir: 'rtl',
+    dir: 'ltr',
     pageTitle: 'סוכן סמית׳',
     pageSub: 'מסוף מבצעי',
     accessLabel: 'גישה מאושרת',

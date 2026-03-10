@@ -10,9 +10,10 @@ export const LocaleProvider = ({ children }) => {
 
     useEffect(() => {
         localStorage.setItem('globalLocale', locale);
-        // Set html lang and dir attributes
+        // Set html lang
         document.documentElement.lang = locale;
-        document.documentElement.dir = locale === 'he' ? 'rtl' : 'ltr';
+        // Keep dir LTR to prevent layout mirroring
+        document.documentElement.dir = 'ltr';
     }, [locale]);
 
     const toggleLocale = () => {

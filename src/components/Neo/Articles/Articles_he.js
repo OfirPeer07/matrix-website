@@ -11,7 +11,7 @@ import imgPairProgramming from "./pair-programming.jpg";
 export const locales = {
   he: {
     lang: "he",
-    dir: "rtl",
+    dir: "ltr",
     dateLocale: "he-IL",
     ui: {
       heroTitleTop: "ספר ההדרכה המפוענח",

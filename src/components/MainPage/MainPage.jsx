@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect, useId } from "react";
-import { useLocaleContext } from "../../../context/LocaleContext";
+import { useLocaleContext } from "../../context/LocaleContext";
 import { useNavigate } from "react-router-dom";
 import "./MainPage.css";
 import "./MainPage.mobile.css";
@@ -166,14 +166,7 @@ const MainPage = ({ hideMatrix = false }) => {
         ✕
       </button>
 
-      {/* Language Toggle */}
-      <button
-        className="fab lang-toggle-btn"
-        onClick={toggleLocale}
-        aria-label={t.toggleLang}
-      >
-        {locale === "en" ? "HE" : "EN"}
-      </button>
+
 
       {/* Backdrop */}
       <div

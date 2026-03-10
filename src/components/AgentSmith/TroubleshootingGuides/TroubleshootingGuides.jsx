@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useLocaleContext } from "../../../context/LocaleContext";
 import "./TroubleshootingGuides.css";
 import "./TroubleshootingGuides.mobile.css";
-import MatrixRainCanvas from "../../ErrorBoundary/MainPage/MatrixRainCanvas";
+import MatrixRainCanvas from "../../MainPage/MatrixRainCanvas";
 
 
 
@@ -62,7 +62,7 @@ const translations = {
     }
   },
   he: {
-    dir: "rtl",
+    dir: "ltr",
     title: "מדריכי פתרון תקלות",
     subtitle: "סריקה וניתוח בעיות באמצעות כלי אוטומציה",
     notice: "שים לב: זהו כלי המיועד לצוותי DevOps / SecDevOps",
