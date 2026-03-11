@@ -19,26 +19,26 @@ const DEFAULT_SETTINGS = {
   bg: "#000000",
   text: "#ffffff",
   muted: "#dddddd",
-  accent: "#22c55e",
+  accent: "#00ff41",
 
   cellColor: "#000000",
   cell: 88,
   gap: 14,
   radius: 12,
-  baseAlpha: 0.5,
+  baseAlpha: 0.55,
 
   lightStyle: "lamp",
-  falloff: 240,
-  beams: 4,
-  beamStrength: 0.85,
-  beamSoft: 0.35,
-  edgeBoost: 0.25,
+  falloff: 220,
+  beams: 5,
+  beamStrength: 0.9,
+  beamSoft: 0.3,
+  edgeBoost: 0.3,
 
-  rainSpeed: 20,
-  rainDensity: 0.65,
+  rainSpeed: 22,
+  rainDensity: 0.72,
   rainFont: 18,
-  rainGlow: 0.35,
-  rainFps: 32,
+  rainGlow: 0.45,
+  rainFps: 36,
 };
 
 const translations = {

@@ -40,14 +40,14 @@ const translations = {
     close: "Close panel",
     deletePreset: "Delete preset",
     presetNames: {
-      Classic: "Classic",
-      Emerald: "Emerald",
-      "Blue Matrix": "Blue Matrix",
-      "Red Pill": "Red Pill",
-      "Cyber Purple": "Cyber Purple",
-      Synthwave: "Synthwave",
-      "Gold Rush": "Gold Rush",
-      Midnight: "Midnight"
+      "The Matrix": "The Matrix",
+      "Deep Blue": "Deep Blue",
+      "Neuromancer": "Neuromancer",
+      "Code Red": "Code Red",
+      "Deep Space": "Deep Space",
+      "Solar Flare": "Solar Flare",
+      "Cyber Violet": "Cyber Violet",
+      "System Glitch": "System Glitch"
     }
   },
   he: {
@@ -82,14 +82,14 @@ const translations = {
     close: "סגור פאנל",
     deletePreset: "מחק ערכה",
     presetNames: {
-      Classic: "קלאסי",
-      Emerald: "אמרלד",
-      "Blue Matrix": "מטריקס כחול",
-      "Red Pill": "הגלולה האדומה",
-      "Cyber Purple": "סייבר סגול",
-      Synthwave: "סינת'ווייב",
-      "Gold Rush": "זהב יוקרתי",
-      Midnight: "חצות"
+      "The Matrix": "המטריקס",
+      "Deep Blue": "כחול עמוק",
+      "Neuromancer": "ניורומנסר",
+      "Code Red": "קוד אדום",
+      "Deep Space": "חלל עמוק",
+      "Solar Flare": "להבת שמש",
+      "Cyber Violet": "סייבר סגול",
+      "System Glitch": "באג במערכת"
     }
   }
 };
@@ -99,131 +99,203 @@ const translations = {
 /* ─────────────────────────────────────────── */
 const BUILT_IN_PRESETS = [
   {
-    name: "Classic",
-    color: "#00ff88",
+    name: "The Matrix",
+    color: "#00ff41",
     settings: {
-      accent: "#22c55e",
+      accent: "#00ff41",
       bg: "#000000",
+      text: "#ffffff",
       cellColor: "#000000",
       cell: 88,
-      rainSpeed: 20,
-      rainDensity: 0.65,
-      rainGlow: 0.35,
-      rainFont: 18,
-      falloff: 240,
-      baseAlpha: 0.5,
-    },
-  },
-  {
-    name: "Emerald",
-    color: "#10d9a0",
-    settings: {
-      accent: "#10d9a0",
-      bg: "#000000",
-      cellColor: "#001208",
-      cell: 80,
-      rainSpeed: 24,
-      rainDensity: 0.7,
-      rainGlow: 0.45,
-      rainFont: 16,
-      falloff: 200,
+      gap: 14,
+      radius: 12,
       baseAlpha: 0.55,
-    },
-  },
-  {
-    name: "Blue Matrix",
-    color: "#14b8ff",
-    settings: {
-      accent: "#14b8ff",
-      bg: "#000510",
-      cellColor: "#000814",
-      cell: 88,
-      rainSpeed: 22,
-      rainDensity: 0.6,
-      rainGlow: 0.4,
-      rainFont: 18,
-      falloff: 260,
-      baseAlpha: 0.45,
-    },
-  },
-  {
-    name: "Red Pill",
-    color: "#ff3855",
-    settings: {
-      accent: "#ff3855",
-      bg: "#0a0000",
-      cellColor: "#0d0000",
-      cell: 96,
-      rainSpeed: 28,
-      rainDensity: 0.55,
-      rainGlow: 0.5,
-      rainFont: 20,
+      lightStyle: "lamp",
       falloff: 220,
-      baseAlpha: 0.6,
-    },
-  },
-  {
-    name: "Cyber Purple",
-    color: "#c084fc",
-    settings: {
-      accent: "#c084fc",
-      bg: "#05000d",
-      cellColor: "#09000f",
-      cell: 80,
-      rainSpeed: 18,
+      beams: 5,
+      beamStrength: 0.9,
+      beamSoft: 0.3,
+      edgeBoost: 0.3,
+      rainSpeed: 22,
       rainDensity: 0.72,
-      rainGlow: 0.55,
-      rainFont: 16,
-      falloff: 200,
-      baseAlpha: 0.5,
-    },
-  },
-  {
-    name: "Synthwave",
-    color: "#ff00ff",
-    settings: {
-      accent: "#ff00ff",
-      bg: "#0a0014",
-      cellColor: "#140028",
-      cell: 72,
-      rainSpeed: 32,
-      rainDensity: 0.6,
-      rainGlow: 0.7,
       rainFont: 18,
-      falloff: 180,
-      baseAlpha: 0.4,
+      rainGlow: 0.45,
+      rainFps: 36,
     },
   },
   {
-    name: "Gold Rush",
-    color: "#eab308",
+    name: "Deep Blue",
+    color: "#0066ff",
     settings: {
-      accent: "#eab308",
-      bg: "#0c0a00",
-      cellColor: "#1a1600",
-      cell: 88,
-      rainSpeed: 15,
-      rainDensity: 0.5,
-      rainGlow: 0.8,
-      rainFont: 17,
-      falloff: 300,
-      baseAlpha: 0.6,
+      accent: "#0066ff",
+      bg: "#000512",
+      text: "#dae9ff",
+      cellColor: "#000a1f",
+      cell: 82,
+      gap: 12,
+      radius: 14,
+      baseAlpha: 0.48,
+      lightStyle: "lamp",
+      falloff: 320,
+      beams: 4,
+      beamStrength: 0.8,
+      beamSoft: 0.5,
+      edgeBoost: 0.15,
+      rainSpeed: 16,
+      rainDensity: 0.55,
+      rainFont: 16,
+      rainGlow: 0.6,
+      rainFps: 30,
     },
   },
   {
-    name: "Midnight",
-    color: "#94a3b8",
+    name: "Neuromancer",
+    color: "#ff0099",
+    settings: {
+      accent: "#ff0099",
+      bg: "#08001a",
+      text: "#ffebf5",
+      cellColor: "#120032",
+      cell: 76,
+      gap: 10,
+      radius: 16,
+      baseAlpha: 0.4,
+      lightStyle: "lamp",
+      falloff: 210,
+      beams: 6,
+      beamStrength: 0.88,
+      beamSoft: 0.35,
+      edgeBoost: 0.32,
+      rainSpeed: 30,
+      rainDensity: 0.68,
+      rainFont: 17,
+      rainGlow: 0.7,
+      rainFps: 42,
+    },
+  },
+  {
+    name: "Code Red",
+    color: "#ff2233",
+    settings: {
+      accent: "#ff2233",
+      bg: "#0e0000",
+      text: "#ffe6e6",
+      cellColor: "#180000",
+      cell: 92,
+      gap: 18,
+      radius: 8,
+      baseAlpha: 0.62,
+      lightStyle: "lamp",
+      falloff: 180,
+      beams: 8,
+      beamStrength: 0.95,
+      beamSoft: 0.2,
+      edgeBoost: 0.4,
+      rainSpeed: 42,
+      rainDensity: 0.6,
+      rainFont: 20,
+      rainGlow: 0.5,
+      rainFps: 48,
+    },
+  },
+  {
+    name: "Deep Space",
+    color: "#ffffff",
     settings: {
       accent: "#ffffff",
-      bg: "#020617",
-      cellColor: "#0f172a",
-      cell: 100,
-      rainSpeed: 10,
-      rainDensity: 0.4,
-      rainGlow: 0.2,
+      bg: "#02040a",
+      text: "#ffffff",
+      cellColor: "#080c14",
+      cell: 110,
+      gap: 16,
+      radius: 18,
+      baseAlpha: 0.25,
+      lightStyle: "lamp",
+      falloff: 450,
+      beams: 3,
+      beamStrength: 0.65,
+      beamSoft: 0.65,
+      edgeBoost: 0.1,
+      rainSpeed: 8,
+      rainDensity: 0.3,
       rainFont: 22,
-      falloff: 400,
-      baseAlpha: 0.3,
+      rainGlow: 0.15,
+      rainFps: 24,
+    },
+  },
+  {
+    name: "Solar Flare",
+    color: "#ffaa00",
+    settings: {
+      accent: "#ffaa00",
+      bg: "#0d0600",
+      text: "#fff5e0",
+      cellColor: "#1c0f00",
+      cell: 86,
+      gap: 14,
+      radius: 12,
+      baseAlpha: 0.58,
+      lightStyle: "lamp",
+      falloff: 260,
+      beams: 5,
+      beamStrength: 0.9,
+      beamSoft: 0.32,
+      edgeBoost: 0.28,
+      rainSpeed: 14,
+      rainDensity: 0.5,
+      rainFont: 17,
+      rainGlow: 0.78,
+      rainFps: 28,
+    },
+  },
+  {
+    name: "Cyber Violet",
+    color: "#9d4dff",
+    settings: {
+      accent: "#9d4dff",
+      bg: "#06000f",
+      text: "#f0e6ff",
+      cellColor: "#0f0022",
+      cell: 80,
+      gap: 12,
+      radius: 14,
+      baseAlpha: 0.45,
+      lightStyle: "lamp",
+      falloff: 230,
+      beams: 5,
+      beamStrength: 0.85,
+      beamSoft: 0.4,
+      edgeBoost: 0.2,
+      rainSpeed: 20,
+      rainDensity: 0.65,
+      rainFont: 16,
+      rainGlow: 0.55,
+      rainFps: 34,
+    },
+  },
+  {
+    name: "System Glitch",
+    color: "#00ffcc",
+    settings: {
+      accent: "#00ffcc",
+      bg: "#000c0a",
+      text: "#e0fff8",
+      cellColor: "#001a14",
+      cell: 64,
+      gap: 8,
+      radius: 4,
+      baseAlpha: 0.75,
+      lightStyle: "lamp",
+      falloff: 150,
+      beams: 10,
+      beamStrength: 0.9,
+      beamSoft: 0.1,
+      edgeBoost: 0.5,
+      rainSpeed: 55,
+      rainDensity: 0.8,
+      rainFont: 12,
+      rainGlow: 0.9,
+      rainFps: 60,
     },
   },
 ];
@@ -512,7 +584,7 @@ const ControlPanel = ({
   const { locale } = useLocaleContext();
   const t = translations[locale] || translations.en;
 
-  const TABS_LABELS = [t.visual, t.rain, t.grid, t.presets];
+  const TABS_LABELS = [t.presets, t.rain, t.grid, t.visual];
 
   const update = useCallback((k, v) => {
     setSettings(s => ({ ...s, [k]: v }));
@@ -552,21 +624,21 @@ const ControlPanel = ({
       {/* ── Tab Panels ── */}
       <div className="cp-body">
         {activeTab === 0 && (
-          <VisualTab
+          <PresetsTab
             settings={settings}
-            update={update}
-            cinematicMode={cinematicMode}
-            setCinematicMode={setCinematicMode}
+            setSettings={setSettings}
+            onReset={onReset}
             t={t}
           />
         )}
         {activeTab === 1 && <RainTab settings={settings} update={update} t={t} />}
         {activeTab === 2 && <GridTab settings={settings} update={update} t={t} />}
         {activeTab === 3 && (
-          <PresetsTab
+          <VisualTab
             settings={settings}
-            setSettings={setSettings}
-            onReset={onReset}
+            update={update}
+            cinematicMode={cinematicMode}
+            setCinematicMode={setCinematicMode}
             t={t}
           />
         )}
