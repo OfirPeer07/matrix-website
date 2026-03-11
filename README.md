@@ -122,4 +122,4 @@ This project was built to:
 **Ofir Peer**  
 Frontend Developer  
 
-GitHub: [https://github.com/OfirPeer07](https://github.com/OfirPeer07)
+LinkedIn: [https://www.linkedin.com/in/ofirpeer/](https://www.linkedin.com/in/ofirpeer/)

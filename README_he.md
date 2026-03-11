@@ -123,6 +123,6 @@ npm run deploy
 **אופיר פאר (Ofir Peer)**  
 מפתח Frontend  
 
-גיטהאב: [https://github.com/OfirPeer07](https://github.com/OfirPeer07)
+לינקדאין: [https://www.linkedin.com/in/ofirpeer/](https://www.linkedin.com/in/ofirpeer/)
 
 </div>
