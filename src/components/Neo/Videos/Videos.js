@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useLocaleContext } from "../../../context/LocaleContext";
 import "./Videos.css";
 
-import vidHacker from "../Hacking/vidHacker.mp4";
+import vidHacker from "./OLLAMA_Happy_Smoking.mp4";
 
 // ─── Translations ────────────────────────────────────────────────────────────
 const translations = {
