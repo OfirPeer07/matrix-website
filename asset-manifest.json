@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "./static/css/main.5d4771c0.css",
-    "main.js": "./static/js/main.6733bb5f.js",
+    "main.js": "./static/js/main.e057f81e.js",
     "static/css/401.1b29d308.chunk.css": "./static/css/401.1b29d308.chunk.css",
     "static/js/401.d39a46dc.chunk.js": "./static/js/401.d39a46dc.chunk.js",
     "static/css/212.9b79b69f.chunk.css": "./static/css/212.9b79b69f.chunk.css",
@@ -17,11 +17,11 @@
     "static/media/BuildingComputers_he.png": "./static/media/BuildingComputers_he.dcadfbee79f188ac8a0a.png",
     "static/media/TroubleshootingGuides.png": "./static/media/TroubleshootingGuides.8fd98bad5594af2305f2.png",
     "static/media/Agent-smith-dodges-bullets.mp4": "./static/media/Agent-smith-dodges-bullets.3cd97499bcda355aed27.mp4",
-    "static/media/vidHacker.mp4": "./static/media/vidHacker.b78378ecc27658e08ef7.mp4",
     "static/media/Story2.png": "./static/media/Story2.d54feb7e4194aa2bbf5d.png",
     "static/media/Story1.png": "./static/media/Story1.54c9a0ed9521e340257b.png",
     "static/media/WhatCanBeDone.png": "./static/media/WhatCanBeDone.ab28eac29f829d0633a4.png",
     "static/media/TechnologyNews_he.png": "./static/media/TechnologyNews_he.91847bbc1349d156032c.png",
+    "static/media/OLLAMA_Happy_Smoking.mp4": "./static/media/OLLAMA_Happy_Smoking.0d32db1904d755b659e0.mp4",
     "static/media/agent-mode.jpg": "./static/media/agent-mode.a1130b1d9281d22e8a21.jpg",
     "static/media/Experience.png": "./static/media/Experience.871be6ab5ab7baf2962f.png",
     "static/media/TroubleshootingGuides_he.png": "./static/media/TroubleshootingGuides_he.a51227c2996694407092.png",
@@ -43,6 +43,6 @@
   },
   "entrypoints": [
     "static/css/main.5d4771c0.css",
-    "static/js/main.6733bb5f.js"
+    "static/js/main.e057f81e.js"
   ]
 }
